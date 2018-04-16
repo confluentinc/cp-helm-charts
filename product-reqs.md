@@ -47,3 +47,6 @@ Dividing up the first product deliverable into milestones:
 - Upgrades
   - Rolling upgrades are supported in Confluent Platform
   - Docker images might need to change to accommodate this.
+- Persistant volumes
+  - What goes on persistant storage?
+    - Data dir logs (logs.dir)
