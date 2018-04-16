@@ -50,3 +50,7 @@ Dividing up the first product deliverable into milestones:
 - Persistant volumes
   - What goes on persistant storage?
     - Data dir logs (logs.dir)
+- Monitoring
+  - How do we monitor ZK to ensure that there isn't a split brain scenario? Do we have anything in C3?
+- Scaling
+  - What do we need to do to scale down brokers?
