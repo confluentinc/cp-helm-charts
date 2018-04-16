@@ -2,8 +2,8 @@
 
 The first product deliverable is the following:
 
-    Updated CP 4.1 Confluent docker images and Helm charts. Covers all Confluent Platform components.   
-    Reference Architecture white paper that describes how to provision Confluent Platform on Kubernetes.
+- Updated CP 4.1 Confluent docker images and Helm charts. Covers all Confluent Platform components.   
+- Reference Architecture white paper that describes how to provision Confluent Platform on Kubernetes.
 
 Design considerations to cover:
 
@@ -16,14 +16,13 @@ Design considerations to cover:
 
 Determine recommendations for these environmental considerations:
 
-- Logging  
-- Persistent volumes  
-- JMX Monitoring  
+- Logging
+- Persistent volumes
+- JMX Monitoring
 
 # Milestone approach
 
 Dividing up the first product deliverable into milestones:
 
-- 1 node zookeeper, 1 node Kafka broker, 1 node rest proxy.   
-- 3 node zookeeper, 3 node Kafka broker, 1 node rest proxy  
-- Full Confluent Platform across multiple nodes  
+- 3 node zookeeper, 3 node Kafka broker, 1 node rest proxy
+- Full Confluent Platform across multiple nodes
