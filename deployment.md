@@ -35,7 +35,7 @@ kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admi
 kubectl create clusterrolebinding add-on-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:default
 ```
 
-Step 3: Install helm chart
+Step 4: Install helm chart
 
 ```
 helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
@@ -43,7 +43,7 @@ helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubato
 helm install --name confluent-kafka-6 --set global.namespace=kafka,zookeeper.url=zk-svc.default.svc.cluster.local,zookeeper.port=2181,zookeeper.enabled=false incubator/kafka
 ```
 
-Step 4: Install test client
+Step 5: Install test client
 
 ```
 kubectl create -f kafka_client.yml
