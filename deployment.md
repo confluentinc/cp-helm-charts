@@ -1,4 +1,4 @@
-# Open Source Zookeeper and Kafka Deployment
+# Confluent Docker image k8s Zookeeper and Kafka Deployment
 
 ### Zookeeper Deployment
 
