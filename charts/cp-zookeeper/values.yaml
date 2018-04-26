@@ -5,6 +5,11 @@
 # Number of zookeeper servers, should be odd number
 servers: 3
 
+
+# Liveness and Readiness Probe Configuration
+probeInitialDelaySeconds: 15
+probeTimeoutSeconds: 5
+
 # Images Info
 image: confluentinc/cp-zookeeper
 imageTag: 4.0.1
