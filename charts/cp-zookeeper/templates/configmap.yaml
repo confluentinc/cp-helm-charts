@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "cp-zookeeper.fullname" . }}-configmap
+  labels:
+    app: {{ template "cp-zookeeper.name" . }}
+    chart: {{ template "cp-zookeeper.chart" . }}
+    release: {{ .Release.Name | quote }}
+    heritage: {{ .Release.Service | quote }}
+data:
+  servers: {{ template "cp-zookeeper.serverlist" . }}
