@@ -10,6 +10,8 @@ image: confluentinc/cp-zookeeper
 imageTag: 4.0.1
 imagePullPolicy: "Always"
 
+updateStrategy: "OnDelete"
+
 # Zookeeper Configuration
 tickTimeMs: 2000
 syncTicks: 5
@@ -39,5 +41,3 @@ persistence:
 nodeSelector: {}
 
 tolerations: []
-
-affinity: {}
