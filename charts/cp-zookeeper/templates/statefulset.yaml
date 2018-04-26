@@ -1,6 +1,5 @@
 apiVersion: apps/v1beta1
 kind: StatefulSet
-
 metadata:
   name: {{ template "cp-zookeeper.fullname" . }}
   labels:
@@ -10,8 +9,10 @@ metadata:
     heritage: {{ .Release.Service | quote }}
 spec:
   serviceName: {{ template "cp-zookeeper.fullname" . }}-headless
-  replicas: 3
+  replicas: {{ .Values.servers }}
   podManagementPolicy: Parallel
+  updateStrategy:
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -36,12 +37,10 @@ spec:
           value: "{{ .Values.syncTicks }}"
         - name: ZOOKEEPER_CLIENT_PORT
           value: "{{ .Values.clientPort }}"
-        # SERVER_ID is required but not used as this value
         - name : ZOOKEEPER_SERVERS
-          valueFrom:
-            configMapKeyRef:
-                name: {{ template "cp-zookeeper.fullname" . }}-configmap
-                key: servers
+          value: {{ template "cp-zookeeper.serverlist" . }}
+        # ZOOKEEPER_SERVER_ID is required just to pass cp-zookeeper ensure script for env check,
+        # the value(metadata.mame) is not used and will be overwritten in command part
         - name: ZOOKEEPER_SERVER_ID
           valueFrom:
             fieldRef:

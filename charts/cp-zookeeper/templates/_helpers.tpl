@@ -31,6 +31,10 @@ Create chart name and version as used by the chart label.
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
+{{/*
+Create a server list string based on fullname, namespace, # of servers
+in a format like "zkhost1:port:port;zkhost2:port:port"
+*/}}
 {{- define "cp-zookeeper.serverlist" -}}
 {{- $namespace := .Release.Namespace }}
 {{- $name := include "cp-zookeeper.fullname" . -}}
