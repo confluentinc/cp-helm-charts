@@ -12,13 +12,29 @@ spec:
   replicas: {{ .Values.servers }}
   podManagementPolicy: Parallel
   updateStrategy:
-    type: RollingUpdate
+    type: {{ .Values.updateStrategy }}
   template:
     metadata:
       labels:
         app: {{ template "cp-zookeeper.name" . }}
         release: {{ .Release.Name | quote }}
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                    - {{ template "cp-zookeeper.name" . }}
+                  - key: "release"
+                    operator: In
+                    values:
+                    - {{ .Release.Name | quote }}
+              topologyKey: "kubernetes.io/hostname"
       containers:
       - name: {{ template "cp-zookeeper.name" . }}-server
         imagePullPolicy: {{ .Values.imagePullPolicy }}
