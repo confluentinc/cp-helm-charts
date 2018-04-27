@@ -1,21 +1,35 @@
-# Default values for cp-zookeeper.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+## Default values for cp-zookeeper.
+## This is a YAML-formatted file.
+## Declare variables to be passed into your templates.
 
-# Number of zookeeper servers, should be odd number
+## ------------------------------------------------------
+## Zookeeper
+## ------------------------------------------------------
+
+## Number of zookeeper servers, should be odd number
 servers: 3
 
+## Images Info
+## ref: https://hub.docker.com/r/confluentinc/cp-zookeeper/
+image: confluentinc/cp-zookeeper
+imageTag: 4.0.1
 
-# Liveness and Readiness Probe Configuration
+## Specify a imagePullPolicy
+## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+imagePullPolicy: IfNotPresent
+
+## Liveness and Readiness Probe Configuration
 probeInitialDelaySeconds: 15
 probeTimeoutSeconds: 5
 
-# Images Info
-image: confluentinc/cp-zookeeper
-imageTag: 4.0.1
-imagePullPolicy: "Always"
+## StatefulSet Config
+## Start and stop pods in Parallel or OrderedReady (one-by-one.)
+## ref: https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#pod-management-policy
+podManagementPolicy: OrderedReady
 
-updateStrategy: "OnDelete"
+## The StatefulSet Update Strategy which Zookeeper will use when changes are applied.
+## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies
+updateStrategy: OnDelete
 
 # Zookeeper Configuration
 tickTimeMs: 2000
@@ -29,9 +43,13 @@ clientPort: 2181
 # Persistent Volumes
 persistence:
   enabled: true
-  size: "5Gi"
 
-# resources: {}
+  ## The size of the PersistentVolume to allocate to each Zookeeper Pod in the StatefulSet. For
+  ## production servers this number should likely be much larger.
+  ##
+  size: 1Gi
+
+resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -42,7 +60,3 @@ persistence:
   # requests:
   #  cpu: 100m
   #  memory: 128Mi
-
-nodeSelector: {}
-
-tolerations: []

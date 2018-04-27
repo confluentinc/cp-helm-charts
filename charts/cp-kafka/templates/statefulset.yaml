@@ -9,14 +9,32 @@ metadata:
     heritage: {{ .Release.Service | quote }}
 spec:
   serviceName: {{ template "cp-kafka.fullname" . }}-headless
-  podManagementPolicy: OrderedReady
+  podManagementPolicy: {{ .Values.podManagementPolicy }}
   replicas: {{ default 3 .Values.brokers }}
+  updateStrategy:
+    type: {{ .Values.updateStrategy }}
   template:
     metadata:
       labels:
         app: {{ template "cp-kafka.name" . }}
         release: {{ .Release.Name | quote }}
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                    - {{ template "cp-kafka.name" . }}
+                  - key: "release"
+                    operator: In
+                    values:
+                    - {{ .Release.Name | quote }}
+              topologyKey: "kubernetes.io/hostname"
       containers:
       - name: {{ template "cp-kafka.name" . }}-broker
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
@@ -27,8 +45,8 @@ spec:
               - sh
               - -ec
               - /usr/bin/jps | /bin/grep -q SupportedKafka
-          initialDelaySeconds: 30
-          timeoutSeconds: 5
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
         readinessProbe:
           tcpSocket:
             port: kafka
@@ -43,10 +61,6 @@ spec:
         resources:
 {{ toYaml .Values.resources | indent 10 }}
         env:
-        - name: POD_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
         - name: KAFKA_HEAP_OPTS
           value: {{ .Values.heapOptions }}
         {{- if not (hasKey .Values.configurationOverrides "zookeeper.connect") }}
@@ -65,6 +79,10 @@ spec:
         - name: KAFKA_JMX_PORT
           value: "{{ .Values.jmx.port }}"
         {{- end }}
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         # This is required because the Downward API does not yet support identification of
         # pod numbering in statefulsets. Thus, we are required to specify a command which
         # allows us to extract the pod ID for usage as the Kafka Broker ID.
@@ -78,13 +96,13 @@ spec:
           exec /etc/confluent/docker/run
         volumeMounts:
         - name: datadir
-          mountPath: {{ .Values.persistence.mountPath | quote }}
-      volumes:
+          mountPath: /opt/kafka/
+          subPath: data
       {{- if not .Values.persistence.enabled }}
+      volumes:
       - name: datadir
         emptyDir: {}
       {{- end }}
-      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
   - metadata:
@@ -93,7 +111,7 @@ spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: {{ .Values.persistence.size }}
+          storage: "{{ .Values.persistence.size }}"
       {{- if .Values.persistence.storageClass }}
       {{- if (eq "-" .Values.persistence.storageClass) }}
       storageClassName: ""
