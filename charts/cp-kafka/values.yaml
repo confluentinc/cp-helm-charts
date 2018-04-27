@@ -2,18 +2,26 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+## ------------------------------------------------------
+## Kafka
+## ------------------------------------------------------
 
+# Number of Kafka brokers
 brokers: 3
 
+# Image Info
+## ref: https://hub.docker.com/r/confluentinc/cp-kafka/
 image: confluentinc/cp-kafka
-
-## The kafka image tag
 imageTag: 4.0.1
 
 ## Specify a imagePullPolicy
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
-imagePullPolicy: "IfNotPresent"
+imagePullPolicy: IfNotPresent
 
+## Liveness and Readiness Probe Configuration
+livenessProbe:
+  initialDelaySeconds: 30
+  timeoutSeconds: 5
 readinessProbe:
   initialDelaySeconds: 30
   periodSeconds: 10
@@ -21,21 +29,27 @@ readinessProbe:
   successThreshold: 1
   failureThreshold: 3
 
+## StatefulSet Config
+## Start and stop pods in Parallel or OrderedReady (one-by-one.)
+## ref: https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#pod-management-policy
+podManagementPolicy: OrderedReady
+
+## The StatefulSet Update Strategy which Kafka will use when changes are applied.
+## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies
+updateStrategy: OnDelete
+
 configurationOverrides:
   "offsets.topic.replication.factor": 3
+
+jmx:
+  port: 5555
 
 persistence:
   enabled: true
 
   ## The size of the PersistentVolume to allocate to each Kafka Pod in the StatefulSet. For
   ## production servers this number should likely be much larger.
-  ##
-  size: "1Gi"
-
-  ## The location within the Kafka container where the PV will mount its storage and Kafka will
-  ## store its logs.
-  ##
-  mountPath: "/opt/kafka/data"
+  size: 1Gi
 
   ## Kafka data Persistent Volume Storage Class
   ## If defined, storageClassName: <storageClass>
@@ -46,8 +60,7 @@ persistence:
   ##
   # storageClass:
 
-jmx:
-  port: 5555
+
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -61,27 +74,22 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
-
-
-
+## ------------------------------------------------------
+## Zookeeper
+## ------------------------------------------------------
 zookeeper:
-  ## If true, install the Zookeeper chart alongside Kafka
-  ## ref: https://github.com/kubernetes/charts/tree/master/incubator/zookeeper
+  ## If true, install the cp-zookeeper chart alongside cp-kafka
+  ## ref: ../cp-zookeeper
   enabled: true
 
   persistence:
     enabled: true
     ## The amount of PV storage allocated to each Zookeeper pod in the statefulset
-    # storage: "2Gi"
+    # storage: 2Gi
 
   ## Specify a Zookeeper imagePullPolicy
   ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
-  imagePullPolicy: "IfNotPresent"
+  imagePullPolicy: IfNotPresent
 
   ## If the Zookeeper Chart is disabled a URL and port are required to connect
   url: ""
