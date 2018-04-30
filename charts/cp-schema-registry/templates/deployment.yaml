@@ -1,0 +1,65 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "cp-schema-registry.fullname" . }}
+  labels:
+    app: {{ template "cp-schema-registry.name" . }}
+    chart: {{ template "cp-schema-registry.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service | quote }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "cp-schema-registry.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "cp-schema-registry.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ template "cp-schema-registry.name" . }}-server
+          image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+          imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+          ports:
+            - name: schema-registry
+              containerPort: {{ .Values.servicePort}}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: schema-registry
+            initialDelaySeconds: {{ .Values.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.timeoutSeconds }}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: schema-registry
+            initialDelaySeconds: {{ .Values.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.timeoutSeconds }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          env:
+          - name: SCHEMA_REGISTRY_HOST_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS
+            value: {{ template "cp-schema-registry.kafkaStore.bootstrapServers" . }}
+          - name: SCHEMA_REGISTRY_KAFKASTORE_GROUP_ID
+            value: {{ template "cp-schema-registry.groupId" . }}
+          - name: SCHEMA_REGISTRY_MASTER_ELIGIBILITY
+            value: "true"
+          {{ range $configName, $configValue := .Values.configurationOverrides }}
+          - name: SCHEMA_REGISTRY_{{ $configName | replace "." "_" | upper }}
+            value: {{ $configValue }}
+          {{ end }}
+          {{- if .Values.schemaRegistryOpts }}
+          # The pre-flight checks use KAFKA_OPTS instead of SCHEMA_REGISTRY_OPTS.
+          - name: KAFKA_OPTS
+            value: "{{ .Values.schemaRegistryOpts }}"
+          - name: SCHEMA_REGISTRY_OPTS
+            value: "{{ .Values.schemaRegistryOpts }}"
+          {{- end }}
