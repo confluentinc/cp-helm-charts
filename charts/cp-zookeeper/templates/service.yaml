@@ -5,8 +5,8 @@ metadata:
   labels:
     app: {{ template "cp-zookeeper.name" . }}
     chart: {{ template "cp-zookeeper.chart" . }}
-    release: {{ .Release.Name | quote }}
-    heritage: {{ .Release.Service | quote }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
   type: {{ .Values.serviceType }}
   ports:
@@ -14,4 +14,4 @@ spec:
       name: client
   selector:
     app: {{ template "cp-zookeeper.name" . }}
-    release: {{ .Release.Name | quote }}
+    release: {{ .Release.Name }}

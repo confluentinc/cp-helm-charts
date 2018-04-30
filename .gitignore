@@ -1,1 +1,3 @@
 .idea/*
+charts/cp-kafka/requirements.lock
+charts/*/charts

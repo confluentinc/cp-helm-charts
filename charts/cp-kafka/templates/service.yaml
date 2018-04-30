@@ -5,12 +5,12 @@ metadata:
   labels:
     app: {{ template "cp-kafka.name" . }}
     chart: {{ template "cp-kafka.chart" . }}
-    release: {{ .Release.Name | quote }}
-    heritage: {{ .Release.Service | quote }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
   ports:
     - port: 9092
       name: broker
   selector:
     app: {{ template "cp-kafka.name" . }}
-    release: {{ .Release.Name | quote }}
+    release: {{ .Release.Name }}

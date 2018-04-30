@@ -5,8 +5,8 @@ metadata:
   labels:
     app: {{ template "cp-zookeeper.name" . }}
     chart: {{ template "cp-zookeeper.chart" . }}
-    release: {{ .Release.Name | quote }}
-    heritage: {{ .Release.Service | quote }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
   ports:
     - port: {{ .Values.serverPort }}
@@ -16,4 +16,4 @@ spec:
   clusterIP: None
   selector:
     app: {{ template "cp-zookeeper.name" . }}
-    release: {{ .Release.Name | quote }}
+    release: {{ .Release.Name }}

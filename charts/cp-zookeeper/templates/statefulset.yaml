@@ -5,8 +5,8 @@ metadata:
   labels:
     app: {{ template "cp-zookeeper.name" . }}
     chart: {{ template "cp-zookeeper.chart" . }}
-    release: {{ .Release.Name | quote }}
-    heritage: {{ .Release.Service | quote }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
   serviceName: {{ template "cp-zookeeper.fullname" . }}-headless
   podManagementPolicy: {{ .Values.podManagementPolicy }}
@@ -17,7 +17,7 @@ spec:
     metadata:
       labels:
         app: {{ template "cp-zookeeper.name" . }}
-        release: {{ .Release.Name | quote }}
+        release: {{ .Release.Name }}
     spec:
       affinity:
         podAntiAffinity:
@@ -33,7 +33,7 @@ spec:
                   - key: "release"
                     operator: In
                     values:
-                    - {{ .Release.Name | quote }}
+                    - {{ .Release.Name }}
               topologyKey: "kubernetes.io/hostname"
       containers:
       - name: {{ template "cp-zookeeper.name" . }}-server

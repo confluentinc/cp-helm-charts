@@ -6,13 +6,13 @@ metadata:
   labels:
     app: {{ template "cp-zookeeper.name" . }}
     chart: {{ template "cp-zookeeper.chart" . }}
-    release: {{ .Release.Name | quote }}
-    heritage: {{ .Release.Service | quote }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
   selector:
     matchLabels:
       app: {{ template "cp-zookeeper.name" . }}
-      release: {{ .Release.Name | quote }}
+      release: {{ .Release.Name }}
   {{- if .Values.minAvailable }}
   minAvailable: {{ .Values.minAvailable }}
   {{- else }}
