@@ -25,7 +25,7 @@ probeTimeoutSeconds: 5
 ## StatefulSet Config
 ## Start and stop pods in Parallel or OrderedReady (one-by-one.)
 ## ref: https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#pod-management-policy
-podManagementPolicy: OrderedReady
+podManagementPolicy: Parallel
 
 ## The StatefulSet Update Strategy which Zookeeper will use when changes are applied.
 ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies

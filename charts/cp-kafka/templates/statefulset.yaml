@@ -5,8 +5,8 @@ metadata:
   labels:
     app: {{ template "cp-kafka.name" . }}
     chart: {{ template "cp-kafka.chart" . }}
-    release: {{ .Release.Name | quote }}
-    heritage: {{ .Release.Service | quote }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
 spec:
   serviceName: {{ template "cp-kafka.fullname" . }}-headless
   podManagementPolicy: {{ .Values.podManagementPolicy }}
@@ -17,7 +17,7 @@ spec:
     metadata:
       labels:
         app: {{ template "cp-kafka.name" . }}
-        release: {{ .Release.Name | quote }}
+        release: {{ .Release.Name }}
     spec:
       affinity:
         podAntiAffinity:
@@ -33,7 +33,7 @@ spec:
                   - key: "release"
                     operator: In
                     values:
-                    - {{ .Release.Name | quote }}
+                    - {{ .Release.Name }}
               topologyKey: "kubernetes.io/hostname"
       containers:
       - name: {{ template "cp-kafka.name" . }}-broker
@@ -65,7 +65,7 @@ spec:
           value: {{ .Values.heapOptions }}
         {{- if not (hasKey .Values.configurationOverrides "zookeeper.connect") }}
         - name: KAFKA_ZOOKEEPER_CONNECT
-          value: {{ include "cp-zookeeper.url" . | quote }}
+          value: {{ include "cp-kafka.cp-zookeeper.service-name" . | quote }}
         {{- end }}
         {{- if not (hasKey .Values.configurationOverrides "log.dirs") }}
         - name: KAFKA_LOG_DIRS

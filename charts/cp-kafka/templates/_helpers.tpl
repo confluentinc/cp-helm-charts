@@ -44,8 +44,8 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 Form the Zookeeper URL. If zookeeper is installed as part of this chart, use k8s service discovery,
 else use user-provided URL
 */}}
-{{- define "cp-zookeeper.url" }}
-{{- $port := .Values.zookeeper.port | toString }}
+{{- define "cp-kafka.cp-zookeeper.service-name" }}
+{{- $port := .Values.zookeeper.clientPort | toString }}
 {{- if .Values.zookeeper.enabled -}}
 {{- printf "%s:%s" (include "cp-kafka.cp-zookeeper.fullname" .) $port }}
 {{- else -}}
