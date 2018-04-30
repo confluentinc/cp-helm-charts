@@ -1,0 +1,51 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "cp-kafka-rest.fullname" . }}
+  labels:
+    app: {{ template "cp-kafka-rest.name" . }}
+    chart: {{ template "cp-kafka-rest.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "cp-kafka-rest.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "cp-kafka-rest.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ template "cp-kafka-rest.name" . }}-server
+          image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+          imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+          ports:
+            - name: rest-proxy
+              containerPort: {{ .Values.servicePort}}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: rest-proxy
+            initialDelaySeconds: {{ .Values.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.timeoutSeconds }}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: rest-proxy
+            initialDelaySeconds: {{ .Values.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.timeoutSeconds }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          env:
+          - name: KAFKA_REST_HOST_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: KAFKA_REST_ZOOKEEPER_CONNECT
+            value: {{ template "cp-kafka-rest.cp-zookeeper.service-name" . }}
+

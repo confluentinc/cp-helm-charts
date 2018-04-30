@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "cp-kafka-rest.fullname" . }}
+  labels:
+    app: {{ template "cp-kafka-rest.name" . }}
+    chart: {{ template "cp-kafka-rest.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  ports:
+    - name: rest-proxy
+      port: {{ .Values.servicePort }}
+  selector:
+    app: {{ template "cp-kafka-rest.name" . }}
+    release: {{ .Release.Name }}
