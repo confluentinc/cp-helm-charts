@@ -1,3 +1,4 @@
+{{- $advertisedListenersOverride := first (pluck "advertised.listeners" .Values.configurationOverrides) }}
 apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
@@ -58,9 +59,25 @@ spec:
         ports:
         - containerPort: 9092
           name: kafka
+        {{- if .Values.external.enabled }}
+          {{- $brokers := .Values.brokers | int }}
+          {{- $root := . }}
+          {{- range $i, $e := until $brokers }}
+        - containerPort: {{ add $root.Values.external.firstListenerPort $i }}
+          name: external-{{ $i }}
+          {{- end }}
+        {{- end }}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
         env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: HOST_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
         - name: KAFKA_HEAP_OPTS
           value: {{ .Values.heapOptions }}
         {{- if not (hasKey .Values.configurationOverrides "zookeeper.connect") }}
@@ -79,10 +96,7 @@ spec:
         - name: KAFKA_JMX_PORT
           value: "{{ .Values.jmx.port }}"
         {{- end }}
-        - name: POD_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
+
         # This is required because the Downward API does not yet support identification of
         # pod numbering in statefulsets. Thus, we are required to specify a command which
         # allows us to extract the pod ID for usage as the Kafka Broker ID.
@@ -92,7 +106,7 @@ spec:
         - -exc
         - |
           export KAFKA_BROKER_ID=${HOSTNAME##*-} && \
-          export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_IP}:9092 && \
+          export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_IP}:9092{{ if kindIs "string" $advertisedListenersOverride }}{{ printf ",%s" $advertisedListenersOverride }}{{ end }} && \
           exec /etc/confluent/docker/run
         volumeMounts:
         - name: datadir

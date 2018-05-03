@@ -1,0 +1,33 @@
+{{- if .Values.external.enabled }}
+  {{- $fullName := include "cp-kafka.fullname" . }}
+  {{- $brokers := .Values.brokers | int }}
+  {{- $servicePort := .Values.external.servicePort }}
+  {{- $root := . }}
+  {{- range $i, $e := until $brokers }}
+    {{- $externalListenerPort := add $root.Values.external.firstListenerPort $i }}
+    {{- $responsiblePod := printf "%s-%d" (printf "%s" $fullName) $i }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $root.Release.Name }}-{{ $i }}-external
+  labels:
+    app: {{ include "cp-kafka.name" $root }}
+    chart: {{ template "cp-kafka.chart" $root }}
+    release: {{ $root.Release.Name }}
+    heritage: {{ $root.Release.Service }}
+    pod: {{ $responsiblePod }}
+spec:
+  type: NodePort
+  ports:
+    - name: external-broker
+      port: {{ $servicePort }}
+      targetPort: {{ $externalListenerPort }}
+      nodePort: {{ $externalListenerPort }}
+      protocol: TCP
+  selector:
+    app: {{ include "cp-kafka.name" $root }}
+    release: {{ $root.Release.Name }}
+    statefulset.kubernetes.io/pod-name: {{ $responsiblePod | quote }}
+  {{- end }}
+{{- end }}
