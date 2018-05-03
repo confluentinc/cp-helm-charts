@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ .Release.Name }}-canary"
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+  - name: {{ .Release.Name }}-canary
+    image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+    imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+    command:
+    - sh
+    - -c
+    - |
+      # Create the topic
+      kafka-topics --zookeeper {{ template "cp-kafka.cp-zookeeper.service-name" . }} --topic {{ template "cp-kafka.fullname" . }}-canary-topic --create --partitions 1 --replication-factor 1 --if-not-exists && \
+      # Create a message
+      MESSAGE="`date -u`" && \
+      # Produce a test message to the topic
+      echo "$MESSAGE" | kafka-console-producer --broker-list {{ template "cp-kafka.fullname" . }}:9092 --topic {{ template "cp-kafka.fullname" . }}-canary-topic && \
+      # Consume a test message from the topic
+      kafka-console-consumer --bootstrap-server {{ template "cp-kafka.fullname" . }}-headless:9092 --topic {{ template "cp-kafka.fullname" . }}-canary-topic --from-beginning --timeout-ms 2000 --max-messages 1 | grep "$MESSAGE"
+  restartPolicy: Never
