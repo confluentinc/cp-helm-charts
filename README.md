@@ -1,12 +1,10 @@
 # cp-helm-charts
 
-## Installing the Chart
-
-### Start a k8s cluster, and update local kubeconfig
+## Start a k8s cluster, and update local kubeconfig
 
 If using GKE, [follow Google's quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart) for setting up a k8s cluster.
 
-### Install Helm on the k8s cluster
+## Install Helm on the k8s cluster
 
 [Follow Helm's quickstart](https://docs.helm.sh/using_helm/#quickstart-guide) to install and deploy Helm to the k8s cluster.
 
@@ -22,12 +20,12 @@ kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"templat
 helm init --service-account tiller --upgrade
 ```
 
-### Clone the repo 
+## Clone the repo 
 ```
 git clone https://github.com/confluentinc/cp-helm-charts.git
 ```
 
-### Install cp-kafka Chart 
+## Install cp-kafka Chart 
 
 The steps below will install a 3 node cp-zookeeper and a 3 node cp-kafka cluster in your k8s env.
 
@@ -59,7 +57,7 @@ helm install ./charts/cp-kafka-rest
 
 NOTE: run `helm dependency update ...` whenever you modified the dependency chart.
 
-### Optional: Verify the Kafka cluster
+## Optional: Verify the Kafka cluster
 
 To manually verify that Kafka is working as expected, connect to one of the Kafka pods and produce some messages from the console. List your pods with `kubectl get pods`. Pick a running Kafka pod, and connect to it. You may need to wait for the Kafka cluster to finish starting up.
 
