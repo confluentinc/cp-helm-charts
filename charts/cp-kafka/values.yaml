@@ -40,6 +40,22 @@ updateStrategy: OnDelete
 
 jmx:
   port: 5555
+  configMap:
+    enabled: true
+    whitelistObjectNames:
+      - kafka.controller:*
+      - kafka.server:*
+      - java.lang:*
+      - kafka.network:*
+      - kafka.log:*
+
+prometheus:
+  jmx:
+    enabled: true
+    image: solsson/kafka-prometheus-jmx-exporter@sha256
+    imageTag: a23062396cd5af1acdf76512632c20ea6be76885dfc20cd9ff40fb23846557e8
+    interval: 10s
+    port: 5556
 
 persistence:
   enabled: true
@@ -95,7 +111,7 @@ resources: {}
 ## ------------------------------------------------------
 ## Zookeeper
 ## ------------------------------------------------------
-zookeeper:
+cp_zookeeper:
   ## If true, install the cp-zookeeper chart alongside cp-kafka
   ## ref: ../cp-zookeeper
   enabled: true
@@ -105,6 +121,6 @@ zookeeper:
   clientPort: 2181
 
 external:
-  enabled: true
+  enabled: false
   servicePort: 19092
   firstListenerPort: 31090

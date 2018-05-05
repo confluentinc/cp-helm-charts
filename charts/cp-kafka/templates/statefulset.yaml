@@ -19,6 +19,11 @@ spec:
       labels:
         app: {{ template "cp-kafka.name" . }}
         release: {{ .Release.Name }}
+      {{- if .Values.prometheus.jmx.enabled }}
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
+      {{- end }}
     spec:
       affinity:
         podAntiAffinity:
@@ -37,6 +42,27 @@ spec:
                     - {{ .Release.Name }}
               topologyKey: "kubernetes.io/hostname"
       containers:
+      {{- if .Values.prometheus.jmx.enabled }}
+      - name: prometheus-jmx-exporter
+        image: "{{ .Values.prometheus.jmx.image }}:{{ .Values.prometheus.jmx.imageTag }}"
+        command:
+        - java
+        - -XX:+UnlockExperimentalVMOptions
+        - -XX:+UseCGroupMemoryLimitForHeap
+        - -XX:MaxRAMFraction=1
+        - -XshowSettings:vm
+        - -jar
+        - jmx_prometheus_httpserver.jar
+        - {{ .Values.prometheus.jmx.port | quote }}
+        - /etc/jmx-kafka/jmx-kafka-prometheus.yml
+        ports:
+        - containerPort: {{ .Values.prometheus.jmx.port }}
+        resources:
+{{ toYaml .Values.prometheus.jmx.resources | indent 10 }}
+        volumeMounts:
+        - name: jmx-config
+          mountPath: /etc/jmx-kafka
+      {{- end }}
       - name: {{ template "cp-kafka.name" . }}-broker
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
@@ -59,6 +85,10 @@ spec:
         ports:
         - containerPort: 9092
           name: kafka
+        {{- if .Values.prometheus.jmx.enabled }}
+        - containerPort: {{ .Values.jmx.port }}
+          name: jmx
+        {{- end }}
         {{- if .Values.external.enabled }}
           {{- $brokers := .Values.brokers | int }}
           {{- $root := . }}
@@ -112,10 +142,19 @@ spec:
         - name: datadir
           mountPath: /opt/kafka/
           subPath: data
-      {{- if not .Values.persistence.enabled }}
       volumes:
+      {{- if not .Values.persistence.enabled }}
       - name: datadir
         emptyDir: {}
+      {{- end }}
+      {{- if .Values.prometheus.jmx.enabled }}
+      - name: jmx-config
+        configMap:
+          {{- if .Values.jmx.configMap.overrideName }}
+          name: {{ .Values.jmx.configMap.overrideName }}
+          {{- else }}
+          name: {{ template "cp-kafka.fullname" . }}-jmx-configmap
+          {{- end }}
       {{- end }}
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:

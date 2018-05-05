@@ -60,9 +60,9 @@ spec:
 {{ toYaml .Values.resources | indent 10 }}
         env:
         - name : ZK_TICK_TIME
-          value: "{{ .Values.tickTimeMs }}"
+          value: "{{ .Values.tickTime }}"
         - name : ZK_SYNC_LIMIT
-          value: "{{ .Values.syncTicks }}"
+          value: "{{ .Values.syncLimit }}"
         - name: ZOOKEEPER_CLIENT_PORT
           value: "{{ .Values.clientPort }}"
         - name : ZOOKEEPER_SERVERS
