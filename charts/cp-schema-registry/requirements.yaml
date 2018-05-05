@@ -1,5 +1,5 @@
 dependencies:
 - name: cp-kafka
   version: 0.1.0
-  repository: file://../cp_kafka
+  repository: file://../cp-kafka
   condition: kafka.enabled
