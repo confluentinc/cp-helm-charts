@@ -111,10 +111,13 @@ resources: {}
 ## ------------------------------------------------------
 ## Zookeeper
 ## ------------------------------------------------------
-cp_zookeeper:
+zookeeper:
   ## If true, install the cp-zookeeper chart alongside cp-kafka
   ## ref: ../cp-zookeeper
   enabled: true
+  servers: 1
+  persistence:
+    size: 1Gi
 
   ## If the Zookeeper Chart is disabled a URL and port are required to connect
   url: ""
