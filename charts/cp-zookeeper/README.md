@@ -72,7 +72,7 @@ The configuration parameters in this section control the resources requested and
 
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `servers` | The number of ZooKeeper servers. This should always be (1,3,5, or 7) | `3` |
+| `servers` | The number of ZooKeeper servers. This should always be (1,3,5, or 7). | `3` |
 
 ### PodDisruptionBudget
 | Parameter | Description | Default |
@@ -82,15 +82,15 @@ The configuration parameters in this section control the resources requested and
 ### Image
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `image` | Docker Image of Confluent Zookeeper | `confluentinc/cp-zookeeper` |
-| `imageTag` | Docker Image Tag of Confluent Zookeeper | `4.0.1` |
-| `imagePullPolicy` | Docker Image Tag of Confluent Zookeeper | `IfNotPresent` |
+| `image` | Docker Image of Confluent Zookeeper. | `confluentinc/cp-zookeeper` |
+| `imageTag` | Docker Image Tag of Confluent Zookeeper. | `4.0.1` |
+| `imagePullPolicy` | Docker Image Tag of Confluent Zookeeper. | `IfNotPresent` |
 
 ### StatefulSet Configurations
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `podManagementPolicy` | The Zookeeper StatefulSet Pod Management Policy: `Parallel` or `OrderedReady` | `Parallel` |
-| `updateStrategy` | The ZooKeeper StatefulSet update strategy: `RollingUpdate` or `OnDelete` | `OnDelete` |
+| `podManagementPolicy` | The Zookeeper StatefulSet Pod Management Policy: `Parallel` or `OrderedReady`. | `Parallel` |
+| `updateStrategy` | The ZooKeeper StatefulSet update strategy: `RollingUpdate` or `OnDelete`. | `OnDelete` |
 
 ### Liveness and Readiness Probe Configuration
 | Parameter | Description | Default |
@@ -125,3 +125,16 @@ The configuration parameters in this section control the resources requested and
 | `resources.requests.memory` | The amount of memory to request. | see [values.yaml](values.yaml) for details |
 | `resources.requests.limit` | The upper limit CPU usage for a Zookeeper Pod. | see [values.yaml](values.yaml) for details |
 | `resources.requests.limit` | The upper limit memory usage for a Zookeeper Pod. | see [values.yaml](values.yaml) for details |
+
+### JMX Configuration
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `jmx.port` | The jmx port which JMX style metrics are exposed. | `5555` |
+
+### Prometheus JMX Exporter Configuration
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `prometheus.jmx.enabled` | Whether or not to install Prometheus JMX Exporter as a sidecar container and expose JMX metrics to Prometheus. | `true` |
+| `prometheus.jmx.image` | Docker Image for Prometheus JMX Exporter container. | `solsson/kafka-prometheus-jmx-exporter@sha256` | 
+| `prometheus.jmx.imageTag` | Docker Image Tag for Prometheus JMX Exporter container. | `a23062396cd5af1acdf76512632c20ea6be76885dfc20cd9ff40fb23846557e8` |
+| `prometheus.jmx.port` | JMX Exporter Port which exposes metrics in Prometheus format for scraping. | `5556` |
