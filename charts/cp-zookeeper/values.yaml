@@ -9,6 +9,9 @@
 ## Number of zookeeper servers, should be odd number
 servers: 3
 
+## Minimum number of servers available to ensure the availability of zookeeper service
+## minAvailable: 2
+
 ## Images Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-zookeeper/
 image: confluentinc/cp-zookeeper
@@ -17,10 +20,6 @@ imageTag: 4.0.1
 ## Specify a imagePullPolicy
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
 imagePullPolicy: IfNotPresent
-
-## Liveness and Readiness Probe Configuration
-probeInitialDelaySeconds: 15
-probeTimeoutSeconds: 5
 
 ## StatefulSet Config
 ## Start and stop pods in Parallel or OrderedReady (one-by-one.)
@@ -31,32 +30,40 @@ podManagementPolicy: Parallel
 ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies
 updateStrategy: OnDelete
 
-# Zookeeper Configuration
-tickTimeMs: 2000
-syncTicks: 5
+## Liveness and Readiness Probe Configuration
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+probeInitialDelaySeconds: 15
+probeTimeoutSeconds: 5
 
-# Port
+## Zookeeper Configuration
+## ref: https://zookeeper.apache.org/doc/r3.4.10/zookeeperAdmin.html#sc_configuration
+tickTime: 2000
+syncLimit: 5
+
+## Port
+## ref: https://zookeeper.apache.org/doc/r3.4.10/zookeeperAdmin.html#sc_configuration
 serverPort: 2888
 leaderElectionPort: 3888
 clientPort: 2181
 
-# Persistent Volumes
+## Persistent Volumes
+##
 persistence:
   enabled: true
 
   ## The size of the PersistentVolume to allocate to each Zookeeper Pod in the StatefulSet. For
   ## production servers this number should likely be much larger.
   ##
-  size: 1Gi
+  size: 5Gi
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #  cpu: 100m
-  #  memory: 128Mi
-  # requests:
-  #  cpu: 100m
-  #  memory: 128Mi
+  #  limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  #  requests:
+  #   cpu: 100m
+  #   memory: 128Mi
