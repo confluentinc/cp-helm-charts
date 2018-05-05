@@ -62,7 +62,7 @@ You can specify each parameter using the `--set key=value[,key=value]` argument 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
 
 ```console
-$ helm install --name my-zookeeper -f my-values.yaml ./zookeeper
+$ helm install --name my-zookeeper -f my-values.yaml ./cp-zookeeper
 ```
 
 > **Tip**: A default [values.yaml](values.yaml) is provided
