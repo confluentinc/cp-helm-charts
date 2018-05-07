@@ -20,7 +20,7 @@ $ helm install ./cp-kafka
 ```
 To install with a specific name, you can do:
 ```console
-helm install --name my-kafka ./cp-kafka
+$ helm install --name my-kafka ./cp-kafka
 ```
 
 ### Installed Components
