@@ -36,7 +36,7 @@ Create a default fully qualified zookeeper name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "cp-kafka-rest.cp-zookeeper.fullname" -}}
-{{- $name := default "cp-zookeeper" .Values.zookeeper.nameOverride -}}
+{{- $name := default "zookeeper" .Values.zookeeper.nameOverride -}}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -46,11 +46,27 @@ else use user-provided URL
 */}}
 {{- define "cp-kafka-rest.cp-zookeeper.service-name" }}
 {{- $port := .Values.zookeeper.clientPort | toString }}
-{{- if .Values.kafka.enabled -}}
-{{- printf "%s:%s" (include "cp-kafka-rest.cp-zookeeper.fullname" .) $port }}
+{{- if .Values.zookeeper.url -}}
+{{- printf "%s:%s" .Values.zookeeper.url $port }}
 {{- else -}}
-{{- $zookeeperConnect := printf "%s:%s" .Values.kafka.zookeeper.url $port }}
-{{- $zookeeperConnectOverride := index .Values "configurationOverrides" "zookeeper.connect" }}
-{{- default $zookeeperConnect $zookeeperConnectOverride }}
+{{- printf "%s:2181" (include "cp-kafka-rest.cp-zookeeper.fullname" .) }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Create a default fully qualified schema registry name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "cp-kafka-rest.cp-schema-registry.fullname" -}}
+{{- $name := default "schemaregistry" .Values.schemaregistry.nameOverride -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "cp-kafka-rest.cp-schema-registry.service-name" -}}
+{{- $port := .Values.schemaregistry.port | toString -}}
+{{- if .Values.schemaregistry.url -}}
+{{- printf "%s:%s" .Values.schemaregistry.url $port -}}
+{{- else -}}
+{{- printf "%s:8081" (include "cp-kafka-rest.cp-schema-registry.fullname" .) -}}
 {{- end -}}
 {{- end -}}

@@ -4,13 +4,13 @@ dependencies:
   repository: file://../cp-zookeeper
   condition: zookeeper.enabled
   alias: zookeeper
-#- name: cp-schema-registry
-#  version: 0.1.0
-#  repository: file://../cp-schema-registry
-#  condition: schemaregistry.enabled
-#  alias: schemaregistry
-#- name: cp-kafka-rest
-#  version: 0.1.0
-#  repository: file://../cp-kafka-rest
-#  condition: restproxy.enabled
-#  alias: restproxy
+- name: cp-schema-registry
+  version: 0.1.0
+  repository: file://../cp-schema-registry
+  condition: schemaregistry.enabled
+  alias: schemaregistry
+- name: cp-kafka-rest
+  version: 0.1.0
+  repository: file://../cp-kafka-rest
+  condition: restproxy.enabled
+  alias: restproxy
