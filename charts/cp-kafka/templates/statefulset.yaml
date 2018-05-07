@@ -116,7 +116,7 @@ spec:
         {{- end }}
         {{- if not (hasKey .Values.configurationOverrides "log.dirs") }}
         - name: KAFKA_LOG_DIRS
-          value: {{ printf "%s/%s" .Values.persistence.mountPath .Values.logSubPath | quote }}
+          value: "/var/lib/kafka/data"
         {{- end }}
         {{- range $key, $value := .Values.configurationOverrides }}
         - name: {{ printf "KAFKA_%s" $key | replace "." "_" | upper | quote }}
@@ -126,7 +126,6 @@ spec:
         - name: KAFKA_JMX_PORT
           value: "{{ .Values.jmx.port }}"
         {{- end }}
-
         # This is required because the Downward API does not yet support identification of
         # pod numbering in statefulsets. Thus, we are required to specify a command which
         # allows us to extract the pod ID for usage as the Kafka Broker ID.
@@ -140,8 +139,7 @@ spec:
           exec /etc/confluent/docker/run
         volumeMounts:
         - name: datadir
-          mountPath: /opt/kafka/
-          subPath: data
+          mountPath: /var/lib/kafka/
       volumes:
       {{- if not .Values.persistence.enabled }}
       - name: datadir
