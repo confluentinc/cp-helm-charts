@@ -20,7 +20,7 @@ $ helm install ./cp-zookeeper
 ```
 To install with a specific name, you can do:
 ```console
-helm install --name my-zookeeper ./cp-zookeeper
+$ helm install --name my-zookeeper ./cp-zookeeper
 ```
 
 ### Installed Components
