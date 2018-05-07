@@ -115,8 +115,10 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `persistence.enabled` | Whether to create a PVC. If `false`, an `emptyDir` on the host will be used. | `true` |
-| `persistence.size` | Size of PVC that gets created. For production deployments this value should likely be much larger. | `5Gi` |
-| `persistence.storageClass` | Valid options: `nil`, `"-"`, or storage class name. See values.yaml for details. | `nil` |
+| `persistence.dataDirSize` | Size for Data dir, where ZooKeeper will store the in-memory database snapshots. | `5Gi` |
+| `persistence.dataDirStorageClass` | Valid options: `nil`, `"-"`, or storage class name. | `nil` |
+| `persistence.dataLogDirSize` | Size for data log dir, which is a dedicated log device to be used, and helps avoid competition between logging and snaphots. | `5Gi` |
+| `persistence.dataLogDirStorageClass` | Valid options: `nil`, `"-"`, or storage class name. | `nil` |
 
 ### Resources
 | Parameter | Description | Default |

@@ -113,11 +113,14 @@ spec:
         - "ZOOKEEPER_SERVER_ID=$((${HOSTNAME##*-}+1)) && /etc/confluent/docker/run"
         volumeMounts:
         - name: datadir
-          mountPath: /var/lib/zookeeper
-          subPath: data
+          mountPath: /var/lib/zookeeper/data
+        - name: datalogdir
+          mountPath: /var/lib/zookeeper/log
       volumes:
       {{ if not .Values.persistence.enabled }}
       - name: datadir
+        emptyDir: {}
+      - name: datalogdir
         emptyDir: {}
       {{- end }}
       {{- if .Values.prometheus.jmx.enabled }}
@@ -133,12 +136,26 @@ spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: "{{ .Values.persistence.size }}"
-      {{- if .Values.persistence.storageClass }}
-      {{- if (eq "-" .Values.persistence.storageClass) }}
+          storage: "{{ .Values.persistence.dataDirSize }}"
+      {{- if .Values.persistence.dataDirStorageClass }}
+      {{- if (eq "-" .Values.persistence.dataDirStorageClass) }}
       storageClassName: ""
       {{- else }}
-      storageClassName: "{{ .Values.persistence.storageClass }}"
+      storageClassName: "{{ .Values.persistence.dataDirStorageClass }}"
+      {{- end }}
+      {{- end }}
+  - metadata:
+      name: datalogdir
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: "{{ .Values.persistence.dataLogDirSize }}"
+      {{- if .Values.persistence.dataLogDirSizeStorageClass }}
+      {{- if (eq "-" .Values.persistence.dataLogDirSizeStorageClass) }}
+      storageClassName: ""
+      {{- else }}
+      storageClassName: "{{ .Values.persistence.dataLogDirSizeStorageClass }}"
       {{- end }}
       {{- end }}
   {{- end }}
