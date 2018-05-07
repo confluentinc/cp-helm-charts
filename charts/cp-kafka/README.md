@@ -110,7 +110,7 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `livenessProbe.initialDelaySeconds` | Number of seconds after the container has started before probes are initiated. | `60` |
 | `livenessProbe.timeoutSeconds` | Number of seconds after which the probe times out. | `10` |
-| `readinessProbe.initialDelaySeconds` | Number of seconds after the container has started before probes are initiated.. | `60` |
+| `readinessProbe.initialDelaySeconds` | Number of seconds after the container has started before probes are initiated. | `60` |
 | `readinessProbe.timeoutSeconds` | Number of seconds after which the probe times out. | `10` |
 | `readinessProbe.periodSeconds` | How often (in seconds) to perform the probe. | `10` |
 | `readinessProbe.successThreshold` | Minimum consecutive successes for the probe to be considered successful after having failed.  | `1` |
@@ -119,7 +119,7 @@ The configuration parameters in this section control the resources requested and
 ### Confluent Kafka Configuration
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `configurationOverrides` | Kafka [configuration](https://kafka.apache.org/documentation/#brokerconfigs) overrides in the dictionary format | `2000` |
+| `configurationOverrides` | Kafka [configuration](https://kafka.apache.org/documentation/#brokerconfigs) overrides in the dictionary format | `{}` |
 
 ### Persistence
 | Parameter | Description | Default |
