@@ -72,7 +72,7 @@ $ helm install --name my-zookeeper -f my-values.yaml ./cp-zookeeper
 > **Tip**: A default [values.yaml](values.yaml) is provided
 
 ### Zookeeper Ensemble
-The configuration parameters in this section control the resources requested and utilized by the ZooKeeper ensemble.
+The configuration parameters in this section control the resources requested and utilized by the cp-zookeeper chart.
 
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
