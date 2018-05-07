@@ -123,14 +123,14 @@ zookeeper:
 ## ------------------------------------------------------
 ## Schema Registry
 ## ------------------------------------------------------
-schemaregistry:
-  enabled: false
+#schemaregistry:
+#  enabled: false
 
 ## ------------------------------------------------------
 ## REST Proxy
 ## ------------------------------------------------------
-restproxy:
-  enabled: false
+#restproxy:
+#  enabled: false
 
 
 
