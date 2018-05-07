@@ -49,13 +49,17 @@ NAME                              READY  STATUS   RESTARTS  AGE
 unsung-salamander-cp-zookeeper-0  1/1    Running  0         6m
 unsung-salamander-cp-zookeeper-1  1/1    Running  0         6m
 unsung-salamander-cp-zookeeper-2  1/1    Running  0         6m
+
+==> v1/ConfigMap
+NAME                                          DATA  AGE
+unsung-salamander-cp-zookeeper-jmx-configmap  1     6m
 ```
 There are 
-1. A [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) `unsung-salamander-cp-zookeeper` which contains 3 Zookeeper [Pods](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/): `unsung-salamander-cp-zookeeper-<0|1|2>`. Each Pod has a single container running a ZooKeeper server.
+1. A [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) `unsung-salamander-cp-zookeeper` which contains 3 Zookeeper [Pods](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/): `unsung-salamander-cp-zookeeper-<0|1|2>`. Each Pod has a container running a ZooKeeper server and an optional sidecar JMX Exporter Container.
 1. A [PodDisruptionBudget](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) `unsung-salamander-cp-zookeeper-pdb` to ensure service availability during planned maintenance.
 1. A [Service](https://kubernetes.io/docs/concepts/services-networking/service/) `unsung-salamander-cp-zookeeper` for clients to connect to Zookeeper.
 1. A [Headless Service](https://kubernetes.io/docs/concepts/services-networking/service/#headless-services) `unsung-salamander-cp-zookeeper-headless` to control the network domain for the ZooKeeper processes.
-
+1. A [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) which contains configuration for Prometheus JMX Exporter.
 ## Configuration
 You can specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
 
