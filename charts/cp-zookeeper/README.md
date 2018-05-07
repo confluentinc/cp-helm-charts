@@ -1,5 +1,5 @@
 # CP-Zookeeper Helm Chart
-This chart bootstraps an an ensemble of Confluent Zookeeper
+This chart bootstraps an ensemble of Confluent Zookeeper
 
 ## Prerequisites
 * Kubernetes 1.9.2+
