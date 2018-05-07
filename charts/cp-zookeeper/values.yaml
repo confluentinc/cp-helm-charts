@@ -54,7 +54,14 @@ persistence:
   ## The size of the PersistentVolume to allocate to each Zookeeper Pod in the StatefulSet. For
   ## production servers this number should likely be much larger.
   ##
-  size: 5Gi
+  ## Size for Data dir, where ZooKeeper will store the in-memory database snapshots.
+  dataDirSize: 5Gi
+  # dataDirStorageClass: ""
+
+  ## Size for data log dir, which is a dedicated log device to be used, and helps avoid competition between logging and snaphots.
+  dataLogDirSize: 5Gi
+  # dataLogDirStorageClass: ""
+
 
 ## Pod Compute Resources
 ## ref: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
