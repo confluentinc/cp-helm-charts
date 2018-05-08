@@ -50,7 +50,7 @@ NOTE: run `helm dependency update ...` whenever you modified the dependency char
 To manually verify that Kafka is working as expected, connect to one of the Kafka pods and produce some messages from the console. List your pods with `kubectl get pods`. Pick a running Kafka pod, and connect to it. You may need to wait for the Kafka cluster to finish starting up.
 
 ```
-kubectl exec -it ${YOUR_KAFKA_POD_NAME} -- /bin/bash
+kubectl exec -c cp-kafka-broker -it ${YOUR_KAFKA_POD_NAME} -- /bin/bash
 /usr/bin/kafka-console-producer --broker-list localhost:9092 --topic test
 ```
 
