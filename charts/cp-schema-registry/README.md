@@ -27,7 +27,7 @@ $ helm install --name my-kafka ./cp-kafka
 
 ### Install with a existing CP-Kafka release
 ```console
-$ helm install --set kafkaStore.overrideBootstrapServers="PLAINTEXT://unhinged-robin-cp-kafka-headless:9092" ./cp-schema-registry
+$ helm install --set kafka.bootstrapServers="PLAINTEXT://unhinged-robin-cp-kafka-headless:9092" ./cp-schema-registry
 ```
 
 ### Installed Components
@@ -97,10 +97,10 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `servicePort` | The port on which the Schema Registry will be available and serving requests. | `8081` |
 
-### KafkaStore
+### Kafka
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `kafkaStore.overrideBootstrapServers` | Bootstrap Servers for Schema Registry | `""` |
+| `kafka.bootstrapServers` | Bootstrap Servers for Schema Registry | `""` |
 
 ### Resources
 | Parameter | Description | Default |

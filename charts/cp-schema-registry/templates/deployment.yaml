@@ -47,7 +47,7 @@ spec:
               fieldRef:
                 fieldPath: metadata.name
           - name: SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS
-            value: {{ template "cp-schema-registry.kafkaStore.bootstrapServers" . }}
+            value: {{ template "cp-schema-registry.kafka.bootstrapServers" . }}
           - name: SCHEMA_REGISTRY_KAFKASTORE_GROUP_ID
             value: {{ template "cp-schema-registry.groupId" . }}
           - name: SCHEMA_REGISTRY_MASTER_ELIGIBILITY
