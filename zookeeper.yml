@@ -61,7 +61,7 @@ spec:
       containers:
       - name: k8szk
         imagePullPolicy: Always
-        image: confluentinc/cp-zookeeper:4.0.1
+        image: confluentinc/cp-zookeeper:4.1.0
         command:
           - "bash"
           - "-c"
