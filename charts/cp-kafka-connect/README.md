@@ -1,9 +1,10 @@
-# CP-REST Proxy Helm Chart
-This chart bootstraps a deployment of a Confluent REST Proxy
+# CP-Kafka Connect Helm Chart
+This chart bootstraps a deployment of a Confluent Kafka Connect
 
 ## Prerequisites
 * Kubernetes 1.9.2+
 * Helm 2.8.2+
+* A healthy and accessible Kafka Cluster
 
 ## Developing Environment: 
 * [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine/)
