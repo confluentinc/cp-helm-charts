@@ -4,6 +4,7 @@ metadata:
   name: "{{ .Release.Name }}-canary"
   annotations:
     "helm.sh/hook": test-success
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 spec:
   containers:
   - name: {{ .Release.Name }}-canary

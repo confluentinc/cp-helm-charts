@@ -177,3 +177,8 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `restproxy.enabled` | Whether or not to install cp-kafka-rest chart alongside cp-kafka chart | `true` |
+
+### Kafka Connect
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `kafkaconnect.enabled` | Whether or not to install cp-kafka-connect chart alongside cp-kafka chart | `true` |

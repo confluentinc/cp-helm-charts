@@ -2,7 +2,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "cp-schema-registry.name" -}}
+{{- define "cp-kafka-connect.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -11,7 +11,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "cp-schema-registry.fullname" -}}
+{{- define "cp-kafka-connect.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -27,7 +27,7 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "cp-schema-registry.chart" -}}
+{{- define "cp-kafka-connect.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -53,9 +53,27 @@ else use user-provided URL
 {{- end -}}
 
 {{/*
+Create a default fully qualified schema registry name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "cp-kafka-connect.cp-schema-registry.fullname" -}}
+{{- $name := default "schemaregistry" .Values.schemaregistry.nameOverride -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "cp-kafka-connect.cp-schema-registry.service-name" -}}
+{{- $port := .Values.schemaregistry.port | toString -}}
+{{- if .Values.schemaregistry.url -}}
+{{- printf "%s:%s" .Values.schemaregistry.url $port -}}
+{{- else -}}
+{{- printf "%s:8081" (include "cp-kafka-connect.cp-schema-registry.fullname" .) -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Default GroupId to Release Name but allow it to be overridden
 */}}
-{{- define "cp-schema-registry.groupId" -}}
+{{- define "cp-kafka-connect.groupId" -}}
 {{- if .Values.overrideGroupId -}}
 {{- .Values.overrideGroupId -}}
 {{- else -}}

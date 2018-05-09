@@ -1,0 +1,66 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "cp-kafka-connect.fullname" . }}
+  labels:
+    app: {{ template "cp-kafka-connect.name" . }}
+    chart: {{ template "cp-kafka-connect.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "cp-kafka-connect.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "cp-kafka-connect.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ template "cp-kafka-connect.name" . }}-server
+          image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+          imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+          ports:
+            - name: kafka-connect
+              containerPort: {{ .Values.servicePort}}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: kafka-connect
+            initialDelaySeconds: {{ .Values.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.timeoutSeconds }}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: kafka-connect
+            initialDelaySeconds: {{ .Values.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.timeoutSeconds }}
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          env:
+            - name: CONNECT_REST_ADVERTISED_HOST_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: CONNECT_BOOTSTRAP_SERVERS
+              value: {{ template "cp-schema-registry.kafka.bootstrapServers" . }}
+            - name: CONNECT_GROUP_ID
+              value: {{ template "cp-kafka-connect.groupId" . }}
+            - name: CONNECT_CONFIG_STORAGE_TOPIC
+              value: {{ template "cp-kafka-connect.fullname" . }}-config
+            - name: CONNECT_OFFSET_STORAGE_TOPIC
+              value: {{ template "cp-kafka-connect.fullname" . }}-offset
+            - name: CONNECT_STATUS_STORAGE_TOPIC
+              value: {{ template "cp-kafka-connect.fullname" . }}-status
+            - name: CONNECT_KEY_CONVERTER
+              value: "org.apache.kafka.connect.json.JsonConverter"
+            - name: CONNECT_VALUE_CONVERTER
+              value: "org.apache.kafka.connect.json.JsonConverter"
+            - name: CONNECT_INTERNAL_KEY_CONVERTER
+              value: "org.apache.kafka.connect.json.JsonConverter"
+            - name: CONNECT_INTERNAL_VALUE_CONVERTER
+              value: "org.apache.kafka.connect.json.JsonConverter"

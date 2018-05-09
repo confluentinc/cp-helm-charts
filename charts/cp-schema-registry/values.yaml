@@ -30,10 +30,10 @@ configurationOverrides: {}
 servicePort: 8081
 
 ## You can list load balanced service endpoint, or list of all brokers (which is hard in K8s).  e.g.:
-## overrideBootstrapServers: "PLAINTEXT://dozing-prawn-kafka-headless:9092"
+## bootstrapServers: "PLAINTEXT://dozing-prawn-kafka-headless:9092"
 ## Charts uses Kafka Coordinator Master Election: https://docs.confluent.io/current/schema-registry/docs/design.html#kafka-coordinator-master-election
-kafkaStore:
-  overrideBootstrapServers: ""
+kafka:
+  bootstrapServers: ""
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
