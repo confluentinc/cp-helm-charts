@@ -27,7 +27,7 @@ git clone https://github.com/confluentinc/cp-helm-charts.git
 
 ## Install cp-kafka Chart 
 
-The steps below will install a 3 node cp-zookeeper, a 3 node cp-kafka cluster,1 schema registry,1 rest proxy in your k8s env.
+The steps below will install a 3 node cp-zookeeper, a 3 node cp-kafka cluster,1 schema registry,1 rest proxy and 1 kafka connect in your k8s env.
 
 ```
 # Update dependencies
@@ -35,12 +35,12 @@ helm dependency update ./charts/cp-kafka
 helm install ./charts/cp-kafka
 ```
 
-To install without rest proxy and schema registry
+To install without rest proxy, schema registry and kafka connect
 
 ```
 # Update dependencies
 helm dependency update ./charts/cp-kafka
-helm install --set schemaregistry.enabled=false,restproxy.enabled=false ./charts/cp-kafka
+helm install --set schemaregistry.enabled=false,restproxy.enabled=false,kafkaconnect.enabled=false ./charts/cp-kafka
 ```
 
 NOTE: run `helm dependency update ...` whenever you modified the dependency chart.
