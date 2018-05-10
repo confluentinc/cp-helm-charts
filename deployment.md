@@ -43,12 +43,12 @@ helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubato
 helm install --name confluent-kafka-6 --set global.namespace=kafka,zookeeper.url=zk-svc.default.svc.cluster.local,zookeeper.port=2181,zookeeper.enabled=false incubator/kafka
 ```
 
-Step 5: Install test client
+Step 5: Install kafka client Pod
 
 ```
-kubectl create -f kafka_client.yml
+kubectl create -f kafka-client.yml
 
-kubectl -n default exec testclient -- /usr/bin/kafka-topics --zookeeper zk-svc.default.svc.cluster.local:2181 --topic test1 --create --partitions 1 --replication-factor 1
+kubectl -n default exec kafka-client -- /usr/bin/kafka-topics --zookeeper zk-svc.default.svc.cluster.local:2181 --topic test1 --create --partitions 1 --replication-factor 1
 
-kubectl -n default exec testclient -- /usr/bin/kafka-topics --zookeeper zk-svc.default.svc.cluster.local:2181 --list
+kubectl -n default exec kafka-client -- /usr/bin/kafka-topics --zookeeper zk-svc.default.svc.cluster.local:2181 --list
 ```
