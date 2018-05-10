@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: testclient
+  name: kafka-client
   namespace: default
 spec:
   containers:
-  - name: kafka
+  - name: kafka-client
     image: confluentinc/cp-kafka:4.1.0
     command:
       - sh
