@@ -15,90 +15,23 @@ data:
     lowercaseOutputLabelNames: true
     ssl: false
     rules:
-    - pattern : kafka.cluster<type=(.+), name=(.+), topic=(.+), partition=(.+)><>Value
-      name: kafka_cluster_$1_$2
-      labels:
-        topic: "$3"
-        partition: "$4"
-    - pattern : kafka.log<type=Log, name=(.+), topic=(.+), partition=(.+)><>Value
-      name: kafka_log_$1
-      labels:
-        topic: "$2"
-        partition: "$3"
-    - pattern : kafka.controller<type=(.+), name=(.+)><>(Count|Value)
-      name: kafka_controller_$1_$2
-    - pattern : kafka.network<type=(.+), name=(.+)><>Value
-      name: kafka_network_$1_$2
-    - pattern : kafka.network<type=(.+), name=(.+)PerSec, request=(.+)><>Count
-      name: kafka_network_$1_$2_total
-      labels:
-        request: "$3"
-    - pattern : kafka.network<type=(.+), name=(\w+), networkProcessor=(.+)><>Count
-      name: kafka_network_$1_$2
-      labels:
-        request: "$3"
-      type: COUNTER
-    - pattern : kafka.network<type=(.+), name=(\w+), request=(\w+)><>Count
-      name: kafka_network_$1_$2
-      labels:
-        request: "$3"
-    - pattern : kafka.network<type=(.+), name=(\w+)><>Count
-      name: kafka_network_$1_$2
-    - pattern : kafka.server<type=(.+), name=(.+)PerSec\w*, topic=(.+)><>Count
-      name: kafka_server_$1_$2_total
-      labels:
-        topic: "$3"
-    - pattern : kafka.server<type=(.+), name=(.+)PerSec\w*><>Count
-      name: kafka_server_$1_$2_total
-      type: COUNTER
-
-    - pattern : kafka.server<type=(.+), name=(.+), clientId=(.+), topic=(.+), partition=(.*)><>(Count|Value)
-      name: kafka_server_$1_$2
-      labels:
-        clientId: "$3"
-        topic: "$4"
-        partition: "$5"
-    - pattern : kafka.server<type=(.+), name=(.+), topic=(.+), partition=(.*)><>(Count|Value)
-      name: kafka_server_$1_$2
-      labels:
-        topic: "$3"
-        partition: "$4"
-    - pattern : kafka.server<type=(.+), name=(.+), topic=(.+)><>(Count|Value)
-      name: kafka_server_$1_$2
-      labels:
-        topic: "$3"
-      type: COUNTER
-
-    - pattern : kafka.server<type=(.+), name=(.+), clientId=(.+), brokerHost=(.+), brokerPort=(.+)><>(Count|Value)
-      name: kafka_server_$1_$2
-      labels:
-        clientId: "$3"
-        broker: "$4:$5"
-    - pattern : kafka.server<type=(.+), name=(.+), clientId=(.+)><>(Count|Value)
-      name: kafka_server_$1_$2
-      labels:
-        clientId: "$3"
-    - pattern : kafka.server<type=(.+), name=(.+)><>(Count|Value)
-      name: kafka_server_$1_$2
-
-    - pattern : kafka.(\w+)<type=(.+), name=(.+)PerSec\w*><>Count
-      name: kafka_$1_$2_$3_total
-    - pattern : kafka.(\w+)<type=(.+), name=(.+)PerSec\w*, topic=(.+)><>Count
-      name: kafka_$1_$2_$3_total
-      labels:
-        topic: "$4"
-      type: COUNTER
-    - pattern : kafka.(\w+)<type=(.+), name=(.+)PerSec\w*, topic=(.+), partition=(.+)><>Count
-      name: kafka_$1_$2_$3_total
-      labels:
-        topic: "$4"
-        partition: "$5"
-      type: COUNTER
-    - pattern : kafka.(\w+)<type=(.+), name=(.+)><>(Count|Value)
-      name: kafka_$1_$2_$3_$4
-      type: COUNTER
-    - pattern : kafka.(\w+)<type=(.+), name=(.+), (\w+)=(.+)><>(Count|Value)
-      name: kafka_$1_$2_$3_$6
-      labels:
-        "$4": "$5"
+    - pattern : kafka.network<type=Processor, name=IdlePercent, networkProcessor=(.+)><>Value
+    - pattern : kafka.network<type=RequestMetrics, name=RequestsPerSec, request=(.+)><>OneMinuteRate
+    - pattern : kafka.network<type=SocketServer, name=NetworkProcessorAvgIdlePercent><>Value
+    - pattern : kafka.server<type=ReplicaFetcherManager, name=MaxLag, clientId=(.+)><>Value
+    - pattern : kafka.server<type=BrokerTopicMetrics, name=(.+), topic=(.+)><>OneMinuteRate
+    - pattern : kafka.server<type=KafkaRequestHandlerPool, name=RequestHandlerAvgIdlePercent><>OneMinuteRate
+    - pattern : kafka.server<type=Produce><>queue-size
+    - pattern : kafka.server<type=ReplicaManager, name=(.+)><>(Value|OneMinuteRate)
+    - pattern : kafka.server<type=controller-channel-metrics, broker-id=(.+)><>(.*)
+    - pattern : kafka.server<type=socket-server-metrics, networkProcessor=(.+)><>(.*)
+    - pattern : kafka.server<type=Fetch><>queue-size
+    - pattern : kafka.server<type=SessionExpireListener, name=(.+)><>OneMinuteRate
+    - pattern : kafka.controller<type=KafkaController, name=(.+)><>Value
+    - pattern : kafka.controller<type=ControllerStats, name=(.+)><>OneMinuteRate
+    - pattern : kafka.cluster<type=Partition, name=UnderReplicated, topic=(.+), partition=(.+)><>Value
+    - pattern : kafka.utils<type=Throttler, name=cleaner-io><>OneMinuteRate
+    - pattern : kafka.log<type=Log, name=LogEndOffset, topic=(.+), partition=(.+)><>Value
+    - pattern : kafka.log<type=Log, name=LogStartOffset, topic=(.+), partition=(.+)><>Value
+    - pattern : java.lang<type=(.*)>
 {{- end }}
