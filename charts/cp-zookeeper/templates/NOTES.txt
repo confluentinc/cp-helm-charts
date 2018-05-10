@@ -1,0 +1,41 @@
+This chart installs a {{ default 3 .Values.servers }} nodes Confluent Zookeeper ensemble for Confluent Kafka Cluster.
+
+Connection string for Confluent Kafka:
+  {{ template "cp-zookeeper.fullname" . }}-0.{{ template "cp-zookeeper.fullname" . }}-headless:{{ .Values.clientPort }},{{ template "cp-zookeeper.fullname" . }}-1.{{ template "cp-zookeeper.fullname" . }}-headless:{{ .Values.clientPort }},...
+
+To connect from a client pod:
+
+1. Deploy a zookeeper client pod with configuration:
+
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: zookeeper-client
+      namespace: {{ .Release.Namespace }}
+    spec:
+      containers:
+      - name: zookeeper-client
+        image: {{ .Values.image }}:{{ .Values.imageTag }}
+        command:
+          - sh
+          - -c
+          - "exec tail -f /dev/null"
+
+2. Log into the Pod
+
+  kubectl exec -it zookeeper-client -- /bin/bash
+
+3. Use zookeeper-shell to connect in the zookeeper-client Pod:
+
+  zookeeper-shell {{ template "cp-zookeeper.fullname" . }}:{{ .Values.clientPort }}
+
+4. Explore with zookeeper commands:
+
+  # Gives the list of active brokers
+  ls /brokers/ids
+
+  # Gives the list of topics
+  ls /brokers/topics
+
+  # Gives more detailed information of the broker id '0'
+  get /brokers/ids/0
