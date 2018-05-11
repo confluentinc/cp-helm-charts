@@ -1,0 +1,37 @@
+This chart installs a {{ default 3 .Values.servers }} nodes Confluent Kafka Cluster.
+
+To connect from a client pod:
+
+1. Deploy a zookeeper client pod with configuration:
+
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: kafka-client
+      namespace: {{ .Release.Namespace }}
+    spec:
+      containers:
+      - name: kafka-client
+        image: {{ .Values.image }}:{{ .Values.imageTag }}
+        command:
+          - sh
+          - -c
+          - "exec tail -f /dev/null"
+
+2. Log into the Pod
+
+  kubectl exec -it kafka-client -- /bin/bash
+
+3. Explore with kafka commands:
+
+  # Create the topic
+  kafka-topics --zookeeper {{ template "cp-kafka.cp-zookeeper.service-name" . }} --topic {{ template "cp-kafka.fullname" . }}-topic --create --partitions 1 --replication-factor 1 --if-not-exists
+
+  # Create a message
+  MESSAGE="`date -u`"
+
+  # Produce a test message to the topic
+  echo "$MESSAGE" | kafka-console-producer --broker-list {{ template "cp-kafka.fullname" . }}:9092 --topic {{ template "cp-kafka.fullname" . }}-topic && \
+
+  # Consume a test message from the topic
+  kafka-console-consumer --bootstrap-server {{ template "cp-kafka.fullname" . }}-headless:9092 --topic {{ template "cp-kafka.fullname" . }}-topic --from-beginning --timeout-ms 2000 --max-messages 1 | grep "$MESSAGE"

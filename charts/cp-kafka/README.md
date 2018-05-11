@@ -4,7 +4,6 @@ This chart bootstraps a cluster of Confluent Kafka
 ## Prerequisites
 * Kubernetes 1.9.2+
 * Helm 2.8.2+
-* A healthy and accessible Zookeeper Ensemble
 
 ## Developing Environment: 
 * [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine/)
