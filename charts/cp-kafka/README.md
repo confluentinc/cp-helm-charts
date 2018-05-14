@@ -171,14 +171,14 @@ The configuration parameters in this section control the resources requested and
 ### Schema Registry
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `schemaregistry.enabled` | Whether or not to install cp-schema-registry chart alongside cp-kafka chart | `true` |
+| `schemaregistry.enabled` | Whether or not to install cp-schema-registry chart alongside cp-kafka chart | `false` |
 
 ### Rest Proxy
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `restproxy.enabled` | Whether or not to install cp-kafka-rest chart alongside cp-kafka chart | `true` |
+| `restproxy.enabled` | Whether or not to install cp-kafka-rest chart alongside cp-kafka chart | `false` |
 
 ### Kafka Connect
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `kafkaconnect.enabled` | Whether or not to install cp-kafka-connect chart alongside cp-kafka chart | `true` |
+| `kafkaconnect.enabled` | Whether or not to install cp-kafka-connect chart alongside cp-kafka chart | `false` |

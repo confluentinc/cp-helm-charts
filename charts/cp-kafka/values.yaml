@@ -121,16 +121,16 @@ zookeeper:
 ## Schema Registry
 ## ------------------------------------------------------
 schemaregistry:
-  enabled: true
+  enabled: false
 
 ## ------------------------------------------------------
 ## REST Proxy
 ## ------------------------------------------------------
 restproxy:
-  enabled: true
+  enabled: false
 
 ## ------------------------------------------------------
 ## Kafka Connect
 ## ------------------------------------------------------
 kafkaconnect:
-  enabled: true
+  enabled: false
