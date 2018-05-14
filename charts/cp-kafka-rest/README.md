@@ -56,6 +56,7 @@ hopping-salamander-cp-kafka-rest-67b86cff98-qxrd8  1/1    Running  0         1m
 There are 
 1. A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) `hopping-salamander-cp-kafka-rest` which contains 1 REST Proxy [Pod](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/): `hopping-salamander-cp-kafka-rest-67b86cff98-qxrd8`.
 1. A [Service](https://kubernetes.io/docs/concepts/services-networking/service/) `hopping-salamander-cp-kafka-rest` for clients to connect to REST Proxy.
+1. (Optional) A [Service](https://kubernetes.io/docs/concepts/services-networking/service/) `hopping-salamander-cp-kafka-restproxy-external` for clients to connect to REST Proxy from outside.
 
 ## Configuration
 You can specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
@@ -100,6 +101,12 @@ The configuration parameters in this section control the resources requested and
 | `resources.requests.memory` | The amount of memory to request. | see [values.yaml](values.yaml) for details |
 | `resources.requests.limit` | The upper limit CPU usage for a REST Proxy Pod. | see [values.yaml](values.yaml) for details |
 | `resources.requests.limit` | The upper limit memory usage for a REST Proxy Pod. | see [values.yaml](values.yaml) for details |
+
+### External Access
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `external.enabled` | whether or not to allow external access to Kafka REST Proxy | `false` |
+| `external.type` | `Kubernetes Service Type` to expose Kafka REST Proxy to external | `LoadBalancer` |
 
 ## Dependencies
 ### Zookeeper

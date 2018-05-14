@@ -31,6 +31,12 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
+## External Access
+## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer
+external:
+  enabled: false
+  type: LoadBalancer
+
 ## If the Kafka Chart is disabled a URL and port are required to connect
 zookeeper:
   url: ""
