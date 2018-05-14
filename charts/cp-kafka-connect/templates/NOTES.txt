@@ -1,0 +1,3 @@
+This chart installs a Confluent Kafka Connect
+
+https://docs.confluent.io/current/connect/index.html
