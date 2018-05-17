@@ -1,16 +1,16 @@
-{{- if .Values.external.enabled }}
+{{- if .Values.nodeport.enabled }}
   {{- $fullName := include "cp-kafka.fullname" . }}
   {{- $brokers := .Values.brokers | int }}
-  {{- $servicePort := .Values.external.servicePort }}
+  {{- $servicePort := .Values.nodeport.servicePort }}
   {{- $root := . }}
   {{- range $i, $e := until $brokers }}
-    {{- $externalListenerPort := add $root.Values.external.firstListenerPort $i }}
+    {{- $externalListenerPort := add $root.Values.nodeport.firstListenerPort $i }}
     {{- $responsiblePod := printf "%s-%d" (printf "%s" $fullName) $i }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $root.Release.Name }}-{{ $i }}-external
+  name: {{ $root.Release.Name }}-{{ $i }}-nodeport
   labels:
     app: {{ include "cp-kafka.name" $root }}
     chart: {{ template "cp-kafka.chart" $root }}

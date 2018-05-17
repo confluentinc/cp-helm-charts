@@ -36,7 +36,7 @@ Create a default fully qualified zookeeper name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "cp-kafka-rest.cp-zookeeper.fullname" -}}
-{{- $name := default "zookeeper" .Values.zookeeper.nameOverride -}}
+{{- $name := default "cp-zookeeper" (index .Values "cp-zookeeper" "nameOverride") -}}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -45,9 +45,9 @@ Form the Zookeeper URL. If zookeeper is installed as part of this chart, use k8s
 else use user-provided URL
 */}}
 {{- define "cp-kafka-rest.cp-zookeeper.service-name" }}
-{{- $port := .Values.zookeeper.clientPort | toString }}
-{{- if .Values.zookeeper.url -}}
-{{- printf "%s:%s" .Values.zookeeper.url $port }}
+{{- $port := (index .Values "cp-zookeeper" "clientPort") | toString }}
+{{- if (index .Values "cp-zookeeper" "url") -}}
+{{- printf "%s:%s" (index .Values "cp-zookeeper" "url") $port }}
 {{- else -}}
 {{- printf "%s:2181" (include "cp-kafka-rest.cp-zookeeper.fullname" .) }}
 {{- end -}}
@@ -58,14 +58,14 @@ Create a default fully qualified schema registry name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "cp-kafka-rest.cp-schema-registry.fullname" -}}
-{{- $name := default "schemaregistry" .Values.schemaregistry.nameOverride -}}
+{{- $name := default "cp-schema-registry" (index .Values "cp-schema-registry" "nameOverride") -}}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{- define "cp-kafka-rest.cp-schema-registry.service-name" -}}
-{{- $port := .Values.schemaregistry.port | toString -}}
-{{- if .Values.schemaregistry.url -}}
-{{- printf "%s:%s" .Values.schemaregistry.url $port -}}
+{{- $port := (index .Values "cp-schema-registry" "port") | toString -}}
+{{- if (index .Values "cp-schema-registry" "url") -}}
+{{- printf "%s:%s" (index .Values "cp-schema-registry" "url") $port -}}
 {{- else -}}
 {{- printf "%s:8081" (include "cp-kafka-rest.cp-schema-registry.fullname" .) -}}
 {{- end -}}

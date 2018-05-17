@@ -38,11 +38,11 @@ external:
   type: LoadBalancer
 
 ## If the Kafka Chart is disabled a URL and port are required to connect
-zookeeper:
+cp-zookeeper:
   url: ""
   clientPort: 2181
 
 ## If the Kafka Chart is disabled a URL and port are required to connect
-schemaregistry:
+cp-schema-registry:
   url: ""
   port: 8081

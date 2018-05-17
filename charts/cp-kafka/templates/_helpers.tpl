@@ -36,7 +36,7 @@ Create a default fully qualified zookeeper name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "cp-kafka.cp-zookeeper.fullname" -}}
-{{- $name := default "zookeeper" .Values.zookeeper.nameOverride -}}
+{{- $name := default "cp-zookeeper" (index .Values "cp-zookeeper" "nameOverride") -}}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -45,12 +45,12 @@ Form the Zookeeper URL. If zookeeper is installed as part of this chart, use k8s
 else use user-provided URL
 */}}
 {{- define "cp-kafka.cp-zookeeper.service-name" }}
-{{- $port := .Values.zookeeper.clientPort | toString }}
-{{- if .Values.zookeeper.enabled -}}
+{{- $port := (index .Values "cp-zookeeper" "clientPort") | toString }}
+{{- if (index .Values "cp-zookeeper" "enabled") -}}
 {{- printf "%s:%s" (include "cp-kafka.cp-zookeeper.fullname" .) $port }}
 {{- else -}}
-{{- $zookeeperConnect := printf "%s:%s" .Values.zookeeper.url $port }}
-{{- $zookeeperConnectOverride := index .Values "configurationOverrides" "zookeeper.connect" }}
+{{- $zookeeperConnect := printf "%s:%s" (index .Values "cp-zookeeper" "url") $port }}
+{{- $zookeeperConnectOverride := (index .Values "configurationOverrides" "zookeeper.connect") }}
 {{- default $zookeeperConnect $zookeeperConnectOverride }}
 {{- end -}}
 {{- end -}}
