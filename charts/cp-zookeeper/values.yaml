@@ -37,8 +37,13 @@ probeTimeoutSeconds: 5
 
 ## Zookeeper Configuration
 ## ref: https://zookeeper.apache.org/doc/r3.4.10/zookeeperAdmin.html#sc_configuration
+## ref: https://docs.confluent.io/current/zookeeper/deployment.html#important-configuration-options
 tickTime: 2000
 syncLimit: 5
+initLimit: 10
+maxClientCnxns: 60
+autoPurgeSnapRetainCount: 3
+autoPurgePurgeInterval: 72
 
 ## Port
 ## ref: https://zookeeper.apache.org/doc/r3.4.10/zookeeperAdmin.html#sc_configuration

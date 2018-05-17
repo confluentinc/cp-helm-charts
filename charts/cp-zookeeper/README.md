@@ -107,6 +107,10 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `tickTime` | The length of a single tick, which is the basic time unit used by ZooKeeper, as measured in milliseconds. It is used to regulate heartbeats, and timeouts. For example, the minimum session timeout will be two ticks. | `2000` |
 | `syncLimit` | Amount of time, in ticks (see `tickTime`), to allow followers to sync with ZooKeeper. If followers fall too far behind a leader, they will be dropped.  | `5` |
+| `initLimit` | Amount of time, in ticks (see `tickTime`), to allow followers to connect and sync to a leader. Increased this value as needed, if the amount of data managed by ZooKeeper is large. | `10` |
+| `maxClientCnxns` | Limits the number of concurrent connections (at the socket level) that a single client, identified by IP address, may make to a single member of the ZooKeeper ensemble. This is used to prevent certain classes of DoS attacks, including file descriptor exhaustion. | `60` |
+| `autoPurgeSnapRetainCount` | When enabled, ZooKeeper auto purge feature retains the autopurge.snapRetainCount most recent snapshots and the corresponding transaction logs in the dataDir and dataLogDir respectively and deletes the rest. | `3` |
+| `autoPurgePurgeInterval` | The time interval in hours for which the purge task has to be triggered. Set to a positive integer (1 and above) to enable the auto purging. | `72` |
 
 ### Port
 | Parameter | Description | Default |

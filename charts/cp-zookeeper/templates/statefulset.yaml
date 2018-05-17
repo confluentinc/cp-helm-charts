@@ -93,10 +93,18 @@ spec:
         - name : KAFKA_JMX_PORT
           value: "{{ .Values.jmx.port }}"
         {{- end }}
-        - name : ZK_TICK_TIME
+        - name : ZOOKEEPER_TICK_TIME
           value: "{{ .Values.tickTime }}"
-        - name : ZK_SYNC_LIMIT
+        - name : ZOOKEEPER_SYNC_LIMIT
           value: "{{ .Values.syncLimit }}"
+        - name : ZOOKEEPER_INIT_LIMIT
+          value: "{{ .Values.initLimit }}"
+        - name : ZOOKEEPER_MAX_CLIENT_CNXNS
+          value: "{{ .Values.maxClientCnxns }}"
+        - name : ZOOKEEPER_AUTOPURGE_SNAP_RETAIN_COUNT
+          value: "{{ .Values.autoPurgeSnapRetainCount}}"
+        - name : ZOOKEEPER_AUTOPURGE_PURGE_INTERVAL
+          value: "{{ .Values.autoPurgePurgeInterval}}"
         - name: ZOOKEEPER_CLIENT_PORT
           value: "{{ .Values.clientPort }}"
         - name : ZOOKEEPER_SERVERS
