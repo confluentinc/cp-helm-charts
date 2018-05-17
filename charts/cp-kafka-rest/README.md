@@ -112,11 +112,11 @@ The configuration parameters in this section control the resources requested and
 ### Zookeeper
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `zookeeper.url` | Service name of Zookeeper cluster (Not needed if this is installed along with cp-kafka chart). | `""` |
-| `zookeeper.clientPort` | Port of Zookeeper Cluster | `2181` |
+| `cp-zookeeper.url` | Service name of Zookeeper cluster (Not needed if this is installed along with cp-kafka chart). | `""` |
+| `cp-zookeeper.clientPort` | Port of Zookeeper Cluster | `2181` |
 
 ### Schema Registry (optional)
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `schemaregistry.url` | Service name of Schema Registry (Not needed if this is installed along with cp-kafka chart). | `""` |
-| `schemaregistry.port` | Port of Schema Registry Service | `8081` |
+| `cp-schema-registry.url` | Service name of Schema Registry (Not needed if this is installed along with cp-kafka chart). | `""` |
+| `cp-schema-registry.port` | Port of Schema Registry Service | `8081` |

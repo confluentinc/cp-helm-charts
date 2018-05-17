@@ -1,0 +1,83 @@
+## ------------------------------------------------------
+## Zookeeper
+## ------------------------------------------------------
+cp-zookeeper:
+  enabled: true
+  servers: 3
+  image: confluentinc/cp-zookeeper
+  imageTag: 4.1.0
+  persistence:
+    enabled: true
+    # storageClass: ""
+    dataDirSize: 5Gi
+    dataLogDirSize: 5Gi
+#  resources:
+#    limits:
+#     cpu: 100m
+#     memory: 128Mi
+#    requests:
+#     cpu: 100m
+#     memory: 128Mi
+
+## ------------------------------------------------------
+## Kafka
+## ------------------------------------------------------
+cp-kafka:
+  enabled: true
+  brokers: 3
+  image: confluentinc/cp-kafka
+  imageTag: 4.1.0
+  nodeport:
+    enabled: false
+    servicePort: 19092
+    firstListenerPort: 31090
+  persistence:
+    enabled: true
+    # storageClass: ""
+    size: 5Gi
+#  resources:
+#    limits:
+#     cpu: 100m
+#     memory: 128Mi
+#    requests:
+#     cpu: 100m
+#     memory: 128Mi
+
+## ------------------------------------------------------
+## Schema Registry
+## ------------------------------------------------------
+cp-schema-registry:
+  enabled: true
+#  resources:
+#    limits:
+#     cpu: 100m
+#     memory: 128Mi
+#    requests:
+#     cpu: 100m
+#     memory: 128Mi
+
+## ------------------------------------------------------
+## REST Proxy
+## ------------------------------------------------------
+cp-kafka-rest:
+  enabled: true
+#  resources:
+#    limits:
+#     cpu: 100m
+#     memory: 128Mi
+#    requests:
+#     cpu: 100m
+#     memory: 128Mi
+
+## ------------------------------------------------------
+## Kafka Connect
+## ------------------------------------------------------
+cp-kafka-connect:
+  enabled: true
+#  resources:
+#    limits:
+#     cpu: 100m
+#     memory: 128Mi
+#    requests:
+#     cpu: 100m
+#     memory: 128Mi

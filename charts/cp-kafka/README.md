@@ -152,33 +152,17 @@ The configuration parameters in this section control the resources requested and
 ### External Access
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `external.enabled` | Whether or not to allow access to kafka cluster from outside k8s. | `true` |
-| `external.servicePort` | The Port broker will advertise to external producers and consumers.  | `19092` | 
-| `external.firstListenerPort` | The first NodePort that Kafka Broker will use for advertising to external producers and consumers. For each broker, advertise.listeners port for external will be set to `31090 + {index of broker pod}`. | `31090` |
+| `nodeport.enabled` | Whether or not to allow access to kafka cluster from outside k8s through NodePort. | `false` |
+| `nodeport.servicePort` | The Port broker will advertise to external producers and consumers.  | `19092` | 
+| `nodeport.firstListenerPort` | The first NodePort that Kafka Broker will use for advertising to external producers and consumers. For each broker, advertise.listeners port for external will be set to `31090 + {index of broker pod}`. | `31090` |
 
 ## Dependencies
 ### Zookeeper
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `zookeeper.enabled` | Whether or not to install cp-zookeeper chart alongside cp-kafka chart | `true` |
-| `zookeeper.persistence.enabled` | Whether to create a PVC. If `false`, an `emptyDir` on the host will be used. | `true` |
-| `zookeeper.persistence.dataDirSize` | Size for Data dir, where ZooKeeper will store the in-memory database snapshots. This will overwrite corresponding value in cp-zookeeper chart's value.yaml | `5Gi` |
-| `zookeeper.persistence.dataLogDirSize` | Size for data log dir, which is a dedicated log device to be used, and helps avoid competition between logging and snapshots. This will overwrite corresponding value in cp-zookeeper chart's value.yaml. | `5Gi` |
-| `zookeeper.url` | Service name of Zookeeper cluster (Not needed if zookeeper.enabled is set to true). | `""` |
-| `zookeeper.clientPort` | Port of Zookeeper Cluster | `2181` |
-
-## Add-Ons
-### Schema Registry
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `schemaregistry.enabled` | Whether or not to install cp-schema-registry chart alongside cp-kafka chart | `false` |
-
-### Rest Proxy
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `restproxy.enabled` | Whether or not to install cp-kafka-rest chart alongside cp-kafka chart | `false` |
-
-### Kafka Connect
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `kafkaconnect.enabled` | Whether or not to install cp-kafka-connect chart alongside cp-kafka chart | `false` |
+| `cp-zookeeper.enabled` | Whether or not to install cp-zookeeper chart alongside cp-kafka chart | `true` |
+| `cp-zookeeper.persistence.enabled` | Whether to create a PVC. If `false`, an `emptyDir` on the host will be used. | `true` |
+| `cp-zookeeper.persistence.dataDirSize` | Size for Data dir, where ZooKeeper will store the in-memory database snapshots. This will overwrite corresponding value in cp-zookeeper chart's value.yaml | `5Gi` |
+| `cp-zookeeper.persistence.dataLogDirSize` | Size for data log dir, which is a dedicated log device to be used, and helps avoid competition between logging and snapshots. This will overwrite corresponding value in cp-zookeeper chart's value.yaml. | `5Gi` |
+| `cp-zookeeper.url` | Service name of Zookeeper cluster (Not needed if zookeeper.enabled is set to true). | `""` |
+| `cp-zookeeper.clientPort` | Port of Zookeeper Cluster | `2181` |

@@ -89,12 +89,12 @@ spec:
         - containerPort: {{ .Values.jmx.port }}
           name: jmx
         {{- end }}
-        {{- if .Values.external.enabled }}
+        {{- if .Values.nodeport.enabled }}
           {{- $brokers := .Values.brokers | int }}
           {{- $root := . }}
           {{- range $i, $e := until $brokers }}
-        - containerPort: {{ add $root.Values.external.firstListenerPort $i }}
-          name: external-{{ $i }}
+        - containerPort: {{ add $root.Values.nodeport.firstListenerPort $i }}
+          name: nodeport-{{ $i }}
           {{- end }}
         {{- end }}
         resources:

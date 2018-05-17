@@ -95,15 +95,15 @@ prometheus:
     imageTag: a23062396cd5af1acdf76512632c20ea6be76885dfc20cd9ff40fb23846557e8
     port: 5556
 
-external:
-  enabled: enable
+nodeport:
+  enabled: false
   servicePort: 19092
   firstListenerPort: 31090
 
 ## ------------------------------------------------------
 ## Zookeeper
 ## ------------------------------------------------------
-zookeeper:
+cp-zookeeper:
   ## If true, install the cp-zookeeper chart alongside cp-kafka
   ## ref: ../cp-zookeeper
   enabled: true
@@ -116,21 +116,3 @@ zookeeper:
   ## If the Zookeeper Chart is disabled a URL and port are required to connect
   url: ""
   clientPort: 2181
-
-## ------------------------------------------------------
-## Schema Registry
-## ------------------------------------------------------
-schemaregistry:
-  enabled: false
-
-## ------------------------------------------------------
-## REST Proxy
-## ------------------------------------------------------
-restproxy:
-  enabled: false
-
-## ------------------------------------------------------
-## Kafka Connect
-## ------------------------------------------------------
-kafkaconnect:
-  enabled: false

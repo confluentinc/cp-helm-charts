@@ -1,0 +1,82 @@
+## ------------------------------------------------------
+## Zookeeper
+## ------------------------------------------------------
+Connection string for Confluent Kafka:
+  {{ template "cp-zookeeper.fullname" . }}-0.{{ template "cp-zookeeper.fullname" . }}-headless:{{ .Values.clientPort }},{{ template "cp-zookeeper.fullname" . }}-1.{{ template "cp-zookeeper.fullname" . }}-headless:{{ .Values.clientPort }},...
+
+To connect from a client pod:
+
+1. Deploy a zookeeper client pod with configuration:
+
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: zookeeper-client
+      namespace: {{ .Release.Namespace }}
+    spec:
+      containers:
+      - name: zookeeper-client
+        image: {{ .Values.image }}:{{ .Values.imageTag }}
+        command:
+          - sh
+          - -c
+          - "exec tail -f /dev/null"
+
+2. Log into the Pod
+
+  kubectl exec -it zookeeper-client -- /bin/bash
+
+3. Use zookeeper-shell to connect in the zookeeper-client Pod:
+
+  zookeeper-shell {{ template "cp-zookeeper.fullname" . }}:{{ .Values.clientPort }}
+
+4. Explore with zookeeper commands, for example:
+
+  # Gives the list of active brokers
+  ls /brokers/ids
+
+  # Gives the list of topics
+  ls /brokers/topics
+
+  # Gives more detailed information of the broker id '0'
+  get /brokers/ids/0
+
+
+## ------------------------------------------------------
+## Kafka
+## ------------------------------------------------------
+To connect from a client pod:
+
+1. Deploy a zookeeper client pod with configuration:
+
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: kafka-client
+      namespace: {{ .Release.Namespace }}
+    spec:
+      containers:
+      - name: kafka-client
+        image: {{ .Values.image }}:{{ .Values.imageTag }}
+        command:
+          - sh
+          - -c
+          - "exec tail -f /dev/null"
+
+2. Log into the Pod
+
+  kubectl exec -it kafka-client -- /bin/bash
+
+3. Explore with kafka commands:
+
+  # Create the topic
+  kafka-topics --zookeeper {{ template "cp-kafka.cp-zookeeper.service-name" . }} --topic {{ template "cp-kafka.fullname" . }}-topic --create --partitions 1 --replication-factor 1 --if-not-exists
+
+  # Create a message
+  MESSAGE="`date -u`"
+
+  # Produce a test message to the topic
+  echo "$MESSAGE" | kafka-console-producer --broker-list {{ template "cp-kafka.fullname" . }}:9092 --topic {{ template "cp-kafka.fullname" . }}-topic && \
+
+  # Consume a test message from the topic
+  kafka-console-consumer --bootstrap-server {{ template "cp-kafka.fullname" . }}-headless:9092 --topic {{ template "cp-kafka.fullname" . }}-topic --from-beginning --timeout-ms 2000 --max-messages 1 | grep "$MESSAGE"
