@@ -45,9 +45,8 @@ Form the Zookeeper URL. If zookeeper is installed as part of this chart, use k8s
 else use user-provided URL
 */}}
 {{- define "cp-kafka-rest.cp-zookeeper.service-name" }}
-{{- $port := (index .Values "cp-zookeeper" "clientPort") | toString }}
 {{- if (index .Values "cp-zookeeper" "url") -}}
-{{- printf "%s:%s" (index .Values "cp-zookeeper" "url") $port }}
+{{- printf "%s" (index .Values "cp-zookeeper" "url") }}
 {{- else -}}
 {{- printf "%s:2181" (include "cp-kafka-rest.cp-zookeeper.fullname" .) }}
 {{- end -}}
@@ -63,9 +62,8 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{- define "cp-kafka-rest.cp-schema-registry.service-name" -}}
-{{- $port := (index .Values "cp-schema-registry" "port") | toString -}}
 {{- if (index .Values "cp-schema-registry" "url") -}}
-{{- printf "%s:%s" (index .Values "cp-schema-registry" "url") $port -}}
+{{- printf "%s" (index .Values "cp-schema-registry" "url") -}}
 {{- else -}}
 {{- printf "%s:8081" (include "cp-kafka-rest.cp-schema-registry.fullname" .) -}}
 {{- end -}}

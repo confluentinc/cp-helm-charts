@@ -47,3 +47,19 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
+## Monitoring
+## Schema Registry JMX Settings
+## ref: https://docs.confluent.io/current/schema-registry/docs/monitoring.html
+jmx:
+  port: 5555
+
+## Prometheus Exporter Configuration
+## ref: https://prometheus.io/docs/instrumenting/exporters/
+prometheus:
+  ## JMX Exporter Configuration
+  ## ref: https://github.com/prometheus/jmx_exporter
+  jmx:
+    enabled: true
+    image: solsson/kafka-prometheus-jmx-exporter@sha256
+    imageTag: a23062396cd5af1acdf76512632c20ea6be76885dfc20cd9ff40fb23846557e8
+    port: 5556

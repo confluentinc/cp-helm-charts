@@ -1,0 +1,22 @@
+{{- if and .Values.prometheus.jmx.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "cp-kafka-rest.fullname" . }}-jmx-configmap
+  labels:
+    app: {{ template "cp-kafka-rest.name" . }}
+    chart: {{ template "cp-kafka-rest.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  jmx-kafka-rest-prometheus.yml: |+
+    jmxUrl: service:jmx:rmi:///jndi/rmi://localhost:{{ .Values.jmx.port }}/jmxrmi
+    lowercaseOutputName: true
+    lowercaseOutputLabelNames: true
+    ssl: false
+    rules:
+    - pattern : 'kafka.rest<type=jetty-metrics>([^:]+):'
+      name: "cp_kafka_rest_jetty_metrics_$1"
+    - pattern : 'kafka.rest<type=jersey-metrics>([^:]+):'
+      name: "cp_kafka_rest_jersey_metrics_$1"
+{{- end }}

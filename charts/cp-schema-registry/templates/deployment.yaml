@@ -6,7 +6,7 @@ metadata:
     app: {{ template "cp-schema-registry.name" . }}
     chart: {{ template "cp-schema-registry.chart" . }}
     release: {{ .Release.Name }}
-    heritage: {{ .Release.Service | quote }}
+    heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -18,8 +18,34 @@ spec:
       labels:
         app: {{ template "cp-schema-registry.name" . }}
         release: {{ .Release.Name }}
+      {{- if .Values.prometheus.jmx.enabled }}
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
+      {{- end }}
     spec:
       containers:
+        {{- if .Values.prometheus.jmx.enabled }}
+        - name: prometheus-jmx-exporter
+          image: "{{ .Values.prometheus.jmx.image }}:{{ .Values.prometheus.jmx.imageTag }}"
+          command:
+          - java
+          - -XX:+UnlockExperimentalVMOptions
+          - -XX:+UseCGroupMemoryLimitForHeap
+          - -XX:MaxRAMFraction=1
+          - -XshowSettings:vm
+          - -jar
+          - jmx_prometheus_httpserver.jar
+          - {{ .Values.prometheus.jmx.port | quote }}
+          - /etc/jmx-schema-registry/jmx-schema-registry-prometheus.yml
+          ports:
+          - containerPort: {{ .Values.prometheus.jmx.port }}
+          resources:
+{{ toYaml .Values.prometheus.jmx.resources | indent 12 }}
+          volumeMounts:
+          - name: jmx-config
+            mountPath: /etc/jmx-schema-registry
+        {{- end }}
         - name: {{ template "cp-schema-registry.name" . }}-server
           image: "{{ .Values.image }}:{{ .Values.imageTag }}"
           imagePullPolicy: "{{ .Values.imagePullPolicy }}"
@@ -27,10 +53,16 @@ spec:
             - name: schema-registry
               containerPort: {{ .Values.servicePort}}
               protocol: TCP
+            {{- if .Values.prometheus.jmx.enabled }}
+            - containerPort: {{ .Values.jmx.port }}
+              name: jmx
+            {{- end }}
           livenessProbe:
-            httpGet:
-              path: /
-              port: schema-registry
+            exec:
+              command:
+                - sh
+                - -ec
+                - /usr/bin/jps | /bin/grep -q SchemaRegistryMain
             initialDelaySeconds: {{ .Values.initialDelaySeconds }}
             timeoutSeconds: {{ .Values.timeoutSeconds }}
           readinessProbe:
@@ -63,3 +95,13 @@ spec:
           - name: SCHEMA_REGISTRY_OPTS
             value: "{{ .Values.schemaRegistryOpts }}"
           {{- end }}
+          {{- if .Values.jmx.port }}
+          - name: JMX_PORT
+            value: "{{ .Values.jmx.port }}"
+          {{- end }}
+      volumes:
+      {{- if .Values.prometheus.jmx.enabled }}
+      - name: jmx-config
+        configMap:
+          name: {{ template "cp-schema-registry.fullname" . }}-jmx-configmap
+      {{- end }}
