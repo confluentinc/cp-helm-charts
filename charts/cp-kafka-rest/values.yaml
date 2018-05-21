@@ -31,18 +31,35 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
+## Monitoring
+## Kafka REST JMX Settings
+## ref: https://docs.confluent.io/current/kafka-rest/docs/monitoring.html
+jmx:
+  port: 5555
+
+## Prometheus Exporter Configuration
+## ref: https://prometheus.io/docs/instrumenting/exporters/
+prometheus:
+  ## JMX Exporter Configuration
+  ## ref: https://github.com/prometheus/jmx_exporter
+  jmx:
+    enabled: true
+    image: solsson/kafka-prometheus-jmx-exporter@sha256
+    imageTag: a23062396cd5af1acdf76512632c20ea6be76885dfc20cd9ff40fb23846557e8
+    port: 5556
+
 ## External Access
 ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer
 external:
   enabled: false
   type: LoadBalancer
 
-## If the Kafka Chart is disabled a URL and port are required to connect
+## If the Kafka Chart is disabled a URL of zookeeper are required to connect
+## e.g. ungaged-sparrow-cp-zookeeper:2181
 cp-zookeeper:
   url: ""
-  clientPort: 2181
 
 ## If the Kafka Chart is disabled a URL and port are required to connect
+## e.g. gnoble-panther-cp-schema-registry:8081
 cp-schema-registry:
   url: ""
-  port: 8081

@@ -14,21 +14,20 @@ This chart bootstraps a deployment of a Confluent REST Proxy
 * DockerHub - ConfluentInc: https://hub.docker.com/u/confluentinc/
 
 ## Installing the Chart
-### Install along with CP-Kafka chart
+### Install along with cp-helm-charts
 ```console
 $ git clone https://github.com/confluentinc/cp-helm-charts.git
-$ cd cp-helm-charts/charts
-$ helm install ./cp-kafka
+$ helm install cp-helm-charts
 ```
 
 To install with a specific name, you can do:
 ```console
-$ helm install --name my-kafka ./cp-kafka
+$ helm install --name my-confluent cp-helm-charts
 ```
 
-### Install with a existing CP-Kafka release
+### Install with a existing cp-kafka and cp-schema-registry release
 ```console
-$ helm install --set zookeeper.url="unhinged-robin-zookeeper",schemaregistry.url="lolling-chinchilla-cp-schema-registry" ./cp-kafka-rest
+$ helm install --set cp-zookeeper.url="unhinged-robin-cp-zookeeper:2181",cp-schema-registry.url="lolling-chinchilla-cp-schema-registry:8081" cp-helm-charts/charts/cp-kafka-rest
 ```
 
 ### Installed Components
@@ -52,12 +51,17 @@ hopping-salamander-cp-kafka-rest  1        1        1           1          1m
 ==> v1/Pod(related)
 NAME                                               READY  STATUS   RESTARTS  AGE
 hopping-salamander-cp-kafka-rest-67b86cff98-qxrd8  1/1    Running  0         1m
+
+==> v1/ConfigMap
+NAME                                            DATA  AGE
+hopping-salamander-cp-kafka-rest-jmx-configmap  1     1s
 ```
 There are 
 1. A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) `hopping-salamander-cp-kafka-rest` which contains 1 REST Proxy [Pod](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/): `hopping-salamander-cp-kafka-rest-67b86cff98-qxrd8`.
 1. A [Service](https://kubernetes.io/docs/concepts/services-networking/service/) `hopping-salamander-cp-kafka-rest` for clients to connect to REST Proxy.
+1. A [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) which contains configuration for Prometheus JMX Exporter.
 1. (Optional) A [Service](https://kubernetes.io/docs/concepts/services-networking/service/) `hopping-salamander-cp-kafka-restproxy-external` for clients to connect to REST Proxy from outside.
-
+ 
 ## Configuration
 You can specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
 
@@ -101,6 +105,19 @@ The configuration parameters in this section control the resources requested and
 | `resources.requests.memory` | The amount of memory to request. | see [values.yaml](values.yaml) for details |
 | `resources.requests.limit` | The upper limit CPU usage for a REST Proxy Pod. | see [values.yaml](values.yaml) for details |
 | `resources.requests.limit` | The upper limit memory usage for a REST Proxy Pod. | see [values.yaml](values.yaml) for details |
+
+### JMX Configuration
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `jmx.port` | The jmx port which JMX style metrics are exposed. | `5555` |
+
+### Prometheus JMX Exporter Configuration
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `prometheus.jmx.enabled` | Whether or not to install Prometheus JMX Exporter as a sidecar container and expose JMX metrics to Prometheus. | `true` |
+| `prometheus.jmx.image` | Docker Image for Prometheus JMX Exporter container. | `solsson/kafka-prometheus-jmx-exporter@sha256` | 
+| `prometheus.jmx.imageTag` | Docker Image Tag for Prometheus JMX Exporter container. | `a23062396cd5af1acdf76512632c20ea6be76885dfc20cd9ff40fb23846557e8` |
+| `prometheus.jmx.port` | JMX Exporter Port which exposes metrics in Prometheus format for scraping. | `5556` |
 
 ### External Access
 | Parameter | Description | Default |
