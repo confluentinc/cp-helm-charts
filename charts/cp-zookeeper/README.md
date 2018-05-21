@@ -13,14 +13,20 @@ This chart bootstraps an ensemble of Confluent Zookeeper
 * DockerHub - ConfluentInc: https://hub.docker.com/u/confluentinc/
 
 ## Installing the Chart
+### Install along with cp-helm-charts
 ```console
 $ git clone https://github.com/confluentinc/cp-helm-charts.git
-$ cd cp-helm-charts/charts
-$ helm install ./cp-zookeeper
+$ helm install cp-helm-charts
 ```
+
 To install with a specific name, you can do:
 ```console
 $ helm install --name my-zookeeper ./cp-zookeeper
+```
+
+### Install with cp-zookeeper alone
+```console
+$ helm install cp-helm-charts/charts/cp-zookeeper
 ```
 
 ### Installed Components

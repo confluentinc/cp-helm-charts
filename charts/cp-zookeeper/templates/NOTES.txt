@@ -29,13 +29,6 @@ To connect from a client pod:
 
   zookeeper-shell {{ template "cp-zookeeper.fullname" . }}:{{ .Values.clientPort }}
 
-4. Explore with zookeeper commands, for example:
+4. Explore with zookeeper commands:
 
-  # Gives the list of active brokers
-  ls /brokers/ids
-
-  # Gives the list of topics
-  ls /brokers/topics
-
-  # Gives more detailed information of the broker id '0'
-  get /brokers/ids/0
+   https://zookeeper.apache.org/doc/current/zookeeperStarted.html#sc_ConnectingToZooKeeper
