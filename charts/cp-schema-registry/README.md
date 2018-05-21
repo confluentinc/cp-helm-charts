@@ -14,21 +14,20 @@ This chart bootstraps a deployment of a Confluent Schema Registry
 * DockerHub - ConfluentInc: https://hub.docker.com/u/confluentinc/
 
 ## Installing the Chart
-### Install along with CP-Kafka chart
+### Install along with cp-helm-charts
 ```console
 $ git clone https://github.com/confluentinc/cp-helm-charts.git
-$ cd cp-helm-charts/charts
-$ helm install ./cp-kafka
+$ helm install cp-helm-charts
 ```
 
 To install with a specific name, you can do:
 ```console
-$ helm install --name my-kafka ./cp-kafka
+$ helm install --name my-confluent cp-helm-charts
 ```
 
-### Install with a existing CP-Kafka release
+### Install with a existing cp-kafka release
 ```console
-$ helm install --set kafka.bootstrapServers="PLAINTEXT://unhinged-robin-cp-kafka-headless:9092" ./cp-schema-registry
+$ helm install --set kafka.bootstrapServers="PLAINTEXT://unhinged-robin-cp-kafka-headless:9092" cp-helm-charts/charts/cp-schema-registry
 ```
 
 ### Installed Components
@@ -52,10 +51,15 @@ lolling-chinchilla-cp-schema-registry-58f854bd47-jxrcj  0/1    ContainerCreating
 ==> v1/Service
 NAME                                   TYPE       CLUSTER-IP    EXTERNAL-IP  PORT(S)   AGE
 lolling-chinchilla-cp-schema-registry  ClusterIP  10.19.245.11  <none>       8081/TCP  1s
+
+==> v1/ConfigMap
+NAME                                               DATA  AGE
+lolling-chinchilla-cp-schema-registry-jmx-configmap  1     1s
 ```
 There are 
 1. A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) `lolling-chinchilla-cp-schema-registry` which contains 1 Schema Registry [Pod](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/): `lolling-chinchilla-cp-schema-registry-58f854bd47-jxrcj`.
 1. A [Service](https://kubernetes.io/docs/concepts/services-networking/service/) `lolling-chinchilla-cp-schema-registry` for clients to connect to Schema Registry.
+1. A [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) which contains configuration for Prometheus JMX Exporter.
 
 ## Configuration
 You can specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
@@ -110,3 +114,16 @@ The configuration parameters in this section control the resources requested and
 | `resources.requests.memory` | The amount of memory to request. | see [values.yaml](values.yaml) for details |
 | `resources.requests.limit` | The upper limit CPU usage for a Schema Registry Pod. | see [values.yaml](values.yaml) for details |
 | `resources.requests.limit` | The upper limit memory usage for a Schema Registry Pod. | see [values.yaml](values.yaml) for details |
+
+### JMX Configuration
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `jmx.port` | The jmx port which JMX style metrics are exposed. | `5555` |
+
+### Prometheus JMX Exporter Configuration
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `prometheus.jmx.enabled` | Whether or not to install Prometheus JMX Exporter as a sidecar container and expose JMX metrics to Prometheus. | `true` |
+| `prometheus.jmx.image` | Docker Image for Prometheus JMX Exporter container. | `solsson/kafka-prometheus-jmx-exporter@sha256` | 
+| `prometheus.jmx.imageTag` | Docker Image Tag for Prometheus JMX Exporter container. | `a23062396cd5af1acdf76512632c20ea6be76885dfc20cd9ff40fb23846557e8` |
+| `prometheus.jmx.port` | JMX Exporter Port which exposes metrics in Prometheus format for scraping. | `5556` |

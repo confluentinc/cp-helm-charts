@@ -1,3 +1,4 @@
 This chart installs a Confluent Kafka Schema Registry
 
 https://github.com/confluentinc/schema-registry
+
