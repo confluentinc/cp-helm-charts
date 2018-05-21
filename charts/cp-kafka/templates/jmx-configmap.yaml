@@ -15,23 +15,22 @@ data:
     lowercaseOutputLabelNames: true
     ssl: false
     rules:
-    - pattern : kafka.network<type=Processor, name=IdlePercent, networkProcessor=(.+)><>Value
-    - pattern : kafka.network<type=RequestMetrics, name=RequestsPerSec, request=(.+)><>OneMinuteRate
-    - pattern : kafka.network<type=SocketServer, name=NetworkProcessorAvgIdlePercent><>Value
-    - pattern : kafka.server<type=ReplicaFetcherManager, name=MaxLag, clientId=(.+)><>Value
-    - pattern : kafka.server<type=BrokerTopicMetrics, name=(.+), topic=(.+)><>OneMinuteRate
-    - pattern : kafka.server<type=KafkaRequestHandlerPool, name=RequestHandlerAvgIdlePercent><>OneMinuteRate
-    - pattern : kafka.server<type=Produce><>queue-size
     - pattern : kafka.server<type=ReplicaManager, name=(.+)><>(Value|OneMinuteRate)
-    - pattern : kafka.server<type=controller-channel-metrics, broker-id=(.+)><>(.*)
-    - pattern : kafka.server<type=socket-server-metrics, networkProcessor=(.+)><>(.*)
-    - pattern : kafka.server<type=Fetch><>queue-size
-    - pattern : kafka.server<type=SessionExpireListener, name=(.+)><>OneMinuteRate
+      name: "cp_kafka_server_replicamanager_$1"
     - pattern : kafka.controller<type=KafkaController, name=(.+)><>Value
+      name: "cp_kafka_controller_kafkacontroller_$1"
+    - pattern : kafka.server<type=BrokerTopicMetrics, name=(.+)><>OneMinuteRate
+      name: "cp_kafka_server_brokertopicmetrics_$1"
+    - pattern : kafka.network<type=RequestMetrics, name=RequestsPerSec, request=(.+)><>OneMinuteRate
+      name: "cp_kafka_network_requestmetrics_requestspersec_$1"
+    - pattern : kafka.network<type=SocketServer, name=NetworkProcessorAvgIdlePercent><>Value
+      name: "cp_kafka_network_socketserver_networkprocessoravgidlepercent"
+    - pattern : kafka.server<type=ReplicaFetcherManager, name=MaxLag, clientId=(.+)><>Value
+      name: "cp_kafka_server_replicafetchermanager_maxlag_$1"
+    - pattern : kafka.server<type=KafkaRequestHandlerPool, name=RequestHandlerAvgIdlePercent><>OneMinuteRate
+      name: "cp_kafka_kafkarequesthandlerpool_requesthandleravgidlepercent"
     - pattern : kafka.controller<type=ControllerStats, name=(.+)><>OneMinuteRate
-    - pattern : kafka.cluster<type=Partition, name=UnderReplicated, topic=(.+), partition=(.+)><>Value
-    - pattern : kafka.utils<type=Throttler, name=cleaner-io><>OneMinuteRate
-    - pattern : kafka.log<type=Log, name=LogEndOffset, topic=(.+), partition=(.+)><>Value
-    - pattern : kafka.log<type=Log, name=LogStartOffset, topic=(.+), partition=(.+)><>Value
-    - pattern : java.lang<type=(.*)>
+      name: "cp_kafka_controller_controllerstats_$1"
+    - pattern : kafka.server<type=SessionExpireListener, name=(.+)><>OneMinuteRate
+      name: "cp_kafka_server_sessionexpirelistener_$1"
 {{- end }}
