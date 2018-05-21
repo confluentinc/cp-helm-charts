@@ -8,16 +8,25 @@ cp-zookeeper:
   imageTag: 4.1.0
   persistence:
     enabled: true
-    # storageClass: ""
+    ## The size of the PersistentVolume to allocate to each Zookeeper Pod in the StatefulSet. For
+    ## production servers this number should likely be much larger.
+    ##
+    ## Size for Data dir, where ZooKeeper will store the in-memory database snapshots.
     dataDirSize: 5Gi
+    # dataDirStorageClass: ""
+
+    ## Size for data log dir, which is a dedicated log device to be used, and helps avoid competition between logging and snaphots.
     dataLogDirSize: 5Gi
-#  resources:
-#    limits:
-#     cpu: 100m
-#     memory: 128Mi
-#    requests:
-#     cpu: 100m
-#     memory: 128Mi
+    # dataLogDirStorageClass: ""
+  resources: {}
+  ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
+  ## and remove the curly braces after 'resources:'
+  #  limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  #  requests:
+  #   cpu: 100m
+  #   memory: 128Mi
 
 ## ------------------------------------------------------
 ## Kafka
@@ -35,49 +44,46 @@ cp-kafka:
     enabled: true
     # storageClass: ""
     size: 5Gi
-#  resources:
-#    limits:
-#     cpu: 100m
-#     memory: 128Mi
-#    requests:
-#     cpu: 100m
-#     memory: 128Mi
+  resources: {}
+  ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
+  ## and remove the curly braces after 'resources:'
+  #  limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  #  requests:
+  #   cpu: 100m
+  #   memory: 128Mi
 
 ## ------------------------------------------------------
 ## Schema Registry
 ## ------------------------------------------------------
 cp-schema-registry:
   enabled: true
-#  resources:
-#    limits:
-#     cpu: 100m
-#     memory: 128Mi
-#    requests:
-#     cpu: 100m
-#     memory: 128Mi
+  image: confluentinc/cp-schema-registry
+  imageTag: 4.1.0
+  resources: {}
+  ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
+  ## and remove the curly braces after 'resources:'
+  #  limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  #  requests:
+  #   cpu: 100m
+  #   memory: 128Mi
 
 ## ------------------------------------------------------
 ## REST Proxy
 ## ------------------------------------------------------
 cp-kafka-rest:
   enabled: true
-#  resources:
-#    limits:
-#     cpu: 100m
-#     memory: 128Mi
-#    requests:
-#     cpu: 100m
-#     memory: 128Mi
-
-## ------------------------------------------------------
-## Kafka Connect
-## ------------------------------------------------------
-cp-kafka-connect:
-  enabled: true
-#  resources:
-#    limits:
-#     cpu: 100m
-#     memory: 128Mi
-#    requests:
-#     cpu: 100m
-#     memory: 128Mi
+  image: confluentinc/cp-kafka-rest
+  imageTag: 4.1.0
+  resources: {}
+  ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
+  ## and remove the curly braces after 'resources:'
+  #  limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  #  requests:
+  #   cpu: 100m
+  #   memory: 128Mi

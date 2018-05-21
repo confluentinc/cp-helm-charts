@@ -16,7 +16,7 @@ To connect from a client pod:
     spec:
       containers:
       - name: zookeeper-client
-        image: {{ .Values.image }}:{{ .Values.imageTag }}
+        image: {{index .Values "cp-zookeeper" "image" }}:{{index .Values "cp-zookeeper" "imageTag" }}
         command:
           - sh
           - -c
@@ -47,7 +47,7 @@ To connect from a client pod:
 ## ------------------------------------------------------
 To connect from a client pod:
 
-1. Deploy a zookeeper client pod with configuration:
+1. Deploy a kafka client pod with configuration:
 
     apiVersion: v1
     kind: Pod
@@ -57,7 +57,7 @@ To connect from a client pod:
     spec:
       containers:
       - name: kafka-client
-        image: {{ .Values.image }}:{{ .Values.imageTag }}
+        image: {{ index .Values "cp-kafka" "image" }}:{{ index .Values "cp-kafka" "imageTag" }}
         command:
           - sh
           - -c
