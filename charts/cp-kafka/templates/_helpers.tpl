@@ -45,11 +45,10 @@ Form the Zookeeper URL. If zookeeper is installed as part of this chart, use k8s
 else use user-provided URL
 */}}
 {{- define "cp-kafka.cp-zookeeper.service-name" }}
-{{- $port := (index .Values "cp-zookeeper" "clientPort") | toString }}
 {{- if (index .Values "cp-zookeeper" "enabled") -}}
-{{- printf "%s:%s" (include "cp-kafka.cp-zookeeper.fullname" .) $port }}
+{{- printf "%s:2181" (include "cp-kafka.cp-zookeeper.fullname" .) }}
 {{- else -}}
-{{- $zookeeperConnect := printf "%s:%s" (index .Values "cp-zookeeper" "url") $port }}
+{{- $zookeeperConnect := printf "%s" (index .Values "cp-zookeeper" "url") }}
 {{- $zookeeperConnectOverride := (index .Values "configurationOverrides" "zookeeper.connect") }}
 {{- default $zookeeperConnect $zookeeperConnectOverride }}
 {{- end -}}

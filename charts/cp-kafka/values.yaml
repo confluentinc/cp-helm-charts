@@ -86,10 +86,17 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
+## Monitoring
+## Kafka JMX Settings
+## ref: https://docs.confluent.io/current/kafka/monitoring.html
 jmx:
   port: 5555
 
+## Prometheus Exporter Configuration
+## ref: https://prometheus.io/docs/instrumenting/exporters/
 prometheus:
+  ## JMX Exporter Configuration
+  ## ref: https://github.com/prometheus/jmx_exporter
   jmx:
     enabled: true
     image: solsson/kafka-prometheus-jmx-exporter@sha256
@@ -116,4 +123,3 @@ cp-zookeeper:
 
   ## If the Zookeeper Chart is disabled a URL and port are required to connect
   url: ""
-  clientPort: 2181
