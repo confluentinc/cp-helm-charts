@@ -43,7 +43,7 @@ syncLimit: 5
 initLimit: 10
 maxClientCnxns: 60
 autoPurgeSnapRetainCount: 3
-autoPurgePurgeInterval: 72
+autoPurgePurgeInterval: 24
 
 ## Port
 ## ref: https://zookeeper.apache.org/doc/r3.4.10/zookeeperAdmin.html#sc_configuration
