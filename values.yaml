@@ -87,3 +87,20 @@ cp-kafka-rest:
   #  requests:
   #   cpu: 100m
   #   memory: 128Mi
+
+## ------------------------------------------------------
+## Kafka Connect
+## ------------------------------------------------------
+cp-kafka-connect:
+  enabled: false
+  image: confluentinc/cp-kafka-connect
+  imageTag: 4.1.0
+  resources: {}
+  ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
+  ## and remove the curly braces after 'resources:'
+  #  limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  #  requests:
+  #   cpu: 100m
+  #   memory: 128Mi

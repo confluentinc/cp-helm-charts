@@ -52,6 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
+  "iteration": 1526956384815,
   "links": [],
   "panels": [
     {
@@ -120,6 +121,8 @@
           "to": "null"
         }
       ],
+      "repeat": null,
+      "repeatDirection": "h",
       "sparkline": {
         "fillColor": "rgba(31, 118, 189, 0.18)",
         "full": false,
@@ -129,9 +132,10 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "count(cp_kafka_server_replicamanager_leadercount)",
+          "expr": "count(cp_kafka_server_replicamanager_leadercount{release=\"$Release\"})",
           "format": "time_series",
           "intervalFactor": 1,
+          "legendFormat": "",
           "refId": "A"
         }
       ],
@@ -146,7 +150,7 @@
           "value": "null"
         }
       ],
-      "valueName": "avg"
+      "valueName": "current"
     },
     {
       "cacheTimeout": null,
@@ -210,7 +214,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(cp_kafka_controller_kafkacontroller_activecontrollercount)",
+          "expr": "sum(cp_kafka_controller_kafkacontroller_activecontrollercount{release=\"$Release\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -227,7 +231,7 @@
           "value": "null"
         }
       ],
-      "valueName": "avg"
+      "valueName": "current"
     },
     {
       "cacheTimeout": null,
@@ -291,7 +295,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(cp_kafka_controller_controllerstats_uncleanleaderelectionspersec)",
+          "expr": "sum(cp_kafka_controller_controllerstats_uncleanleaderelectionspersec{release=\"$Release\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -308,7 +312,7 @@
           "value": "null"
         }
       ],
-      "valueName": "avg"
+      "valueName": "current"
     },
     {
       "cacheTimeout": null,
@@ -372,7 +376,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(cp_kafka_server_replicamanager_partitioncount)",
+          "expr": "sum(cp_kafka_server_replicamanager_partitioncount{release=\"$Release\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -389,7 +393,7 @@
           "value": "null"
         }
       ],
-      "valueName": "avg"
+      "valueName": "current"
     },
     {
       "cacheTimeout": null,
@@ -453,7 +457,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(cp_kafka_server_replicamanager_underreplicatedpartitions)",
+          "expr": "sum(cp_kafka_server_replicamanager_underreplicatedpartitions{release=\"$Release\"})",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -471,7 +475,7 @@
           "value": "null"
         }
       ],
-      "valueName": "avg"
+      "valueName": "current"
     },
     {
       "cacheTimeout": null,
@@ -535,7 +539,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(cp_kafka_controller_kafkacontroller_offlinepartitionscount)",
+          "expr": "sum(cp_kafka_controller_kafkacontroller_offlinepartitionscount{release=\"$Release\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -552,7 +556,7 @@
           "value": "null"
         }
       ],
-      "valueName": "avg"
+      "valueName": "current"
     },
     {
       "aliasColors": {},
@@ -570,10 +574,14 @@
       },
       "id": 44,
       "legend": {
+        "alignAsTable": false,
         "avg": false,
         "current": false,
+        "hideEmpty": false,
+        "hideZero": false,
         "max": false,
         "min": false,
+        "rightSide": false,
         "show": true,
         "total": false,
         "values": false
@@ -592,7 +600,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(cp_kafka_server_brokertopicmetrics_bytesinpersec)",
+          "expr": "sum(cp_kafka_server_brokertopicmetrics_bytesinpersec{release=\"$Release\"})",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -600,7 +608,7 @@
           "refId": "A"
         },
         {
-          "expr": "sum(cp_kafka_server_brokertopicmetrics_bytesoutpersec)",
+          "expr": "sum(cp_kafka_server_brokertopicmetrics_bytesoutpersec{release=\"$Release\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Outgoing Byte Rate",
@@ -659,6 +667,7 @@
       },
       "id": 58,
       "legend": {
+        "alignAsTable": false,
         "avg": false,
         "current": false,
         "max": false,
@@ -681,21 +690,21 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(cp_kafka_network_requestmetrics_requestspersec_produce)",
+          "expr": "sum(cp_kafka_network_requestmetrics_requestspersec_produce{release=\"$Release\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Produce",
           "refId": "A"
         },
         {
-          "expr": "sum(cp_kafka_network_requestmetrics_requestspersec_fetchconsumer)",
+          "expr": "sum(cp_kafka_network_requestmetrics_requestspersec_fetchconsumer{release=\"$Release\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Consumer Fetch",
           "refId": "B"
         },
         {
-          "expr": "sum(cp_kafka_network_requestmetrics_requestspersec_fetchfollower)",
+          "expr": "sum(cp_kafka_network_requestmetrics_requestspersec_fetchfollower{release=\"$Release\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Follower Fetch",
@@ -776,14 +785,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(cp_kafka_server_brokertopicmetrics_totalproducerequestspersec)",
+          "expr": "sum(cp_kafka_server_brokertopicmetrics_totalproducerequestspersec{release=\"$Release\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Total Produce Request Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(cp_kafka_server_brokertopicmetrics_failedproducerequestspersec)",
+          "expr": "sum(cp_kafka_server_brokertopicmetrics_failedproducerequestspersec{release=\"$Release\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Failed Produce Request Rate",
@@ -864,14 +873,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(cp_kafka_server_brokertopicmetrics_totalfetchrequestspersec)",
+          "expr": "sum(cp_kafka_server_brokertopicmetrics_totalfetchrequestspersec{release=\"$Release\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Fetch Request Rate",
           "refId": "A"
         },
         {
-          "expr": "sum(cp_kafka_server_brokertopicmetrics_failedfetchrequestspersec)",
+          "expr": "sum(cp_kafka_server_brokertopicmetrics_failedfetchrequestspersec{release=\"$Release\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Failed Fetch Request Rate",
@@ -952,7 +961,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "cp_kafka_network_socketserver_networkprocessoravgidlepercent*100",
+          "expr": "cp_kafka_network_socketserver_networkprocessoravgidlepercent{release=\"$Release\"}*100",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{kubernetes_pod_name}}",
@@ -1033,7 +1042,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "cp_kafka_kafkarequesthandlerpool_requesthandleravgidlepercent*100",
+          "expr": "cp_kafka_kafkarequesthandlerpool_requesthandleravgidlepercent{release=\"$Release\"}*100",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{kubernetes_pod_name}}",
@@ -1151,7 +1160,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "avg(cp_zookeeper_quorumsize)",
+          "expr": "avg(cp_zookeeper_quorumsize{release=\"$Release\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -1168,7 +1177,7 @@
           "value": "null"
         }
       ],
-      "valueName": "avg"
+      "valueName": "current"
     },
     {
       "cacheTimeout": null,
@@ -1232,7 +1241,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(cp_zookeeper_numaliveconnections)",
+          "expr": "sum(cp_zookeeper_numaliveconnections{release=\"$Release\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -1249,42 +1258,9 @@
           "value": "null"
         }
       ],
-      "valueName": "avg"
+      "valueName": "current"
     },
     {
-      "alert": {
-        "conditions": [
-          {
-            "evaluator": {
-              "params": [
-                10
-              ],
-              "type": "gt"
-            },
-            "operator": {
-              "type": "and"
-            },
-            "query": {
-              "params": [
-                "A",
-                "5m",
-                "now"
-              ]
-            },
-            "reducer": {
-              "params": [],
-              "type": "avg"
-            },
-            "type": "query"
-          }
-        ],
-        "executionErrorState": "alerting",
-        "frequency": "60s",
-        "handler": 1,
-        "name": "Outstanding Requests alert",
-        "noDataState": "no_data",
-        "notifications": []
-      },
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
@@ -1322,7 +1298,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "cp_zookeeper_outstandingrequests",
+          "expr": "cp_zookeeper_outstandingrequests{release=\"$Release\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -1330,15 +1306,7 @@
           "refId": "A"
         }
       ],
-      "thresholds": [
-        {
-          "colorMode": "critical",
-          "fill": true,
-          "line": true,
-          "op": "gt",
-          "value": 10
-        }
-      ],
+      "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
       "title": "Outstanding Requests",
@@ -1435,7 +1403,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "avg(cp_zookeeper_inmemorydatatree_nodecount)",
+          "expr": "avg(cp_zookeeper_inmemorydatatree_nodecount{release=\"$Release\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -1452,7 +1420,7 @@
           "value": "null"
         }
       ],
-      "valueName": "avg"
+      "valueName": "current"
     },
     {
       "cacheTimeout": null,
@@ -1516,13 +1484,13 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(cp_zookeeper_inmemorydatatree_watchcount)",
+          "expr": "sum(cp_zookeeper_inmemorydatatree_watchcount{release=\"$Release\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
         }
       ],
-      "thresholds": "50,80",
+      "thresholds": "100,200",
       "title": "Number of Watchers",
       "type": "singlestat",
       "valueFontSize": "200%",
@@ -1533,7 +1501,7 @@
           "value": "null"
         }
       ],
-      "valueName": "avg"
+      "valueName": "current"
     },
     {
       "aliasColors": {},
@@ -1573,7 +1541,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "cp_zookeeper_minrequestlatency",
+          "expr": "cp_zookeeper_minrequestlatency{release=\"$Release\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{kubernetes_pod_name}}",
@@ -1654,7 +1622,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "cp_zookeeper_avgrequestlatency",
+          "expr": "cp_zookeeper_avgrequestlatency{release=\"$Release\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{kubernetes_pod_name}}",
@@ -1735,7 +1703,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "cp_zookeeper_maxrequestlatency",
+          "expr": "cp_zookeeper_maxrequestlatency{release=\"$Release\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{kubernetes_pod_name}}",
@@ -1853,7 +1821,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "count(cp_kafka_schema_registry_jetty_metrics_connections_active)",
+          "expr": "count(cp_kafka_schema_registry_jetty_metrics_connections_active{release=\"$Release\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -1877,9 +1845,9 @@
       "colorBackground": false,
       "colorValue": true,
       "colors": [
-        "#299c46",
+        "#d44a3a",
         "rgba(237, 129, 40, 0.89)",
-        "#d44a3a"
+        "#299c46"
       ],
       "datasource": "${DS_PROMETHEUS}",
       "description": "Total number of active TCP connections.",
@@ -1934,7 +1902,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "cp_kafka_schema_registry_jetty_metrics_connections_active",
+          "expr": "cp_kafka_schema_registry_jetty_metrics_connections_active{release=\"$Release\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -2015,7 +1983,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "cp_kafka_schema_registry_jetty_metrics_connections_opened_rate",
+          "expr": "cp_kafka_schema_registry_jetty_metrics_connections_opened_rate{release=\"$Release\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -2096,7 +2064,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "cp_kafka_schema_registry_jetty_metrics_connections_closed_rate",
+          "expr": "cp_kafka_schema_registry_jetty_metrics_connections_closed_rate{release=\"$Release\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -2190,7 +2158,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "count(cp_kafka_rest_jetty_metrics_connections_active)",
+          "expr": "count(cp_kafka_rest_jetty_metrics_connections_active{release=\"$Release\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -2214,9 +2182,9 @@
       "colorBackground": false,
       "colorValue": true,
       "colors": [
-        "#299c46",
+        "#d44a3a",
         "rgba(237, 129, 40, 0.89)",
-        "#d44a3a"
+        "#299c46"
       ],
       "datasource": "${DS_PROMETHEUS}",
       "description": "Total number of active TCP connections.",
@@ -2271,7 +2239,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "cp_kafka_rest_jetty_metrics_connections_active",
+          "expr": "cp_kafka_rest_jetty_metrics_connections_active{release=\"$Release\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -2352,7 +2320,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "cp_kafka_rest_jetty_metrics_connections_opened_rate",
+          "expr": "cp_kafka_rest_jetty_metrics_connections_opened_rate{release=\"$Release\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -2433,7 +2401,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "cp_kafka_rest_jetty_metrics_connections_closed_rate",
+          "expr": "cp_kafka_rest_jetty_metrics_connections_closed_rate{release=\"$Release\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
@@ -2459,7 +2427,28 @@
     "4.1.0"
   ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "allValue": null,
+        "current": {},
+        "datasource": "${DS_PROMETHEUS}",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Rlease",
+        "multi": false,
+        "name": "Release",
+        "options": [],
+        "query": "label_values(cp_kafka_controller_kafkacontroller_activecontrollercount, release)",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
+      }
+    ]
   },
   "time": {
     "from": "now-15m",
@@ -2493,5 +2482,5 @@
   "timezone": "",
   "title": "Confluent Open Source",
   "uid": "AEaSQ97mz",
-  "version": 7
+  "version": 14
 }
