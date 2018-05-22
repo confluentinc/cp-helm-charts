@@ -52,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1526956384815,
+  "iteration": 1526959414308,
   "links": [],
   "panels": [
     {
@@ -564,13 +564,256 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
+      "description": "Aggregated Kafka Broker Pods CPU Usage",
+      "fill": 1,
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 0,
+        "y": 5
+      },
+      "id": 81,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(rate (container_cpu_usage_seconds_total{namespace=\"default\",pod_name=~\"$Release-cp-kafka-(\\\\d+)\"}[5m])) by (pod_name)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{pod_name}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "CPU Usage",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Kafka Broker Pods Memory Usage",
+      "fill": 1,
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 8,
+        "y": 5
+      },
+      "id": 82,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(container_memory_usage_bytes{namespace=\"default\",pod_name=~\"$Release-cp-kafka-(\\\\d+)\"}) by (pod_name)",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{pod_name}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Memory Usage",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "bytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
+      "description": "Kafka Broker Pods Disk Usage",
+      "fill": 1,
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 16,
+        "y": 5
+      },
+      "id": 83,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "percentage": false,
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "kubelet_volume_stats_used_bytes{namespace=\"default\",persistentvolumeclaim=~\"datadir-$Release-cp-kafka.*\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "{{persistentvolumeclaim}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Disk Usage",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "bytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ]
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": "${DS_PROMETHEUS}",
       "description": "Byte Rate",
       "fill": 1,
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 5
+        "y": 12
       },
       "id": 44,
       "legend": {
@@ -635,7 +878,7 @@
       "yaxes": [
         {
           "decimals": null,
-          "format": "short",
+          "format": "bytes",
           "label": "",
           "logBase": 1,
           "max": null,
@@ -663,7 +906,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 5
+        "y": 12
       },
       "id": 58,
       "legend": {
@@ -759,7 +1002,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 13
+        "y": 20
       },
       "id": 50,
       "legend": {
@@ -847,7 +1090,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 13
+        "y": 20
       },
       "id": 56,
       "legend": {
@@ -935,7 +1178,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 21
+        "y": 28
       },
       "id": 60,
       "legend": {
@@ -1016,7 +1259,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 21
+        "y": 28
       },
       "id": 62,
       "legend": {
@@ -1091,7 +1334,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 29
+        "y": 36
       },
       "id": 26,
       "panels": [],
@@ -1121,7 +1364,7 @@
         "h": 4,
         "w": 4,
         "x": 0,
-        "y": 30
+        "y": 37
       },
       "id": 52,
       "interval": null,
@@ -1189,7 +1432,7 @@
         "#d44a3a"
       ],
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Number of Alive Connections",
+      "description": "Number of Watchers",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -1202,9 +1445,9 @@
         "h": 4,
         "w": 4,
         "x": 4,
-        "y": 30
+        "y": 37
       },
-      "id": 54,
+      "id": 66,
       "interval": null,
       "links": [],
       "mappingType": 1,
@@ -1241,14 +1484,14 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(cp_zookeeper_numaliveconnections{release=\"$Release\"})",
+          "expr": "sum(cp_zookeeper_inmemorydatatree_watchcount{release=\"$Release\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
         }
       ],
-      "thresholds": "60,120",
-      "title": "Alive Connections",
+      "thresholds": "100,200",
+      "title": "Number of Watchers",
       "type": "singlestat",
       "valueFontSize": "200%",
       "valueMaps": [
@@ -1272,7 +1515,7 @@
         "h": 8,
         "w": 16,
         "x": 8,
-        "y": 30
+        "y": 37
       },
       "id": 12,
       "legend": {
@@ -1364,7 +1607,7 @@
         "h": 4,
         "w": 4,
         "x": 0,
-        "y": 34
+        "y": 41
       },
       "id": 64,
       "interval": null,
@@ -1432,7 +1675,7 @@
         "#d44a3a"
       ],
       "datasource": "${DS_PROMETHEUS}",
-      "description": "Number of Watchers",
+      "description": "Number of Alive Connections",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -1445,9 +1688,9 @@
         "h": 4,
         "w": 4,
         "x": 4,
-        "y": 34
+        "y": 41
       },
-      "id": 66,
+      "id": 54,
       "interval": null,
       "links": [],
       "mappingType": 1,
@@ -1484,14 +1727,14 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "sum(cp_zookeeper_inmemorydatatree_watchcount{release=\"$Release\"})",
+          "expr": "sum(cp_zookeeper_numaliveconnections{release=\"$Release\"})",
           "format": "time_series",
           "intervalFactor": 1,
           "refId": "A"
         }
       ],
-      "thresholds": "100,200",
-      "title": "Number of Watchers",
+      "thresholds": "60,120",
+      "title": "Alive Connections",
       "type": "singlestat",
       "valueFontSize": "200%",
       "valueMaps": [
@@ -1515,7 +1758,7 @@
         "h": 8,
         "w": 8,
         "x": 0,
-        "y": 38
+        "y": 45
       },
       "id": 10,
       "legend": {
@@ -1596,7 +1839,7 @@
         "h": 8,
         "w": 8,
         "x": 8,
-        "y": 38
+        "y": 45
       },
       "id": 6,
       "legend": {
@@ -1677,7 +1920,7 @@
         "h": 8,
         "w": 8,
         "x": 16,
-        "y": 38
+        "y": 45
       },
       "id": 8,
       "legend": {
@@ -1752,7 +1995,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 46
+        "y": 53
       },
       "id": 79,
       "panels": [],
@@ -1782,7 +2025,7 @@
         "h": 4,
         "w": 5,
         "x": 0,
-        "y": 47
+        "y": 54
       },
       "id": 72,
       "interval": null,
@@ -1863,7 +2106,7 @@
         "h": 4,
         "w": 5,
         "x": 5,
-        "y": 47
+        "y": 54
       },
       "id": 73,
       "interval": null,
@@ -1944,7 +2187,7 @@
         "h": 4,
         "w": 5,
         "x": 10,
-        "y": 47
+        "y": 54
       },
       "id": 74,
       "interval": null,
@@ -2025,7 +2268,7 @@
         "h": 4,
         "w": 5,
         "x": 15,
-        "y": 47
+        "y": 54
       },
       "id": 75,
       "interval": null,
@@ -2089,7 +2332,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 51
+        "y": 58
       },
       "id": 77,
       "panels": [],
@@ -2119,7 +2362,7 @@
         "h": 4,
         "w": 5,
         "x": 0,
-        "y": 52
+        "y": 59
       },
       "id": 68,
       "interval": null,
@@ -2200,7 +2443,7 @@
         "h": 4,
         "w": 5,
         "x": 5,
-        "y": 52
+        "y": 59
       },
       "id": 71,
       "interval": null,
@@ -2281,7 +2524,7 @@
         "h": 4,
         "w": 5,
         "x": 10,
-        "y": 52
+        "y": 59
       },
       "id": 69,
       "interval": null,
@@ -2362,7 +2605,7 @@
         "h": 4,
         "w": 5,
         "x": 15,
-        "y": 52
+        "y": 59
       },
       "id": 70,
       "interval": null,
@@ -2451,7 +2694,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -2482,5 +2725,5 @@
   "timezone": "",
   "title": "Confluent Open Source",
   "uid": "AEaSQ97mz",
-  "version": 14
+  "version": 15
 }
