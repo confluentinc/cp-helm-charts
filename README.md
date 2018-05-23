@@ -15,6 +15,8 @@
       * [Kafka](#kafka)
   + [Uninstall / Cleanup](#uninstall-/-cleanup)
 * [Operations](#operations)
+  + [Scale In/Out](#scale-in/out)
+  + [Monitoring](#monitoring)
 
 ## Description
 
@@ -149,7 +151,7 @@ kubectl delete pvc --selector=release=<release name>
 ## Operations
 ### Scale In/Out
 > NOTE: All Scale In/Out operations should be done offline with no producer/consumer connection
-####Zookeeper
+#### Zookeeper
 Install co-helm-charts with default 3 nodes zookeeper ensemble
 ```
 helm install cp-helm-charts
@@ -162,7 +164,7 @@ Scale zookeeper nodes out to 5, change `servers` under `cp-zookeeper` to 3 in [v
 ```
 helm upgrade <release name> cp-helm-charts
 ```
-####Kafka
+#### Kafka
 > NOTE: Scaling in/out Kafka brokers without doing Partition Reassignment will cause data loss!!   
 Be sure to reassign partitions correctly before scaling in/out Kafka cluster.
 Please refer: https://kafka.apache.org/documentation/#basic_ops_cluster_expansion 
@@ -195,7 +197,7 @@ JMX Metrics are enabled by default for all components, Prometheus JMX Exporter i
     
     ![Zookeeper Dashboard](screenshots/zookeeper.png "Zookeeper")
     
-##Work In Progress
+## Work In Progress
 ### External Access
 
 ### Security
