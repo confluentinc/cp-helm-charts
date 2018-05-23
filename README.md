@@ -147,3 +147,57 @@ kubectl delete pvc --selector=release=<release name>
 ````
 
 ## Operations
+### Scale In/Out
+> NOTE: All Scale In/Out operations should be done offline with no producer/consumer connection
+####Zookeeper
+Install co-helm-charts with default 3 nodes zookeeper ensemble
+```
+helm install cp-helm-charts
+```
+Scale zookeeper nodes out to 5, change `servers` under `cp-zookeeper` to 5 in [values.yaml](values.yaml)
+```
+helm upgrade <release name> cp-helm-charts
+```
+Scale zookeeper nodes out to 5, change `servers` under `cp-zookeeper` to 3 in [values.yaml](values.yaml)
+```
+helm upgrade <release name> cp-helm-charts
+```
+####Kafka
+> NOTE: Scaling in/out Kafka brokers without doing Partition Reassignment will cause data loss!!   
+Be sure to reassign partitions correctly before scaling in/out Kafka cluster.
+Please refer: https://kafka.apache.org/documentation/#basic_ops_cluster_expansion 
+
+Install co-helm-charts with default 3 brokers kafka cluster
+```
+helm install cp-helm-charts
+```
+Scale kafka brokers out to 5, change `brokers` under `cp-kafka` to 5 in [values.yaml](values.yaml)
+```
+helm upgrade <release name> cp-helm-charts
+```
+Scale kafka brokers out to 5, change `brokers` under `cp-kafka` to 3 in [values.yaml](values.yaml)
+```
+helm upgrade <release name> cp-helm-charts
+```
+### Monitoring
+JMX Metrics are enabled by default for all components, Prometheus JMX Exporter is installed as a sidecar container along with all Pods.
+
+1. Install Prometheus and Grafana in same Kubernetes cluster using helm
+    ```
+    helm install stable/prometheus
+    helm install stable/grafana
+    ```
+2. Add Prometheus as Data Source in Grafana, url should be something like:
+   `http://illmannered-marmot-prometheus-server:80`
+
+3. Import dashboard under [grafana-dashboard](grafana-dashboard) into Grafana
+    ![Kafka Dashboard](screenshots/kafka.png "Kafka")
+    
+    ![Zookeeper Dashboard](screenshots/zookeeper.png "Zookeeper")
+    
+##Work In Progress
+### External Access
+
+### Security
+
+### Logging

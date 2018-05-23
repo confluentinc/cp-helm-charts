@@ -24,11 +24,11 @@ imagePullPolicy: IfNotPresent
 ## StatefulSet Config
 ## Start and stop pods in Parallel or OrderedReady (one-by-one.)
 ## ref: https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#pod-management-policy
-podManagementPolicy: Parallel
+podManagementPolicy: OrderedReady
 
-## The StatefulSet Update Strategy which Zookeeper will use when changes are applied.
+## The StatefulSet Update Strategy which Zookeeper will use when changes are applied: OnDelete or RollingUpdate
 ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies
-updateStrategy: OnDelete
+updateStrategy: RollingUpdate
 
 ## Liveness and Readiness Probe Configuration
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/

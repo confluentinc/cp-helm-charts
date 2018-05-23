@@ -14,21 +14,20 @@ This chart bootstraps a deployment of a Confluent Kafka Connect
 * DockerHub - ConfluentInc: https://hub.docker.com/u/confluentinc/
 
 ## Installing the Chart
-### Install along with CP-Kafka chart
+### Install along with cp-helm-charts
 ```console
 $ git clone https://github.com/confluentinc/cp-helm-charts.git
-$ cd cp-helm-charts/charts
-$ helm install ./cp-kafka
+$ helm install cp-helm-charts
 ```
 
 To install with a specific name, you can do:
 ```console
-$ helm install --name my-kafka ./cp-kafka
+$ helm install --name my-confluent cp-helm-charts
 ```
 
 ### Install with a existing CP-Kafka release
 ```console
-$ helm install --set zookeeper.url="unhinged-robin-zookeeper",schemaregistry.url="lolling-chinchilla-cp-schema-registry" ./cp-kafka-connect
+$ helm install --set cp-zookeeper.url="unhinged-robin-cp-zookeeper:2181",cp-schema-registry.url="lolling-chinchilla-cp-schema-registry:8081" cp-helm-charts/charts/cp-kafka-connect
 ```
 
 ### Installed Components

@@ -99,8 +99,8 @@ The configuration parameters in this section control the resources requested and
 ### StatefulSet Configurations
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `podManagementPolicy` | The Zookeeper StatefulSet Pod Management Policy: `Parallel` or `OrderedReady`. | `Parallel` |
-| `updateStrategy` | The ZooKeeper StatefulSet update strategy: `RollingUpdate` or `OnDelete`. | `OnDelete` |
+| `podManagementPolicy` | The Zookeeper StatefulSet Pod Management Policy: `Parallel` or `OrderedReady`. | `OrderedReady` |
+| `updateStrategy` | The ZooKeeper StatefulSet update strategy: `RollingUpdate` or `OnDelete`. | `RollingUpdate` |
 
 ### Liveness and Readiness Probe Configuration
 | Parameter | Description | Default |
