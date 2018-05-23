@@ -135,4 +135,11 @@ helm install --set cp-schema-registry.enabled=false,cp-kafka-rest.enabled=false,
     kafka-consumer-perf-test --broker-list $KAFKAS --messages 6000000 --threads 1 --topic test-rep-one --print-metrics
     ```
 
+### Uninstall / Cleanup
+
+```
+helm ls # to check find out release name
+helm delete <release name>
+````
+
 ## Operations
