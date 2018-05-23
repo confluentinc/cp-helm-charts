@@ -1,0 +1,39 @@
+###
+# Example pod with containers for playing with KSQL on Kubernetes. Not for production.
+# To run queries:
+#
+# kubectl exec -it ksql-demo --container ksql-server -- /bin/bash
+# root@ksql-demo:/# ksql
+#
+# Try any query from: https://docs.confluent.io/current/ksql/docs/tutorials/basics-docker.html#create-a-stream-and-table
+#
+# Note the hardcoded bootstrap servers. You'll need to replace them with your own connection strings
+###
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ksql-demo
+  namespace: default
+spec:
+  containers:
+  - name: ksql-datagen-pageviews
+    image: confluentinc/ksql-examples:5.0.0-beta1
+    command:
+      - sh
+      - -c
+      - "exec java -jar /usr/share/java/ksql-examples/ksql-examples-5.0.0-SNAPSHOT-standalone.jar quickstart=pageviews format=delimited topic=pageviews  bootstrap-server=oldfashioned-dog-cp-kafka:9092"
+  - name: ksql-datagen-users
+    image: confluentinc/ksql-examples:5.0.0-beta1
+    command:
+      - sh
+      - -c
+      - "exec java -jar /usr/share/java/ksql-examples/ksql-examples-5.0.0-SNAPSHOT-standalone.jar quickstart=users format=json topic=users iterations=1000 bootstrap-server=oldfashioned-dog-cp-kafka:9092"
+  - name: ksql
+    image: confluentinc/ksql-cli:5.0.0-beta1
+    env:
+      - name: KSQL_OPTS
+        value: "-Dbootstrap.servers=oldfashioned-dog-cp-kafka:9092"
+    command:
+          - sh
+          - -c
+          - "ksql-server-start /etc/ksql/ksql-server.properties"

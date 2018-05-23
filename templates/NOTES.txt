@@ -22,6 +22,10 @@ To connect from a client pod:
           - -c
           - "exec tail -f /dev/null"
 
+  You can do this by running:
+
+      kubectl apply -f cp-helm-charts/examples/kafka-client.yaml
+
 2. Log into the Pod
 
   kubectl exec -it zookeeper-client -- /bin/bash
