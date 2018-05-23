@@ -1,3 +1,4 @@
+{{- if (index .Values "cp-zookeeper" "enabled") -}}
 ## ------------------------------------------------------
 ## Zookeeper
 ## ------------------------------------------------------
@@ -40,8 +41,8 @@ To connect from a client pod:
 
   # Gives more detailed information of the broker id '0'
   get /brokers/ids/0
-
-
+{{- end -}}
+{{- if (index .Values "cp-kafka" "enabled") -}}
 ## ------------------------------------------------------
 ## Kafka
 ## ------------------------------------------------------
@@ -80,3 +81,4 @@ To connect from a client pod:
 
   # Consume a test message from the topic
   kafka-console-consumer --bootstrap-server {{ .Release.Name }}-cp-kafka-headless:9092 --topic {{ .Release.Name }}-topic --from-beginning --timeout-ms 2000 --max-messages 1 | grep "$MESSAGE"
+{{- end -}}

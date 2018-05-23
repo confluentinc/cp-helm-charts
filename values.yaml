@@ -36,10 +36,6 @@ cp-kafka:
   brokers: 3
   image: confluentinc/cp-kafka
   imageTag: 4.1.0
-  nodeport:
-    enabled: false
-    servicePort: 19092
-    firstListenerPort: 31090
   persistence:
     enabled: true
     # storageClass: ""
