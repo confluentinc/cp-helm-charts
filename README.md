@@ -5,7 +5,7 @@
 * [Environment Preparation](#environment-preparation)
   + [Create a Kubernetes Cluster](#create-a-kubernetes-cluster)
   + [Install Helm on the Kubernetes](#install-helm-on-the-kubernetes)
-* [Install](#installation)
+* [Installation](#installation)
   + [Clone the repo](#clone-the-repo)
   + [Install Chart](#install-cp-helm-chart)
   + [Verify Installation(Optional)](#verify-installation(optional))
@@ -13,6 +13,7 @@
     - [Manual Test](#manual-test)
       * [Zookeeper](#zookeeper)
       * [Kafka](#kafka)
+  + [Uninstall / Cleanup](#uninstall-/-cleanup)
 * [Operations](#operations)
 
 ## Description
@@ -140,6 +141,9 @@ helm install --set cp-schema-registry.enabled=false,cp-kafka-rest.enabled=false,
 ```
 helm ls # to check find out release name
 helm delete <release name>
+
+# delete all pvc created by this release
+kubectl delete pvc --selector=release=<release name>
 ````
 
 ## Operations
