@@ -52,7 +52,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1526959414308,
+  "iteration": 1526959414314,
   "links": [],
   "panels": [
     {
@@ -933,31 +933,17 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(cp_kafka_network_requestmetrics_requestspersec_produce{release=\"$Release\"})",
+          "expr": "sum(cp_kafka_server_brokertopicmetrics_messagesinpersec)",
           "format": "time_series",
           "intervalFactor": 1,
-          "legendFormat": "Produce",
-          "refId": "A"
-        },
-        {
-          "expr": "sum(cp_kafka_network_requestmetrics_requestspersec_fetchconsumer{release=\"$Release\"})",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "Consumer Fetch",
-          "refId": "B"
-        },
-        {
-          "expr": "sum(cp_kafka_network_requestmetrics_requestspersec_fetchfollower{release=\"$Release\"})",
-          "format": "time_series",
-          "intervalFactor": 1,
-          "legendFormat": "Follower Fetch",
-          "refId": "C"
+          "legendFormat": "{{Messages In Per Second}}",
+          "refId": "D"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Request Rate",
+      "title": "Messages In Per Second",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -2694,7 +2680,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -2725,5 +2711,5 @@
   "timezone": "",
   "title": "Confluent Open Source",
   "uid": "AEaSQ97mz",
-  "version": 15
+  "version": 16
 }
