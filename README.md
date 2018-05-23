@@ -88,7 +88,7 @@ helm install --set cp-schema-registry.enabled=false,cp-kafka-rest.enabled=false,
 ##### Zookeeper
 1. Deploy a zookeeper client pod
     ```
-    kubectl apply cp-helm-charts/examples/zookeeper-client.yaml
+    kubectl apply -f cp-helm-charts/examples/zookeeper-client.yaml
     ```
 2. Log into the Pod
     ```
@@ -112,7 +112,7 @@ helm install --set cp-schema-registry.enabled=false,cp-kafka-rest.enabled=false,
 ##### Kafka
 1. Deploy a kafka client pod
     ```
-    kubectl apply cp-helm-charts/examples/kafka-client.yaml
+    kubectl apply -f cp-helm-charts/examples/kafka-client.yaml
     ```
 2. Log into the Pod
     ```
