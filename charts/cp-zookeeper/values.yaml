@@ -30,11 +30,6 @@ podManagementPolicy: OrderedReady
 ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies
 updateStrategy: RollingUpdate
 
-## Liveness and Readiness Probe Configuration
-## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
-probeInitialDelaySeconds: 15
-probeTimeoutSeconds: 5
-
 ## Zookeeper Configuration
 ## ref: https://zookeeper.apache.org/doc/r3.4.10/zookeeperAdmin.html#sc_configuration
 ## ref: https://docs.confluent.io/current/zookeeper/deployment.html#important-configuration-options
@@ -44,6 +39,9 @@ initLimit: 10
 maxClientCnxns: 60
 autoPurgeSnapRetainCount: 3
 autoPurgePurgeInterval: 24
+
+## Zookeeper JVM Heap Option
+heapOptions: "-Xms512M -Xmx512M"
 
 ## Port
 ## ref: https://zookeeper.apache.org/doc/r3.4.10/zookeeperAdmin.html#sc_configuration

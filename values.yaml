@@ -6,6 +6,7 @@ cp-zookeeper:
   servers: 3
   image: confluentinc/cp-zookeeper
   imageTag: 4.1.0
+  heapOptions: "-Xms512M -Xmx512M"
   persistence:
     enabled: true
     ## The size of the PersistentVolume to allocate to each Zookeeper Pod in the StatefulSet. For
@@ -36,6 +37,7 @@ cp-kafka:
   brokers: 3
   image: confluentinc/cp-kafka
   imageTag: 4.1.0
+  heapOptions: "-Xms1024M -Xmx1024M"
   persistence:
     enabled: true
     # storageClass: ""

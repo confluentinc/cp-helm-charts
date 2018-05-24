@@ -13,10 +13,6 @@ imageTag: 4.1.0
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
 imagePullPolicy: IfNotPresent
 
-## Liveness and Readiness Probe Configuration
-initialDelaySeconds: 60
-timeoutSeconds: 10
-
 servicePort: 8082
 
 resources: {}

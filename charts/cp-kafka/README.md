@@ -111,17 +111,6 @@ The configuration parameters in this section control the resources requested and
 | `podManagementPolicy` | The Kafka StatefulSet Pod Management Policy: `Parallel` or `OrderedReady`. | `OrderedReady` |
 | `updateStrategy` | The Kafka StatefulSet update strategy: `RollingUpdate` or `OnDelete`. | `OnDelete` |
 
-### Liveness and Readiness Probe Configuration
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `livenessProbe.initialDelaySeconds` | Number of seconds after the container has started before probes are initiated. | `60` |
-| `livenessProbe.timeoutSeconds` | Number of seconds after which the probe times out. | `10` |
-| `readinessProbe.initialDelaySeconds` | Number of seconds after the container has started before probes are initiated. | `60` |
-| `readinessProbe.timeoutSeconds` | Number of seconds after which the probe times out. | `10` |
-| `readinessProbe.periodSeconds` | How often (in seconds) to perform the probe. | `10` |
-| `readinessProbe.successThreshold` | Minimum consecutive successes for the probe to be considered successful after having failed.  | `1` |
-| `readinessProbe.failureThreshold` | The amount of time before the probes are considered to be failed due to a timeout. | `3` |
-
 ### Confluent Kafka Configuration
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
@@ -133,6 +122,11 @@ The configuration parameters in this section control the resources requested and
 | `persistence.enabled` | Whether to create a PVC. If `false`, an `emptyDir` on the host will be used. | `true` |
 | `persistence.size` | Size for log dir, where Kafka will store log data. | `5Gi` |
 | `persistence.storageClass` | Valid options: `nil`, `"-"`, or storage class name. | `nil` |
+
+### Kafka JVM Heap Options
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `heapOptions` | The JVM Heap Options for Kafka | `"-Xms1G -Xmx1G"` |
 
 ### Resources
 | Parameter | Description | Default |
