@@ -81,12 +81,6 @@ The configuration parameters in this section control the resources requested and
 | `imageTag` | Docker Image Tag of Confluent REST Proxy. | `4.1.0` |
 | `imagePullPolicy` | Docker Image Tag of Confluent REST Proxy. | `IfNotPresent` |
 
-### Liveness and Readiness Probe Configuration
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `initialDelaySeconds` | Number of seconds after the container has started before probes are initiated. | `60` |
-| `timeoutSeconds` | Number of seconds after which the probe times out. | `10` |
-
 ### Port
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |

@@ -66,22 +66,6 @@ spec:
       - name: {{ template "cp-kafka.name" . }}-broker
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
-#        livenessProbe:
-#          exec:
-#            command:
-#              - sh
-#              - -ec
-#              - /usr/bin/jps | /bin/grep -q SupportedKafka
-#          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
-#          timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
-#        readinessProbe:
-#          tcpSocket:
-#            port: kafka
-#          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
-#          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
-#          timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
-#          successThreshold: {{ .Values.readinessProbe.successThreshold }}
-#          failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
         ports:
         - containerPort: 9092
           name: kafka
@@ -116,7 +100,7 @@ spec:
         {{- end }}
         {{- if not (hasKey .Values.configurationOverrides "log.dirs") }}
         - name: KAFKA_LOG_DIRS
-          value: "/var/lib/kafka/data"
+          value: "/opt/kafka/data/logs"
         {{- end }}
         {{- range $key, $value := .Values.configurationOverrides }}
         - name: {{ printf "KAFKA_%s" $key | replace "." "_" | upper | quote }}
@@ -139,7 +123,7 @@ spec:
           exec /etc/confluent/docker/run
         volumeMounts:
         - name: datadir
-          mountPath: /var/lib/kafka/
+          mountPath: /opt/kafka/data
       volumes:
       {{- if not .Values.persistence.enabled }}
       - name: datadir

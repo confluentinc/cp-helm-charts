@@ -102,12 +102,6 @@ The configuration parameters in this section control the resources requested and
 | `podManagementPolicy` | The Zookeeper StatefulSet Pod Management Policy: `Parallel` or `OrderedReady`. | `OrderedReady` |
 | `updateStrategy` | The ZooKeeper StatefulSet update strategy: `RollingUpdate` or `OnDelete`. | `RollingUpdate` |
 
-### Liveness and Readiness Probe Configuration
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `probeInitialDelaySeconds` | The initial delay before the liveness and readiness probes will be invoked. | `15` |
-| `probeTimeoutSeconds` | The amount of time before the probes are considered to be failed due to a timeout. | `5` |
-
 ### Confluent Zookeeper Configuration
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
@@ -117,6 +111,11 @@ The configuration parameters in this section control the resources requested and
 | `maxClientCnxns` | Limits the number of concurrent connections (at the socket level) that a single client, identified by IP address, may make to a single member of the ZooKeeper ensemble. This is used to prevent certain classes of DoS attacks, including file descriptor exhaustion. | `60` |
 | `autoPurgeSnapRetainCount` | When enabled, ZooKeeper auto purge feature retains the autopurge.snapRetainCount most recent snapshots and the corresponding transaction logs in the dataDir and dataLogDir respectively and deletes the rest. | `3` |
 | `autoPurgePurgeInterval` | The time interval in hours for which the purge task has to be triggered. Set to a positive integer (1 and above) to enable the auto purging. | `72` |
+
+### Zookeeper JVM Heap Options
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `heapOptions` | The JVM Heap Options for Zookeeper | `"-Xms512M -Xmx512M"` |
 
 ### Port
 | Parameter | Description | Default |

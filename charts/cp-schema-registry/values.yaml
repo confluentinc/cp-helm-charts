@@ -18,10 +18,6 @@ imageTag: 4.1.0
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
 imagePullPolicy: IfNotPresent
 
-## Liveness and Readiness Probe Configuration
-initialDelaySeconds: 60
-timeoutSeconds: 10
-
 ## Schema Registry Settings Overrides
 ## Configuration Options can be found here: https://docs.confluent.io/current/schema-registry/docs/config.html
 configurationOverrides: {}

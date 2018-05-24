@@ -65,16 +65,11 @@ spec:
       - name: {{ template "cp-zookeeper.name" . }}-server
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
-#        readinessProbe:
-#          exec:
-#            command: ['/bin/bash', '-c', 'echo "ruok" | nc -w 2 -q 2 localhost 2181 | grep imok']
-#          initialDelaySeconds: {{ .Values.probeInitialDelaySeconds }}
-#          timeoutSeconds: {{ .Values.probeTimeoutSeconds }}
-#        livenessProbe:
-#          exec:
-#            command: ['/bin/bash', '-c', 'echo "ruok" | nc -w 2 -q 2 localhost 2181 | grep imok']
-#          initialDelaySeconds: {{ .Values.probeInitialDelaySeconds }}
-#          timeoutSeconds: {{ .Values.probeTimeoutSeconds }}
+        livenessProbe:
+          exec:
+            command: ['/bin/bash', '-c', 'echo "ruok" | nc -w 2 -q 2 localhost 2181 | grep imok']
+          initialDelaySeconds: 1
+          timeoutSeconds: 3
         ports:
         - containerPort: {{ .Values.clientPort }}
           name: client
@@ -89,6 +84,8 @@ spec:
         resources:
 {{ toYaml .Values.resources | indent 10 }}
         env:
+        - name : KAFKA_HEAP_OPTS
+          value: "{{ .Values.heapOptions }}"
         {{- if .Values.jmx.port }}
         - name : KAFKA_JMX_PORT
           value: "{{ .Values.jmx.port }}"

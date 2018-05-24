@@ -57,20 +57,6 @@ spec:
             - containerPort: {{ .Values.jmx.port }}
               name: jmx
             {{- end }}
-#          livenessProbe:
-#            exec:
-#              command:
-#                - sh
-#                - -ec
-#                - /usr/bin/jps | /bin/grep -q KafkaRestMain
-#            initialDelaySeconds: {{ .Values.initialDelaySeconds }}
-#            timeoutSeconds: {{ .Values.timeoutSeconds }}
-#          readinessProbe:
-#            httpGet:
-#              path: /
-#              port: rest-proxy
-#            initialDelaySeconds: {{ .Values.initialDelaySeconds }}
-#            timeoutSeconds: {{ .Values.timeoutSeconds }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           env:
