@@ -37,7 +37,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 */}}
 {{- define "cp-kafka-rest.cp-zookeeper.fullname" -}}
 {{- $name := default "cp-zookeeper" (index .Values "cp-zookeeper" "nameOverride") -}}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s-headless" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
@@ -65,6 +65,6 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- if (index .Values "cp-schema-registry" "url") -}}
 {{- printf "%s" (index .Values "cp-schema-registry" "url") -}}
 {{- else -}}
-{{- printf "%s:8081" (include "cp-kafka-rest.cp-schema-registry.fullname" .) -}}
+{{- printf "http://%s:8081" (include "cp-kafka-rest.cp-schema-registry.fullname" .) -}}
 {{- end -}}
 {{- end -}}
