@@ -53,7 +53,7 @@ cp-kafka:
   #   memory: 128Mi
 
 ## ------------------------------------------------------
-## Schema Registry
+## Confluent Schema Registry
 ## ------------------------------------------------------
 cp-schema-registry:
   enabled: true
@@ -70,7 +70,7 @@ cp-schema-registry:
   #   memory: 128Mi
 
 ## ------------------------------------------------------
-## REST Proxy
+## Confluent REST Proxy
 ## ------------------------------------------------------
 cp-kafka-rest:
   enabled: true
@@ -93,6 +93,23 @@ cp-kafka-connect:
   enabled: false
   image: confluentinc/cp-kafka-connect
   imageTag: 4.1.0
+  resources: {}
+  ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
+  ## and remove the curly braces after 'resources:'
+  #  limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  #  requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+## ------------------------------------------------------
+## Confluent KSQL
+## ------------------------------------------------------
+cp-ksql:
+  enabled: true
+  image: confluentinc/ksql-cli
+  imageTag: 5.0.0-beta1
   resources: {}
   ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
   ## and remove the curly braces after 'resources:'
