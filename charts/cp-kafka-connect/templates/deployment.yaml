@@ -34,6 +34,8 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
+            - name: CONNECT_PLUGIN_PATH
+              value: {{ .Values.pluginPath }}
             - name: CONNECT_BOOTSTRAP_SERVERS
               value: {{ template "cp-schema-registry.kafka.bootstrapServers" . }}
             - name: CONNECT_GROUP_ID
@@ -44,11 +46,15 @@ spec:
               value: {{ template "cp-kafka-connect.fullname" . }}-offset
             - name: CONNECT_STATUS_STORAGE_TOPIC
               value: {{ template "cp-kafka-connect.fullname" . }}-status
+            - name: CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL
+              value: {{ template "cp-kafka-connect.cp-schema-registry.service-name" .}}
+            - name: CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL
+              value: {{ template "cp-kafka-connect.cp-schema-registry.service-name" .}}
             - name: CONNECT_KEY_CONVERTER
-              value: "org.apache.kafka.connect.json.JsonConverter"
+              value: {{ .Values.connectKeyConverter }}
             - name: CONNECT_VALUE_CONVERTER
-              value: "org.apache.kafka.connect.json.JsonConverter"
+              value: {{ .Values.connectValueConverter }}
             - name: CONNECT_INTERNAL_KEY_CONVERTER
-              value: "org.apache.kafka.connect.json.JsonConverter"
+              value: {{ .Values.connectInternalKeyConverter }}
             - name: CONNECT_INTERNAL_VALUE_CONVERTER
-              value: "org.apache.kafka.connect.json.JsonConverter"
+              value: {{ .Values.connectInternalValueConverter }}

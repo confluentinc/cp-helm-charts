@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: avro-client
+  namespace: default
+spec:
+  containers:
+  - name: avro-client
+    image: confluentinc/cp-schema-registry:4.1.0
+    command:
+      - sh
+      - -c
+      - "exec tail -f /dev/null"

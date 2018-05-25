@@ -15,6 +15,14 @@ imagePullPolicy: IfNotPresent
 
 servicePort: 8083
 
+## Kafka Connect Worker Configurations
+## ref: https://docs.confluent.io/current/connect/userguide.html#configuring-workers
+connectKeyConverter: "io.confluent.connect.avro.AvroConverter"
+connectValueConverter: "io.confluent.connect.avro.AvroConverter"
+connectInternalKeyConverter: "org.apache.kafka.connect.json.JsonConverter"
+connectInternalValueConverter: "org.apache.kafka.connect.json.JsonConverter"
+pluginPath: "/usr/share/java"
+
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -31,3 +39,8 @@ resources: {}
 ## bootstrapServers: "PLAINTEXT://dozing-prawn-kafka-headless:9092"
 kafka:
   bootstrapServers: ""
+
+## If the Kafka Chart is disabled a URL and port are required to connect
+## e.g. gnoble-panther-cp-schema-registry:8081
+cp-schema-registry:
+  url: ""

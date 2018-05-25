@@ -86,6 +86,15 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `servicePort` | The port on which the REST Proxy will be available and serving requests. | `8082` |
 
+### Kafka Connect Worker Configurations
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `connectKeyConverter` | Converter class for key Connect data. This controls the format of the data that will be written to Kafka for source connectors or read from Kafka for sink connectors. Popular formats include Avro and JSON. |`"io.confluent.connect.avro.AvroConverter"`|
+| `connectValueConverter` | Converter class for value Connect data. This controls the format of the data that will be written to Kafka for source connectors or read from Kafka for sink connectors. Popular formats include Avro and JSON. |`"io.confluent.connect.avro.AvroConverter"`|
+| `connectInternalKeyConverter` | Converter class for internal key Connect data that implements the Converter interface. Used for converting data like offsets and configs. |`"org.apache.kafka.connect.json.JsonConverter"`|
+| `connectInternalValueConverter` | Converter class for offset value Connect data that implements the Converter interface. Used for converting data like offsets and configs. |`"org.apache.kafka.connect.json.JsonConverter"`|
+| `pluginPath` | The comma-separated list of paths to directories that contain Kafka Connect plugins. |`"/usr/share/java"`|
+
 ### Resources
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
