@@ -37,7 +37,7 @@ cp-kafka:
   brokers: 3
   image: confluentinc/cp-kafka
   imageTag: 4.1.0
-  heapOptions: "-Xms1024M -Xmx1024M"
+  heapOptions: "-Xms512M -Xmx512M"
   persistence:
     enabled: true
     # storageClass: ""
@@ -59,6 +59,7 @@ cp-schema-registry:
   enabled: true
   image: confluentinc/cp-schema-registry
   imageTag: 4.1.0
+  heapOptions: "-Xms512M -Xmx512M"
   resources: {}
   ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
   ## and remove the curly braces after 'resources:'
@@ -90,7 +91,7 @@ cp-kafka-rest:
 ## Kafka Connect
 ## ------------------------------------------------------
 cp-kafka-connect:
-  enabled: false
+  enabled: true
   image: confluentinc/cp-kafka-connect
   imageTag: 4.1.0
   resources: {}

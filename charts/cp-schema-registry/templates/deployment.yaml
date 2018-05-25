@@ -75,9 +75,6 @@ spec:
             value: {{ $configValue }}
           {{ end }}
           {{- if .Values.schemaRegistryOpts }}
-          # The pre-flight checks use KAFKA_OPTS instead of SCHEMA_REGISTRY_OPTS.
-          - name: KAFKA_OPTS
-            value: "{{ .Values.schemaRegistryOpts }}"
           - name: SCHEMA_REGISTRY_OPTS
             value: "{{ .Values.schemaRegistryOpts }}"
           {{- end }}
