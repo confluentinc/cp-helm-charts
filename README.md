@@ -212,3 +212,4 @@ Huge thanks to:
 - [Zookeeper helm chart](https://github.com/kubernetes/charts/tree/master/incubator/zookeeper)
 - [Schema Registry helm chart](https://github.com/kubernetes/charts/tree/master/incubator/schema-registry)
 - [kubernetes-kafka](https://github.com/Yolean/kubernetes-kafka)
+- [docker-kafka](https://github.com/solsson/dockerfiles)
