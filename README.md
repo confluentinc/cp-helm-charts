@@ -17,6 +17,8 @@
 * [Operations](#operations)
   + [Scale In/Out](#scale-in/out)
   + [Monitoring](#monitoring)
+* [Work In Progress](#work-in-progress)
+* [Huge Thanks](#huge-thanks)
 
 ## Description
 
