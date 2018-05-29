@@ -26,7 +26,7 @@ This is Helm Chart for deploying Confluent Open Source on Kubernetes, which incl
 * Confluent Kafka
 * Confluent Zookeeper
 * Confluent Schema Registry
-* Confluent Kafka REST
+* Confluent Kafka REST Proxy
 * Confluent Kafka Connect
 
 ## Software
