@@ -93,7 +93,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `image` | Docker Image of Confluent Zookeeper. | `confluentinc/cp-zookeeper` |
-| `imageTag` | Docker Image Tag of Confluent Zookeeper. | `4.1.0` |
+| `imageTag` | Docker Image Tag of Confluent Zookeeper. | `4.1.1` |
 | `imagePullPolicy` | Docker Image Tag of Confluent Zookeeper. | `IfNotPresent` |
 
 ### StatefulSet Configurations

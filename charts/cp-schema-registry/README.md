@@ -83,7 +83,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `image` | Docker Image of Confluent Schema Registry. | `confluentinc/cp-schema-registry` |
-| `imageTag` | Docker Image Tag of Confluent Schema Registry. | `4.1.0` |
+| `imageTag` | Docker Image Tag of Confluent Schema Registry. | `4.1.1` |
 | `imagePullPolicy` | Docker Image Tag of Confluent Schema Registry. | `IfNotPresent` |
 
 ### Confluent Schema Registry Configuration
