@@ -199,12 +199,14 @@ JMX Metrics are enabled by default for all components, Prometheus JMX Exporter i
     
     ![Zookeeper Dashboard](screenshots/zookeeper.png "Zookeeper")
     
-## Work In Progress
+## TODO
 ### External Access
 
 ### Security
 
 ### Logging
+
+### Upgrade
 
 ## Huge Thanks
 

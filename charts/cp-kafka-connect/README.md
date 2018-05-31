@@ -27,7 +27,7 @@ $ helm install --name my-confluent cp-helm-charts
 
 ### Install with a existing CP-Kafka release
 ```console
-$ helm install --set cp-zookeeper.url="unhinged-robin-cp-zookeeper:2181",cp-schema-registry.url="lolling-chinchilla-cp-schema-registry:8081" cp-helm-charts/charts/cp-kafka-connect
+$ helm install --set kafka.bootstrapServers="PLAINTEXT://lolling-chinchilla-cp-kafka-headless:9092",cp-schema-registry.url="lolling-chinchilla-cp-schema-registry:8081" cp-helm-charts/charts/cp-kafka-connect
 ```
 
 ### Installed Components
@@ -67,24 +67,24 @@ $ helm install --name my-kafka-connect -f my-values.yaml ./cp-kafka-connect
 
 > **Tip**: A default [values.yaml](values.yaml) is provided
 
-### REST Proxy Deployment
+### Kafka Connect Deployment
 The configuration parameters in this section control the resources requested and utilized by the cp-kafka-connect chart.
 
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `replicaCount` | The number of REST Proxy Servers. | `1` |
+| `replicaCount` | The number of Kafka Connect Servers. | `1` |
 
 ### Image
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `image` | Docker Image of Confluent REST Proxy. | `confluentinc/cp-kafka-connect` |
-| `imageTag` | Docker Image Tag of Confluent REST Proxy. | `4.1.0` |
-| `imagePullPolicy` | Docker Image Tag of Confluent REST Proxy. | `IfNotPresent` |
+| `image` | Docker Image of Confluent Kafka Connect. | `confluentinc/cp-kafka-connect` |
+| `imageTag` | Docker Image Tag of Confluent Kafka Connect. | `4.1.0` |
+| `imagePullPolicy` | Docker Image Tag of Confluent Kafka Connect. | `IfNotPresent` |
 
 ### Port
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `servicePort` | The port on which the REST Proxy will be available and serving requests. | `8082` |
+| `servicePort` | The port on which the Kafka Connect will be available and serving requests. | `8082` |
 
 ### Kafka Connect Worker Configurations
 | Parameter | Description | Default |
@@ -100,8 +100,21 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `resources.requests.cpu` | The amount of CPU to request. | see [values.yaml](values.yaml) for details |
 | `resources.requests.memory` | The amount of memory to request. | see [values.yaml](values.yaml) for details |
-| `resources.requests.limit` | The upper limit CPU usage for a REST Proxy Pod. | see [values.yaml](values.yaml) for details |
-| `resources.requests.limit` | The upper limit memory usage for a REST Proxy Pod. | see [values.yaml](values.yaml) for details |
+| `resources.requests.limit` | The upper limit CPU usage for a Kafka Connect Pod. | see [values.yaml](values.yaml) for details |
+| `resources.requests.limit` | The upper limit memory usage for a Kafka Connect Pod. | see [values.yaml](values.yaml) for details |
+
+### JMX Configuration
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `jmx.port` | The jmx port which JMX style metrics are exposed. | `5555` |
+
+### Prometheus JMX Exporter Configuration
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `prometheus.jmx.enabled` | Whether or not to install Prometheus JMX Exporter as a sidecar container and expose JMX metrics to Prometheus. | `true` |
+| `prometheus.jmx.image` | Docker Image for Prometheus JMX Exporter container. | `solsson/kafka-prometheus-jmx-exporter@sha256` | 
+| `prometheus.jmx.imageTag` | Docker Image Tag for Prometheus JMX Exporter container. | `a23062396cd5af1acdf76512632c20ea6be76885dfc20cd9ff40fb23846557e8` |
+| `prometheus.jmx.port` | JMX Exporter Port which exposes metrics in Prometheus format for scraping. | `5556` |
 
 ## Dependencies
 ### Kafka

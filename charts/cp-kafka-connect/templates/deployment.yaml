@@ -18,8 +18,34 @@ spec:
       labels:
         app: {{ template "cp-kafka-connect.name" . }}
         release: {{ .Release.Name }}
+      {{- if .Values.prometheus.jmx.enabled }}
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
+      {{- end }}
     spec:
       containers:
+        {{- if .Values.prometheus.jmx.enabled }}
+        - name: prometheus-jmx-exporter
+          image: "{{ .Values.prometheus.jmx.image }}:{{ .Values.prometheus.jmx.imageTag }}"
+          command:
+          - java
+          - -XX:+UnlockExperimentalVMOptions
+          - -XX:+UseCGroupMemoryLimitForHeap
+          - -XX:MaxRAMFraction=1
+          - -XshowSettings:vm
+          - -jar
+          - jmx_prometheus_httpserver.jar
+          - {{ .Values.prometheus.jmx.port | quote }}
+          - /etc/jmx-kafka-connect/jmx-kafka-connect-prometheus.yml
+          ports:
+          - containerPort: {{ .Values.prometheus.jmx.port }}
+          resources:
+{{ toYaml .Values.prometheus.jmx.resources | indent 12 }}
+          volumeMounts:
+          - name: jmx-config
+            mountPath: /etc/jmx-kafka-connect
+        {{- end }}
         - name: {{ template "cp-kafka-connect.name" . }}-server
           image: "{{ .Values.image }}:{{ .Values.imageTag }}"
           imagePullPolicy: "{{ .Values.imagePullPolicy }}"
@@ -27,6 +53,10 @@ spec:
             - name: kafka-connect
               containerPort: {{ .Values.servicePort}}
               protocol: TCP
+            {{- if .Values.prometheus.jmx.enabled }}
+            - containerPort: {{ .Values.jmx.port }}
+              name: jmx
+            {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           env:
@@ -37,7 +67,7 @@ spec:
             - name: CONNECT_PLUGIN_PATH
               value: {{ .Values.pluginPath }}
             - name: CONNECT_BOOTSTRAP_SERVERS
-              value: {{ template "cp-schema-registry.kafka.bootstrapServers" . }}
+              value: {{ template "cp-kafka-connect.kafka.bootstrapServers" . }}
             - name: CONNECT_GROUP_ID
               value: {{ template "cp-kafka-connect.groupId" . }}
             - name: CONNECT_CONFIG_STORAGE_TOPIC
@@ -58,3 +88,13 @@ spec:
               value: {{ .Values.connectInternalKeyConverter }}
             - name: CONNECT_INTERNAL_VALUE_CONVERTER
               value: {{ .Values.connectInternalValueConverter }}
+            {{- if .Values.jmx.port }}
+            - name: KAFKA_JMX_PORT
+              value: "{{ .Values.jmx.port }}"
+            {{- end }}
+      volumes:
+      {{- if .Values.prometheus.jmx.enabled }}
+      - name: jmx-config
+        configMap:
+          name: {{ template "cp-kafka-connect.fullname" . }}-jmx-configmap
+      {{- end }}
