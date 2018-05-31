@@ -32,7 +32,7 @@ This is Helm Chart for deploying Confluent Open Source on Kubernetes, which incl
 ## Software
 * [Kubernetes](https://kubernetes.io/) 1.9.2+
 * [Helm](https://helm.sh/) 2.8.2+
-* [Confluent Platform Open Source Docker Images](https://hub.docker.com/u/confluentinc/) 4.1.0
+* [Confluent Platform Open Source Docker Images](https://hub.docker.com/u/confluentinc/) 4.1.1
 
 ## Environment Preparation
  
