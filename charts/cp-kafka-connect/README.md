@@ -78,7 +78,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `image` | Docker Image of Confluent Kafka Connect. | `confluentinc/cp-kafka-connect` |
-| `imageTag` | Docker Image Tag of Confluent Kafka Connect. | `4.1.0` |
+| `imageTag` | Docker Image Tag of Confluent Kafka Connect. | `4.1.1` |
 | `imagePullPolicy` | Docker Image Tag of Confluent Kafka Connect. | `IfNotPresent` |
 
 ### Port
