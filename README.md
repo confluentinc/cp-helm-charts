@@ -1,14 +1,14 @@
 # Confluent Open Source Helm Chart
 
-* [Description](#description)
+* [Introduction](#introduction)
 * [Software](#software)
 * [Environment Preparation](#environment-preparation)
   + [Create a Kubernetes Cluster](#create-a-kubernetes-cluster)
-  + [Install Helm on the Kubernetes](#install-helm-on-the-kubernetes)
+  + [Install Helm on Kubernetes](#install-helm-on-kubernetes)
 * [Installation](#installation)
   + [Clone the repo](#clone-the-repo)
   + [Install Chart](#install-cp-helm-chart)
-  + [Verify Installation(Optional)](#verify-installation(optional))
+  + [Verify Installation(Optional)](#verify-installation)
     - [Helm Test](#helm-test)
     - [Manual Test](#manual-test)
       * [Zookeeper](#zookeeper)
@@ -17,34 +17,44 @@
 * [Operations](#operations)
   + [Scale In/Out](#scale-in/out)
   + [Monitoring](#monitoring)
-* [Work In Progress](#work-in-progress)
 * [Huge Thanks](#huge-thanks)
 
-## Description
+## Introduction 
 
-This is Helm Chart for deploying Confluent Open Source on Kubernetes, which include: 
-* Confluent Kafka
-* Confluent Zookeeper
+[Helm](https://helm.sh/) is an open-source packaging tool that helps you install applications and services on Kubernetes. Helm uses a packaging format called charts. Charts are a collection of YAML templates that describe a related set of Kubernetes resources.
+
+The following services have charts:
+
+* Kafka brokers
+* Zookeeper servers
 * Confluent Schema Registry
 * Confluent Kafka REST Proxy
-* Confluent Kafka Connect
+* Kafka Connect
+
+Note: These charts are in Developer Preview. Their purpose is to enable developers to deploy Confluent Platform services on Kubernetes for development, test and proof of concept environments. They are not supported for production use.
 
 ## Software
+
+The charts have been tested with the following software versions:
+
 * [Kubernetes](https://kubernetes.io/) 1.9.2+
 * [Helm](https://helm.sh/) 2.8.2+
 * [Confluent Platform Open Source Docker Images](https://hub.docker.com/u/confluentinc/) 4.1.1
 
 ## Environment Preparation
+
+You'll need a Kubernetes cluster that has Helm configured.
  
 ### Create a Kubernetes Cluster
 
-Different options of creating a Kubernetes Cluster:
-1. Minikube, [https://github.com/kubernetes/minikube](https://github.com/kubernetes/minikube).
+These are example guides to get set up with a Kubernetes cluster:
+
+1. Minikube for a local Kubernetes environment, [https://github.com/kubernetes/minikube](https://github.com/kubernetes/minikube).
 2. Google Kubernetes Engine, [https://cloud.google.com/kubernetes-engine/docs/quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart).
 
-### Install Helm on the Kubernetes 
+### Install Helm on Kubernetes 
 
-[Follow Helm's quickstart](https://docs.helm.sh/using_helm/#quickstart-guide) to install and deploy Helm to the k8s cluster.
+[Follow Helm's quickstart](https://docs.helm.sh/using_helm/#quickstart-guide) to install and deploy Helm to the Kubernetes cluster.
 
 Run `helm ls` to verify the local installation. 
 
@@ -60,13 +70,14 @@ kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"templat
 helm init --service-account tiller --upgrade
 ```
 
-## Installation
-### Clone the repo 
+## Install Confluent Platform
+
+### Clone the repo
 ```
 git clone https://github.com/confluentinc/cp-helm-charts.git
 ```
 
-### Install cp-helm-chart 
+### Install cp-helm-chart
 
 * The steps below will install a 3 node cp-zookeeper, a 3 node cp-kafka cluster,1 schema registry,1 rest proxy and 1 kafka connect in your k8s env.
 
@@ -84,7 +95,7 @@ $ helm install --name my-confluent-oss cp-helm-charts
 helm install --set cp-schema-registry.enabled=false,cp-kafka-rest.enabled=false,cp-kafka-connect.enabled=false cp-helm-charts/
 ```
 
-### Verify Installation(Optional)
+### Verify Installation
 
 #### Helm Test
 `helm test <release name>` will run the embedded test pod in each sub-chart to verify installations
@@ -146,7 +157,7 @@ helm install --set cp-schema-registry.enabled=false,cp-kafka-rest.enabled=false,
 helm ls # to check find out release name
 helm delete <release name>
 
-# delete all pvc created by this release
+# delete all persisted volume claims (pvc) created by this release
 kubectl delete pvc --selector=release=<release name>
 ````
 
@@ -199,14 +210,14 @@ JMX Metrics are enabled by default for all components, Prometheus JMX Exporter i
     
     ![Zookeeper Dashboard](screenshots/zookeeper.png "Zookeeper")
     
-## TODO
-### External Access
+## Contributing
 
-### Security
+You can contribute to this repository by:
 
-### Logging
+- Reporting any issues you find or enhancements you suggest
+- Providing fixes or enhancements by opening Pull Requests
 
-### Upgrade
+All bugs, tasks or enhancements are tracked as GitHub issues.
 
 ## Huge Thanks
 
