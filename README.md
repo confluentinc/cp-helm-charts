@@ -5,7 +5,7 @@
 * [Environment Preparation](#environment-preparation)
   + [Create a Kubernetes Cluster](#create-a-kubernetes-cluster)
   + [Install Helm on Kubernetes](#install-helm-on-kubernetes)
-* [Installation](#Install-Confluent-Platform)
+* [Installation](#install-confluent-platform)
   + [Clone the repo](#clone-the-repo)
   + [Install Chart](#install-cp-helm-chart)
   + [Verify Installation(Optional)](#verify-installation)
@@ -13,7 +13,7 @@
     - [Manual Test](#manual-test)
       * [Zookeeper](#zookeeper)
       * [Kafka](#kafka)
-  + [Uninstall / Cleanup](#uninstall-/-cleanup)
+  + [Uninstall](#uninstall)
 * [Operations](#operations)
   + [Scaling](#scaling)
   + [Monitoring](#monitoring)
@@ -151,7 +151,7 @@ helm install --set cp-schema-registry.enabled=false,cp-kafka-rest.enabled=false,
     kafka-consumer-perf-test --broker-list $KAFKAS --messages 6000000 --threads 1 --topic test-rep-one --print-metrics
     ```
 
-### Uninstall / Cleanup
+### Uninstall
 
 ```
 helm ls # to check find out release name
