@@ -5,7 +5,7 @@
 * [Environment Preparation](#environment-preparation)
   + [Create a Kubernetes Cluster](#create-a-kubernetes-cluster)
   + [Install Helm on Kubernetes](#install-helm-on-kubernetes)
-* [Installation](#installation)
+* [Installation](#Install-Confluent-Platform)
   + [Clone the repo](#clone-the-repo)
   + [Install Chart](#install-cp-helm-chart)
   + [Verify Installation(Optional)](#verify-installation)
@@ -15,15 +15,15 @@
       * [Kafka](#kafka)
   + [Uninstall / Cleanup](#uninstall-/-cleanup)
 * [Operations](#operations)
-  + [Scale In/Out](#scale-in/out)
+  + [Scaling](#scaling)
   + [Monitoring](#monitoring)
-* [Huge Thanks](#huge-thanks)
+* [Thanks](#thanks)
 
 ## Introduction 
 
 [Helm](https://helm.sh/) is an open-source packaging tool that helps you install applications and services on Kubernetes. Helm uses a packaging format called charts. Charts are a collection of YAML templates that describe a related set of Kubernetes resources.
 
-The following services have charts:
+This repository provides charts for the following services:
 
 * Kafka brokers
 * Zookeeper servers
@@ -162,10 +162,10 @@ kubectl delete pvc --selector=release=<release name>
 ````
 
 ## Operations
-### Scale In/Out
-> NOTE: All Scale In/Out operations should be done offline with no producer/consumer connection
+### Scaling
+> NOTE: All scaling operations should be done offline with no producer/consumer connection
 #### Zookeeper
-Install co-helm-charts with default 3 nodes zookeeper ensemble
+Install cp-helm-charts with default 3 nodes zookeeper ensemble
 ```
 helm install cp-helm-charts
 ```
@@ -178,11 +178,11 @@ Scale zookeeper nodes out to 5, change `servers` under `cp-zookeeper` to 3 in [v
 helm upgrade <release name> cp-helm-charts
 ```
 #### Kafka
-> NOTE: Scaling in/out Kafka brokers without doing Partition Reassignment will cause data loss!!   
+> NOTE: Scaling Kafka brokers without doing Partition Reassignment will cause data loss!!   
 Be sure to reassign partitions correctly before scaling in/out Kafka cluster.
 Please refer: https://kafka.apache.org/documentation/#basic_ops_cluster_expansion 
 
-Install co-helm-charts with default 3 brokers kafka cluster
+Install cp-helm-charts with default 3 brokers kafka cluster
 ```
 helm install cp-helm-charts
 ```
@@ -219,7 +219,7 @@ You can contribute to this repository by:
 
 All bugs, tasks or enhancements are tracked as GitHub issues.
 
-## Huge Thanks
+## Thanks
 
 Huge thanks to:
 
