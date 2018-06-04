@@ -17,6 +17,7 @@
 * [Operations](#operations)
   + [Scaling](#scaling)
   + [Monitoring](#monitoring)
+* [Contribute](#contribute)
 * [Thanks](#thanks)
 
 ## Introduction 
@@ -210,7 +211,7 @@ JMX Metrics are enabled by default for all components, Prometheus JMX Exporter i
     
     ![Zookeeper Dashboard](screenshots/zookeeper.png "Zookeeper")
     
-## Contributing
+## Contribute
 
 You can contribute to this repository by:
 
