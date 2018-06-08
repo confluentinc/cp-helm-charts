@@ -146,7 +146,7 @@
             "#e5ac0e",
             "#bf1b00"
           ],
-          "datasource": "Prometheus",
+          "datasource": null,
           "description": "Number of active controllers in the cluster.",
           "format": "none",
           "gauge": {
@@ -308,7 +308,7 @@
             "rgba(237, 129, 40, 0.89)",
             "#299c46"
           ],
-          "datasource": "Prometheus",
+          "datasource": null,
           "description": "Partitions that are online",
           "format": "none",
           "gauge": {
@@ -389,7 +389,7 @@
             "rgba(237, 129, 40, 0.89)",
             "#bf1b00"
           ],
-          "datasource": "Prometheus",
+          "datasource": null,
           "description": "Number of under-replicated partitions (| ISR | < | all replicas |).",
           "format": "none",
           "gauge": {
@@ -471,7 +471,7 @@
             "#ef843c",
             "#bf1b00"
           ],
-          "datasource": "Prometheus",
+          "datasource": null,
           "description": "Number of partitions that don’t have an active leader and are hence not writable or readable.",
           "format": "none",
           "gauge": {
@@ -1358,7 +1358,7 @@
             "rgba(237, 129, 40, 0.89)",
             "#299c46"
           ],
-          "datasource": "Prometheus",
+          "datasource": null,
           "description": "Quorum Size of Zookeeper ensemble",
           "format": "none",
           "gauge": {
@@ -1439,7 +1439,7 @@
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
-          "datasource": "Prometheus",
+          "datasource": null,
           "description": "Number of Alive Connections",
           "format": "none",
           "gauge": {
@@ -1549,7 +1549,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "Prometheus",
+          "datasource": null,
           "description": "Number of queued requests in the server. This goes up when the server receives more requests than it can process",
           "fill": 1,
           "gridPos": {
@@ -1647,7 +1647,7 @@
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
-          "datasource": "Prometheus",
+          "datasource": null,
           "format": "none",
           "gauge": {
             "maxValue": 100,
@@ -1727,7 +1727,7 @@
             "rgba(237, 129, 40, 0.89)",
             "#d44a3a"
           ],
-          "datasource": "Prometheus",
+          "datasource": null,
           "description": "Number of Watchers",
           "format": "none",
           "gauge": {
@@ -2059,7 +2059,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "Prometheus",
+          "datasource": null,
           "description": "Amount of time it takes for the server to respond to a client request",
           "fill": 1,
           "gridPos": {
@@ -2177,7 +2177,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "Prometheus",
+          "datasource": null,
           "description": "Amount of time it takes for the server to respond to a client request",
           "fill": 1,
           "gridPos": {
@@ -2303,7 +2303,7 @@
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "Prometheus",
+          "datasource": null,
           "description": "Amount of time it takes for the server to respond to a client request",
           "fill": 1,
           "gridPos": {
