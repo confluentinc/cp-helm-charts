@@ -12,7 +12,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: ksql-demo
+  name: data-generator
   namespace: default
 spec:
   containers:
@@ -21,19 +21,10 @@ spec:
     command:
       - sh
       - -c
-      - "exec java -jar /usr/share/java/ksql-examples/ksql-examples-5.0.0-SNAPSHOT-standalone.jar quickstart=pageviews format=delimited topic=pageviews  bootstrap-server=oldfashioned-dog-cp-kafka:9092"
+      - "exec java -jar /usr/share/java/ksql-examples/ksql-examples-5.0.0-SNAPSHOT-standalone.jar quickstart=pageviews format=delimited topic=pageviews  bootstrap-server=vehement-squid-cp-kafka:9092"
   - name: ksql-datagen-users
     image: confluentinc/ksql-examples:5.0.0-beta1
     command:
       - sh
       - -c
-      - "exec java -jar /usr/share/java/ksql-examples/ksql-examples-5.0.0-SNAPSHOT-standalone.jar quickstart=users format=json topic=users iterations=1000 bootstrap-server=oldfashioned-dog-cp-kafka:9092"
-  - name: ksql
-    image: confluentinc/ksql-cli:5.0.0-beta1
-    env:
-      - name: KSQL_OPTS
-        value: "-Dbootstrap.servers=oldfashioned-dog-cp-kafka:9092"
-    command:
-          - sh
-          - -c
-          - "ksql-server-start /etc/ksql/ksql-server.properties"
+      - "exec java -jar /usr/share/java/ksql-examples/ksql-examples-5.0.0-SNAPSHOT-standalone.jar quickstart=users format=json topic=users iterations=1000 bootstrap-server=vehement-squid-cp-kafka:9092"

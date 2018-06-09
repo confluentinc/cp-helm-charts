@@ -1,0 +1,50 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "cp-ksql.fullname" . }}
+  labels:
+    app: {{ template "cp-ksql.name" . }}
+    chart: {{ template "cp-ksql.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "cp-ksql.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "cp-ksql.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+          env:
+            - name: KSQL_OPTS
+              value: "-D{{ template "cp-ksql.cp-kafka-headless.fullname" . }}:9092"
+          command:
+            - sh
+            - -c
+            - "ksql-server-start /etc/ksql/ksql-server.properties"
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}

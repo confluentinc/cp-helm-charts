@@ -42,10 +42,12 @@ To connect from a client pod:
   # Gives more detailed information of the broker id '0'
   get /brokers/ids/0
 {{- end -}}
+
 {{- if (index .Values "cp-kafka" "enabled") -}}
 ## ------------------------------------------------------
 ## Kafka
 ## ------------------------------------------------------
+
 To connect from a client pod:
 
 1. Deploy a kafka client pod with configuration:
@@ -81,4 +83,62 @@ To connect from a client pod:
 
   # Consume a test message from the topic
   kafka-console-consumer --bootstrap-server {{ .Release.Name }}-cp-kafka-headless:9092 --topic {{ .Release.Name }}-topic --from-beginning --timeout-ms 2000 --max-messages 1 | grep "$MESSAGE"
+{{- end -}}
+
+
+{{- if (index .Values "cp-ksql" "enabled") -}}
+## ------------------------------------------------------
+## KSQL
+## ------------------------------------------------------
+
+To try it out
+
+1. Deploy a data-generating pod with configuration:
+
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: data-generator
+      namespace: {{ .Release.Namespace }}
+    spec:
+      containers:
+      - name: ksql-datagen-pageviews
+        image: confluentinc/ksql-examples:{{ .Values.imageTag }}
+        command:
+          - sh
+          - -c
+          - "exec java -jar /usr/share/java/ksql-examples/ksql-examples-5.0.0-SNAPSHOT-standalone.jar quickstart=pageviews format=delimited topic=pageviews  bootstrap-server={{ .Release.Name }}-cp-kafka:9092"
+      - name: ksql-datagen-users
+        image: confluentinc/ksql-examples:{{ .Values.imageTag }}
+        command:
+          - sh
+          - -c
+          - "exec java -jar /usr/share/java/ksql-examples/ksql-examples-5.0.0-SNAPSHOT-standalone.jar quickstart=users format=json topic=users iterations=1000 bootstrap-server={{ .Release.Name }}-cp-kafka:9092"
+
+  Easiest way is to edit examples/data-generator.yaml file and then:
+  kubectl apply -f examples/data-generator.yaml
+
+2. Log into the KSQL Pod
+
+  kubectl exec -it cp-ksql -- /bin/bash
+
+  and run "ksql" command to start the CLI
+
+3. Explore with ksql commands:
+
+  # Create a stream (pageviews) from the Kafka topic pageviews, specifying the value_format of DELIMITED.
+  # Enter the SHOW STREAMS; command to view your streams
+
+    ksql> CREATE STREAM pageviews (viewtime BIGINT, userid VARCHAR, pageid VARCHAR) WITH (KAFKA_TOPIC='pageviews', VALUE_FORMAT='DELIMITED');
+    ksql> SHOW STREAMS;
+
+  # Create a table (users) with several columns from the Kafka topic users, with the value_format of JSON.
+  # Enter the SHOW TABLES; query to view your tables.
+
+    ksql> CREATE TABLE users (registertime BIGINT, gender VARCHAR, regionid VARCHAR, userid VARCHAR, \interests array<VARCHAR>, contact_info map<VARCHAR, VARCHAR>) WITH (KAFKA_TOPIC='users', VALUE_FORMAT='JSON', KEY = 'userid');
+    ksql> SHOW TABLES;
+
+  # Create a query that returns data from a stream with the results limited to three rows.
+
+    ksql> SELECT pageid FROM pageviews LIMIT 3;
 {{- end -}}
