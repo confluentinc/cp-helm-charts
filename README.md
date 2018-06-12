@@ -47,12 +47,67 @@ These Helm charts have been tested with the following software versions:
 * [Helm](https://helm.sh/) 2.8.2+
 * [Confluent Platform Open Source Docker Images](https://hub.docker.com/u/confluentinc/) 4.1.1
 
-### Create a Kubernetes Cluster
+### Create a Local Kubernetes Cluster
 
-There are many deployment options to get set up with a Kubernetes cluster, including but not limited to:
+There are many deployment options to get set up with a Kubernetes cluster, and this document provides instructions for using [Minikube](https://kubernetes.io/docs/setup/minikube/) to setup a local Kubernetes cluster on your laptop. You may also setup a Kubernetes cluster in the cloud using other providers such as [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine/docs/quickstart). 
 
-1. Local Kubernetes cluster on your laptop: [Minikube](docs/k8s-local-installation.adoc)
-2. Google Kubernetes Engine: [GKE](https://cloud.google.com/kubernetes-engine/docs/quickstart)
+#### Install Minikube and Drivers
+
+Minikube v0.23.0 or higher is required for docker server https://github.com/moby/moby/pull/31352[17.05], which adds support for using `ARG` in `FROM` in your `Dockerfile`.
+
+1. [Minikube installation instructions](https://github.com/kubernetes/minikube).
+
+2. [Minikube drivers](https://github.com/kubernetes/minikube/blob/master/docs/drivers.md). Minikube uses Docker Machine to manage the Kubernetes VM so it benefits from the driver plugin architecture that Docker Machine uses to provide a consistent way to manage various VM providers. Minikube embeds VirtualBox and VMware Fusion drivers so there are no additional steps to use them. However, other drivers require an extra binary to be present in the host PATH.
+
+#### Start Minikube
+
+1. Start Minikube, note that the memory has been increased to 6096 MB.
+
+```sh
+$ minikube start --kubernetes-version v1.8.0 --cpus 4 --memory 6096 --vm-driver=xhyve --v=8
+```
+
+2. Check status until both minikube and cluster are in Running state
+
+```sh
+$ minikube status
+minikube: Running
+cluster: Running
+kubectl: Correctly Configured: pointing to minikube-vm at 192.168.99.106
+```
+
+3. Configure the minikube VM.
+
+```sh
+$ minikube ssh
+  sudo ip link set docker0 promisc on
+  exit
+```
+
+4. Set the context.
+
+```sh
+$ eval $(minikube docker-env)
+
+$ kubectl config set-context minikube.internal --cluster=minikube --user=minikube
+Context "minikube.internal" modified.
+
+$ kubectl config use-context minikube.internal
+Switched to context "minikube.internal".
+```
+
+#### Verify Minikube Local Kubernetes Environment
+
+```
+$ kubectl config current-context
+minikube.internal
+
+$ kubectl cluster-info
+Kubernetes master is running at https://192.168.99.106:8443
+KubeDNS is running at https://192.168.99.106:8443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+```
 
 ### Configure Helm
 
@@ -239,24 +294,25 @@ JMX Metrics are enabled by default for all components, Prometheus JMX Exporter i
 
 ## Uninstall
 
-1. Find the Helm release name
+To stop or delete Minikube:
+
+```sh
+$ minikube stop
+$ minikube delete
+```
+
+To delete the Helm release, first find the Helm release name:
 
 ```sh
 $ helm list
 ```
 
-2. Delete the Helm release
+Then delete the Helm release and all persisted volume claims (pvc) created by this release.
 
 ```sh
 $ helm delete <release name>
-```
-
-3. Delete all persisted volume claims (pvc) created by this release
-
-```sh
 $ kubectl delete pvc --selector=release=<release name>
 ```
-
     
 ## Thanks
 
