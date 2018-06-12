@@ -1,5 +1,6 @@
 # Confluent Open Source Helm Chart
 
+* [Developer Preview](#developer-preview)
 * [Introduction](#introduction)
 * [Software](#software)
 * [Environment Preparation](#environment-preparation)
@@ -10,22 +11,30 @@
   + [Scaling](#scaling)
   + [Monitoring](#monitoring)
 * [Uninstall](#uninstall)
-* [Contribute](#contribute)
 * [Thanks](#thanks)
+
+
+## Developer Preview
+
+These Helm charts are in Developer Preview. Their purpose is to enable developers to deploy Confluent Platform services on Kubernetes for development, test and proof of concept environments. They are not supported for production use.
+
+We welcome any contributions:
+
+- Report all enhancements, bugs, and tasks as GitHub issues
+- Provide fixes or enhancements by opening pull requests in GitHub
+
 
 ## Introduction 
 
 [Helm](https://helm.sh/) is an open-source packaging tool that helps you install applications and services on Kubernetes. Helm uses a packaging format called charts. Charts are a collection of YAML templates that describe a related set of Kubernetes resources.
 
-This repository provides charts for the following services:
+This repository provides Helm charts for the following Confluent Platform services:
 
 * Kafka brokers
 * ZooKeeper servers
+* Kafka Connect
 * Confluent Schema Registry
 * Confluent Kafka REST Proxy
-* Kafka Connect
-
-Note: These charts are in Developer Preview. Their purpose is to enable developers to deploy Confluent Platform services on Kubernetes for development, test and proof of concept environments. They are not supported for production use.
 
 ## Software
 
@@ -250,15 +259,6 @@ $ kubectl delete pvc --selector=release=<release name>
 ```
 
     
-## Contribute
-
-You can contribute to this repository by:
-
-- Reporting any issues you find or enhancements you suggest
-- Providing fixes or enhancements by opening Pull Requests
-
-All bugs, tasks or enhancements are tracked as GitHub issues.
-
 ## Thanks
 
 Huge thanks to:
