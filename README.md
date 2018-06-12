@@ -5,18 +5,11 @@
 * [Environment Preparation](#environment-preparation)
   + [Create a Kubernetes Cluster](#create-a-kubernetes-cluster)
   + [Install Helm on Kubernetes](#install-helm-on-kubernetes)
-* [Installation](#install-confluent-platform)
-  + [Clone the repo](#clone-the-repo)
-  + [Install Chart](#install-cp-helm-chart)
-  + [Verify Installation](#verify-installation)
-    - [Helm Test](#helm-test)
-    - [Manual Test](#manual-test)
-      * [ZooKeeper](#zookeeper)
-      * [Kafka](#kafka)
-  + [Uninstall](#uninstall)
+* [Install Helm for Confluent Platform](#install-confluent-platform)
 * [Operations](#operations)
   + [Scaling](#scaling)
   + [Monitoring](#monitoring)
+* [Uninstall](#uninstall)
 * [Contribute](#contribute)
 * [Thanks](#thanks)
 
@@ -185,26 +178,6 @@ You should see the messages which were published from the console producer appea
     kafka-consumer-perf-test --broker-list $KAFKAS --messages 6000000 --threads 1 --topic test-rep-one --print-metrics
     ```
 
-### Uninstall
-
-1. Find the Helm release name
-
-```sh
-$ helm list
-```
-
-2. Delete the Helm release
-
-```sh
-$ helm delete <release name>
-```
-
-3. Delete all persisted volume claims (pvc) created by this release
-
-```sh
-$ kubectl delete pvc --selector=release=<release name>
-```
-
 ## Operations
 
 ### Scaling
@@ -255,6 +228,27 @@ JMX Metrics are enabled by default for all components, Prometheus JMX Exporter i
     ![Kafka Dashboard](screenshots/kafka.png "Kafka")
     
     ![ZooKeeper Dashboard](screenshots/zookeeper.png "ZooKeeper")
+
+## Uninstall
+
+1. Find the Helm release name
+
+```sh
+$ helm list
+```
+
+2. Delete the Helm release
+
+```sh
+$ helm delete <release name>
+```
+
+3. Delete all persisted volume claims (pvc) created by this release
+
+```sh
+$ kubectl delete pvc --selector=release=<release name>
+```
+
     
 ## Contribute
 

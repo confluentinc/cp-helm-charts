@@ -1,45 +1,23 @@
-= Local Kubernetes Installation using Minikube
+= Using Minikube for Local Kubernetes
 
-== Setup Minikube
+== Install Minikube and Drivers
 
-Minikube v0.23.0 or higher is required for docker server https://github.com/moby/moby/pull/31352[17.05],
-which adds support for using `ARG` in `FROM` in your `Dockerfile`.
+Minikube v0.23.0 or higher is required for docker server https://github.com/moby/moby/pull/31352[17.05], which adds support for using `ARG` in `FROM` in your `Dockerfile`.
 
-This is how Confluent Docker images are built with our standard build/CI pipeline.
+1. [Minikube installation instructions](https://github.com/kubernetes/minikube).
 
-For macOS [Minikube installation instructions](https://github.com/kubernetes/minikube):
-
-[source,shell]
-----
-$ brew cask install minikube
-----
-
-Following https://github.com/kubernetes/minikube/releases[install instructions].
-
-[source,shell]
-----
-$ curl -Lo minikube https://storage.googleapis.com/minikube/releases/v0.23.0/minikube-darwin-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
-----
-
-Following https://github.com/kubernetes/minikube/blob/master/DRIVERS.md#xhyve-driver[driver instructions]
-
-[source,shell]
-----
-$ brew install docker-machine-driver-xhyve
-$ sudo chown root:wheel /usr/local/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
-$ sudo chmod u+s /usr/local/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
-----
+2. [Minikube drivers](https://github.com/kubernetes/minikube/blob/master/docs/drivers.md). Minikube uses Docker Machine to manage the Kubernetes VM so it benefits from the driver plugin architecture that Docker Machine uses to provide a consistent way to manage various VM providers. Minikube embeds VirtualBox and VMware Fusion drivers so there are no additional steps to use them. However, other drivers require an extra binary to be present in the host PATH.
 
 == Start Minikube
 
-Start Minikube, not that the memory has been increased to 6096 MB.
+1. Start Minikube, note that the memory has been increased to 6096 MB.
 
 [source,shell]
 ----
 $ minikube start --kubernetes-version v1.8.0 --cpus 4 --memory 6096 --vm-driver=xhyve --v=8
 ----
 
-Check status until both minikube and cluster are in Running state
+2. Check status until both minikube and cluster are in Running state
 
 [source,shell]
 ----
@@ -49,7 +27,7 @@ cluster: Running
 kubectl: Correctly Configured: pointing to minikube-vm at 192.168.99.106
 ----
 
-Configure the minikube VM.
+3. Configure the minikube VM.
 
 [source,shell]
 ----
@@ -58,7 +36,7 @@ $ minikube ssh
   exit
 ----
 
-Set the context.
+4. Set the context.
 
 [source,shell]
 ----
@@ -83,4 +61,11 @@ Kubernetes master is running at https://192.168.99.106:8443
 KubeDNS is running at https://192.168.99.106:8443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
 
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+----
+
+== Stop Minikube
+
+[source,shell]
+----
+$ minikube delete
 ----
