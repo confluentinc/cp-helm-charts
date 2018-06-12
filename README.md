@@ -8,10 +8,10 @@
 * [Installation](#install-confluent-platform)
   + [Clone the repo](#clone-the-repo)
   + [Install Chart](#install-cp-helm-chart)
-  + [Verify Installation(Optional)](#verify-installation)
+  + [Verify Installation](#verify-installation)
     - [Helm Test](#helm-test)
     - [Manual Test](#manual-test)
-      * [Zookeeper](#zookeeper)
+      * [ZooKeeper](#zookeeper)
       * [Kafka](#kafka)
   + [Uninstall](#uninstall)
 * [Operations](#operations)
@@ -27,7 +27,7 @@
 This repository provides charts for the following services:
 
 * Kafka brokers
-* Zookeeper servers
+* ZooKeeper servers
 * Confluent Schema Registry
 * Confluent Kafka REST Proxy
 * Kafka Connect
@@ -48,94 +48,127 @@ You'll need a Kubernetes cluster that has Helm configured.
  
 ### Create a Kubernetes Cluster
 
-These are example guides to get set up with a Kubernetes cluster:
+There are many deployment options to get set up with a Kubernetes cluster, including but not limited to:
 
-1. Minikube for a local Kubernetes environment, [https://github.com/kubernetes/minikube](https://github.com/kubernetes/minikube).
-2. Google Kubernetes Engine, [https://cloud.google.com/kubernetes-engine/docs/quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart).
+1. Local Kubernetes cluster on your laptop: [Minikube](docs/k8s-local-installation.adoc)
+2. Google Kubernetes Engine: [GKE](https://cloud.google.com/kubernetes-engine/docs/quickstart)
 
-### Install Helm on Kubernetes 
+### Configure Helm
 
-[Follow Helm's quickstart](https://docs.helm.sh/using_helm/#quickstart-guide) to install and deploy Helm to the Kubernetes cluster.
+[Install and deploy Helm](https://docs.helm.sh/using_helm/#quickstart-guide) to the Kubernetes cluster.
 
-Run `helm ls` to verify the local installation. 
+Run `helm list` to view a list of all deployed releases in releases in the local installation. 
 
 NOTE: For Helm versions prior to 2.9.1, you may see `"connect: connection refused"`, and will need to fix up the deployment before proceeding.
 
 ```sh
-# Fix up the Helm deployment, if needed:
-kubectl delete --namespace kube-system svc tiller-deploy
-kubectl delete --namespace kube-system deploy tiller-deploy
-kubectl create serviceaccount --namespace kube-system tiller
-kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
-kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'      
-helm init --service-account tiller --upgrade
+$ kubectl delete --namespace kube-system svc tiller-deploy
+$ kubectl delete --namespace kube-system deploy tiller-deploy
+$ kubectl create serviceaccount --namespace kube-system tiller
+$ kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+$ kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'      
+$ helm init --service-account tiller --upgrade
 ```
 
 ## Install Confluent Platform
 
-### Clone the repo
+### Clone the Confluent Helm Chart repo
+
 ```
-git clone https://github.com/confluentinc/cp-helm-charts.git
+$ git clone https://github.com/confluentinc/cp-helm-charts.git
 ```
 
 ### Install cp-helm-chart
 
-* The steps below will install a 3 node cp-zookeeper, a 3 node cp-kafka cluster,1 schema registry,1 rest proxy and 1 kafka connect in your k8s env.
+Install a 3 node cp-zookeeper ensemble, a 3 node cp-kafka cluster, 1 Confluent Schema Registry instance, 1 REST Proxy instance, and 1 Kafka Connect worker in your k8s environment. Naming the chart `--name my-confluent-oss` is optional.
 
 ```sh
-helm install cp-helm-charts
-```
-
-* To install with a specific name, you can do:
-```console
 $ helm install --name my-confluent-oss cp-helm-charts
 ```
 
-* To install without rest proxy, schema registry and kafka connect
+If you want to install without the Confluent Schema Registry instance, the REST Proxy instance, and the Kafka Connect worker:
+
 ```sh
-helm install --set cp-schema-registry.enabled=false,cp-kafka-rest.enabled=false,cp-kafka-connect.enabled=false cp-helm-charts/
+$ helm install --set cp-schema-registry.enabled=false,cp-kafka-rest.enabled=false,cp-kafka-connect.enabled=false cp-helm-charts
+```
+
+To see the installed Helm releases:
+
+```sh
+$ helm list
+NAME            	REVISION	UPDATED                 	STATUS  	CHART               	NAMESPACE
+my-confluent-oss	1       	Tue Jun 12 16:56:39 2018	DEPLOYED	cp-helm-charts-0.1.0	default 
 ```
 
 ### Verify Installation
 
-#### Helm Test
-`helm test <release name>` will run the embedded test pod in each sub-chart to verify installations
+#### Helm
+
+This step is optional. To run the embedded test pod in each sub-chart to verify installations, run `helm test <release name>`.
+
+```sh
+$ helm test my-confluent-oss
+```
+
+#### Kafka cluster
+
+This step is optional. To verify that Kafka is working as expected, connect to one of the Kafka pods and produce some messages to a Kafka topic.
+
+1. List your pods.
+
+```sh
+$ kubectl get pods
+```
+
+2. Choose a running Kafka pod and connect to it. You may need to wait for the Kafka cluster to finish starting up.
+
+```sh
+$ kubectl exec -c cp-kafka-broker -it ${YOUR_KAFKA_POD_NAME} -- /bin/bash /usr/bin/kafka-console-producer --broker-list localhost:9092 --topic test
+```
+
+Wait for a `>` prompt, and enter some text.
+
+```
+test 123
+test 456
+```
+
+Control-D should close the producer session. Now, consume the test messages:
+
+```sh
+$ kubectl exec -c cp-kafka-broker -it ${YOUR_KAFKA_POD_NAME} -- /bin/bash  /usr/bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic test --from-beginning
+```
+
+You should see the messages which were published from the console producer appear. Press Control-C to stop consuming.
 
 #### Manual Test
-##### Zookeeper
-1. Deploy a zookeeper client pod
+
+##### ZooKeeper
+
+1. Deploy a ZooKeeper client pod
     ```
-    kubectl apply -f cp-helm-charts/examples/zookeeper-client.yaml
+    $ kubectl apply -f cp-helm-charts/examples/zookeeper-client.yaml
     ```
-2. Log into the Pod
+
+2. Connect to the ZooKeeper client pod and use the `zookeeper-shell` command to explore brokers, topics, etc:
+
     ```
-    kubectl exec -it zookeeper-client -- /bin/bash
+    $ kubectl exec -it zookeeper-client -- /bin/bash zookeeper-shell <zookeeper service>:<port> ls /brokers/ids
+    $ kubectl exec -it zookeeper-client -- /bin/bash zookeeper-shell <zookeeper service>:<port> get /brokers/ids/0
+    $ kubectl exec -it zookeeper-client -- /bin/bash zookeeper-shell <zookeeper service>:<port> ls /brokers/topics
     ```
-3. Use zookeeper-shell to connect in the zookeeper-client Pod:
-    ```
-    zookeeper-shell <zookeeper service>:<port>
-    ```
-4. Explore with zookeeper commands, for example:
-    ```
-    # Gives the list of active brokers
-    ls /brokers/ids
-    
-    # Gives the list of topics
-    ls /brokers/topics
-    
-    # Gives more detailed information of the broker id '0'
-    get /brokers/ids/0
-    ```
+
 ##### Kafka
-1. Deploy a kafka client pod
+
+1. Deploy a Kafka client pod
     ```
-    kubectl apply -f cp-helm-charts/examples/kafka-client.yaml
+    $ kubectl apply -f cp-helm-charts/examples/kafka-client.yaml
     ```
 2. Log into the Pod
     ```
-    kubectl exec -it kafka-client -- /bin/bash
+    $ kubectl exec -it kafka-client -- /bin/bash
     ```
-3. Explore with kafka commands:
+3. From within the kafka-client pod, explore with kafka commands:
     ```
     ## Setup
     export RELEASE_NAME=<release name>
@@ -154,29 +187,41 @@ helm install --set cp-schema-registry.enabled=false,cp-kafka-rest.enabled=false,
 
 ### Uninstall
 
-```
-helm ls # to check find out release name
-helm delete <release name>
+1. Find the Helm release name
 
-# delete all persisted volume claims (pvc) created by this release
-kubectl delete pvc --selector=release=<release name>
-````
+```sh
+$ helm list
+```
+
+2. Delete the Helm release
+
+```sh
+$ helm delete <release name>
+```
+
+3. Delete all persisted volume claims (pvc) created by this release
+
+```sh
+$ kubectl delete pvc --selector=release=<release name>
+```
 
 ## Operations
+
 ### Scaling
 > NOTE: All scaling operations should be done offline with no producer/consumer connection
-#### Zookeeper
+
+#### ZooKeeper
 Install cp-helm-charts with default 3 nodes zookeeper ensemble
 ```
-helm install cp-helm-charts
+$ helm install cp-helm-charts
 ```
 Scale zookeeper nodes out to 5, change `servers` under `cp-zookeeper` to 5 in [values.yaml](values.yaml)
 ```
-helm upgrade <release name> cp-helm-charts
+$ helm upgrade <release name> cp-helm-charts
 ```
 Scale zookeeper nodes out to 5, change `servers` under `cp-zookeeper` to 3 in [values.yaml](values.yaml)
 ```
-helm upgrade <release name> cp-helm-charts
+$ helm upgrade <release name> cp-helm-charts
 ```
 #### Kafka
 > NOTE: Scaling Kafka brokers without doing Partition Reassignment will cause data loss!!   
@@ -185,23 +230,23 @@ Please refer: https://kafka.apache.org/documentation/#basic_ops_cluster_expansio
 
 Install cp-helm-charts with default 3 brokers kafka cluster
 ```
-helm install cp-helm-charts
+$ helm install cp-helm-charts
 ```
 Scale kafka brokers out to 5, change `brokers` under `cp-kafka` to 5 in [values.yaml](values.yaml)
 ```
-helm upgrade <release name> cp-helm-charts
+$ helm upgrade <release name> cp-helm-charts
 ```
 Scale kafka brokers out to 5, change `brokers` under `cp-kafka` to 3 in [values.yaml](values.yaml)
 ```
-helm upgrade <release name> cp-helm-charts
+$ helm upgrade <release name> cp-helm-charts
 ```
 ### Monitoring
 JMX Metrics are enabled by default for all components, Prometheus JMX Exporter is installed as a sidecar container along with all Pods.
 
 1. Install Prometheus and Grafana in same Kubernetes cluster using helm
     ```
-    helm install stable/prometheus
-    helm install stable/grafana
+    $ helm install stable/prometheus
+    $ helm install stable/grafana
     ```
 2. Add Prometheus as Data Source in Grafana, url should be something like:
    `http://illmannered-marmot-prometheus-server:80`
@@ -209,7 +254,7 @@ JMX Metrics are enabled by default for all components, Prometheus JMX Exporter i
 3. Import dashboard under [grafana-dashboard](grafana-dashboard) into Grafana
     ![Kafka Dashboard](screenshots/kafka.png "Kafka")
     
-    ![Zookeeper Dashboard](screenshots/zookeeper.png "Zookeeper")
+    ![ZooKeeper Dashboard](screenshots/zookeeper.png "ZooKeeper")
     
 ## Contribute
 
@@ -225,7 +270,7 @@ All bugs, tasks or enhancements are tracked as GitHub issues.
 Huge thanks to:
 
 - [Kafka helm chart](https://github.com/kubernetes/charts/tree/master/incubator/kafka)
-- [Zookeeper helm chart](https://github.com/kubernetes/charts/tree/master/incubator/zookeeper)
+- [ZooKeeper helm chart](https://github.com/kubernetes/charts/tree/master/incubator/zookeeper)
 - [Schema Registry helm chart](https://github.com/kubernetes/charts/tree/master/incubator/schema-registry)
 - [kubernetes-kafka](https://github.com/Yolean/kubernetes-kafka)
 - [docker-kafka](https://github.com/solsson/dockerfiles)
