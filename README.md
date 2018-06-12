@@ -2,7 +2,6 @@
 
 * [Developer Preview](#developer-preview)
 * [Introduction](#introduction)
-* [Software](#software)
 * [Environment Preparation](#environment-preparation)
   + [Create a Kubernetes Cluster](#create-a-kubernetes-cluster)
   + [Install Helm on Kubernetes](#install-helm-on-kubernetes)
@@ -36,18 +35,18 @@ This repository provides Helm charts for the following Confluent Platform servic
 * Confluent Schema Registry
 * Confluent Kafka REST Proxy
 
-## Software
+## Environment Preparation
 
-The charts have been tested with the following software versions:
+You'll need a Kubernetes cluster that has Helm configured.
+ 
+### Tested Software
+
+These Helm charts have been tested with the following software versions:
 
 * [Kubernetes](https://kubernetes.io/) 1.9.2+
 * [Helm](https://helm.sh/) 2.8.2+
 * [Confluent Platform Open Source Docker Images](https://hub.docker.com/u/confluentinc/) 4.1.1
 
-## Environment Preparation
-
-You'll need a Kubernetes cluster that has Helm configured.
- 
 ### Create a Kubernetes Cluster
 
 There are many deployment options to get set up with a Kubernetes cluster, including but not limited to:
@@ -106,7 +105,7 @@ my-confluent-oss	1       	Tue Jun 12 16:56:39 2018	DEPLOYED	cp-helm-charts-0.1.0
 
 #### Helm
 
-This step is optional. To run the embedded test pod in each sub-chart to verify installations, run `helm test <release name>`.
+This step is optional. Run the embedded test pod in each sub-chart to verify installations:
 
 ```sh
 $ helm test my-confluent-oss
