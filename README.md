@@ -15,11 +15,11 @@
 
 ## Developer Preview
 
-These Helm charts are in Developer Preview. Their purpose is to enable developers to deploy Confluent Platform services on Kubernetes for development, test and proof of concept environments. They are not supported for production use.
+The [Confluent Platform Helm charts](https://github.com/confluentinc/cp-helm-charts) enable developers to deploy Confluent Platform services on Kubernetes for development, test and proof of concept environments. They are in *developer preview* are not supported for production use.
 
 We welcome any contributions:
 
-- Report all enhancements, bugs, and tasks as GitHub issues
+- Report all enhancements, bugs, and tasks as [GitHub issues](https://github.com/confluentinc/cp-helm-charts/issues)
 - Provide fixes or enhancements by opening pull requests in GitHub
 
 
@@ -30,10 +30,10 @@ We welcome any contributions:
 This repository provides Helm charts for the following Confluent Platform services:
 
 * Kafka brokers
-* ZooKeeper servers
+* ZooKeeper
 * Kafka Connect
 * Confluent Schema Registry
-* Confluent Kafka REST Proxy
+* Confluent REST Proxy
 
 ## Environment Preparation
 
@@ -55,13 +55,13 @@ You may alternatively set up a Kubernetes cluster in the cloud using other provi
 
 #### Install Minikube and Drivers
 
-Minikube v0.23.0 or higher is required for docker server https://github.com/moby/moby/pull/31352[17.05], which adds support for using `ARG` in `FROM` in your `Dockerfile`.
+Minikube version 0.23.0 or higher is required for docker server https://github.com/moby/moby/pull/31352[17.05], which adds support for using `ARG` in `FROM` in your `Dockerfile`.
 
 First follow the basic [Minikube installation instructions](https://github.com/kubernetes/minikube).
 
 Then install the [Minikube drivers](https://github.com/kubernetes/minikube/blob/master/docs/drivers.md). Minikube uses Docker Machine to manage the Kubernetes VM so it benefits from the driver plugin architecture that Docker Machine uses to provide a consistent way to manage various VM providers. Minikube embeds VirtualBox and VMware Fusion drivers so there are no additional steps to use them. However, other drivers require an extra binary to be present in the host PATH.
 
-If you are running on macOS, make sure in particular to install the xhyve drivers:
+If you are running on macOS, make sure in particular to install the `xhyve` drivers for the native OS X hypervisor:
 
 ```sh
 $ brew install docker-machine-driver-xhyve
@@ -71,7 +71,7 @@ $ sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-mac
 
 #### Start Minikube
 
-1. Start Minikube, note that the memory has been increased to 6096 MB and it uses xhyve, the native OS X Hypervisor.
+1. Start Minikube, note that the memory has been increased to 6096 MB and it uses xhyve, the native OS X hypervisor.
 
 ```sh
 $ minikube start --kubernetes-version v1.8.0 --cpus 4 --memory 6096 --vm-driver=xhyve --v=8
@@ -113,13 +113,11 @@ minikube.internal
 $ kubectl cluster-info
 Kubernetes master is running at https://192.168.99.106:8443
 KubeDNS is running at https://192.168.99.106:8443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
-
-To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ```
 
 ### Install Helm on Kubernetes
 
-[Install and deploy Helm](https://docs.helm.sh/using_helm/#quickstart-guide) to the Kubernetes cluster.
+Follow the directions to [install and deploy Helm](https://docs.helm.sh/using_helm/#quickstart-guide) to the Kubernetes cluster.
 
 View a list of all deployed releases in releases in the local installation. 
 
