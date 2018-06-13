@@ -3,7 +3,7 @@
 * [Developer Preview](#developer-preview)
 * [Introduction](#introduction)
 * [Environment Preparation](#environment-preparation)
-  + [Create a Kubernetes Cluster](#create-a-kubernetes-cluster)
+  + [Create a Local Kubernetes Cluster](#create-a-kubernetes-cluster)
   + [Install Helm on Kubernetes](#install-helm-on-kubernetes)
 * [Install Helm for Confluent Platform](#install-confluent-platform)
 * [Operations](#operations)
@@ -37,7 +37,7 @@ This repository provides Helm charts for the following Confluent Platform servic
 
 ## Environment Preparation
 
-You'll need a Kubernetes cluster that has Helm configured.
+You will need a Kubernetes cluster that has Helm configured.
  
 ### Tested Software
 
@@ -49,25 +49,35 @@ These Helm charts have been tested with the following software versions:
 
 ### Create a Local Kubernetes Cluster
 
-There are many deployment options to get set up with a Kubernetes cluster, and this document provides instructions for using [Minikube](https://kubernetes.io/docs/setup/minikube/) to setup a local Kubernetes cluster on your laptop. You may also setup a Kubernetes cluster in the cloud using other providers such as [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine/docs/quickstart). 
+There are many deployment options to get set up with a Kubernetes cluster, and this document provides instructions for using [Minikube](https://kubernetes.io/docs/setup/minikube/) to set up a local Kubernetes cluster. Minikube runs a single-node Kubernetes cluster inside a VM on your laptop.
+
+You may alternatively set up a Kubernetes cluster in the cloud using other providers such as [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine/docs/quickstart). 
 
 #### Install Minikube and Drivers
 
 Minikube v0.23.0 or higher is required for docker server https://github.com/moby/moby/pull/31352[17.05], which adds support for using `ARG` in `FROM` in your `Dockerfile`.
 
-1. [Minikube installation instructions](https://github.com/kubernetes/minikube).
+First follow the basic [Minikube installation instructions](https://github.com/kubernetes/minikube).
 
-2. [Minikube drivers](https://github.com/kubernetes/minikube/blob/master/docs/drivers.md). Minikube uses Docker Machine to manage the Kubernetes VM so it benefits from the driver plugin architecture that Docker Machine uses to provide a consistent way to manage various VM providers. Minikube embeds VirtualBox and VMware Fusion drivers so there are no additional steps to use them. However, other drivers require an extra binary to be present in the host PATH.
+Then install the [Minikube drivers](https://github.com/kubernetes/minikube/blob/master/docs/drivers.md). Minikube uses Docker Machine to manage the Kubernetes VM so it benefits from the driver plugin architecture that Docker Machine uses to provide a consistent way to manage various VM providers. Minikube embeds VirtualBox and VMware Fusion drivers so there are no additional steps to use them. However, other drivers require an extra binary to be present in the host PATH.
+
+If you are running on macOS, make sure in particular to install the xhyve drivers:
+
+```sh
+$ brew install docker-machine-driver-xhyve
+$ sudo chown root:wheel $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+$ sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-machine-driver-xhyve
+```
 
 #### Start Minikube
 
-1. Start Minikube, note that the memory has been increased to 6096 MB.
+1. Start Minikube, note that the memory has been increased to 6096 MB and it uses xhyve, the native OS X Hypervisor.
 
 ```sh
 $ minikube start --kubernetes-version v1.8.0 --cpus 4 --memory 6096 --vm-driver=xhyve --v=8
 ```
 
-2. Check status until both minikube and cluster are in Running state
+2. Continue to check status of your local Kubernetes cluster until both minikube and cluster are in Running state
 
 ```sh
 $ minikube status
@@ -76,12 +86,10 @@ cluster: Running
 kubectl: Correctly Configured: pointing to minikube-vm at 192.168.99.106
 ```
 
-3. Configure the minikube VM.
+3. Workaround Minikube [issue #1568](https://github.com/kubernetes/minikube/issues/1568).
 
 ```sh
-$ minikube ssh
-  sudo ip link set docker0 promisc on
-  exit
+$ minikube ssh -- sudo ip link set docker0 promisc on
 ```
 
 4. Set the context.
@@ -113,7 +121,13 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 
 [Install and deploy Helm](https://docs.helm.sh/using_helm/#quickstart-guide) to the Kubernetes cluster.
 
-Run `helm list` to view a list of all deployed releases in releases in the local installation. 
+View a list of all deployed releases in releases in the local installation. 
+
+```sh
+$ helm init
+$ helm repo update
+$ help list
+```
 
 NOTE: For Helm versions prior to 2.9.1, you may see `"connect: connection refused"`, and will need to fix up the deployment before proceeding.
 
@@ -160,7 +174,7 @@ my-confluent-oss	1       	Tue Jun 12 16:56:39 2018	DEPLOYED	cp-helm-charts-0.1.0
 
 #### Helm
 
-This step is optional. Run the embedded test pod in each sub-chart to verify installations:
+This step is optional: run the embedded test pod in each sub-chart to verify installations:
 
 ```sh
 $ helm test my-confluent-oss
@@ -168,7 +182,7 @@ $ helm test my-confluent-oss
 
 #### Kafka cluster
 
-This step is optional. To verify that Kafka is working as expected, connect to one of the Kafka pods and produce some messages to a Kafka topic.
+This step is optional: to verify that Kafka is working as expected, connect to one of the Kafka pods and produce some messages to a Kafka topic.
 
 1. List your pods.
 
@@ -176,10 +190,10 @@ This step is optional. To verify that Kafka is working as expected, connect to o
 $ kubectl get pods
 ```
 
-2. Choose a running Kafka pod and connect to it. You may need to wait for the Kafka cluster to finish starting up.
+2. Choose a running Kafka pod and connect to it. You may need to wait for the Kafka cluster to finish starting up. Substitute `my-confluent-oss` with whatever you named your release.
 
 ```sh
-$ kubectl exec -c cp-kafka-broker -it ${YOUR_KAFKA_POD_NAME} -- /bin/bash /usr/bin/kafka-console-producer --broker-list localhost:9092 --topic test
+$ kubectl exec -c cp-kafka-broker -it my-confluent-oss-cp-kafka-0 -- /bin/bash /usr/bin/kafka-console-producer --broker-list localhost:9092 --topic test
 ```
 
 Wait for a `>` prompt, and enter some text.
@@ -189,13 +203,15 @@ test 123
 test 456
 ```
 
-Control-D should close the producer session. Now, consume the test messages:
+Press Control-d to close the producer session.
+
+Next, consume the messages from the same Kafka topic. Substitute `my-confluent-oss` with whatever you named your release.
 
 ```sh
-$ kubectl exec -c cp-kafka-broker -it ${YOUR_KAFKA_POD_NAME} -- /bin/bash  /usr/bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic test --from-beginning
+$ kubectl exec -c cp-kafka-broker -it my-confluent-oss-cp-kafka-0 -- /bin/bash  /usr/bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic test --from-beginning
 ```
 
-You should see the messages which were published from the console producer appear. Press Control-C to stop consuming.
+You should see the messages which were published from the console producer. Press Control-c to stop consuming.
 
 #### Manual Test
 
@@ -294,13 +310,6 @@ JMX Metrics are enabled by default for all components, Prometheus JMX Exporter i
 
 ## Uninstall
 
-To stop or delete Minikube:
-
-```sh
-$ minikube stop
-$ minikube delete
-```
-
 To delete the Helm release, first find the Helm release name:
 
 ```sh
@@ -312,6 +321,13 @@ Then delete the Helm release and all persisted volume claims (pvc) created by th
 ```sh
 $ helm delete <release name>
 $ kubectl delete pvc --selector=release=<release name>
+```
+
+To stop or delete Minikube:
+
+```sh
+$ minikube stop
+$ minikube delete
 ```
     
 ## Thanks
