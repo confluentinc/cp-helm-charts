@@ -184,25 +184,13 @@ $ helm test my-confluent-oss
 
 This step is optional: to verify that Kafka is working as expected, connect to one of the Kafka pods and produce some messages to a Kafka topic.
 
-1. List your pods.
+1. List your pods and wait until they are all in `Running` state.
 
 ```sh
 $ kubectl get pods
 ```
 
-2. View the containers in a pod.
-
-```sh
-$ kubectl describe pod/my-confluent-oss-cp-kafka-0
-...
-Containers:
-  prometheus-jmx-exporter:
-...
-  cp-kafka-broker:
-...
-```
-
-3. Connect to the container `cp-kafka-broker` in the pod. You may need to wait for the Kafka cluster to finish starting up.
+2. Connect to the container `cp-kafka-broker` in a Kafka broker pod. You may need to wait for the Kafka cluster to finish starting up.
 
 ```sh
 $ kubectl exec -c cp-kafka-broker -it my-confluent-oss-cp-kafka-0 -- /bin/bash /usr/bin/kafka-console-producer --broker-list localhost:9092 --topic test
@@ -217,7 +205,7 @@ m2
 
 Press Control-d to close the producer session.
 
-4. Consume the messages from the same Kafka topic. Substitute `my-confluent-oss` with whatever you named your release.
+3. Consume the messages from the same Kafka topic. Substitute `my-confluent-oss` with whatever you named your release.
 
 ```sh
 $ kubectl exec -c cp-kafka-broker -it my-confluent-oss-cp-kafka-0 -- /bin/bash  /usr/bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic test --from-beginning
