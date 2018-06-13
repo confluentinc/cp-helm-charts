@@ -126,7 +126,7 @@ View a list of all deployed releases in releases in the local installation.
 ```sh
 $ helm init
 $ helm repo update
-$ help list
+$ helm list
 ```
 
 NOTE: For Helm versions prior to 2.9.1, you may see `"connect: connection refused"`, and will need to fix up the deployment before proceeding.
