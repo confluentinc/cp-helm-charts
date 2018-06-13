@@ -9,7 +9,7 @@
 * [Operations](#operations)
   + [Scaling](#scaling)
   + [Monitoring](#monitoring)
-* [Uninstall](#uninstall)
+* [Teardown](#teardown)
 * [Thanks](#thanks)
 
 
@@ -260,7 +260,8 @@ You should see the messages which were published from the console producer. Pres
 ## Operations
 
 ### Scaling
-> NOTE: All scaling operations should be done offline with no producer/consumer connection
+
+NOTE: All scaling operations should be done offline with no producer/consumer connection
 
 #### ZooKeeper
 Install cp-helm-charts with default 3 nodes zookeeper ensemble
@@ -276,7 +277,7 @@ Scale zookeeper nodes out to 5, change `servers` under `cp-zookeeper` to 3 in [v
 $ helm upgrade <release name> cp-helm-charts
 ```
 #### Kafka
-> NOTE: Scaling Kafka brokers without doing Partition Reassignment will cause data loss!!   
+NOTE: Scaling Kafka brokers without doing Partition Reassignment will cause data loss!!   
 Be sure to reassign partitions correctly before scaling in/out Kafka cluster.
 Please refer: https://kafka.apache.org/documentation/#basic_ops_cluster_expansion 
 
@@ -308,17 +309,19 @@ JMX Metrics are enabled by default for all components, Prometheus JMX Exporter i
     
     ![ZooKeeper Dashboard](screenshots/zookeeper.png "ZooKeeper")
 
-## Uninstall
+## Teardown
 
-To delete the Helm release, first find the Helm release name:
+To remove the pods, list the pods with `kubectl get pods` and then delete the pods by name.
+
+```sh
+$ kubectl get pods
+$ kubectl delete pod <podname>
+```
+
+To delete the Helm release, find the Helm release name with `helm list` and then delete the Helm release and all persisted volume claims (pvc) created by this release.
 
 ```sh
 $ helm list
-```
-
-Then delete the Helm release and all persisted volume claims (pvc) created by this release.
-
-```sh
 $ helm delete <release name>
 $ kubectl delete pvc --selector=release=<release name>
 ```
