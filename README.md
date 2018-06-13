@@ -3,9 +3,9 @@
 * [Developer Preview](#developer-preview)
 * [Introduction](#introduction)
 * [Environment Preparation](#environment-preparation)
-  + [Create a Local Kubernetes Cluster](#create-a-kubernetes-cluster)
+  + [Create a Local Kubernetes Cluster](#create-a-local-kubernetes-cluster)
   + [Install Helm on Kubernetes](#install-helm-on-kubernetes)
-* [Install Helm for Confluent Platform](#install-confluent-platform)
+* [Install Confluent Platform](#install-confluent-platform)
 * [Operations](#operations)
   + [Scaling](#scaling)
   + [Monitoring](#monitoring)
@@ -117,7 +117,7 @@ KubeDNS is running at https://192.168.99.106:8443/api/v1/namespaces/kube-system/
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ```
 
-### Configure Helm
+### Install Helm on Kubernetes
 
 [Install and deploy Helm](https://docs.helm.sh/using_helm/#quickstart-guide) to the Kubernetes cluster.
 
