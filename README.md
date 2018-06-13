@@ -190,7 +190,19 @@ This step is optional: to verify that Kafka is working as expected, connect to o
 $ kubectl get pods
 ```
 
-2. Choose a running Kafka pod and connect to it. You may need to wait for the Kafka cluster to finish starting up.
+2. View the containers in a pod.
+
+```sh
+$ kubectl describe pod/my-confluent-oss-cp-kafka-0
+...
+Containers:
+  prometheus-jmx-exporter:
+...
+  cp-kafka-broker:
+...
+```
+
+3. Connect to the container `cp-kafka-broker` in the pod. You may need to wait for the Kafka cluster to finish starting up.
 
 ```sh
 $ kubectl exec -c cp-kafka-broker -it my-confluent-oss-cp-kafka-0 -- /bin/bash /usr/bin/kafka-console-producer --broker-list localhost:9092 --topic test
@@ -199,13 +211,13 @@ $ kubectl exec -c cp-kafka-broker -it my-confluent-oss-cp-kafka-0 -- /bin/bash /
 Wait for a `>` prompt, and enter some text.
 
 ```
-msg123
-msg456
+m1
+m2
 ```
 
 Press Control-d to close the producer session.
 
-Next, consume the messages from the same Kafka topic. Substitute `my-confluent-oss` with whatever you named your release.
+4. Consume the messages from the same Kafka topic. Substitute `my-confluent-oss` with whatever you named your release.
 
 ```sh
 $ kubectl exec -c cp-kafka-broker -it my-confluent-oss-cp-kafka-0 -- /bin/bash  /usr/bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic test --from-beginning
