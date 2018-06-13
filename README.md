@@ -15,7 +15,9 @@
 
 ## Developer Preview
 
-The [Confluent Platform Helm charts](https://github.com/confluentinc/cp-helm-charts) enable developers to deploy Confluent Platform services on Kubernetes for development, test and proof of concept environments. They are in *developer preview* are not supported for production use.
+The [Confluent Platform Helm charts](https://github.com/confluentinc/cp-helm-charts) enable developers to deploy Confluent Platform services on Kubernetes for development, test and proof of concept environments.
+
+NOTE: these Helm charts are in *developer preview* and are not supported for production use.
 
 We welcome any contributions:
 
@@ -37,7 +39,7 @@ This repository provides Helm charts for the following Confluent Platform servic
 
 ## Environment Preparation
 
-You will need a Kubernetes cluster that has Helm configured.
+You need a Kubernetes cluster that has Helm configured.
  
 ### Tested Software
 
@@ -61,7 +63,7 @@ First follow the basic [Minikube installation instructions](https://github.com/k
 
 Then install the [Minikube drivers](https://github.com/kubernetes/minikube/blob/master/docs/drivers.md). Minikube uses Docker Machine to manage the Kubernetes VM so it benefits from the driver plugin architecture that Docker Machine uses to provide a consistent way to manage various VM providers. Minikube embeds VirtualBox and VMware Fusion drivers so there are no additional steps to use them. However, other drivers require an extra binary to be present in the host PATH.
 
-If you are running on macOS, make sure in particular to install the `xhyve` drivers for the native OS X hypervisor:
+If you are running on macOS, in particular make sure to install the `xhyve` drivers for the native OS X hypervisor:
 
 ```sh
 $ brew install docker-machine-driver-xhyve
@@ -71,7 +73,7 @@ $ sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-mac
 
 #### Start Minikube
 
-1. Start Minikube, note that the memory has been increased to 6096 MB and it uses xhyve, the native OS X hypervisor.
+1. Start Minikube. In the command below, note that memory has been increased to 6096 MB and it uses the xhyve driver for the native OS X hypervisor.
 
 ```sh
 $ minikube start --kubernetes-version v1.8.0 --cpus 4 --memory 6096 --vm-driver=xhyve --v=8
@@ -86,7 +88,7 @@ cluster: Running
 kubectl: Correctly Configured: pointing to minikube-vm at 192.168.99.106
 ```
 
-3. Workaround Minikube [issue #1568](https://github.com/kubernetes/minikube/issues/1568).
+3. Work around Minikube [issue #1568](https://github.com/kubernetes/minikube/issues/1568).
 
 ```sh
 $ minikube ssh -- sudo ip link set docker0 promisc on
@@ -148,7 +150,7 @@ $ git clone https://github.com/confluentinc/cp-helm-charts.git
 
 ### Install cp-helm-chart
 
-Install a 3 node cp-zookeeper ensemble, a 3 node cp-kafka cluster, 1 Confluent Schema Registry instance, 1 REST Proxy instance, and 1 Kafka Connect worker in your k8s environment. Naming the chart `--name my-confluent-oss` is optional.
+Install a 3 node ZooKeeper ensemble, a Kafka cluster of 3 brokers, 1 Confluent Schema Registry instance, 1 REST Proxy instance, and 1 Kafka Connect worker in your Kubernetes environment. Naming the chart `--name my-confluent-oss` is optional, but we assume this is the name in the remainder of the documentation.
 
 ```sh
 $ helm install --name my-confluent-oss cp-helm-charts
@@ -160,7 +162,7 @@ If you want to install without the Confluent Schema Registry instance, the REST 
 $ helm install --set cp-schema-registry.enabled=false,cp-kafka-rest.enabled=false,cp-kafka-connect.enabled=false cp-helm-charts
 ```
 
-To see the installed Helm releases:
+View the installed Helm releases:
 
 ```sh
 $ helm list
@@ -172,7 +174,7 @@ my-confluent-oss	1       	Tue Jun 12 16:56:39 2018	DEPLOYED	cp-helm-charts-0.1.0
 
 #### Helm
 
-This step is optional: run the embedded test pod in each sub-chart to verify installations:
+This step is optional: run the embedded test pod in each sub-chart to verify installation:
 
 ```sh
 $ helm test my-confluent-oss
@@ -188,7 +190,7 @@ This step is optional: to verify that Kafka is working as expected, connect to o
 $ kubectl get pods
 ```
 
-2. Choose a running Kafka pod and connect to it. You may need to wait for the Kafka cluster to finish starting up. Substitute `my-confluent-oss` with whatever you named your release.
+2. Choose a running Kafka pod and connect to it. You may need to wait for the Kafka cluster to finish starting up.
 
 ```sh
 $ kubectl exec -c cp-kafka-broker -it my-confluent-oss-cp-kafka-0 -- /bin/bash /usr/bin/kafka-console-producer --broker-list localhost:9092 --topic test
@@ -197,8 +199,8 @@ $ kubectl exec -c cp-kafka-broker -it my-confluent-oss-cp-kafka-0 -- /bin/bash /
 Wait for a `>` prompt, and enter some text.
 
 ```
-test 123
-test 456
+msg123
+msg456
 ```
 
 Press Control-d to close the producer session.
@@ -262,32 +264,31 @@ You should see the messages which were published from the console producer. Pres
 NOTE: All scaling operations should be done offline with no producer/consumer connection
 
 #### ZooKeeper
-Install cp-helm-charts with default 3 nodes zookeeper ensemble
+Install cp-helm-charts with default 3 node ZooKeeper ensemble
 ```
 $ helm install cp-helm-charts
 ```
-Scale zookeeper nodes out to 5, change `servers` under `cp-zookeeper` to 5 in [values.yaml](values.yaml)
+Scale ZooKeeper nodes up to 5, change `servers` under `cp-zookeeper` to 5 in [values.yaml](values.yaml)
 ```
 $ helm upgrade <release name> cp-helm-charts
 ```
-Scale zookeeper nodes out to 5, change `servers` under `cp-zookeeper` to 3 in [values.yaml](values.yaml)
+Scale ZooKeeper nodes down to 3, change `servers` under `cp-zookeeper` to 3 in [values.yaml](values.yaml)
 ```
 $ helm upgrade <release name> cp-helm-charts
 ```
 #### Kafka
 NOTE: Scaling Kafka brokers without doing Partition Reassignment will cause data loss!!   
-Be sure to reassign partitions correctly before scaling in/out Kafka cluster.
-Please refer: https://kafka.apache.org/documentation/#basic_ops_cluster_expansion 
+Be sure to reassign partitions correctly before [scaling the Kafka cluster](https://kafka.apache.org/documentation/#basic_ops_cluster_expansion).
 
 Install cp-helm-charts with default 3 brokers kafka cluster
 ```
 $ helm install cp-helm-charts
 ```
-Scale kafka brokers out to 5, change `brokers` under `cp-kafka` to 5 in [values.yaml](values.yaml)
+Scale kafka brokers up to 5, change `brokers` under `cp-kafka` to 5 in [values.yaml](values.yaml)
 ```
 $ helm upgrade <release name> cp-helm-charts
 ```
-Scale kafka brokers out to 5, change `brokers` under `cp-kafka` to 3 in [values.yaml](values.yaml)
+Scale kafka brokers down to 3, change `brokers` under `cp-kafka` to 3 in [values.yaml](values.yaml)
 ```
 $ helm upgrade <release name> cp-helm-charts
 ```
