@@ -5,7 +5,10 @@
 * [Environment Preparation](#environment-preparation)
   + [Create a Local Kubernetes Cluster](#create-a-local-kubernetes-cluster)
   + [Install Helm on Kubernetes](#install-helm-on-kubernetes)
-* [Install Confluent Platform](#install-confluent-platform)
+* [Run Confluent Platform](#run-confluent-platform)
+  + [Install cp-helm-charts](#install-cp-helm-charts)
+  + [Verify Installation](#verify-installation)
+  + [Run A Streams Application](#run-a-streams-application)
 * [Operations](#operations)
   + [Scaling](#scaling)
   + [Monitoring](#monitoring)
@@ -140,15 +143,15 @@ $ kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"templ
 $ helm init --service-account tiller --upgrade
 ```
 
-## Install Confluent Platform
-
-### Clone the Confluent Helm Chart repo
-
-```
-$ git clone https://github.com/confluentinc/cp-helm-charts.git
-```
+## Run Confluent Platform
 
 ### Install cp-helm-chart
+
+Clone the Confluent Helm Chart repo
+
+```sh
+$ git clone https://github.com/confluentinc/cp-helm-charts.git
+```
 
 Install a 3 node ZooKeeper ensemble, a Kafka cluster of 3 brokers, 1 Confluent Schema Registry instance, 1 REST Proxy instance, and 1 Kafka Connect worker in your Kubernetes environment. Naming the chart `--name my-confluent-oss` is optional, but we assume this is the name in the remainder of the documentation.
 
@@ -256,6 +259,10 @@ You should see the messages which were published from the console producer. Pres
     ## Consumer
     kafka-consumer-perf-test --broker-list $KAFKAS --messages 6000000 --threads 1 --topic test-rep-one --print-metrics
     ```
+
+### Run A Streams Application
+
+Now that you have Confluent Platform running in your Kubernetes cluster, you may run a [KSQL example](examples/ksql-demo.yaml). KSQL is the streaming SQL engine that enables real-time data processing against Apache Kafka.
 
 ## Operations
 
