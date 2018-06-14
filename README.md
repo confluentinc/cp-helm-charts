@@ -145,7 +145,7 @@ $ helm init --service-account tiller --upgrade
 
 ## Run Confluent Platform
 
-### Install cp-helm-chart
+### Install cp-helm-charts
 
 Clone the Confluent Helm Chart repo
 
