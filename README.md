@@ -190,7 +190,7 @@ This step is optional: to verify that Kafka is working as expected, connect to o
 $ kubectl get pods
 ```
 
-2. Connect to the container `cp-kafka-broker` in a Kafka broker pod. You may need to wait for the Kafka cluster to finish starting up.
+2. Connect to the container `cp-kafka-broker` in a Kafka broker pod to produce messages to a Kafka topic. If you specified a different release name, substitute `my-confluent-oss` with whatever you named your release.
 
 ```sh
 $ kubectl exec -c cp-kafka-broker -it my-confluent-oss-cp-kafka-0 -- /bin/bash /usr/bin/kafka-console-producer --broker-list localhost:9092 --topic test
@@ -205,7 +205,7 @@ m2
 
 Press Control-d to close the producer session.
 
-3. Consume the messages from the same Kafka topic. Substitute `my-confluent-oss` with whatever you named your release.
+3. Consume the messages from the same Kafka topic as above.
 
 ```sh
 $ kubectl exec -c cp-kafka-broker -it my-confluent-oss-cp-kafka-0 -- /bin/bash  /usr/bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic test --from-beginning
