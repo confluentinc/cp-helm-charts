@@ -1,13 +1,19 @@
 ###
-# Example pod with containers for playing with KSQL on Kubernetes. Not for production.
-# To run queries:
+# Example pod with containers for using KSQL on Kubernetes. Not for production.
 #
-# kubectl exec -it ksql-demo --container ksql-server -- /bin/bash
-# root@ksql-demo:/# ksql
+# Before you run:
+# - Note the bootstrap servers are `my-confluent-oss-cp-kafka:9092`. You may need to change this with your own connection strings
 #
-# Try any query from: https://docs.confluent.io/current/ksql/docs/tutorials/basics-docker.html#create-a-stream-and-table
+# Run the pod:
+#   $ kubectl apply -f examples/ksql-demo.yaml
 #
-# Note the hardcoded bootstrap servers. You'll need to replace them with your own connection strings
+# Run KSQL CLI:
+#   $ kubectl exec -it ksql-demo --container ksql -- /bin/bash ksql             
+#   ksql> list topics ;
+#   ksql> print 'pageviews';
+#
+#   Then create any query: https://docs.confluent.io/current/ksql/docs/tutorials/basics-docker.html#create-a-stream-and-table
+#
 ###
 apiVersion: v1
 kind: Pod
@@ -21,18 +27,18 @@ spec:
     command:
       - sh
       - -c
-      - "exec java -jar /usr/share/java/ksql-examples/ksql-examples-5.0.0-SNAPSHOT-standalone.jar quickstart=pageviews format=delimited topic=pageviews  bootstrap-server=oldfashioned-dog-cp-kafka:9092"
+      - "exec java -jar /usr/share/java/ksql-examples/ksql-examples-5.0.0-SNAPSHOT-standalone.jar quickstart=pageviews format=delimited topic=pageviews bootstrap-server=my-confluent-oss-cp-kafka:9092"
   - name: ksql-datagen-users
     image: confluentinc/ksql-examples:5.0.0-beta1
     command:
       - sh
       - -c
-      - "exec java -jar /usr/share/java/ksql-examples/ksql-examples-5.0.0-SNAPSHOT-standalone.jar quickstart=users format=json topic=users iterations=1000 bootstrap-server=oldfashioned-dog-cp-kafka:9092"
+      - "exec java -jar /usr/share/java/ksql-examples/ksql-examples-5.0.0-SNAPSHOT-standalone.jar quickstart=users format=json topic=users iterations=1000 bootstrap-server=my-confluent-oss-cp-kafka:9092"
   - name: ksql
     image: confluentinc/ksql-cli:5.0.0-beta1
     env:
       - name: KSQL_OPTS
-        value: "-Dbootstrap.servers=oldfashioned-dog-cp-kafka:9092"
+        value: "-Dbootstrap.servers=my-confluent-oss-cp-kafka:9092"
     command:
           - sh
           - -c

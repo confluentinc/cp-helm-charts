@@ -5,7 +5,10 @@
 * [Environment Preparation](#environment-preparation)
   + [Create a Local Kubernetes Cluster](#create-a-local-kubernetes-cluster)
   + [Install Helm on Kubernetes](#install-helm-on-kubernetes)
-* [Install Confluent Platform](#install-confluent-platform)
+* [Run Confluent Platform](#run-confluent-platform)
+  + [Install cp-helm-charts](#install-cp-helm-charts)
+  + [Verify Installation](#verify-installation)
+  + [Run A Streams Application](#run-a-streams-application)
 * [Operations](#operations)
   + [Scaling](#scaling)
   + [Monitoring](#monitoring)
@@ -140,15 +143,15 @@ $ kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"templ
 $ helm init --service-account tiller --upgrade
 ```
 
-## Install Confluent Platform
+## Run Confluent Platform
 
-### Clone the Confluent Helm Chart repo
+### Install cp-helm-charts
 
-```
+Clone the Confluent Helm Chart repo
+
+```sh
 $ git clone https://github.com/confluentinc/cp-helm-charts.git
 ```
-
-### Install cp-helm-chart
 
 Install a 3 node ZooKeeper ensemble, a Kafka cluster of 3 brokers, 1 Confluent Schema Registry instance, 1 REST Proxy instance, and 1 Kafka Connect worker in your Kubernetes environment. Naming the chart `--name my-confluent-oss` is optional, but we assume this is the name in the remainder of the documentation.
 
@@ -184,13 +187,13 @@ $ helm test my-confluent-oss
 
 This step is optional: to verify that Kafka is working as expected, connect to one of the Kafka pods and produce some messages to a Kafka topic.
 
-1. List your pods.
+1. List your pods and wait until they are all in `Running` state.
 
 ```sh
 $ kubectl get pods
 ```
 
-2. Choose a running Kafka pod and connect to it. You may need to wait for the Kafka cluster to finish starting up.
+2. Connect to the container `cp-kafka-broker` in a Kafka broker pod to produce messages to a Kafka topic. If you specified a different release name, substitute `my-confluent-oss` with whatever you named your release.
 
 ```sh
 $ kubectl exec -c cp-kafka-broker -it my-confluent-oss-cp-kafka-0 -- /bin/bash /usr/bin/kafka-console-producer --broker-list localhost:9092 --topic test
@@ -199,13 +202,13 @@ $ kubectl exec -c cp-kafka-broker -it my-confluent-oss-cp-kafka-0 -- /bin/bash /
 Wait for a `>` prompt, and enter some text.
 
 ```
-msg123
-msg456
+m1
+m2
 ```
 
 Press Control-d to close the producer session.
 
-Next, consume the messages from the same Kafka topic. Substitute `my-confluent-oss` with whatever you named your release.
+3. Consume the messages from the same Kafka topic as above.
 
 ```sh
 $ kubectl exec -c cp-kafka-broker -it my-confluent-oss-cp-kafka-0 -- /bin/bash  /usr/bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic test --from-beginning
@@ -256,6 +259,10 @@ You should see the messages which were published from the console producer. Pres
     ## Consumer
     kafka-consumer-perf-test --broker-list $KAFKAS --messages 6000000 --threads 1 --topic test-rep-one --print-metrics
     ```
+
+### Run A Streams Application
+
+Now that you have Confluent Platform running in your Kubernetes cluster, you may run a [KSQL example](examples/ksql-demo.yaml). KSQL is the streaming SQL engine that enables real-time data processing against Apache Kafka.
 
 ## Operations
 
