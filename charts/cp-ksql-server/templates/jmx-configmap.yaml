@@ -15,8 +15,6 @@ data:
     lowercaseOutputLabelNames: true
     ssl: false
     rules:
-    - pattern : 'ksql.server<type=jetty-metrics>([^:]+):'
-      name: "cp_ksql_server_jetty_metrics_$1"
-    - pattern : 'ksql.server<type=jersey-metrics>([^:]+):'
-      name: "cp_ksql_server_jersey_metrics_$1"
+    - pattern : 'io.confluent.ksql.metrics<type=ksql-engine-query-stats>([^:]+):'
+      name: "cp_ksql_server_metrics_$1"
 {{- end }}

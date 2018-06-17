@@ -78,7 +78,7 @@ spec:
       - name: jmx-config
         configMap:
           name: {{ template "cp-ksql-server.fullname" . }}-jmx-configmap
+      {{- end }}
       - name: ksql-queries
         configMap:
           name: {{ template "cp-ksql-server.fullname" . }}-ksql-queries-configmap
-      {{- end }}
