@@ -50,7 +50,11 @@ external:
   enabled: false
   type: LoadBalancer
 
-## If the Kafka Chart is disabled a URL and port are required to connect
+## You can list load balanced service endpoint, or list of all brokers (which is hard in K8s).  e.g.:
+## bootstrapServers: "PLAINTEXT://dozing-prawn-kafka-headless:9092"
+kafka:
+  bootstrapServers: ""
+
 ## e.g. gnoble-panther-cp-schema-registry:8081
 cp-schema-registry:
   url: ""

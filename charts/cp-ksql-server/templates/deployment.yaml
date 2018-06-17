@@ -64,7 +64,7 @@ spec:
             mountPath: /etc/ksql/queries
           env:
           - name: KSQL_BOOTSTRAP_SERVERS
-            value: {{ .Release.Name }}-cp-kafka-headless:9092
+            value: {{ template "cp-ksql-server.kafka.bootstrapServers" . }}
           - name: KSQL_KSQL_SERVICE_ID
             value: standalone_1_
           - name: KSQL_KSQL_QUERIES_FILE
