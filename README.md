@@ -79,7 +79,7 @@ $ sudo chmod u+s $(brew --prefix)/opt/docker-machine-driver-xhyve/bin/docker-mac
 1. Start Minikube. In the command below, note that memory has been increased to 6096 MB and it uses the xhyve driver for the native OS X hypervisor.
 
 ```sh
-$ minikube start --kubernetes-version v1.8.0 --cpus 4 --memory 6096 --vm-driver=xhyve --v=8
+$ minikube start --kubernetes-version v1.9.4 --cpus 4 --memory 6096 --vm-driver=xhyve --v=8
 ```
 
 2. Continue to check status of your local Kubernetes cluster until both minikube and cluster are in Running state
