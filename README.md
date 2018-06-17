@@ -324,11 +324,12 @@ $ kubectl get pods
 $ kubectl delete pod <podname>
 ```
 
-To delete the Helm release, find the Helm release name with `helm list` and then delete the Helm release and all persisted volume claims (pvc) created by this release.
+To delete the Helm release, find the Helm release name with `helm list` and delete it with `helm delete`. You may also need to clean up leftover StatefulSets, since `helm delete` can leave them behind. Finally, clean up all persisted volume claims (pvc) created by this release.
 
 ```sh
 $ helm list
 $ helm delete <release name>
+$ kubectl delete statefulset <release name>-cp-kafka <release name>-cp-zookeeper
 $ kubectl delete pvc --selector=release=<release name>
 ```
 
