@@ -1,0 +1,19 @@
+{{- if .Values.external.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "cp-ksql-server.fullname" . }}-external
+  labels:
+    app: {{ template "cp-ksql-server.name" . }}
+    chart: {{ template "cp-ksql-server.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.external.type }}
+  ports:
+    - name: server-proxy
+      port: {{ .Values.servicePort }}
+  selector:
+    app: {{ template "cp-ksql-server.name" . }}
+    release: {{ .Release.Name }}
+{{- end -}}

@@ -1,0 +1,1 @@
+-- This file will be made available to instances of KSQL Server, and should contain SQL queries.
