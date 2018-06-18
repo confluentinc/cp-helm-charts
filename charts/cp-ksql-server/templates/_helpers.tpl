@@ -53,11 +53,11 @@ else use user-provided URL
 {{- end -}}
 
 {{/*
-Default GroupId to Release Name but allow it to be overridden
+Default Server Pool Id to Release Name but allow it to be overridden
 */}}
-{{- define "cp-ksql-server.groupId" -}}
-{{- if .Values.overrideGroupId -}}
-{{- .Values.overrideGroupId -}}
+{{- define "cp-ksql-server.serviceId" -}}
+{{- if .Values.overrideServiceId -}}
+{{- .Values.overrideServiceId -}}
 {{- else -}}
 {{- .Release.Name -}}
 {{- end -}}

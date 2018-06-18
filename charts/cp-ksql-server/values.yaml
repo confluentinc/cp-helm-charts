@@ -50,6 +50,11 @@ external:
   enabled: false
   type: LoadBalancer
 
+## Headless mode
+## ref: https://docs.confluent.io/current/ksql/docs/installation/server-config/index.html
+ksql:
+  headless: false
+
 ## You can list load balanced service endpoint, or list of all brokers (which is hard in K8s).  e.g.:
 ## bootstrapServers: "PLAINTEXT://dozing-prawn-kafka-headless:9092"
 kafka:

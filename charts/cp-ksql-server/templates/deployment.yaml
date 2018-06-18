@@ -60,15 +60,22 @@ spec:
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           volumeMounts:
+          {{- if .Values.ksql.headless }}
           - name: ksql-queries
             mountPath: /etc/ksql/queries
+          {{- end }}
           env:
           - name: KSQL_BOOTSTRAP_SERVERS
             value: {{ template "cp-ksql-server.kafka.bootstrapServers" . }}
           - name: KSQL_KSQL_SERVICE_ID
-            value: standalone_1_
+            value: {{ template "cp-ksql-server.serviceId" . }}
+          {{- if .Values.ksql.headless }}
           - name: KSQL_KSQL_QUERIES_FILE
             value: /etc/ksql/queries/queries.sql
+          {{- else }}
+          - name: KSQL_LISTENERS
+            value: http://0.0.0.0:8088
+          {{- end }}
           {{- if .Values.jmx.port }}
           - name: KSQL_JMX_PORT
             value: "{{ .Values.jmx.port }}"
@@ -79,6 +86,8 @@ spec:
         configMap:
           name: {{ template "cp-ksql-server.fullname" . }}-jmx-configmap
       {{- end }}
+      {{- if .Values.ksql.headless }}
       - name: ksql-queries
         configMap:
           name: {{ template "cp-ksql-server.fullname" . }}-ksql-queries-configmap
+      {{- end }}
