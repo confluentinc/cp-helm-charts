@@ -17,5 +17,5 @@ dependencies:
   condition: cp-kafka-rest.enabled
 - name: cp-kafka-connect
   version: 0.1.0
-  repository: file:/./charts/cp-kafka-connect
+  repository: file://./charts/cp-kafka-connect
   condition: cp-kafka-connect.enabled
