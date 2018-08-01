@@ -1,39 +1,48 @@
 # CP-Kafka Helm Chart
+
 This chart bootstraps a cluster of Confluent Kafka
 
 ## Prerequisites
+
 * Kubernetes 1.9.2+
 * Helm 2.8.2+
 
-## Developing Environment: 
-* [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine/)
-* [Pivotal Container Service (PKS)](https://pivotal.io/platform/pivotal-container-service)
+## Developing Environment:
 
-## Docker Image Source: 
-* DockerHub - ConfluentInc: https://hub.docker.com/u/confluentinc/
+* [Pivotal Container Service (PKS)](https://pivotal.io/platform/pivotal-container-service)
+* [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine/)
+
+## Docker Image Source
+
+* [DockerHub -> ConfluentInc](https://hub.docker.com/u/confluentinc/)
 
 ## Installing the Chart
+
 ### Install along with cp-helm-charts
+
 ```console
-$ git clone https://github.com/confluentinc/cp-helm-charts.git
-$ helm install cp-helm-charts
+git clone https://github.com/confluentinc/cp-helm-charts.git
+helm install cp-helm-charts
 ```
 
 To install with a specific name, you can do:
 ```console
-$ helm install --name my-confluent cp-helm-charts
+helm install --name my-confluent cp-helm-charts
 ```
 
 ### Install with a existing cp-zookeeper
+
 ```console
-$ helm install --set cp-zookeeper.enabled=false,cp-zookeeper.url="unhinged-robin-cp-zookeeper-headless:2181" cp-helm-charts/charts/cp-kafka
+helm install --set cp-zookeeper.enabled=false,cp-zookeeper.url="unhinged-robin-cp-zookeeper-headless:2181" cp-helm-charts/charts/cp-kafka
 ```
 
 ### Installed Components
+
 You can use `helm status <release name>` to view all of the installed components.
 
 For example:
-```console{%raw}
+
+```console
 $ helm status garish-cat
 NAMESPACE: default
 STATUS: DEPLOYED
@@ -72,7 +81,8 @@ boiling-heron-cp-kafka-0   2/2    Running  0         5m
 boiling-heron-cp-kafka-1   2/2    Running  0         5m
 boiling-heron-cp-kafka-2   2/2    Running  0         5m
 ```
-There are 
+
+There are
 1. A [Confluent Zookeeper Ensemble](https://github.com/confluentinc/cp-helm-charts/tree/master/charts/cp-zookeeper) created by cp-zookeeper chart.
 1. A [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) `boiling-heron-cp-kafka` which contains 3 Kafka [Pods](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/): `boiling-heron-cp-kafka-<0|1|2>`. Each Pod has a container running a Kafka Broker and an optional sidecar JMX Exporter Container.
 1. A [Service](https://kubernetes.io/docs/concepts/services-networking/service/) `boiling-heron-cp-kafka` for clients to connect to Kafka.
@@ -81,17 +91,19 @@ There are
 1. A [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) which contains configuration for Prometheus JMX Exporter.
 
 ## Configuration
+
 You can specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
 
 ```console
-$ helm install --name my-kafka -f my-values.yaml ./cp-kafka
+helm install --name my-kafka -f my-values.yaml ./cp-kafka
 ```
 
 > **Tip**: A default [values.yaml](values.yaml) is provided
 
 ### Kafka Cluster
+
 The configuration parameters in this section control the resources requested and utilized by the cp-kafka chart.
 
 | Parameter | Description | Default |
@@ -99,24 +111,28 @@ The configuration parameters in this section control the resources requested and
 | `brokers` | The number of Broker servers. | `3` |
 
 ### Image
+
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `image` | Docker Image of Confluent Kafka. | `confluentinc/cp-kafka` |
-| `imageTag` | Docker Image Tag of Confluent Kafka. | `4.1.1` |
+| `imageTag` | Docker Image Tag of Confluent Kafka. | `5.0.0` |
 | `imagePullPolicy` | Docker Image Tag of Confluent Kafka. | `IfNotPresent` |
 
 ### StatefulSet Configurations
+
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `podManagementPolicy` | The Kafka StatefulSet Pod Management Policy: `Parallel` or `OrderedReady`. | `OrderedReady` |
 | `updateStrategy` | The Kafka StatefulSet update strategy: `RollingUpdate` or `OnDelete`. | `OnDelete` |
 
 ### Confluent Kafka Configuration
+
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `configurationOverrides` | Kafka [configuration](https://kafka.apache.org/documentation/#brokerconfigs) overrides in the dictionary format | `{}` |
 
 ### Persistence
+
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `persistence.enabled` | Whether to create a PVC. If `false`, an `emptyDir` on the host will be used. | `true` |
@@ -124,11 +140,13 @@ The configuration parameters in this section control the resources requested and
 | `persistence.storageClass` | Valid options: `nil`, `"-"`, or storage class name. | `nil` |
 
 ### Kafka JVM Heap Options
+
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `heapOptions` | The JVM Heap Options for Kafka | `"-Xms1G -Xmx1G"` |
 
 ### Resources
+
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `resources.requests.cpu` | The amount of CPU to request. | see [values.yaml](values.yaml) for details |
@@ -137,27 +155,32 @@ The configuration parameters in this section control the resources requested and
 | `resources.requests.limit` | The upper limit memory usage for a Kafka Pod. | see [values.yaml](values.yaml) for details |
 
 ### JMX Configuration
+
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `jmx.port` | The jmx port which JMX style metrics are exposed. | `5555` |
 
 ### Prometheus JMX Exporter Configuration
+
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `prometheus.jmx.enabled` | Whether or not to install Prometheus JMX Exporter as a sidecar container and expose JMX metrics to Prometheus. | `true` |
-| `prometheus.jmx.image` | Docker Image for Prometheus JMX Exporter container. | `solsson/kafka-prometheus-jmx-exporter@sha256` | 
+| `prometheus.jmx.image` | Docker Image for Prometheus JMX Exporter container. | `solsson/kafka-prometheus-jmx-exporter@sha256` |
 | `prometheus.jmx.imageTag` | Docker Image Tag for Prometheus JMX Exporter container. | `a23062396cd5af1acdf76512632c20ea6be76885dfc20cd9ff40fb23846557e8` |
 | `prometheus.jmx.port` | JMX Exporter Port which exposes metrics in Prometheus format for scraping. | `5556` |
 
 ### External Access
+
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `nodeport.enabled` | Whether or not to allow access to kafka cluster from outside k8s through NodePort. | `false` |
-| `nodeport.servicePort` | The Port broker will advertise to external producers and consumers.  | `19092` | 
+| `nodeport.servicePort` | The Port broker will advertise to external producers and consumers.  | `19092` |
 | `nodeport.firstListenerPort` | The first NodePort that Kafka Broker will use for advertising to external producers and consumers. For each broker, advertise.listeners port for external will be set to `31090 + {index of broker pod}`. | `31090` |
 
 ## Dependencies
+
 ### Zookeeper
+
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `cp-zookeeper.enabled` | Whether or not to install cp-zookeeper chart alongside cp-kafka chart | `true` |
