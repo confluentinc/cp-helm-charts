@@ -5,7 +5,7 @@ cp-zookeeper:
   enabled: true
   servers: 3
   image: confluentinc/cp-zookeeper
-  imageTag: 4.1.1
+  imageTag: 5.0.0
   heapOptions: "-Xms512M -Xmx512M"
   persistence:
     enabled: true
@@ -36,7 +36,7 @@ cp-kafka:
   enabled: true
   brokers: 3
   image: confluentinc/cp-kafka
-  imageTag: 4.1.1
+  imageTag: 5.0.0
   heapOptions: "-Xms512M -Xmx512M"
   persistence:
     enabled: true
@@ -58,7 +58,7 @@ cp-kafka:
 cp-schema-registry:
   enabled: true
   image: confluentinc/cp-schema-registry
-  imageTag: 4.1.1
+  imageTag: 5.0.0
   heapOptions: "-Xms512M -Xmx512M"
   resources: {}
   ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
@@ -76,7 +76,7 @@ cp-schema-registry:
 cp-kafka-rest:
   enabled: true
   image: confluentinc/cp-kafka-rest
-  imageTag: 4.1.1
+  imageTag: 5.0.0
   resources: {}
   ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
   ## and remove the curly braces after 'resources:'
@@ -93,7 +93,7 @@ cp-kafka-rest:
 cp-kafka-connect:
   enabled: true
   image: confluentinc/cp-kafka-connect
-  imageTag: 4.1.1
+  imageTag: 5.0.0
   resources: {}
   ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
   ## and remove the curly braces after 'resources:'
