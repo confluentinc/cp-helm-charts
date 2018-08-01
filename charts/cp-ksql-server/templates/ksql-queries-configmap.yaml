@@ -11,5 +11,5 @@ data:
   {{- $files := .Files }}
   {{- range tuple "queries.sql" }}
   {{ . }}: |-
-    {{ $files.Get . }}
+{{ $files.Get . | indent 4 }}
   {{- end }}
