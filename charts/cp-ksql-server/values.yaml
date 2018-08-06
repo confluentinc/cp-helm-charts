@@ -1,0 +1,65 @@
+# Default values for cp-ksql-server.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+## Image Info
+## ref: https://hub.docker.com/r/confluentinc/cp-ksql-server/
+image: confluentinc/cp-ksql-server
+imageTag: 5.0.0
+
+## Specify a imagePullPolicy
+## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
+imagePullPolicy: IfNotPresent
+
+servicePort: 8088
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+## Monitoring
+## JMX Settings
+## ref: https://docs.confluent.io/current/ksql/docs/operations.html
+jmx:
+  port: 5555
+
+## Prometheus Exporter Configuration
+## ref: https://prometheus.io/docs/instrumenting/exporters/
+prometheus:
+  ## JMX Exporter Configuration
+  ## ref: https://github.com/prometheus/jmx_exporter
+  jmx:
+    enabled: true
+    image: solsson/kafka-prometheus-jmx-exporter@sha256
+    imageTag: a23062396cd5af1acdf76512632c20ea6be76885dfc20cd9ff40fb23846557e8
+    port: 5556
+
+## External Access
+## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer
+external:
+  enabled: false
+  type: LoadBalancer
+
+## Headless mode
+## ref: https://docs.confluent.io/current/ksql/docs/installation/server-config/index.html
+ksql:
+  headless: true
+
+## You can list load balanced service endpoint, or list of all brokers (which is hard in K8s).  e.g.:
+## bootstrapServers: "PLAINTEXT://dozing-prawn-kafka-headless:9092"
+kafka:
+  bootstrapServers: ""
+
+## e.g. gnoble-panther-cp-schema-registry:8081
+cp-schema-registry:
+  url: ""

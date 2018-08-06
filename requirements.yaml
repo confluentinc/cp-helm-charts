@@ -19,3 +19,7 @@ dependencies:
   version: 0.1.0
   repository: file://./charts/cp-kafka-connect
   condition: cp-kafka-connect.enabled
+- name: cp-ksql-server
+  version: 0.1.0
+  repository: file://./charts/cp-ksql-server
+  condition: cp-ksql-server.enabled
