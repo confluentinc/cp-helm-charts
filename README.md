@@ -6,7 +6,7 @@ The [Confluent Platform Helm charts](https://github.com/confluentinc/cp-helm-cha
 
 ## Documentation
 
-The Confluent Helm Chart documentation is located at [docs.confluent.io](docs.confluent.io/current/quickstart/cp-helm-charts/docs/index.html).
+The Confluent Helm Chart documentation is located at [docs.confluent.io](https://docs.confluent.io/current/quickstart/cp-helm-charts/docs/index.html).
 
 ## Contributing
 
