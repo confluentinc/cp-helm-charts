@@ -1,9 +1,9 @@
+.. _cp-helm-quickstart:
 
+|cp| Helm Charts
+================
 
-Confluent Open Source Helm Chart
-================================
-
-The |cp| Helm charts enable you to deploy |cp| services on Kubernetes for development, test and proof of concept environments.
+You can use the |cos| Helm charts to deploy |cp| services on Kubernetes for development, test, and proof of concept environments.
 
 .. contents::
       :local:
