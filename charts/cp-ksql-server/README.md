@@ -79,7 +79,7 @@ https://docs.confluent.io/current/ksql/docs
 
 There are
 1. A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) `excited-lynx-cp-ksql-server` which contains 1 KSQL Server instance [Pod](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/): `excited-lynx-cp-ksql-server-d4848ff94-x5fmn`.
-1. A [Service](https://kubernetes.io/docs/concepts/services-networking/service/) `excited-lynx-cp-kafka-rest` for clients to connect to REST Proxy.
+1. A [Service](https://kubernetes.io/docs/concepts/services-networking/service/) `excited-lynx-cp-ksql-server` for clients to connect to KSQL Server.
 1. A [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) which contains configuration for Prometheus JMX Exporter.
 1. A [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) which contains SQL queries for the server to run in non-interactive mode.
 
@@ -108,7 +108,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `image` | Docker Image of Confluent KSQL Server. | `confluentinc/cp-ksql-server` |
-| `imageTag` | Docker Image Tag of Confluent KSQL Server. | `5.0.0-beta30` |
+| `imageTag` | Docker Image Tag of Confluent KSQL Server. | `5.0.0` |
 | `imagePullPolicy` | Docker Image Tag of Confluent KSQL Server. | `IfNotPresent` |
 
 ### Port
