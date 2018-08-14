@@ -220,8 +220,8 @@ Kafka
 Run A Streams Application
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Now that you have Confluent Platform running in your Kubernetes cluster,
-you may run a `KSQL example <examples/ksql-demo.yaml>`__. KSQL is the
+Now that you have |cp| running in your Kubernetes cluster,
+you may run a `KSQL example <https://github.com/confluentinc/cp-helm-charts/blob/master/examples/ksql-demo.yaml>`__. KSQL is the
 streaming SQL engine that enables real-time data processing against
 Apache Kafka.
 
