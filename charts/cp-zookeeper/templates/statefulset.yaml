@@ -156,11 +156,11 @@ spec:
       resources:
         requests:
           storage: "{{ .Values.persistence.dataLogDirSize }}"
-      {{- if .Values.persistence.dataLogDirSizeStorageClass }}
-      {{- if (eq "-" .Values.persistence.dataLogDirSizeStorageClass) }}
+      {{- if .Values.persistence.dataLogDirStorageClass }}
+      {{- if (eq "-" .Values.persistence.dataLogDirStorageClass) }}
       storageClassName: ""
       {{- else }}
-      storageClassName: "{{ .Values.persistence.dataLogDirSizeStorageClass }}"
+      storageClassName: "{{ .Values.persistence.dataLogDirStorageClass }}"
       {{- end }}
       {{- end }}
   {{- end }}
