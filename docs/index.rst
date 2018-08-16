@@ -111,6 +111,28 @@ View the installed Helm releases:
     NAME                REVISION    UPDATED                     STATUS      CHART                   NAMESPACE
     my-confluent-oss    1           Tue Jun 12 16:56:39 2018    DEPLOYED    cp-helm-charts-0.1.0    default 
 
+Persistence
+~~~~~~~~~~~~~~~~~~~
+The ZooKeeper and Kafka cluster are deployed with ``StatefulSets`` that have a ``volumeClaimTemplate`` which provides the persistent volume for each replica. You can define the size of the volumes by changing ``dataDirSize`` and ``dataLogDirSize`` under ``cp-zookeeper`` and ``size`` under  ``cp-kafka`` in `values.yaml. <https://github.com/confluentinc/cp-helm-charts/blob/master/values.yaml>`__
+
+You also could use the cloud provider's volumes by specifying `StorageClass <https://kubernetes.io/docs/concepts/storage/storage-classes/>`__.. For example, if you are on AWS your storage class will look like this:
+
+.. code:: yaml
+
+      apiVersion: storage.k8s.io/v1beta1
+      kind: StorageClass
+      metadata:
+        name: ssd
+      provisioner: kubernetes.io/aws-ebs
+      parameters:
+        type: gp2
+
+.. tip:: To adapt this example to your needs, read the Kubernetes `StorageClass <https://kubernetes.io/docs/concepts/storage/storage-classes/#parameters>`__ documentation.
+
+The ``StorageClass`` that was created can be specified in ``dataLogDirStorageClass`` and ``dataDirStorageClass`` under ``cp-zookeeper`` and in ``storageClass`` under ``cp-kafka`` in `values.yaml <https://github.com/confluentinc/cp-helm-charts/blob/master/values.yaml>`__.
+
+To deploy non-persistent Kafka and ZooKeeper clusters, you must change the value of ``persistence.enabled`` under ``cp-kafka`` and ``cp-zookeeper`` in `values.yaml <https://github.com/confluentinc/cp-helm-charts/blob/master/values.yaml>`__ . These type of clusters are suitable for development and testing purposes. The ``StatefulSets`` are going to use ``emptyDir`` volumes, this means that its content is strictly related to the pod life cycle and is deleted when the pod goes down.
+
 Verify Installation
 ~~~~~~~~~~~~~~~~~~~
 
@@ -232,6 +254,8 @@ Scaling
 ~~~~~~~
 
 .. tip:: All scaling operations should be done offline with no producer or consumer connection.
+
+.. tip:: The number of nodes should always be odd number.
 
 .. zookeeper-1:
 
