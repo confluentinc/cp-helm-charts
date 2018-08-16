@@ -103,3 +103,13 @@ cp-kafka-connect:
   #  requests:
   #   cpu: 100m
   #   memory: 128Mi
+
+## ------------------------------------------------------
+## KSQL Server
+## ------------------------------------------------------
+cp-ksql-server:
+  enabled: true
+  image: confluentinc/cp-ksql-server
+  imageTag: 5.0.0
+  ksql:
+    headless: false
