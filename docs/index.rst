@@ -1,7 +1,7 @@
 .. _cp-helm-quickstart:
 
-|cp| Helm Charts
-================
+Kubernetes Helm Charts
+======================
 
 You can use the |cos| Helm charts to deploy |cp| services on Kubernetes for development, test, and proof of concept environments.
 
