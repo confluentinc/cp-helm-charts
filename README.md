@@ -14,7 +14,7 @@ We welcome any contributions:
 
 - Report all enhancements, bugs, and tasks as [GitHub issues](https://github.com/confluentinc/cp-helm-charts/issues)
 - Provide fixes or enhancements by opening pull requests in GitHub
-    
+
 ## Thanks
 
 Huge thanks to:
