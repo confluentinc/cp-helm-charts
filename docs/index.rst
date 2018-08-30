@@ -62,7 +62,7 @@ installation.
       helm repo update
       helm list
 
-.. important:: For Helm versions prior to 2.9.1, you may see ``"connect: connection refused"``, and will need to fix up 
+.. important:: For Helm versions prior to 2.9.1, you may see ``"connect: connection refused"``, and will need to fix up
                the deployment before proceeding.
 
 .. code:: sh
@@ -71,7 +71,7 @@ installation.
       kubectl delete --namespace kube-system deploy tiller-deploy
       kubectl create serviceaccount --namespace kube-system tiller
       kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
-      kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'      
+      kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
       helm init --service-account tiller --upgrade
 
 Run Confluent Platform
@@ -84,7 +84,15 @@ Clone the Confluent Helm Chart repo
 
 .. code:: sh
 
-      git clone https://github.com/confluentinc/cp-helm-charts.git
+      > helm repo add confluentinc https://raw.githubusercontent.com/confluentinc/cp-helm-charts/master
+    "confluentinc" has been added to your repositories
+
+      > helm repo update
+    Hang tight while we grab the latest from your chart repositories...
+    ...Skip local chart repository
+    ...Successfully got an update from the "confluentinc" chart repository
+    ...Successfully got an update from the "stable" chart repository
+    Update Complete. ⎈ Happy Helming!⎈
 
 Install a 3 node |zk| ensemble, a Kafka cluster of 3 brokers, 1
 Confluent Schema Registry instance, 1 REST Proxy instance, and 1 Kafka
@@ -94,14 +102,14 @@ in the remainder of the documentation.
 
 .. code:: sh
 
-      helm install --name my-confluent-oss cp-helm-charts
+      helm install confluentinc/cp-helm-charts --name my-confluent-oss
 
 If you want to install without the Confluent Schema Registry instance,
 the REST Proxy instance, and the Kafka Connect worker:
 
 .. code:: sh
 
-      helm install --set cp-schema-registry.enabled=false,cp-kafka-rest.enabled=false,cp-kafka-connect.enabled=false cp-helm-charts
+      helm install --set cp-schema-registry.enabled=false,cp-kafka-rest.enabled=false,cp-kafka-connect.enabled=false confluentinc/cp-helm-charts
 
 View the installed Helm releases:
 
@@ -109,7 +117,7 @@ View the installed Helm releases:
 
       helm list
     NAME                REVISION    UPDATED                     STATUS      CHART                   NAMESPACE
-    my-confluent-oss    1           Tue Jun 12 16:56:39 2018    DEPLOYED    cp-helm-charts-0.1.0    default 
+    my-confluent-oss    1           Tue Jun 12 16:56:39 2018    DEPLOYED    cp-helm-charts-0.1.0    default
 
 Persistence
 ~~~~~~~~~~~~~~~~~~~
@@ -190,6 +198,11 @@ Manual Test
 
 |zk|
 ''''
+0. Clone Helm Chars git repository
+
+   ::
+
+   git clone https://github.com/confluentinc/cp-helm-charts.git
 
 1. Deploy a |zk| client pod.
 
@@ -212,7 +225,7 @@ Kafka
 1. Deploy a Kafka client pod.
 
    ::
-  
+
     kubectl apply -f cp-helm-charts/examples/kafka-client.yaml
 
 2. Log into the Pod
@@ -319,7 +332,7 @@ Exporter is installed as a sidecar container along with all Pods.
 1. Install Prometheus and Grafana in same Kubernetes cluster using helm
 
    ::
-  
+
     helm install stable/prometheus
     helm install stable/grafana
 
