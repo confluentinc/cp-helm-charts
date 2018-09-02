@@ -19,3 +19,6 @@
 .project
 .idea/
 *.tmproj
+# Images and archives
+*.png
+*.tgz
