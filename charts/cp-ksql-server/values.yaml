@@ -49,6 +49,8 @@ prometheus:
 external:
   enabled: false
   type: LoadBalancer
+  externalTrafficPolicy: Cluster
+  port: 8088
 
 ## Headless mode
 ## ref: https://docs.confluent.io/current/ksql/docs/installation/server-config/index.html

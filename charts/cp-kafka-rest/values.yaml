@@ -49,6 +49,8 @@ prometheus:
 external:
   enabled: false
   type: LoadBalancer
+  externalTrafficPolicy: Cluster
+  port: 8082
 
 ## If the Kafka Chart is disabled a URL of zookeeper are required to connect
 ## e.g. ungaged-sparrow-cp-zookeeper:2181

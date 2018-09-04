@@ -3,6 +3,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ template "cp-ksql-server.fullname" . }}-external
+  {{- if .Values.external.annotations }}
+  annotations:
+  {{- range $key, $value := .Values.external.annotations }}
+    {{ $key }}: "{{ $value }}"
+  {{- end }}
+  {{- end }}
   labels:
     app: {{ template "cp-ksql-server.name" . }}
     chart: {{ template "cp-ksql-server.chart" . }}
@@ -10,9 +16,17 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   type: {{ .Values.external.type }}
+  externalTrafficPolicy: {{ .Values.external.externalTrafficPolicy }}
+  {{- if .Values.external.loadBalancerSourceRanges }}
+  loadBalancerSourceRanges:
+  {{- range $cidr := .Values.external.loadBalancerSourceRanges }}
+    - {{ $cidr }}
+  {{- end }}
+  {{- end }}
   ports:
     - name: server-proxy
-      port: {{ .Values.servicePort }}
+      port: {{ .Values.external.port }}
+      targetPort: {{ .Values.servicePort }}
   selector:
     app: {{ template "cp-ksql-server.name" . }}
     release: {{ .Release.Name }}
