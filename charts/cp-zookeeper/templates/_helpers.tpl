@@ -42,7 +42,7 @@ in a format like "zkhost1:port:port;zkhost2:port:port"
 {{- $leaderElectionPort := .Values.leaderElectionPort -}}
 {{- $zk := dict "servers" (list) -}}
 {{- range $idx, $v := until (int .Values.servers) }}
-{{- $noop := printf "%s-%d.%s-headless.%s.svc.cluster.local:%d:%d" $name $idx $name $namespace (int $serverPort) (int $leaderElectionPort) | append $zk.servers | set $zk "servers" -}}
+{{- $noop := printf "%s-%d.%s-headless.%s:%d:%d" $name $idx $name $namespace (int $serverPort) (int $leaderElectionPort) | append $zk.servers | set $zk "servers" -}}
 {{- end }}
 {{- printf "%s" (join ";" $zk.servers) | quote -}}
 {{- end -}}
