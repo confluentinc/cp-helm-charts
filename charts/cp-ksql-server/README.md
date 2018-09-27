@@ -147,6 +147,10 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `external.enabled` | whether or not to allow external access to KSQL Server | `false` |
 | `external.type` | `Kubernetes Service Type` to expose KSQL Server to external | `LoadBalancer` |
+| `external.port` | External service port to expose KSQL Server to external | `8082` |
+| `external.annotations` | Map of annotations to attach to external KSQL Server service | `nil` |
+| `external.externalTrafficPolicy` | Configures `.spec.externalTrafficPolicy` which controls if load balancing occurs across all nodes (value of `Cluster`) or only active nodes (value of `Local`)  | `Cluster` |
+| `external.loadBalancerSourceRanges` | Configures `.spec.loadBalancerSourceRanges` which specifies the list of source IP ranges permitted access to the load balancer | `["0.0.0.0/0"]` |
 
 ## Dependencies
 
