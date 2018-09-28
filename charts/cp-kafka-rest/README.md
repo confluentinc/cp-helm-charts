@@ -137,6 +137,10 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `external.enabled` | whether or not to allow external access to Kafka REST Proxy | `false` |
 | `external.type` | `Kubernetes Service Type` to expose Kafka REST Proxy to external | `LoadBalancer` |
+| `external.port` | External service port to expose Kafka REST Proxy to external | `8082` |
+| `external.annotations` | Map of annotations to attach to external Kafka REST Proxy service | `nil` |
+| `external.externalTrafficPolicy` | Configures `.spec.externalTrafficPolicy` which controls if load balancing occurs across all nodes (value of `Cluster`) or only active nodes (value of `Local`)  | `Cluster` |
+| `external.loadBalancerSourceRanges` | Configures `.spec.loadBalancerSourceRanges` which controls a list of source IP ranges permitted access to the load balancer | `["0.0.0.0/0"]` |
 
 ## Dependencies
 
