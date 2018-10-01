@@ -83,6 +83,9 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
+## Custom pod annotations
+podAnnotations: {}
+
 ## Monitoring
 ## Kafka JMX Settings
 ## ref: https://docs.confluent.io/current/kafka/monitoring.html
