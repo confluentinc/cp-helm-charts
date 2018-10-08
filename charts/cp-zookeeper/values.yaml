@@ -21,6 +21,11 @@ imageTag: 5.0.0
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
 imagePullPolicy: IfNotPresent
 
+## Optionally specify an array of imagePullSecrets.
+## Secrets must be manually created in the namespace.
+## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+imagePullSecret:
+
 ## StatefulSet Config
 ## Start and stop pods in Parallel or OrderedReady (one-by-one.)
 ## ref: https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#pod-management-policy

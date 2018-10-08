@@ -92,9 +92,9 @@ spec:
             - name: KAFKA_JMX_PORT
               value: "{{ .Values.jmx.port }}"
             {{- end }}
-      {{- if .Values.global.imagePullSecrets }}
+      {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
-{{ toYaml .Values.global.imagePullSecrets | indent 8 }}
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
       {{- end }}
       volumes:
       {{- if .Values.prometheus.jmx.enabled }}
