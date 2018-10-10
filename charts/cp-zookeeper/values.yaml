@@ -41,7 +41,9 @@ autoPurgeSnapRetainCount: 3
 autoPurgePurgeInterval: 24
 
 ## Zookeeper JVM Heap Option
-heapOptions: "-Xms512M -Xmx512M"
+heapOptions: "-XX:+UnlockExperimentalVMOptions \
+              -XX:+ExitOnOutOfMemoryError \
+              -XX:+UseCGroupMemoryLimitForHeap"
 
 ## Port
 ## ref: https://zookeeper.apache.org/doc/r3.4.10/zookeeperAdmin.html#sc_configuration
