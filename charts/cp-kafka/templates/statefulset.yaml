@@ -124,6 +124,10 @@ spec:
         volumeMounts:
         - name: datadir
           mountPath: /opt/kafka/data
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+      {{- end }}
       volumes:
       {{- if not .Values.persistence.enabled }}
       - name: datadir
