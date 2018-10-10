@@ -33,6 +33,11 @@ resources: {}
 jmx:
   port: 5555
 
+## JVM Heap Option
+heapOptions: "-XX:+UnlockExperimentalVMOptions \
+              -XX:+ExitOnOutOfMemoryError \
+              -XX:+UseCGroupMemoryLimitForHeap"
+
 ## Prometheus Exporter Configuration
 ## ref: https://prometheus.io/docs/instrumenting/exporters/
 prometheus:
