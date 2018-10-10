@@ -63,7 +63,7 @@ spec:
             - name: CONNECT_REST_ADVERTISED_HOST_NAME
               valueFrom:
                 fieldRef:
-                  fieldPath: metadata.name
+                  fieldPath: status.podIP
             - name: CONNECT_PLUGIN_PATH
               value: {{ .Values.pluginPath }}
             - name: CONNECT_BOOTSTRAP_SERVERS

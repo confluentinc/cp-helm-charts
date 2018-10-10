@@ -63,7 +63,7 @@ spec:
           - name: KAFKA_REST_HOST_NAME
             valueFrom:
               fieldRef:
-                fieldPath: metadata.name
+                fieldPath: status.podIP
           - name: KAFKA_REST_ZOOKEEPER_CONNECT
             value: {{ template "cp-kafka-rest.cp-zookeeper.service-name" . }}
           - name: KAFKA_REST_SCHEMA_REGISTRY_URL
