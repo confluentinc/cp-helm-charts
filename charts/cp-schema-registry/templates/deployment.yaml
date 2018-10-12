@@ -51,7 +51,7 @@ spec:
           imagePullPolicy: "{{ .Values.imagePullPolicy }}"
           ports:
             - name: schema-registry
-              containerPort: {{ .Values.servicePort}}
+              containerPort: {{ .Values.servicePort }}
               protocol: TCP
             {{- if .Values.prometheus.jmx.enabled }}
             - containerPort: {{ .Values.jmx.port }}
@@ -64,6 +64,9 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.name
+          - name: SCHEMA_REGISTRY_LISTENERS
+            value: http://0.0.0.0:{{ .Values.servicePort }}
+            
           - name: SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS
             value: {{ template "cp-schema-registry.kafka.bootstrapServers" . }}
           - name: SCHEMA_REGISTRY_KAFKASTORE_GROUP_ID
