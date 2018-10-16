@@ -54,17 +54,17 @@ cp-kafka:
     size: 500Gi
   configurationOverrides:
     ## Cluster level Retention set to 7 week.
-    "log.retention.ms": 604800
+    "log.retention.ms": "604800"
     ## Cluster level retention set to 400G
-    "log.retention.bytes": 429496729600
+    "log.retention.bytes": "429496729600"
     ## Cluster level segment size set to 500M, to allow smaller granularity in retention
-    "log.segment.bytes": 524288000
-    ## Cluster level retention interval set to 5Min
-    "log.retention.check.interval.ms": 300000
+    "log.segment.bytes": "524288000"
+    ## Cluster level retention interval set to 1Min
+    "log.retention.check.interval.ms": "60000"
     ## Cluster level num of partitions
-    "num.partitions": 12
+    "num.partitions": "12"
     ## Cluster level replication factor
-    "default.replication.factor": 2
+    "default.replication.factor": "2"
   resources: {}
   ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
   ## and remove the curly braces after 'resources:'

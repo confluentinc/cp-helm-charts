@@ -5,18 +5,27 @@
 Please also read [Confluent Platform REAMME.md](https://github.com/Secful/cp-helm-charts/blob/master/README.md) for additional information.
 Installing Confluent Platform (cp) Kafka cluster instructions are taken from [Kubernetes Helm Charts page](https://docs.confluent.io/current/installation/installing_cp/cp-helm-charts/docs/index.html).
 
+## Updating this repo (from the repo's root)
+- Make all needed changes you desire
+- #$ helm package .
+- #$ helm repo index .
+- #$ git add .
+- #$ git commit -m 'I did something great'
+- #$ git push
+- #$ helm repo update
+
 ## Add Salt cp-helm-charts repo to helm
-- #$ helm repo add  salt  https://raw.githubusercontent.com/Secful/cp-helm-charts/master
+- #$ helm repo add salt https://raw.githubusercontent.com/Secful/cp-helm-charts/master
 - #$ helm repo update
 - #$ helm search cp-helm-charts (to make sure salt/cp-helm-charts is available)
 
 ## Create Kafka cluster
 - #$ helm repo update
-- #$ helm install --namespace=\<Namespace\> salt/cp-helm-charts --name \<releaseName\>
+- #$ helm install --namespace=\<Namespace\> -f \<env\>_values.yaml salt/cp-helm-charts --name \<releaseName\>
 
 ## Delete Kafka cluster
-- #$ helm ls --all salt-kafka-cluster
-- #$ helm del --purge salt-kafka-cluster
+- #$ helm ls --all
+- #$ helm delete --purge <releaseName>
 - In some cases helm does not clear all allocated resources. So after executing the above, make sure that all resources related to 'releaseName' are deleted. In particular PersistentVolume, PersistentVolumeClaim and podDisruptionBudget
 
 ## Kafka Client
