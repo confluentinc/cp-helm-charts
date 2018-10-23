@@ -65,6 +65,10 @@ spec:
             mountPath: /etc/ksql/queries
           {{- end }}
           env:
+          {{- if .Values.schema_registry_url }}
+          - name: KSQL_KSQL_SCHEMA_REGISTRY_URL
+            value: "{{ .Values.schema_registry_url }}"
+          {{- end }}
           - name: KSQL_BOOTSTRAP_SERVERS
             value: {{ template "cp-ksql-server.kafka.bootstrapServers" . }}
           - name: KSQL_KSQL_SERVICE_ID
@@ -79,6 +83,9 @@ spec:
           {{- if .Values.jmx.port }}
           - name: KSQL_JMX_PORT
             value: "{{ .Values.jmx.port }}"
+          {{- end }}
+          {{- if .Values.env }}
+{{ toYaml .Values.env | indent 10 }}
           {{- end }}
       volumes:
       {{- if .Values.prometheus.jmx.enabled }}

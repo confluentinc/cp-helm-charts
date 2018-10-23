@@ -64,13 +64,14 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.name
-          - name: KAFKA_REST_ZOOKEEPER_CONNECT
-            value: {{ template "cp-kafka-rest.cp-zookeeper.service-name" . }}
           - name: KAFKA_REST_SCHEMA_REGISTRY_URL
             value: {{ template "cp-kafka-rest.cp-schema-registry.service-name" . }}
           {{- if .Values.jmx.port }}
           - name: KAFKA_REST_JMX_PORT
             value: "{{ .Values.jmx.port }}"
+          {{- end }}
+          {{- if .Values.env }}
+{{ toYaml .Values.env | indent 10 }}
           {{- end }}
       volumes:
       {{- if .Values.prometheus.jmx.enabled }}
