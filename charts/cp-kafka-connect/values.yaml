@@ -33,6 +33,9 @@ pluginVolume: {}
 #  storageClass: basic
 #  size: 1Gi
 #  path: "/usr/share/java/custom"
+downloadPlugins: {}
+#  Download and extract each plugin tar.gz listed
+#  - https://repo1.maven.org/maven2/io/debezium/debezium-connector-mysql/0.8.3.Final/debezium-connector-mysql-0.8.3.Final-plugin.tar.gz
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

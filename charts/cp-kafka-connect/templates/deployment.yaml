@@ -24,6 +24,36 @@ spec:
         prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
       {{- end }}
     spec:
+      {{- if .Values.downloadPlugins }}
+      initContainers:
+      - name: download-plugins
+        image: busybox
+        command:
+        - sh
+        - -c
+        - |
+          set -ex
+          mkdir /plugins/tar
+          cd /plugins/tar
+          {{- range .Values.downloadPlugins }}
+          echo {{ . }} >> plugins
+          {{- end }}
+          touch loaded
+          while read url
+          do
+            if ! grep -q $url loaded; then
+              wget $url
+              filename="$(echo $url | rev | cut -d/ -f 1 | rev)"
+              tar -xvf $filename -C ../
+              rm $filename
+              echo $url >> loaded
+            fi
+          done < plugins
+          rm plugins
+        volumeMounts:
+        - mountPath: /plugins
+          name: connect-plugins
+      {{- end }}
       containers:
         {{- if .Values.prometheus.jmx.enabled }}
         - name: prometheus-jmx-exporter
@@ -70,7 +100,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: CONNECT_PLUGIN_PATH
-              value: {{ template "cp-kafka-connect.pluginPath" }}
+              value: {{ template "cp-kafka-connect.pluginPath" . }}
             - name: CONNECT_BOOTSTRAP_SERVERS
               value: {{ template "cp-kafka-connect.kafka.bootstrapServers" . }}
             - name: CONNECT_GROUP_ID
