@@ -27,6 +27,12 @@ connectValueConverter: "io.confluent.connect.avro.AvroConverter"
 connectInternalKeyConverter: "org.apache.kafka.connect.json.JsonConverter"
 connectInternalValueConverter: "org.apache.kafka.connect.json.JsonConverter"
 pluginPath: "/usr/share/java"
+pluginVolume: {}
+#  Enable this to create a persistent volume for storing additional plugins.
+#  enabled: true
+#  storageClass: basic
+#  size: 1Gb
+#  path: "/usr/share/java/custom"
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

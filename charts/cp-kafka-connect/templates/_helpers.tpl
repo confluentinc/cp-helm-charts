@@ -79,3 +79,14 @@ Default GroupId to Release Name but allow it to be overridden
 {{- .Release.Name -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Return combined plugin path if a pluginVolume is requested
+*/}}
+{{- define "cp-kafka-connect.pluginPath" -}}
+{{- if .Values.pluginVolume.enabled -}}
+{{- printf "%s, %s" .Values.pluginPath .Values.pluginVolume.path -}}
+{{- else -}}
+{{- .Values.pluginPath -}}
+{{- end -}}
+{{- end -}}

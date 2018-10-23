@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ template "cp-kafka-connect.fullname" . }}-plugins
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: {{ .Values.pluginVolume.storageClass }}
+  resources:
+    requests:
+      storage: {{ .Values.pluginVolume.size }}
