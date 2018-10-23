@@ -31,7 +31,7 @@ pluginVolume: {}
 #  Enable this to create a persistent volume for storing additional plugins.
 #  enabled: true
 #  storageClass: basic
-#  size: 1Gb
+#  size: 1Gi
 #  path: "/usr/share/java/custom"
 
 resources: {}
