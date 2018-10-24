@@ -33,7 +33,7 @@ spec:
         - -c
         - |
           set -ex
-          mkdir /plugins/tar
+          mkdir -p /plugins/tar
           cd /plugins/tar
           {{- range .Values.downloadPlugins }}
           echo {{ . }} >> plugins
