@@ -153,6 +153,13 @@ The configuration parameters in this section control the resources requested and
 | `external.externalTrafficPolicy` | Configures `.spec.externalTrafficPolicy` which controls if load balancing occurs across all nodes (value of `Cluster`) or only active nodes (value of `Local`)  | `Cluster` |
 | `external.loadBalancerSourceRanges` | Configures `.spec.loadBalancerSourceRanges` which specifies the list of source IP ranges permitted access to the load balancer | `["0.0.0.0/0"]` |
 
+### Headless
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `ksql.headless` | Whether to run ksql in headless mode (see [docs](https://docs.confluent.io/current/ksql/docs/installation/server-config/index.html). | `true` |
+| `ksql.queries` | List of queries to run on start. | see [values.yaml](values.yaml) for details |
+
 ## Dependencies
 
 ### Schema Registry (optional)
