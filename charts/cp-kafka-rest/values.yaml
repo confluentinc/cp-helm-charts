@@ -35,6 +35,14 @@ resources: {}
 ## Custom pod annotations
 podAnnotations: {}
 
+## Node labels for pod assignment
+## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+nodeSelector: {}
+
+## Taints to tolerate on node assignment:
+## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+tolerations: {}
+
 ## Monitoring
 ## Kafka REST JMX Settings
 ## ref: https://docs.confluent.io/current/kafka-rest/docs/monitoring.html

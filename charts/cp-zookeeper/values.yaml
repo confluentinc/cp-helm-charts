@@ -88,6 +88,14 @@ resources: {}
 ## Custom pod annotations
 podAnnotations: {}
 
+## Node labels for pod assignment
+## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+nodeSelector: {}
+
+## Taints to tolerate on node assignment:
+## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+tolerations: {}
+
 ## Monitoring
 ## Zookeeper JMX Settings
 ## ref: https://docs.confluent.io/current/installation/docker/docs/operations/monitoring.html
