@@ -69,6 +69,8 @@ spec:
             value: {{ template "cp-ksql-server.kafka.bootstrapServers" . }}
           - name: KSQL_KSQL_SERVICE_ID
             value: {{ template "cp-ksql-server.serviceId" . }}
+          - name: KSQL_KSQL_SCHEMA_REGISTRY_URL
+            value: {{ template "cp-ksql-server.cp-schema-registry.service-name" . }}
           {{- if .Values.ksql.headless }}
           - name: KSQL_KSQL_QUERIES_FILE
             value: /etc/ksql/queries/queries.sql
