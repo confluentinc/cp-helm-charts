@@ -105,6 +105,16 @@ nodeport:
   servicePort: 19092
   firstListenerPort: 31090
 
+
+## RBAC configuration
+## Used to get info to set the broker.rack property of the brokers
+serviceAccount:
+  create: true
+
+rbac:
+  create: true
+
+
 ## ------------------------------------------------------
 ## Zookeeper
 ## ------------------------------------------------------
