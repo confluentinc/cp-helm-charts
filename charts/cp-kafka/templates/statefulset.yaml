@@ -127,7 +127,7 @@ spec:
         - |
           export KAFKA_BROKER_ID=${HOSTNAME##*-} && \
           export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_IP}:9092{{ if kindIs "string" $advertisedListenersOverride }}{{ printf ",%s" $advertisedListenersOverride }}{{ end }} && \
-          export KAFKA_BROKER_RACK=$(curl -sSk -H "Authorization: Bearer `cat /var/run/secrets/kubernetes.io/serviceaccount/token`" https://kubernetes.default/api/v1/nodes/$NODE_NAME|grep failure-domain.beta.kubernetes.io/zone | sed 's/.*: "\(.*\)",/\1/') && \
+          {{ .Values.rackAware.enabled }} && export KAFKA_BROKER_RACK=$(curl -sSk -H "Authorization: Bearer `cat /var/run/secrets/kubernetes.io/serviceaccount/token`" https://kubernetes.default/api/v1/nodes/$NODE_NAME|grep failure-domain.beta.kubernetes.io/zone | sed 's/.*: "\(.*\)",/\1/') ; \
           exec /etc/confluent/docker/run
         volumeMounts:
         - name: datadir
