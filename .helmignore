@@ -22,3 +22,4 @@
 # Images and archives
 *.png
 *.tgz
+certs/

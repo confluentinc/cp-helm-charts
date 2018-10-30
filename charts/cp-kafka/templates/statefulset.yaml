@@ -67,8 +67,13 @@ spec:
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
         ports:
+        {{- if .Values.ssl.enabled }}
+        - containerPort: 9093
+          name: kafka
+        {{- else }}
         - containerPort: 9092
           name: kafka
+        {{- end }}
         {{- if .Values.prometheus.jmx.enabled }}
         - containerPort: {{ .Values.jmx.port }}
           name: jmx
@@ -94,6 +99,29 @@ spec:
               fieldPath: status.hostIP
         - name: KAFKA_HEAP_OPTS
           value: {{ .Values.heapOptions }}
+        {{- if .Values.ssl.enabled }}
+        - name: KAFKA_SSL_KEYSTORE_FILENAME
+          value: kafka.broker.keystore.jks
+        - name: KAFKA_SSL_KEYSTORE_CREDENTIALS
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "cp-kafka.fullname" . }}-ssl-secret
+              key: keystore_credentials
+        - name: KAFKA_SSL_KEY_CREDENTIALS
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "cp-kafka.fullname" . }}-ssl-secret
+              key: key_credentials
+        - name: KAFKA_SSL_TRUSTSTORE_FILENAME
+          value: kafka.broker.truststore.jks
+        - name: KAFKA_SSL_TRUSTSTORE_CREDENTIALS
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "cp-kafka.fullname" . }}-ssl-secret
+              key: truststore_credentials
+        - name: KAFKA_SECURITY_INTER_BROKER_PROTOCOL
+          value: SSL
+        {{- end }}
         {{- if not (hasKey .Values.configurationOverrides "zookeeper.connect") }}
         - name: KAFKA_ZOOKEEPER_CONNECT
           value: {{ include "cp-kafka.cp-zookeeper.service-name" . | quote }}
@@ -119,11 +147,18 @@ spec:
         - -exc
         - |
           export KAFKA_BROKER_ID=${HOSTNAME##*-} && \
+          {{- if .Values.ssl.enabled }}
+          export KAFKA_ADVERTISED_LISTENERS=SSL://${POD_IP}:9093{{ if kindIs "string" $advertisedListenersOverride }}{{ printf ",%s" $advertisedListenersOverride }}{{ end }} && \
+          {{- else }}
           export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_IP}:9092{{ if kindIs "string" $advertisedListenersOverride }}{{ printf ",%s" $advertisedListenersOverride }}{{ end }} && \
+          {{- end }}
           exec /etc/confluent/docker/run
         volumeMounts:
         - name: datadir
           mountPath: /opt/kafka/data
+        {{ if .Values.ssl.enabled }}
+        - name: ssl
+          mountPath: "/etc/kafka/secrets"
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
@@ -133,6 +168,15 @@ spec:
       - name: datadir
         emptyDir: {}
       {{- end }}
+      {{- if .Values.ssl.enabled }}
+      - name: ssl
+        secret:
+          secretName: ssl
+          items:
+          - key: kafka.broker.truststore.jks
+            path: kafka.broker.keystore.jks
+          - key: kafka.broker.keystore.jks
+            path: kafka.broker.keystore.jks
       {{- if .Values.prometheus.jmx.enabled }}
       - name: jmx-config
         configMap:
