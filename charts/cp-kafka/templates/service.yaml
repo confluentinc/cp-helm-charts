@@ -9,7 +9,11 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   ports:
+  {{- if .Values.global.kafka.ssl.enabled }}
+    - port: 9093
+  {{- else }}
     - port: 9092
+  {{- end }}
       name: broker
   selector:
     app: {{ template "cp-kafka.name" . }}

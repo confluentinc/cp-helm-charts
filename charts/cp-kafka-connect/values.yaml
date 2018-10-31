@@ -70,6 +70,7 @@ prometheus:
 ## bootstrapServers: "PLAINTEXT://dozing-prawn-kafka-headless:9092"
 kafka:
   bootstrapServers: ""
+  bootstrapSSL: false
 
 ## If the Kafka Chart is disabled a URL and port are required to connect
 ## e.g. gnoble-panther-cp-schema-registry:8081

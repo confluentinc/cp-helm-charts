@@ -47,6 +47,8 @@ else use user-provided URL
 {{- define "cp-ksql-server.kafka.bootstrapServers" -}}
 {{- if .Values.kafka.bootstrapServers -}}
 {{- .Values.kafka.bootstrapServers -}}
+{{- else if .Values.global.kafka.ssl.enabled -}}
+{{- printf "SSL://%s:9093" (include "cp-ksql-server.cp-kafka-headless.fullname" .) -}}
 {{- else -}}
 {{- printf "PLAINTEXT://%s:9092" (include "cp-ksql-server.cp-kafka-headless.fullname" .) -}}
 {{- end -}}

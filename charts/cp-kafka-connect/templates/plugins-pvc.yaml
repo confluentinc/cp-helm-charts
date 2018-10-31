@@ -4,7 +4,7 @@ metadata:
   name: {{ template "cp-kafka-connect.fullname" . }}-plugins
 spec:
   accessModes:
-  - ReadWriteMany
+  - ReadWriteOnce
   storageClassName: {{ .Values.pluginVolume.storageClass }}
   resources:
     requests:
