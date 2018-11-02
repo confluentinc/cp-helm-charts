@@ -55,6 +55,9 @@ resources: {}
 jmx:
   port: 5555
 
+ssl:
+  client: {}
+
 ## Prometheus Exporter Configuration
 ## ref: https://prometheus.io/docs/instrumenting/exporters/
 prometheus:
@@ -68,7 +71,7 @@ prometheus:
 
 ## You can list load balanced service endpoint, or list of all brokers (which is hard in K8s).  e.g.:
 ## bootstrapServers: "PLAINTEXT://dozing-prawn-kafka-headless:9092"
-kafka:
+cp-kafka:
   bootstrapServers: ""
   bootstrapSSL: false
 

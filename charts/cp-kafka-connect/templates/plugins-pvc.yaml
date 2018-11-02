@@ -3,8 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ template "cp-kafka-connect.fullname" . }}-plugins
 spec:
-  accessModes:
-  - ReadWriteOnce
+  accessModes: {{ .Values.pluginVolume.accessModes }}
   storageClassName: {{ .Values.pluginVolume.storageClass }}
   resources:
     requests:

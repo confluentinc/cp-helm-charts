@@ -67,9 +67,11 @@ spec:
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
         ports:
-        {{- if .Values.global.kafka.ssl.enabled }}
+        {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
         - containerPort: 9093
           name: kafka
+        - containerPort: 9092
+          name: kafka-internal
         {{- else }}
         - containerPort: 9092
           name: kafka
@@ -99,17 +101,19 @@ spec:
               fieldPath: status.hostIP
         - name: KAFKA_HEAP_OPTS
           value: {{ .Values.heapOptions }}
-        {{- if .Values.global.kafka.ssl.enabled }}
+        {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
         - name: KAFKA_SSL_KEYSTORE_FILENAME
-          value: kafka.broker.keystore.jks
+          value: {{ template "cp-kafka.ssl.broker.keystoreFile" . }}
         - name: KAFKA_SSL_KEYSTORE_CREDENTIALS
-          value: keystore_credentials
+          value: broker.keystore.password
         - name: KAFKA_SSL_KEY_CREDENTIALS
-          value: key_credentials
+          value: broker.key.password
         - name: KAFKA_SSL_TRUSTSTORE_FILENAME
-          value: kafka.broker.truststore.jks
+          value: {{ template "cp-kafka.ssl.broker.truststoreFile" . }}
+        - name: KAFKA_SSL_TRUSTSTORE_LOCATION
+          value: /etc/kafka/secrets/{{ template "cp-kafka.ssl.broker.truststoreFile" . }}
         - name: KAFKA_SSL_TRUSTSTORE_CREDENTIALS
-          value: truststore_credentials
+          value: broker.truststore.password
         - name: KAFKA_SECURITY_INTER_BROKER_PROTOCOL
           value: SSL
         - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
@@ -140,8 +144,8 @@ spec:
         - -exc
         - |
           export KAFKA_BROKER_ID=${HOSTNAME##*-} && \
-          {{- if .Values.global.kafka.ssl.enabled }}
-          export KAFKA_ADVERTISED_LISTENERS=SSL://${POD_IP}:9093{{ if kindIs "string" $advertisedListenersOverride }}{{ printf ",%s" $advertisedListenersOverride }}{{ end }} && \
+          {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
+          export KAFKA_ADVERTISED_LISTENERS=SSL://${HOSTNAME}.{{ template "cp-kafka.fullname" . }}-headless:9092{{ if kindIs "string" $advertisedListenersOverride }}{{ printf ",%s" $advertisedListenersOverride }}{{ end }} && \
           {{- else }}
           export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_IP}:9092{{ if kindIs "string" $advertisedListenersOverride }}{{ printf ",%s" $advertisedListenersOverride }}{{ end }} && \
           {{- end }}
@@ -149,7 +153,7 @@ spec:
         volumeMounts:
         - name: datadir
           mountPath: /opt/kafka/data
-        {{ if .Values.global.kafka.ssl.enabled }}
+        {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
         - name: ssl
           mountPath: "/etc/kafka/secrets"
         {{- end }}
@@ -162,21 +166,10 @@ spec:
       - name: datadir
         emptyDir: {}
       {{- end }}
-      {{- if .Values.global.kafka.ssl.enabled }}
+      {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
       - name: ssl
         secret:
-          secretName: {{ template "cp-kafka.fullname" . }}-ssl-secret
-          items:
-          - key: kafka.broker.truststore.jks
-            path: kafka.broker.keystore.jks
-          - key: kafka.broker.keystore.jks
-            path: kafka.broker.keystore.jks
-          - key: keystore_credentials
-            path: keystore_credentials
-          - key: key_credentials
-            path: key_credentials
-          - key: truststore_credentials
-            path: truststore_credentials
+          secretName: {{ template "cp-kafka.ssl.secretName" . }}
       {{- end }}
       {{- if .Values.prometheus.jmx.enabled }}
       - name: jmx-config

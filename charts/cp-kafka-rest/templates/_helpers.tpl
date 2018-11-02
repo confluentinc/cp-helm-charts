@@ -53,6 +53,29 @@ else use user-provided URL
 {{- end -}}
 
 {{/*
+Create a default fully qualified kafka broker name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "cp-kafka-rest.cp-kafka.fullname" -}}
+{{- $name := default "cp-kafka" (index .Values "cp-kafka" "nameOverride") -}}
+{{- printf "%s-%s-headless" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+Form the Kafka Broker Service URL. If kafka is installed as part of this chart, use k8s service discovery,
+else use user-provided URL
+*/}}
+{{- define "cp-kafka-rest.cp-kafka.broker-url" }}
+{{- if (index .Values "cp-kafka" "url") -}}
+{{- printf "%s" (index .Values "cp-kafka" "url") }}
+{{- else -}}
+{{- $name := default "cp-kafka" (index .Values "cp-kafka" "nameOverride") -}}
+{{- printf "%s-%s-0.%s:9092" .Release.Name $name (include "cp-kafka-rest.cp-kafka.fullname" .) }}
+{{- end -}}
+{{- end -}}
+
+
+{{/*
 Create a default fully qualified schema registry name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}

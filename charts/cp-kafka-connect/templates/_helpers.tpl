@@ -35,9 +35,9 @@ Create chart name and version as used by the chart label.
 Create a default fully qualified kafka headless name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
-{{- define "cp-kafka-connect.cp-kafka-headless.fullname" -}}
-{{- $name := "cp-kafka-headless" -}}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- define "cp-kafka-connect.cp-kafka.fullname" -}}
+{{- $name := default "cp-kafka" (index .Values "cp-kafka" "nameOverride") -}}
+{{- printf "%s-%s-headless" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
@@ -45,10 +45,13 @@ Form the Kafka URL. If Kafka is installed as part of this chart, use k8s service
 else use user-provided URL
 */}}
 {{- define "cp-kafka-connect.kafka.bootstrapServers" -}}
-{{- if .Values.kafka.bootstrapServers -}}
-{{- .Values.kafka.bootstrapServers -}}
+{{- if (index .Values "cp-kafka" "bootstrapServers") -}}
+{{- printf "%s" (index .Values "cp-kafka" "bootstrapServers") -}}
+{{- else if .Values.global.kafka.ssl.enabled -}}
+{{- $name := default "cp-kafka" (index .Values "cp-kafka" "nameOverride") -}}
+{{- printf "SSL://%s-%s-0.%s:9092" .Release.Name $name (include "cp-kafka-connect.cp-kafka.fullname" .) -}}
 {{- else -}}
-{{- printf "PLAINTEXT://%s:9092" (include "cp-kafka-connect.cp-kafka-headless.fullname" .) -}}
+{{- printf "PLAINTEXT://%s:9092" (include "cp-kafka-connect.cp-kafka.fullname" .) -}}
 {{- end -}}
 {{- end -}}
 
@@ -88,5 +91,27 @@ Return combined plugin path if a pluginVolume is requested
 {{- printf "%s, %s" .Values.pluginPath .Values.pluginVolume.path -}}
 {{- else -}}
 {{- .Values.pluginPath -}}
+{{- end -}}
+{{- end -}}
+
+{{/* 
+Support both global and chart local values for each keystore/password setting
+*/}}
+{{- define "cp-kafka.ssl.client.truststoreFile" -}}
+{{ default .Values.ssl.client.truststoreFile .Values.global.kafka.ssl.client.truststoreFile }}
+{{- end -}}
+
+{{- define "cp-kafka.ssl.client.truststorePassword" -}}
+{{ default .Values.ssl.client.truststorePassword .Values.global.kafka.ssl.client.truststorePassword }}
+{{- end -}}
+
+{{/*
+Create a secret name depending on if we're using shared SSL settings from a parent chart
+*/}}
+{{- define "cp.kafka.ssl.secretName" -}}
+{{- if .Values.global.kafka.ssl.enabled -}}
+{{- printf "%s-%s" .Release.Name "-kafka-ssl-secret" -}}
+{{- else -}}
+{{- printf "%s-%s" (include "cp-kafka-connect.fullname" .) "-ssl-secret" -}}
 {{- end -}}
 {{- end -}}

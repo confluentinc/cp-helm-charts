@@ -31,6 +31,40 @@ Create chart name and version as used by the chart label.
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
+{{/* 
+Support both global and chart local values for each keystore/password setting
+*/}}
+{{- define "cp-kafka.ssl.broker.keystoreFile" -}}
+{{ default .Values.ssl.broker.truststoreFile .Values.global.kafka.ssl.broker.truststoreFile }}
+{{- end -}}
+
+{{- define "cp-kafka.ssl.broker.truststoreFile" -}}
+{{ default .Values.ssl.broker.truststoreFile .Values.global.kafka.ssl.broker.truststoreFile }}
+{{- end -}}
+
+{{- define "cp-kafka.ssl.broker.keystorePassword" -}}
+{{ default .Values.ssl.broker.keystorePassword .Values.global.kafka.ssl.broker.keystorePassword }}
+{{- end -}}
+
+{{- define "cp-kafka.ssl.broker.truststorePassword" -}}
+{{ default .Values.ssl.broker.truststorePassword .Values.global.kafka.ssl.broker.truststorePassword }}
+{{- end -}}
+
+{{- define "cp-kafka.ssl.broker.keyPassword" -}}
+{{ default .Values.ssl.broker.keyPassword .Values.global.kafka.ssl.broker.keyPassword }}
+{{- end -}}
+
+{{/*
+Create a secret name depending on if we're using shared SSL settings from a parent chart
+*/}}
+{{- define "cp-kafka.ssl.secretName" -}}
+{{- if .Values.global.kafka.ssl.enabled -}}
+{{- printf "%s-%s" .Release.Name "kafka-ssl-secret" -}}
+{{- else -}}
+{{- printf "%s-%s" (include "cp-kafka.fullname" .) "-ssl-secret" -}}
+{{- end -}}
+{{- end -}}
+
 {{/*
 Create a default fully qualified zookeeper name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).

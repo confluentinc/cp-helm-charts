@@ -51,6 +51,8 @@ configurationOverrides:
    EXTERNAL://${HOST_IP}:$((31090 + ${KAFKA_BROKER_ID}))
   #"listener.security.protocol.map": |-
   # PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+ssl:
+  broker: {}
 
 persistence:
   enabled: true

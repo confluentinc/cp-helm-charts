@@ -64,7 +64,19 @@ spec:
           - name: ksql-queries
             mountPath: /etc/ksql/queries
           {{- end }}
+          {{- if .Values.global.kafka.ssl.enabled }}
+          - name: ssl
+            mountPath: "/etc/kafka/secrets"
+          {{- end }}
           env:
+          {{- if .Values.global.kafka.ssl.enabled }}
+          - name: KSQL_SECURITY_PROTOCOL
+            value: SSL
+          - name: KSQL_SSL_TRUSTSTORE_LOCATION
+            value: /etc/kafka/secrets/kafka.client.truststore.jks
+          - name: KSQL_SSL_TRUSTSTORE_PASSWORD
+            value: {{ .Values.global.kafka.ssl.client.truststorePassword }}
+          {{- end }}
           - name: KSQL_BOOTSTRAP_SERVERS
             value: {{ template "cp-ksql-server.kafka.bootstrapServers" . }}
           - name: KSQL_KSQL_SERVICE_ID
@@ -89,6 +101,11 @@ spec:
       - name: jmx-config
         configMap:
           name: {{ template "cp-ksql-server.fullname" . }}-jmx-configmap
+      {{- end }}
+      {{- if .Values.global.kafka.ssl.enabled }}
+      - name: ssl
+        secret:
+          secretName: {{ template "cp-ksql-server.fullname" . }}-ssl-secret
       {{- end }}
       {{- if .Values.ksql.headless }}
       - name: ksql-queries

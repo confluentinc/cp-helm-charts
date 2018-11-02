@@ -123,15 +123,33 @@ spec:
               value: {{ .Values.connectInternalKeyConverter }}
             - name: CONNECT_INTERNAL_VALUE_CONVERTER
               value: {{ .Values.connectInternalValueConverter }}
+            {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
+            - name: CONNECT_SECURITY_PROTOCOL
+              value: SSL
+            - name: CONNECT_SSL_TRUSTSTORE_LOCATION
+              value: /etc/kafka/secrets/{{ template "cp-kafka.ssl.client.truststoreFile" . }}
+            - name: CONNECT_SSL_TRUSTSTORE_PASSWORD
+              value: {{ template "cp-kafka.ssl.client.truststorePassword" . }}
+            {{- end }}
             {{- if .Values.jmx.port }}
             - name: KAFKA_JMX_PORT
               value: "{{ .Values.jmx.port }}"
             {{- end }}
+          {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
+          volumeMounts:
+          - name: ssl
+            mountPath: "/etc/kafka/secrets"
+          {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
       {{- end }}
       volumes:
+      {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
+      - name: ssl
+        secret:
+          secretName: {{ template "cp-kafka-connect.fullname" . }}-ssl-secret
+      {{- end }}
       {{- if .Values.prometheus.jmx.enabled }}
       - name: jmx-config
         configMap:
