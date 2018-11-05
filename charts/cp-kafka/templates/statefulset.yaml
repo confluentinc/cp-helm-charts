@@ -114,12 +114,13 @@ spec:
         # pod numbering in statefulsets. Thus, we are required to specify a command which
         # allows us to extract the pod ID for usage as the Kafka Broker ID.
         # See: https://github.com/kubernetes/kubernetes/issues/31218
+        {{- $advertisedListenersBasedOnFirstListenerPort := printf "EXTERNAL://${HOST_IP}:$((%s + ${KAFKA_BROKER_ID}))" (.Values.nodeport.firstListenerPort | toString) -}}
         command:
         - sh
         - -exc
         - |
           export KAFKA_BROKER_ID=${HOSTNAME##*-} && \
-          export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_IP}:9092{{ if kindIs "string" $advertisedListenersOverride }}{{ printf ",%s" $advertisedListenersOverride }}{{ end }} && \
+          export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_IP}:9092{{ if kindIs "string" $advertisedListenersOverride }}{{ printf ",%s" $advertisedListenersOverride }}{{ else }}{{ printf ",%s" $advertisedListenersBasedOnFirstListenerPort }}{{ end }} && \
           exec /etc/confluent/docker/run
         volumeMounts:
         - name: datadir
