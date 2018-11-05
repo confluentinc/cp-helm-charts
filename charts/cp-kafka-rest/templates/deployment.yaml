@@ -60,13 +60,13 @@ spec:
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           env:
-          {{- if .Values.global.kafka.ssl.enabled }}
+          {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
           - name: KAFKA_REST_CLIENT_SECURITY_PROTOCOL
             value: SSL
           - name: KAFKA_REST_CLIENT_SSL_TRUSTSTORE_LOCATION
-            value: /etc/kafka/secrets/kafka.client.truststore.jks
+            value: /etc/kafka/secrets/{{ template "cp-kafka.ssl.client.truststoreFile" . }}
           - name: KAFKA_REST_CLIENT_SSL_TRUSTSTORE_PASSWORD
-            value: {{ .Values.global.kafka.ssl.client.truststorePassword }}
+            value: {{ template "cp-kafka.ssl.client.truststorePassword" . }}
           - name: KAFKA_REST_BOOTSTRAP_SERVERS
             value: {{ template "cp-kafka-rest.cp-kafka.broker-url" . }}
           {{- end }}
@@ -82,7 +82,7 @@ spec:
           - name: KAFKA_REST_JMX_PORT
             value: "{{ .Values.jmx.port }}"
           {{- end }}
-          {{- if .Values.global.kafka.ssl.enabled }}
+          {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
           volumeMounts:
           - name: ssl
             mountPath: "/etc/kafka/secrets"
@@ -92,10 +92,10 @@ spec:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
       {{- end }}
       volumes:
-      {{- if .Values.global.kafka.ssl.enabled }}
+      {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
       - name: ssl
         secret:
-          secretName: {{ template "cp-kafka-rest.fullname" . }}-ssl-secret
+          secretName: {{ template "cp-kafka.ssl.secretName" . }}
       {{- end }}
       {{- if .Values.prometheus.jmx.enabled }}
       - name: jmx-config

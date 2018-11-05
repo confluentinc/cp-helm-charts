@@ -35,7 +35,7 @@ Create chart name and version as used by the chart label.
 Support both global and chart local values for each keystore/password setting
 */}}
 {{- define "cp-kafka.ssl.broker.keystoreFile" -}}
-{{ default .Values.ssl.broker.truststoreFile .Values.global.kafka.ssl.broker.truststoreFile }}
+{{ default .Values.ssl.broker.keystoreFile .Values.global.kafka.ssl.broker.keystoreFile }}
 {{- end -}}
 
 {{- define "cp-kafka.ssl.broker.truststoreFile" -}}

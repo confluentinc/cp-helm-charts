@@ -27,15 +27,6 @@ connectValueConverter: "io.confluent.connect.avro.AvroConverter"
 connectInternalKeyConverter: "org.apache.kafka.connect.json.JsonConverter"
 connectInternalValueConverter: "org.apache.kafka.connect.json.JsonConverter"
 pluginPath: "/usr/share/java"
-pluginVolume: {}
-#  Enable this to create a persistent volume for storing additional plugins.
-#  enabled: true
-#  storageClass: basic
-#  size: 1Gi
-#  path: "/usr/share/java/custom"
-downloadPlugins: {}
-#  Download and extract each plugin tar.gz listed
-#  - https://repo1.maven.org/maven2/io/debezium/debezium-connector-mysql/0.8.3.Final/debezium-connector-mysql-0.8.3.Final-plugin.tar.gz
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -73,7 +64,6 @@ prometheus:
 ## bootstrapServers: "PLAINTEXT://dozing-prawn-kafka-headless:9092"
 kafka:
   bootstrapServers: ""
-  bootstrapSSL: false
 
 ## If the Kafka Chart is disabled a URL and port are required to connect
 ## e.g. gnoble-panther-cp-schema-registry:8081

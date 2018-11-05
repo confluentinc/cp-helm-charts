@@ -91,3 +91,18 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- printf "http://%s:8081" (include "cp-kafka-rest.cp-schema-registry.fullname" .) -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Create a secret name depending on if we're using shared SSL settings from a parent chart
+*/}}
+{{- define "cp-kafka.ssl.secretName" -}}
+{{- if .Values.global.kafka.ssl.enabled -}}
+{{- printf "%s-%s" .Release.Name "-kafka-ssl-secret" -}}
+{{- else -}}
+{{- printf "%s-%s" (include "cp-kafka-rest.fullname" .) "-ssl-secret" -}}
+{{- end -}}
+{{- end -}} 
+
+{{- define "cp-kafka.ssl.client.truststore" -}}
+{{ default .Values.ssl.client.truststoreFile .Values.global.kafka.ssl.client.truststoreFile }}
+{{- end -}}

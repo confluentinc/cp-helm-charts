@@ -120,5 +120,3 @@ spec:
         configMap:
           name: {{ template "cp-kafka-connect.fullname" . }}-jmx-configmap
       {{- end }}
-          
-        
