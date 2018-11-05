@@ -113,7 +113,7 @@ spec:
       {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
       - name: ssl
         secret:
-          secretName: {{ template "cp-kafka-connect.fullname" . }}-ssl-secret
+          secretName: {{ template "cp-kafka.ssl.secretName" . }}
       {{- end }}
       {{- if .Values.prometheus.jmx.enabled }}
       - name: jmx-config

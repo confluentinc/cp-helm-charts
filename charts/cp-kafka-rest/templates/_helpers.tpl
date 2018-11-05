@@ -106,3 +106,7 @@ Create a secret name depending on if we're using shared SSL settings from a pare
 {{- define "cp-kafka.ssl.client.truststore" -}}
 {{ default .Values.ssl.client.truststoreFile .Values.global.kafka.ssl.client.truststoreFile }}
 {{- end -}}
+
+{{- define "cp-kafka.ssl.client.truststorePassword" -}}
+{{ default .Values.ssl.client.truststorePassword .Values.global.kafka.ssl.client.truststorePassword }}
+{{- end -}}
