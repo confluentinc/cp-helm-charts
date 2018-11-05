@@ -36,7 +36,7 @@ Create a default fully qualified kafka headless name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "cp-kafka-connect.cp-kafka.fullname" -}}
-{{- $name := default "cp-kafka" (index .Values "cp-kafka" "nameOverride") -}}
+{{- $name := default "cp-kafka" .Values.kafka.nameOverride ) -}}
 {{- printf "%s-%s-headless" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -45,13 +45,13 @@ Form the Kafka URL. If Kafka is installed as part of this chart, use k8s service
 else use user-provided URL
 */}}
 {{- define "cp-kafka-connect.kafka.bootstrapServers" -}}
-{{- if (index .Values "cp-kafka" "bootstrapServers") -}}
-{{- printf "%s" (index .Values "cp-kafka" "bootstrapServers") -}}
+{{- if .Values.kafka.bootstrapServers -}}
+{{- .Values.kafka.bootstrapServers -}}
 {{- else if .Values.global.kafka.ssl.enabled -}}
-{{- $name := default "cp-kafka" (index .Values "cp-kafka" "nameOverride") -}}
-{{- printf "SSL://%s-%s-0.%s:9092" .Release.Name $name (include "cp-kafka-connect.cp-kafka.fullname" .) -}}
+{{- $name := default "cp-kafka" .Values.kafka.nameOverride -}}
+{{- printf "SSL://%s-%s-0.%s:9092" .Release.Name $name .Values.kafka.fullname -}}
 {{- else -}}
-{{- printf "PLAINTEXT://%s:9092" (include "cp-kafka-connect.cp-kafka.fullname" .) -}}
+{{- printf "PLAINTEXT://%s:9092" .Values.kafka.fullname -}}
 {{- end -}}
 {{- end -}}
 
@@ -80,17 +80,6 @@ Default GroupId to Release Name but allow it to be overridden
 {{- .Values.overrideGroupId -}}
 {{- else -}}
 {{- .Release.Name -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Return combined plugin path if a pluginVolume is requested
-*/}}
-{{- define "cp-kafka-connect.pluginPath" -}}
-{{- if .Values.pluginVolume.enabled -}}
-{{- printf "%s, %s" .Values.pluginPath .Values.pluginVolume.path -}}
-{{- else -}}
-{{- .Values.pluginPath -}}
 {{- end -}}
 {{- end -}}
 

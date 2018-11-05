@@ -24,36 +24,6 @@ spec:
         prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
       {{- end }}
     spec:
-      {{- if .Values.downloadPlugins }}
-      initContainers:
-      - name: download-plugins
-        image: busybox
-        command:
-        - sh
-        - -c
-        - |
-          set -ex
-          mkdir -p /plugins/tar
-          cd /plugins/tar
-          {{- range .Values.downloadPlugins }}
-          echo {{ . }} >> plugins
-          {{- end }}
-          touch loaded
-          while read url
-          do
-            if ! grep -q $url loaded; then
-              wget $url
-              filename="$(echo $url | rev | cut -d/ -f 1 | rev)"
-              tar -xvf $filename -C ../
-              rm $filename
-              echo $url >> loaded
-            fi
-          done < plugins
-          rm plugins
-        volumeMounts:
-        - mountPath: /plugins
-          name: connect-plugins
-      {{- end }}
       containers:
         {{- if .Values.prometheus.jmx.enabled }}
         - name: prometheus-jmx-exporter
@@ -79,11 +49,6 @@ spec:
         - name: {{ template "cp-kafka-connect.name" . }}-server
           image: "{{ .Values.image }}:{{ .Values.imageTag }}"
           imagePullPolicy: "{{ .Values.imagePullPolicy }}"
-          {{- if .Values.pluginVolume.enabled }}
-          volumeMounts:
-          - mountPath: {{ .Values.pluginVolume.path }}
-            name: connect-plugins
-          {{- end }}
           ports:
             - name: kafka-connect
               containerPort: {{ .Values.servicePort}}
@@ -100,7 +65,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: CONNECT_PLUGIN_PATH
-              value: {{ template "cp-kafka-connect.pluginPath" . }}
+              value: {{ .Values.pluginPath }}
             - name: CONNECT_BOOTSTRAP_SERVERS
               value: {{ template "cp-kafka-connect.kafka.bootstrapServers" . }}
             - name: CONNECT_GROUP_ID
@@ -154,11 +119,6 @@ spec:
       - name: jmx-config
         configMap:
           name: {{ template "cp-kafka-connect.fullname" . }}-jmx-configmap
-      {{- end }}
-      {{- if .Values.pluginVolume.enabled }}
-      - name: connect-plugins
-        persistentVolumeClaim:
-          claimName: {{ template "cp-kafka-connect.fullname" . }}-plugins
       {{- end }}
           
         
