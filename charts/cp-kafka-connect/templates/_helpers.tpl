@@ -36,7 +36,7 @@ Create a default fully qualified kafka headless name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "cp-kafka-connect.cp-kafka-headless.fullname" -}}
-{{- $name := default "cp-kafka" .Values.kafka.nameOverride ) -}}
+{{- $name := default "cp-kafka" .Values.kafka.nameOverride -}}
 {{- printf "%s-%s-headless" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -99,8 +99,8 @@ Create a secret name depending on if we're using shared SSL settings from a pare
 */}}
 {{- define "cp-kafka.ssl.secretName" -}}
 {{- if .Values.global.kafka.ssl.enabled -}}
-{{- printf "%s-%s" .Release.Name "-kafka-ssl-secret" -}}
+{{- printf "%s-%s" .Release.Name "kafka-ssl-secret" -}}
 {{- else -}}
-{{- printf "%s-%s" (include "cp-kafka-connect.fullname" .) "-ssl-secret" -}}
+{{- printf "%s-%s" (include "cp-kafka-connect.fullname" .) "ssl-secret" -}}
 {{- end -}}
 {{- end -}}

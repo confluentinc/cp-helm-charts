@@ -61,7 +61,7 @@ Create a secret name depending on if we're using shared SSL settings from a pare
 {{- if .Values.global.kafka.ssl.enabled -}}
 {{- printf "%s-%s" .Release.Name "kafka-ssl-secret" -}}
 {{- else -}}
-{{- printf "%s-%s" (include "cp-kafka.fullname" .) "-ssl-secret" -}}
+{{- printf "%s-%s" (include "cp-kafka.fullname" .) "ssl-secret" -}}
 {{- end -}}
 {{- end -}}
 
