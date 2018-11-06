@@ -89,6 +89,10 @@ spec:
               value: {{ .Values.connectKeyConverter }}
             - name: CONNECT_VALUE_CONVERTER
               value: {{ .Values.connectValueConverter }}
+            - name: CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE
+              value: "{{ .Values.connectKeyConverterSchemaEnable }}"
+            - name: CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE
+              value: "{{ .Values.connectValueConverterSchemaEnable }}"
             - name: CONNECT_INTERNAL_KEY_CONVERTER
               value: {{ .Values.connectInternalKeyConverter }}
             - name: CONNECT_INTERNAL_VALUE_CONVERTER
