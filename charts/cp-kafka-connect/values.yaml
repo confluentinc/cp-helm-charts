@@ -24,6 +24,8 @@ servicePort: 8083
 ## ref: https://docs.confluent.io/current/connect/userguide.html#configuring-workers
 connectKeyConverter: "io.confluent.connect.avro.AvroConverter"
 connectValueConverter: "io.confluent.connect.avro.AvroConverter"
+connectKeyConverterSchemaEnable: true
+connectValueConverterSchemaEnable: true
 connectInternalKeyConverter: "org.apache.kafka.connect.json.JsonConverter"
 connectInternalValueConverter: "org.apache.kafka.connect.json.JsonConverter"
 pluginPath: "/usr/share/java"
