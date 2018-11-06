@@ -72,6 +72,8 @@ spec:
           env:
           - name: KSQL_BOOTSTRAP_SERVERS
             value: {{ template "cp-ksql-server.kafka.bootstrapServers" . }}
+          - name: KSQL_KSQL_SCHEMA_REGISTRY_URL
+            value: {{ template "cp-ksql-server.cp-schema-registry.service-name" . }}
           - name: KSQL_KSQL_SERVICE_ID
             value: {{ template "cp-ksql-server.serviceId" . }}
           {{- if .Values.ksql.headless }}
