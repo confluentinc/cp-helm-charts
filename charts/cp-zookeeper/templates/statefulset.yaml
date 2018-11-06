@@ -65,11 +65,6 @@ spec:
       - name: {{ template "cp-zookeeper.name" . }}-server
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
-        livenessProbe:
-          exec:
-            command: ['/bin/bash', '-c', 'echo "ruok" | nc -w 2 -q 2 localhost 2181 | grep imok']
-          initialDelaySeconds: 1
-          timeoutSeconds: 3
         ports:
         - containerPort: {{ .Values.clientPort }}
           name: client
