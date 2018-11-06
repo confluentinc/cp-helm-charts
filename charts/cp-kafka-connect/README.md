@@ -109,6 +109,8 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `connectKeyConverter` | Converter class for key Connect data. This controls the format of the data that will be written to Kafka for source connectors or read from Kafka for sink connectors. Popular formats include Avro and JSON. |`"io.confluent.connect.avro.AvroConverter"`|
 | `connectValueConverter` | Converter class for value Connect data. This controls the format of the data that will be written to Kafka for source connectors or read from Kafka for sink connectors. Popular formats include Avro and JSON. |`"io.confluent.connect.avro.AvroConverter"`|
+| `connectKeyConverterSchemaEnable` | Whether or not the converter class for key will have schema enabled.  |`true`|
+| `connectValueConverterSchemaEnable` | Whether or not the converter class for value will have schema enabled. |`true`|
 | `connectInternalKeyConverter` | Converter class for internal key Connect data that implements the Converter interface. Used for converting data like offsets and configs. |`"org.apache.kafka.connect.json.JsonConverter"`|
 | `connectInternalValueConverter` | Converter class for offset value Connect data that implements the Converter interface. Used for converting data like offsets and configs. |`"org.apache.kafka.connect.json.JsonConverter"`|
 | `pluginPath` | The comma-separated list of paths to directories that contain Kafka Connect plugins. |`"/usr/share/java"`|
