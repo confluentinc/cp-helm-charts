@@ -127,6 +127,12 @@ The configuration parameters in this section control the resources requested and
 | `resources.requests.limit` | The upper limit CPU usage for a KSQL Server Pod. | see [values.yaml](values.yaml) for details |
 | `resources.requests.limit` | The upper limit memory usage for a KSQL Server Pod. | see [values.yaml](values.yaml) for details |
 
+### Annotations
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `podAnnotations` | Map of custom annotations to attach to the pod spec. | `{}` |
+
 ### JMX Configuration
 
 | Parameter | Description | Default |
