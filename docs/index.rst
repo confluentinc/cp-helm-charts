@@ -5,10 +5,6 @@ Kubernetes Helm Charts
 
 You can use the |cos| Helm charts to deploy |cp| services on Kubernetes for development, test, and proof of concept environments.
 
-.. contents::
-      :local:
-      :depth: 1
-
 .. important:: The |cp| Helm charts are in developer preview and are not supported for production use.
 
 Introduction
@@ -78,10 +74,6 @@ Run Confluent Platform
 ----------------------
 
 Follow these steps to run |cp|.
-
-.. contents::
-    :local:
-    :depth: 1
 
 Persistence
 ~~~~~~~~~~~

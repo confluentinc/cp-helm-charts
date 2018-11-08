@@ -18,10 +18,15 @@ spec:
       labels:
         app: {{ template "cp-zookeeper.name" . }}
         release: {{ .Release.Name }}
-      {{- if .Values.prometheus.jmx.enabled }}
+      {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
       annotations:
+      {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
+      {{- if .Values.prometheus.jmx.enabled }}
         prometheus.io/scrape: "true"
         prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
+      {{- end }}
       {{- end }}
     spec:
       affinity:
@@ -65,11 +70,6 @@ spec:
       - name: {{ template "cp-zookeeper.name" . }}-server
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
-        livenessProbe:
-          exec:
-            command: ['/bin/bash', '-c', 'echo "ruok" | nc -w 2 -q 2 localhost 2181 | grep imok']
-          initialDelaySeconds: 1
-          timeoutSeconds: 3
         ports:
         - containerPort: {{ .Values.clientPort }}
           name: client

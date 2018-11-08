@@ -19,10 +19,15 @@ spec:
       labels:
         app: {{ template "cp-kafka.name" . }}
         release: {{ .Release.Name }}
-      {{- if .Values.prometheus.jmx.enabled }}
+      {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
       annotations:
+      {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
+      {{- if .Values.prometheus.jmx.enabled }}
         prometheus.io/scrape: "true"
         prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
+      {{- end }}
       {{- end }}
     spec:
       affinity:

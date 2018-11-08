@@ -40,6 +40,9 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
+## Custom pod annotations
+podAnnotations: {}
+
 ## Monitoring
 ## Kafka Connect JMX Settings
 ## ref: https://kafka.apache.org/documentation/#connect_monitoring
