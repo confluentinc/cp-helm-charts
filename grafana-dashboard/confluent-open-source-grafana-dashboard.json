@@ -4360,7 +4360,7 @@
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
         "includeAll": false,
-        "label": "Rlease",
+        "label": "Release",
         "multi": false,
         "name": "Release",
         "options": [],
