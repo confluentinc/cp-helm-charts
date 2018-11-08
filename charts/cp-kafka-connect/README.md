@@ -87,6 +87,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter         | Description                           | Default   |
 | ----------------- | ------------------------------------- | --------- |
 | `replicaCount`    | The number of Kafka Connect Servers.  | `1`       |
+| `storageReplicationFactor` | Replication factor for internal topics used to store connector configuration, offset and status information.  Note that the replication factor may not be larger than the number of Kafka brokers. | `3` |
 
 ### Image
 

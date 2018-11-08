@@ -110,6 +110,8 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `brokers` | The number of Broker servers. | `3` |
 
+> If you reduce the number of `brokers` below `3` you must update the Kafka Connect [`storageReplicationFactor` setting](../cp-kafka-connect/README.md#kafka-connect-deployment)
+
 ### Image
 
 | Parameter | Description | Default |
