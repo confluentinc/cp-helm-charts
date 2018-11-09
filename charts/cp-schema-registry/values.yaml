@@ -48,6 +48,13 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
+tolerations: {}
+  # Example:
+  # - key: "kafka-schema-registry"
+  #   operator: Equal
+  #   effect: NoExecute
+  #   value: "true"
+
 ## Custom pod annotations
 podAnnotations: {}
 
