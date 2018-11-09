@@ -145,6 +145,13 @@ The configuration parameters in this section control the resources requested and
 | `prometheus.jmx.imageTag` | Docker Image Tag for Prometheus JMX Exporter container. | `6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143` |
 | `prometheus.jmx.port` | JMX Exporter Port which exposes metrics in Prometheus format for scraping. | `5556` |
 
+### Mount host directories and files
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `hostPaths` | Directories from host to be mount | `[]` |
+| `hostFiles` | Files from host to be mount | `[]` |
+
 ## Dependencies
 
 ### Kafka

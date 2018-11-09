@@ -101,6 +101,17 @@ spec:
             - name: KAFKA_JMX_PORT
               value: "{{ .Values.jmx.port }}"
             {{- end }}
+          {{- if or .Values.hostPaths .Values.hostFiles }}
+          volumeMounts:
+          {{- range $volume := .Values.hostPaths }}
+            - name: {{ $volume | lower | replace "/" "-" | replace "." "-" | replace "_" "-" | trimAll "-" }}
+              mountPath: {{ $volume }}
+          {{- end }}
+          {{- range $volume := .Values.hostFiles }}
+            - name: {{ $volume | lower | replace "/" "-" | replace "." "-" | replace "_" "-" | trimAll "-" }}
+              mountPath: {{ $volume }}
+          {{- end }}
+          {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
@@ -110,4 +121,16 @@ spec:
       - name: jmx-config
         configMap:
           name: {{ template "cp-kafka-connect.fullname" . }}-jmx-configmap
+      {{- end }}
+      {{- range $volume := .Values.hostPaths }}
+      - name: {{ $volume | lower | replace "/" "-" | replace "." "-" | replace "_" "-" | trimAll "-" }}
+        hostPath:
+          path: {{ $volume }}
+          type: Directory
+      {{- end }}
+      {{- range $volume := .Values.hostFiles }}
+      - name: {{ $volume | lower | replace "/" "-" | replace "." "-" | replace "_" "-" | trimAll "-" }}
+        hostPath:
+          path: {{ $volume }}
+          type: File
       {{- end }}
