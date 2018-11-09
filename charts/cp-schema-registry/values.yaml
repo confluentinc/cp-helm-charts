@@ -27,6 +27,9 @@ imagePullSecrets:
 ## Configuration Options can be found here: https://docs.confluent.io/current/schema-registry/docs/config.html
 configurationOverrides: {}
 
+## Additional env variables
+customEnv: {}
+
 ## The port on which the Schema Registry will be available and serving requests
 servicePort: 8081
 

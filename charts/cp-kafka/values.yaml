@@ -52,6 +52,9 @@ configurationOverrides:
   "listener.security.protocol.map": |-
    PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
 
+## Additional env variables
+customEnv: {}
+
 persistence:
   enabled: true
 
