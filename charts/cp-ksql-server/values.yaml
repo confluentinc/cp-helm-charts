@@ -32,6 +32,13 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
+tolerations: {}
+  # Example:
+  # - key: "kafka-ksql-server"
+  #   operator: Equal
+  #   effect: NoExecute
+  #   value: "true"
+
 ## Custom pod annotations
 podAnnotations: {}
 

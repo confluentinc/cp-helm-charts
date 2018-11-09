@@ -29,6 +29,8 @@ spec:
       {{- end }}
       {{- end }}
     spec:
+      tolerations:
+        {{ toYaml .Values.tolerations }}
       containers:
         {{- if .Values.prometheus.jmx.enabled }}
         - name: prometheus-jmx-exporter
