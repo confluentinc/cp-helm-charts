@@ -85,6 +85,13 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
+tolerations: {}
+  # Example:
+  # - key: "kafka-zookeeper"
+  #   operator: Equal
+  #   effect: NoExecute
+  #   value: "true"
+
 ## Custom pod annotations
 podAnnotations: {}
 

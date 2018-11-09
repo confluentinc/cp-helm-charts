@@ -29,6 +29,8 @@ spec:
       {{- end }}
       {{- end }}
     spec:
+      tolerations:
+        {{ toYaml .Values.tolerations }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
