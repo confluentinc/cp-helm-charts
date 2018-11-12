@@ -159,6 +159,13 @@ The configuration parameters in this section control the resources requested and
 | `external.externalTrafficPolicy` | Configures `.spec.externalTrafficPolicy` which controls if load balancing occurs across all nodes (value of `Cluster`) or only active nodes (value of `Local`)  | `Cluster` |
 | `external.loadBalancerSourceRanges` | Configures `.spec.loadBalancerSourceRanges` which specifies the list of source IP ranges permitted access to the load balancer | `["0.0.0.0/0"]` |
 
+### Deployment Topology
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `nodeSelector` | Dictionary containing key-value-pairs to match labels on nodes. When defined pods will only be scheduled on nodes, that have each of the indicated key-value pairs as labels. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) | `{}`
+| `tolerations`| Array containing taint references. When defined, pods can run on nodes, which would otherwise deny scheduling. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) | `{}`
+
 ## Dependencies
 
 ### Schema Registry (optional)
