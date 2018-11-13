@@ -34,11 +34,11 @@ Create chart name and version as used by the chart label.
 {{/* 
 Support both global and chart local values for each keystore/password setting
 */}}
-{{- define "cp-kafka.ssl.broker.keystoreFile" -}}
+{{- define "cp-kafka.ssl.broker.keystore" -}}
 {{ default .Values.ssl.broker.keystoreFile .Values.global.kafka.ssl.broker.keystoreFile }}
 {{- end -}}
 
-{{- define "cp-kafka.ssl.broker.truststoreFile" -}}
+{{- define "cp-kafka.ssl.broker.truststore" -}}
 {{ default .Values.ssl.broker.truststoreFile .Values.global.kafka.ssl.broker.truststoreFile }}
 {{- end -}}
 
@@ -86,4 +86,11 @@ else use user-provided URL
 {{- $zookeeperConnectOverride := (index .Values "configurationOverrides" "zookeeper.connect") }}
 {{- default $zookeeperConnect $zookeeperConnectOverride }}
 {{- end -}}
+{{- end -}}
+
+{{/*
+Return auth type for Client Certificate Authentication
+*/}}
+{{- define "cp-kafka.ssl.client.auth.type" -}}
+{{- default .Values.ssl.client.auth .Values.global.kafka.ssl.client.auth "None" -}}
 {{- end -}}

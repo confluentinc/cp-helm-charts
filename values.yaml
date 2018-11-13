@@ -50,7 +50,7 @@ cp-kafka:
     "log.dirs": /opt/kafka/data/logs
     "offsets.topic.replication.factor": 3
     "advertised.listeners": |-
-     EXTERNAL://${HOSTNAME}.confluent-cp-kafka-headless.team-appops.dev.svc.cluster.local:9093
+     EXTERNAL://${HOSTNAME}.confluent-cp-kafka-headless.team-appops.svc.dev.cluster.local:9093
   persistence:
     enabled: true
     # storageClass: ""
@@ -150,10 +150,12 @@ global:
     ssl:
       enabled: true
       client:
+        auth: required
         truststoreFile: kafka.client.truststore.jks
         truststorePassword: test1234
         keystoreFile: kafka.client.keystore.jks
-        keystorePassword: ""
+        keystorePassword: test1234
+        keyPassword: test1234
       broker:
         truststoreFile: kafka.server.truststore.jks
         keystoreFile: kafka.server.keystore.jks

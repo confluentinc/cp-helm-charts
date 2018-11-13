@@ -103,21 +103,25 @@ spec:
           value: {{ .Values.heapOptions }}
         {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
         - name: KAFKA_SSL_KEYSTORE_FILENAME
-          value: {{ template "cp-kafka.ssl.broker.keystoreFile" . }}
+          value: {{ template "cp-kafka.ssl.broker.keystore" . }}
         - name: KAFKA_SSL_KEYSTORE_CREDENTIALS
           value: broker.keystore.password
         - name: KAFKA_SSL_KEY_CREDENTIALS
           value: broker.key.password
         - name: KAFKA_SSL_TRUSTSTORE_FILENAME
-          value: {{ template "cp-kafka.ssl.broker.truststoreFile" . }}
+          value: {{ template "cp-kafka.ssl.broker.truststore" . }}
         - name: KAFKA_SSL_TRUSTSTORE_LOCATION
-          value: /etc/kafka/secrets/{{ template "cp-kafka.ssl.broker.truststoreFile" . }}
+          value: /etc/kafka/secrets/{{ template "cp-kafka.ssl.broker.truststore" . }}
         - name: KAFKA_SSL_TRUSTSTORE_CREDENTIALS
           value: broker.truststore.password
         - name: KAFKA_SECURITY_INTER_BROKER_PROTOCOL
           value: SSL
         - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
           value: PLAINTEXT:PLAINTEXT,SSL:SSL,EXTERNAL:SSL
+        {{- if or .Values.ssl.client.auth .Values.global.kafka.ssl.client.auth }}
+        - name: KAFKA_SSL_CLIENT_AUTH
+          value: {{ template "cp-kafka.ssl.client.auth.type" . }}
+        {{- end }}
         {{- else }}
         - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
           value: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT

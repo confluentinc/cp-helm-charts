@@ -53,6 +53,7 @@ configurationOverrides:
   # PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
 ssl:
   broker: {}
+  client: {}
 
 persistence:
   enabled: true

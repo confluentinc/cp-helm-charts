@@ -84,14 +84,14 @@ Default GroupId to Release Name but allow it to be overridden
 {{- end -}}
 
 {{/* 
-Support both global and chart local values for each keystore/password setting
+Support both global and chart local values for each keystore setting setting
 */}}
-{{- define "cp-kafka.ssl.client.truststoreFile" -}}
+{{- define "cp-kafka.ssl.client.truststore" -}}
 {{ default .Values.ssl.client.truststoreFile .Values.global.kafka.ssl.client.truststoreFile }}
 {{- end -}}
 
-{{- define "cp-kafka.ssl.client.truststorePassword" -}}
-{{ default .Values.ssl.client.truststorePassword .Values.global.kafka.ssl.client.truststorePassword }}
+{{- define "cp-kafka.ssl.client.keystore" -}}
+{{ default .Values.ssl.client.keystoreFile .Values.global.kafka.ssl.client.keystoreFile }}
 {{- end -}}
 
 {{/*
