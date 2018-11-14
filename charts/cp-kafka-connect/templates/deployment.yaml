@@ -18,10 +18,15 @@ spec:
       labels:
         app: {{ template "cp-kafka-connect.name" . }}
         release: {{ .Release.Name }}
-      {{- if .Values.prometheus.jmx.enabled }}
+      {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
       annotations:
+      {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
+      {{- if .Values.prometheus.jmx.enabled }}
         prometheus.io/scrape: "true"
         prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
+      {{- end }}
       {{- end }}
     spec:
       containers:
@@ -63,7 +68,7 @@ spec:
             - name: CONNECT_REST_ADVERTISED_HOST_NAME
               valueFrom:
                 fieldRef:
-                  fieldPath: metadata.name
+                  fieldPath: status.podIP
             - name: CONNECT_PLUGIN_PATH
               value: {{ .Values.pluginPath }}
             - name: CONNECT_BOOTSTRAP_SERVERS
@@ -84,6 +89,10 @@ spec:
               value: {{ .Values.connectKeyConverter }}
             - name: CONNECT_VALUE_CONVERTER
               value: {{ .Values.connectValueConverter }}
+            - name: CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE
+              value: "{{ .Values.connectKeyConverterSchemaEnable }}"
+            - name: CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE
+              value: "{{ .Values.connectValueConverterSchemaEnable }}"
             - name: CONNECT_INTERNAL_KEY_CONVERTER
               value: {{ .Values.connectInternalKeyConverter }}
             - name: CONNECT_INTERNAL_VALUE_CONVERTER
@@ -136,4 +145,12 @@ spec:
       - name: jmx-config
         configMap:
           name: {{ template "cp-kafka-connect.fullname" . }}-jmx-configmap
+      {{- end }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
       {{- end }}

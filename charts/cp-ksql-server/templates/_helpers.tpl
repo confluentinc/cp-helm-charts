@@ -87,3 +87,18 @@ Support both global and chart local values for each keystore setting setting
 {{- define "cp-kafka.ssl.client.keystore" -}}
 {{ default .Values.ssl.client.keystoreFile .Values.global.kafka.ssl.client.keystoreFile }}
 {{- end -}}
+Create a default fully qualified schema registry name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "cp-ksql-server.cp-schema-registry.fullname" -}}
+{{- $name := default "cp-schema-registry" (index .Values "cp-schema-registry" "nameOverride") -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "cp-ksql-server.cp-schema-registry.service-name" -}}
+{{- if (index .Values "cp-schema-registry" "url") -}}
+{{- printf "%s" (index .Values "cp-schema-registry" "url") -}}
+{{- else -}}
+{{- printf "http://%s:8081" (include "cp-ksql-server.cp-schema-registry.fullname" .) -}}
+{{- end -}}
+{{- end -}}

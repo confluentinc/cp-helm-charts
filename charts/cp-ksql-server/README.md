@@ -108,7 +108,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `image` | Docker Image of Confluent KSQL Server. | `confluentinc/cp-ksql-server` |
-| `imageTag` | Docker Image Tag of Confluent KSQL Server. | `5.0.0` |
+| `imageTag` | Docker Image Tag of Confluent KSQL Server. | `5.0.1` |
 | `imagePullPolicy` | Docker Image Tag of Confluent KSQL Server. | `IfNotPresent` |
 | `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
 
@@ -126,6 +126,12 @@ The configuration parameters in this section control the resources requested and
 | `resources.requests.memory` | The amount of memory to request. | see [values.yaml](values.yaml) for details |
 | `resources.requests.limit` | The upper limit CPU usage for a KSQL Server Pod. | see [values.yaml](values.yaml) for details |
 | `resources.requests.limit` | The upper limit memory usage for a KSQL Server Pod. | see [values.yaml](values.yaml) for details |
+
+### Annotations
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `podAnnotations` | Map of custom annotations to attach to the pod spec. | `{}` |
 
 ### JMX Configuration
 
@@ -152,6 +158,13 @@ The configuration parameters in this section control the resources requested and
 | `external.annotations` | Map of annotations to attach to external KSQL Server service | `nil` |
 | `external.externalTrafficPolicy` | Configures `.spec.externalTrafficPolicy` which controls if load balancing occurs across all nodes (value of `Cluster`) or only active nodes (value of `Local`)  | `Cluster` |
 | `external.loadBalancerSourceRanges` | Configures `.spec.loadBalancerSourceRanges` which specifies the list of source IP ranges permitted access to the load balancer | `["0.0.0.0/0"]` |
+
+### Deployment Topology
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `nodeSelector` | Dictionary containing key-value-pairs to match labels on nodes. When defined pods will only be scheduled on nodes, that have each of the indicated key-value pairs as labels. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) | `{}`
+| `tolerations`| Array containing taint references. When defined, pods can run on nodes, which would otherwise deny scheduling. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) | `{}`
 
 ## Dependencies
 

@@ -12,7 +12,7 @@ replicaCount: 1
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-schema-registry/
 image: confluentinc/cp-schema-registry
-imageTag: 5.0.0
+imageTag: 5.0.1
 
 ## Specify a imagePullPolicy
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -50,6 +50,17 @@ resources: {}
   # requests:
   #  cpu: 100m
   #  memory: 128Mi
+
+## Custom pod annotations
+podAnnotations: {}
+
+## Node labels for pod assignment
+## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+nodeSelector: {}
+
+## Taints to tolerate on node assignment:
+## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+tolerations: {}
 
 ## Monitoring
 ## Schema Registry JMX Settings
