@@ -65,6 +65,8 @@ cp-kafka:
     "num.partitions": "12"
     ## Cluster level replication factor
     "default.replication.factor": "2"
+    ## Enable topic deletion
+    "delete.topic.enable": true
   resources: {}
   ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
   ## and remove the curly braces after 'resources:'
