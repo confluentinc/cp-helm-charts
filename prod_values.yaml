@@ -59,8 +59,8 @@ cp-kafka:
     "log.retention.bytes": "429496729600"
     ## Cluster level segment size set to 500M, to allow smaller granularity in retention
     "log.segment.bytes": "524288000"
-    ## Cluster level retention interval set to 1Min
-    "log.retention.check.interval.ms": "60000"
+    ## Cluster level retention interval set to 5Min
+    "log.retention.check.interval.ms": "300000"
     ## Cluster level num of partitions
     "num.partitions": "12"
     ## Cluster level replication factor
