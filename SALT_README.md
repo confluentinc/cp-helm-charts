@@ -9,7 +9,7 @@ Installing Confluent Platform (cp) Kafka cluster instructions are taken from [Ku
 - Make all needed changes you desire
 - #$ helm package .
 - #$ helm repo index .
-- #$ git add .
+- #$ git add -u .
 - #$ git commit -m 'I did something great'
 - #$ git push
 - #$ helm repo update
