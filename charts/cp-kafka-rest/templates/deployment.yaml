@@ -73,6 +73,8 @@ spec:
             value: {{ template "cp-kafka-rest.cp-zookeeper.service-name" . }}
           - name: KAFKA_REST_SCHEMA_REGISTRY_URL
             value: {{ template "cp-kafka-rest.cp-schema-registry.service-name" . }}
+          - name: KAFKA_REST_CONSUMER_REQUEST_TIMEOUT_MS
+            value: {{ .Values.consumerRequestTimeoutMs }}
           {{- if .Values.jmx.port }}
           - name: KAFKA_REST_JMX_PORT
             value: "{{ .Values.jmx.port }}"

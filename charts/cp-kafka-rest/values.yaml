@@ -3,6 +3,7 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
+consumerRequestTimeoutMs: 1000
 
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-kafka/
