@@ -53,3 +53,13 @@ else use user-provided URL
 {{- default $zookeeperConnect $zookeeperConnectOverride }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Create a variable containing a comma-sepparated list of all the log dirs.
+*/}}
+{{- define "cp-kafka.log.dirs" -}}
+{{- range $k, $e := until (.Values.persistence.disksPerBroker|int) -}}
+{{- if $k}}{{- printf ","}}{{end}}
+{{- printf "/opt/kafka/data/logs-%d" $k -}}
+{{- end -}}
+{{- end -}}

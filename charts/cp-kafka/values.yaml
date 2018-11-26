@@ -71,6 +71,8 @@ persistence:
   ##
   # storageClass: ""
 
+  disksPerBroker: 1
+
 ## Kafka JVM Heap Option
 heapOptions: "-Xms1G -Xmx1G"
 
