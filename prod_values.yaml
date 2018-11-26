@@ -62,7 +62,7 @@ cp-kafka:
     ## Cluster level retention interval set to 5Min
     "log.retention.check.interval.ms": "300000"
     ## Cluster level num of partitions
-    "num.partitions": "12"
+    "num.partitions": "60"
     ## Cluster level replication factor
     "default.replication.factor": "2"
     ## Enable topic deletion
