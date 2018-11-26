@@ -140,6 +140,7 @@ The configuration parameters in this section control the resources requested and
 | `persistence.enabled` | Whether to create a PVC. If `false`, an `emptyDir` on the host will be used. | `true` |
 | `persistence.size` | Size for log dir, where Kafka will store log data. | `5Gi` |
 | `persistence.storageClass` | Valid options: `nil`, `"-"`, or storage class name. | `nil` |
+| `persistence.disksPerBroker` | The amount of disks that will be attached per instance of Kafka broker. | 1 |
 
 ### Kafka JVM Heap Options
 
