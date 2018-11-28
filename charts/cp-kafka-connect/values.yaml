@@ -28,9 +28,9 @@ connectKeyConverterSchemaEnable: false
 connectValueConverterSchemaEnable: false
 connectInternalKeyConverter: "org.apache.kafka.connect.json.JsonConverter"
 connectInternalValueConverter: "org.apache.kafka.connect.json.JsonConverter"
-connectConfigStorageReplicationFactor: 1
-connectOffsetStorageReplicationFactor: 1
-connectStatusStorageReplicationFactor: 1
+connectConfigStorageReplicationFactor: 3
+connectOffsetStorageReplicationFactor: 3
+connectStatusStorageReplicationFactor: 3
 pluginPath: "/usr/share/java"
 
 resources: {}
