@@ -97,6 +97,12 @@ spec:
               value: {{ .Values.connectInternalKeyConverter }}
             - name: CONNECT_INTERNAL_VALUE_CONVERTER
               value: {{ .Values.connectInternalValueConverter }}
+            - name: CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR
+              value: "{{ .Values.connectConfigStorageReplicationFactor }}"
+            - name: CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR
+              value: "{{ .Values.connectOffsetStorageReplicationFactor }}"
+            - name: CONNECT_STATUS_STORAGE_REPLICATION_FACTOR
+              value: "{{ .Values.connectStatusStorageReplicationFactor }}"
             {{- if .Values.jmx.port }}
             - name: KAFKA_JMX_PORT
               value: "{{ .Values.jmx.port }}"
