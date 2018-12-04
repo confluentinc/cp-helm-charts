@@ -22,13 +22,24 @@ servicePort: 8083
 
 ## Kafka Connect Worker Configurations
 ## ref: https://docs.confluent.io/current/connect/userguide.html#configuring-workers
-connectKeyConverter: "io.confluent.connect.avro.AvroConverter"
-connectValueConverter: "io.confluent.connect.avro.AvroConverter"
-connectKeyConverterSchemaEnable: false
-connectValueConverterSchemaEnable: false
-connectInternalKeyConverter: "org.apache.kafka.connect.json.JsonConverter"
-connectInternalValueConverter: "org.apache.kafka.connect.json.JsonConverter"
-pluginPath: "/usr/share/java"
+#connectKeyConverter: "io.confluent.connect.avro.AvroConverter"
+#connectValueConverter: "io.confluent.connect.avro.AvroConverter"
+#connectKeyConverterSchemaEnable: false
+#connectValueConverterSchemaEnable: false
+#connectInternalKeyConverter: "org.apache.kafka.connect.json.JsonConverter"
+#connectInternalValueConverter: "org.apache.kafka.connect.json.JsonConverter"
+#pluginPath: "/usr/share/java"
+
+## Kafka Connect properties
+## ref: https://docs.confluent.io/current/connect/userguide.html#configuring-workers
+configurationOverrides:
+  "plugin.path": "/usr/share/java"
+  "key.converter": "io.confluent.connect.avro.AvroConverter"
+  "value.converter": "io.confluent.connect.avro.AvroConverter"
+  "key.converter.schemas.enable": "false"
+  "value.converter.schemas.enable": "false"
+  "internal.key.converter": "org.apache.kafka.connect.json.JsonConverter"
+  "internal.value.converter": "org.apache.kafka.connect.json.JsonConverter"
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -79,9 +90,6 @@ kafka:
 ## e.g. gnoble-panther-cp-schema-registry:8081
 cp-schema-registry:
   url: ""
-
-## Kafka Connect properties
-configurationOverrides: {}
 
 ## Additional env variables
 customEnv: {}
