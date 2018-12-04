@@ -30,7 +30,7 @@ podManagementPolicy: OrderedReady
 
 ## The StatefulSet Update Strategy which Kafka will use when changes are applied: OnDelete or RollingUpdate
 ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies
-updateStrategy: OnDelete
+updateStrategy: RollingUpdate
 
 ## Kafka Server properties
 ## ref: https://kafka.apache.org/documentation/#configuration
