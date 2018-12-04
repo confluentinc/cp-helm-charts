@@ -104,7 +104,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `configurationOverrides` | Schema Registry [configuration](https://docs.confluent.io/current/schema-registry/docs/config.html) overrides in the dictionary format. | `{}` |
-| `customEnv` | Custom enviromental variables | `{}` |
+| `customEnv` | Custom environmental variables | `{}` |
 
 ### Port
 
