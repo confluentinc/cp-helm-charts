@@ -114,6 +114,8 @@ The configuration parameters in this section control the resources requested and
 | `connectInternalKeyConverter` | Converter class for internal key Connect data that implements the Converter interface. Used for converting data like offsets and configs. |`"org.apache.kafka.connect.json.JsonConverter"`|
 | `connectInternalValueConverter` | Converter class for offset value Connect data that implements the Converter interface. Used for converting data like offsets and configs. |`"org.apache.kafka.connect.json.JsonConverter"`|
 | `pluginPath` | The comma-separated list of paths to directories that contain Kafka Connect plugins. |`"/usr/share/java"`|
+| `configurationOverrides` | Kafka Connect [configuration](https://docs.confluent.io/current/connect/references/allconfigs.html) overrides in the dictionary format. | `{}` |
+| `customEnv` | Custom enviromental variables | `{}` |
 
 ### Resources
 

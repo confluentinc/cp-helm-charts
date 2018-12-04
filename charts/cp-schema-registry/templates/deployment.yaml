@@ -79,8 +79,12 @@ spec:
             value: "true"
           {{ range $configName, $configValue := .Values.configurationOverrides }}
           - name: SCHEMA_REGISTRY_{{ $configName | replace "." "_" | upper }}
-            value: {{ $configValue }}
+            value: {{ $configValue | quote }}
           {{ end }}
+          {{- range $key, $value := .Values.customEnv }}
+          - name: {{ $key | quote }}
+            value: {{ $value | quote }}
+          {{- end }}
           {{- if .Values.schemaRegistryOpts }}
           - name: SCHEMA_REGISTRY_OPTS
             value: "{{ .Values.schemaRegistryOpts }}"

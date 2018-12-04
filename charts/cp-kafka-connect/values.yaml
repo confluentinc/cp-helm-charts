@@ -79,3 +79,9 @@ kafka:
 ## e.g. gnoble-panther-cp-schema-registry:8081
 cp-schema-registry:
   url: ""
+
+## Kafka Connect properties
+configurationOverrides: {}
+
+## Additional env variables
+customEnv: {}
