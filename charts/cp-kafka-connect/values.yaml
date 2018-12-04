@@ -20,16 +20,6 @@ imagePullSecrets:
 
 servicePort: 8083
 
-## Kafka Connect Worker Configurations
-## ref: https://docs.confluent.io/current/connect/userguide.html#configuring-workers
-#connectKeyConverter: "io.confluent.connect.avro.AvroConverter"
-#connectValueConverter: "io.confluent.connect.avro.AvroConverter"
-#connectKeyConverterSchemaEnable: false
-#connectValueConverterSchemaEnable: false
-#connectInternalKeyConverter: "org.apache.kafka.connect.json.JsonConverter"
-#connectInternalValueConverter: "org.apache.kafka.connect.json.JsonConverter"
-#pluginPath: "/usr/share/java"
-
 ## Kafka Connect properties
 ## ref: https://docs.confluent.io/current/connect/userguide.html#configuring-workers
 configurationOverrides:
