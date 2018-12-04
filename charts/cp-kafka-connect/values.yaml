@@ -31,6 +31,9 @@ configurationOverrides:
   "internal.key.converter": "org.apache.kafka.connect.json.JsonConverter"
   "internal.value.converter": "org.apache.kafka.connect.json.JsonConverter"
 
+## Additional env variables
+customEnv: {}
+
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -80,6 +83,3 @@ kafka:
 ## e.g. gnoble-panther-cp-schema-registry:8081
 cp-schema-registry:
   url: ""
-
-## Additional env variables
-customEnv: {}
