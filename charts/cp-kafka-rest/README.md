@@ -92,7 +92,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `replicaCount` | The number of REST Proxy Servers. | `1` |
-| `consumerRequestTimeoutMs` | The maximum total time to wait for messages for a request if the maximum number of messages has not yet been reached. | `1000` |
+| `configurationOverrides` | Kafka REST [configuration](https://docs.confluent.io/current/kafka-rest/docs/config.html) overrides in the dictionary format | `{}` |
 
 ### Image
 

@@ -3,7 +3,6 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
-consumerRequestTimeoutMs: 1000
 
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-kafka/
@@ -43,6 +42,11 @@ nodeSelector: {}
 ## Taints to tolerate on node assignment:
 ## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 tolerations: {}
+
+## Kafka REST configuration options
+## ref: https://docs.confluent.io/current/kafka-rest/docs/config.html
+configurationOverrides:
+  # "consumer.request.timeout.ms": 5000
 
 ## Monitoring
 ## Kafka REST JMX Settings
