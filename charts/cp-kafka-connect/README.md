@@ -108,7 +108,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `configurationOverrides` | Kafka Connect [configuration](https://docs.confluent.io/current/connect/references/allconfigs.html) overrides in the dictionary format. | `{}` |
-| `customEnv` | Custom enviromental variables | `{}` |
+| `customEnv` | Custom environmental variables | `{}` |
 
 ### Resources
 

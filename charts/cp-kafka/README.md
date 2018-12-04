@@ -131,7 +131,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `configurationOverrides` | Kafka [configuration](https://kafka.apache.org/documentation/#brokerconfigs) overrides in the dictionary format | `{}` |
-| `customEnv` | Custom enviromental variables | `{}` |
+| `customEnv` | Custom environmental variables | `{}` |
 
 ### Persistence
 
