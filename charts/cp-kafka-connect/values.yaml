@@ -30,6 +30,9 @@ configurationOverrides:
   "value.converter.schemas.enable": "false"
   "internal.key.converter": "org.apache.kafka.connect.json.JsonConverter"
   "internal.value.converter": "org.apache.kafka.connect.json.JsonConverter"
+  "config.storage.replication.factor": "3"
+  "offset.storage.replication.factor": "3"
+  "status.storage.replication.factor": "3"
 
 ## Additional env variables
 customEnv: {}
