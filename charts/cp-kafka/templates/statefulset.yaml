@@ -99,14 +99,8 @@ spec:
               fieldPath: status.hostIP
         - name: KAFKA_HEAP_OPTS
           value: {{ .Values.heapOptions }}
-        {{- if not (hasKey .Values.configurationOverrides "zookeeper.connect") }}
         - name: KAFKA_ZOOKEEPER_CONNECT
           value: {{ include "cp-kafka.cp-zookeeper.service-name" . | quote }}
-        {{- end }}
-        {{- if not (hasKey .Values.configurationOverrides "log.dirs") }}
-        - name: KAFKA_LOG_DIRS
-          value: "/opt/kafka/data/logs"
-        {{- end }}
         {{- range $key, $value := .Values.configurationOverrides }}
         - name: {{ printf "KAFKA_%s" $key | replace "." "_" | upper | quote }}
           value: {{ $value | quote }}

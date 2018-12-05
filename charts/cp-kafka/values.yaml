@@ -35,8 +35,8 @@ updateStrategy: RollingUpdate
 ## Kafka Server properties
 ## ref: https://kafka.apache.org/documentation/#configuration
 configurationOverrides:
-  "log.dirs": /opt/kafka/data/logs
-  "offsets.topic.replication.factor": 3
+  "log.dirs": "/opt/kafka/data/logs"
+  "offsets.topic.replication.factor": "3"
   # "default.replication.factor": 3
   # "min.insync.replicas": 2
   # "auto.create.topics.enable": false
