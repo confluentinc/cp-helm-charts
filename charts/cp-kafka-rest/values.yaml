@@ -43,6 +43,11 @@ nodeSelector: {}
 ## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 tolerations: {}
 
+## Kafka REST configuration options
+## ref: https://docs.confluent.io/current/kafka-rest/docs/config.html
+configurationOverrides:
+  # "consumer.request.timeout.ms": 5000
+
 ## Monitoring
 ## Kafka REST JMX Settings
 ## ref: https://docs.confluent.io/current/kafka-rest/docs/monitoring.html
