@@ -131,7 +131,6 @@ spec:
           exec /etc/confluent/docker/run
         volumeMounts:
         {{- $disksPerBroker := .Values.persistence.disksPerBroker | int }}
-        {{- $root := . }}
         {{- range $k, $e := until $disksPerBroker }}
         - name: datadir-{{$k}}
           mountPath: /opt/kafka/data-{{$k}}
