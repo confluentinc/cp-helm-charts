@@ -51,7 +51,7 @@ spec:
         image: "{{ .Values.prometheus.jmx.image }}:{{ .Values.prometheus.jmx.imageTag }}"
         command:
         - java
-        - -XX:MaxRAMFraction=2
+        - -XX:MaxRAMFraction=1
         - -XshowSettings:vm
         - -jar
         - jmx_prometheus_httpserver.jar
