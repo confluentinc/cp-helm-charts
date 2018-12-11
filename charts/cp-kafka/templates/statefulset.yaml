@@ -101,7 +101,6 @@ spec:
           value: {{ .Values.heapOptions }}
         - name: KAFKA_ZOOKEEPER_CONNECT
           value: {{ include "cp-kafka.cp-zookeeper.service-name" . | quote }}
-        {{- end }}
         {{- if not (hasKey .Values.configurationOverrides "log.dirs") }}
         - name: KAFKA_LOG_DIRS
           value: {{ include "cp-kafka.log.dirs" . | quote }}
