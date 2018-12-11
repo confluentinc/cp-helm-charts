@@ -55,11 +55,12 @@ else use user-provided URL
 {{- end -}}
 
 {{/*
-Create a variable containing a comma-sepparated list of all the log dirs.
+Create a variable containing all the datadirs created.
 */}}
+
 {{- define "cp-kafka.log.dirs" -}}
 {{- range $k, $e := until (.Values.persistence.disksPerBroker|int) -}}
 {{- if $k}}{{- printf ","}}{{end}}
-{{- printf "/opt/kafka/data/logs-%d" $k -}}
+{{- printf "/opt/kafka/data-%d" $k -}}
 {{- end -}}
 {{- end -}}
