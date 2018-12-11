@@ -83,6 +83,10 @@ spec:
           - name: KSQL_LISTENERS
             value: http://0.0.0.0:8088
           {{- end }}
+          {{- range $key, $value := .Values.configurationOverrides }}
+          - name: {{ printf "KSQL_%s" $key | replace "." "_" | upper | quote }}
+            value: {{ $value | quote }}
+          {{- end }}
           {{- if .Values.jmx.port }}
           - name: KSQL_JMX_PORT
             value: "{{ .Values.jmx.port }}"
