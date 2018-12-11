@@ -112,6 +112,11 @@ The configuration parameters in this section control the resources requested and
 | `imagePullPolicy` | Docker Image Tag of Confluent KSQL Server. | `IfNotPresent` |
 | `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
 
+### KSQL Configuration
+ Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `configurationOverrides` | KSQL [configuration](https://docs.confluent.io/current/ksql/docs/installation/server-config/config-reference.html) overrides in the dictionary format | `{}` |
+
 ### Port
 
 | Parameter | Description | Default |
