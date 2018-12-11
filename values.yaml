@@ -50,6 +50,7 @@ cp-kafka:
     enabled: true
     # storageClass: ""
     size: 5Gi
+    disksPerBroker: 1
   resources: {}
   ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
   ## and remove the curly braces after 'resources:'
