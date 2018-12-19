@@ -76,6 +76,8 @@ spec:
             value: {{ template "cp-ksql-server.serviceId" . }}
           - name: KSQL_KSQL_SCHEMA_REGISTRY_URL
             value: {{ template "cp-ksql-server.cp-schema-registry.service-name" . }}
+          - name: KSQL_HEAP_OPTS
+            value: "{{ .Values.heapOptions }}"
           {{- if .Values.ksql.headless }}
           - name: KSQL_KSQL_QUERIES_FILE
             value: /etc/ksql/queries/queries.sql

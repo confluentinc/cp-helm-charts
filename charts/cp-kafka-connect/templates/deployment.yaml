@@ -83,6 +83,8 @@ spec:
               value: {{ template "cp-kafka-connect.cp-schema-registry.service-name" .}}
             - name: CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL
               value: {{ template "cp-kafka-connect.cp-schema-registry.service-name" .}}
+            - name: KAFKA_HEAP_OPTS
+              value: "{{ .Values.heapOptions }}"
             {{- range $key, $value := .Values.configurationOverrides }}
             - name: {{ printf "CONNECT_%s" $key | replace "." "_" | upper | quote }}
               value: {{ $value | quote }}
