@@ -127,10 +127,14 @@ spec:
           export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_IP}:9092{{ if kindIs "string" $advertisedListenersOverride }}{{ printf ",%s" $advertisedListenersOverride }}{{ end }} && \
           exec /etc/confluent/docker/run
         volumeMounts:
-        {{- $disksPerBroker := .Values.persistence.disksPerBroker | int }}
-        {{- range $k, $e := until $disksPerBroker }}
+        - name: datadir
+          mountPath: /opt/kafka/data
+        {{- $extradisksPerBroker := (sub $.Values.persistence.disksPerBroker 1 | int) }}
+        {{- if not (eq 0 $extradisksPerBroker )}}
+        {{- range $k, $e := until $extradisksPerBroker }}
         - name: datadir-{{$k}}
           mountPath: /opt/kafka/data-{{$k}}
+        {{- end }}
         {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -156,22 +160,38 @@ spec:
       {{- end }}
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
-  {{- $disksPerBroker := .Values.persistence.disksPerBroker | int }}
+    - metadata:
+        name: datadir
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: "{{ .Values.persistence.size }}"
+        {{- if .Values.persistence.storageClass }}
+        {{- if (eq "-" .Values.persistence.storageClass) }}
+        storageClassName: ""
+        {{- else }}
+        storageClassName: "{{ .Values.persistence.storageClass }}"
+        {{- end }}
+        {{- end }}
+  {{- $extradisksPerBroker := (sub $.Values.persistence.disksPerBroker 1 | int) }}
+  {{- if not (eq 0 $extradisksPerBroker )}}
   {{- $root := . }}
-  {{- range $k, $e := until $disksPerBroker }}
-  - metadata:
-      name: datadir-{{$k}}
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: "{{ $root.Values.persistence.size }}"
-      {{- if $root.Values.persistence.storageClass }}
-      {{- if (eq "-" $root.Values.persistence.storageClass) }}
-      storageClassName: ""
-      {{- else }}
-      storageClassName: "{{ $root.Values.persistence.storageClass }}"
-      {{- end }}
-      {{- end }}
-{{- end }}
+  {{- range $k, $e := until $extradisksPerBroker }}
+    - metadata:
+        name: datadir-{{$k}}
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: "{{ $root.Values.persistence.size }}"
+        {{- if $root.Values.persistence.storageClass }}
+        {{- if (eq "-" $root.Values.persistence.storageClass) }}
+        storageClassName: ""
+        {{- else }}
+        storageClassName: "{{ $root.Values.persistence.storageClass }}"
+        {{- end }}
+        {{- end }}
+  {{- end }}
+  {{- end}}
 {{- end }}

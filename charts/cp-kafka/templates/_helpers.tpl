@@ -59,8 +59,13 @@ Create a variable containing all the datadirs created.
 */}}
 
 {{- define "cp-kafka.log.dirs" -}}
-{{- range $k, $e := until (.Values.persistence.disksPerBroker|int) -}}
+{{- printf "/opt/kafka/data/logs" -}}
+{{- $extradisksPerBroker := (sub $.Values.persistence.disksPerBroker 1 | int) }}
+{{- if not (eq 0 $extradisksPerBroker )}}
+{{- printf ","}}
+{{- range $k, $e := until $extradisksPerBroker }}
 {{- if $k}}{{- printf ","}}{{end}}
 {{- printf "/opt/kafka/data-%d/logs" $k -}}
+{{- end -}}
 {{- end -}}
 {{- end -}}
