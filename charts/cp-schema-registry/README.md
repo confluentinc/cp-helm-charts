@@ -118,6 +118,12 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `kafka.bootstrapServers` | Bootstrap Servers for Schema Registry | `""` |
 
+### Confluent Schema Registry JVM Heap Options
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `heapOptions` | The JVM Heap Options for Confluent Schema Registry | `"-Xms512M -Xmx512M"` |
+
 ### Resources
 
 | Parameter | Description | Default |

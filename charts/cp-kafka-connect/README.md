@@ -110,6 +110,12 @@ The configuration parameters in this section control the resources requested and
 | `configurationOverrides` | Kafka Connect [configuration](https://docs.confluent.io/current/connect/references/allconfigs.html) overrides in the dictionary format. | `{}` |
 | `customEnv` | Custom environmental variables | `{}` |
 
+### Kafka Connect JVM Heap Options
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `heapOptions` | The JVM Heap Options for Kafka Connect | `"-Xms512M -Xmx512M"` |
+
 ### Resources
 
 | Parameter | Description | Default |

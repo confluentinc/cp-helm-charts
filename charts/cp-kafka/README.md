@@ -146,7 +146,7 @@ The configuration parameters in this section control the resources requested and
 
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `heapOptions` | The JVM Heap Options for Kafka | `"-Xms1G -Xmx1G"` |
+| `heapOptions` | The JVM Heap Options for Kafka | `"-Xms512M -Xmx512M"` |
 
 ### Resources
 

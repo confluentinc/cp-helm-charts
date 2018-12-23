@@ -123,6 +123,12 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `servicePort` | The port on which the KSQL Server will be available and serving requests. | `8088` |
 
+### KSQL JVM Heap Options
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `heapOptions` | The JVM Heap Options for KSQL | `"-Xms512M -Xmx512M"` |
+
 ### Resources
 
 | Parameter | Description | Default |
