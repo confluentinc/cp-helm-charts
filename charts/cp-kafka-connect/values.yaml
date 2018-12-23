@@ -34,6 +34,9 @@ configurationOverrides:
   "offset.storage.replication.factor": "3"
   "status.storage.replication.factor": "3"
 
+## Kafka Connect JVM Heap Option
+heapOptions: "-Xms512M -Xmx512M"
+
 ## Additional env variables
 customEnv: {}
 
