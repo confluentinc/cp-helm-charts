@@ -4,5 +4,4 @@
 
 ## How was this patch tested?
 
-(Please explain how this patch was tested. E.g. unit tests, integration tests, manual tests)
-(If this patch involves UI changes, please attach a screenshot; otherwise, remove this)
+(Please explain how this patch was tested. E.g. helm upgrade on minikube, helm install on gke)
