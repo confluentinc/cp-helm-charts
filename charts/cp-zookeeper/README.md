@@ -109,7 +109,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `image` | Docker Image of Confluent Zookeeper. | `confluentinc/cp-zookeeper` |
-| `imageTag` | Docker Image Tag of Confluent Zookeeper. | `5.0.0` |
+| `imageTag` | Docker Image Tag of Confluent Zookeeper. | `5.0.1` |
 | `imagePullPolicy` | Docker Image Tag of Confluent Zookeeper. | `IfNotPresent` |
 | `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
 
@@ -164,6 +164,12 @@ The configuration parameters in this section control the resources requested and
 | `resources.requests.limit` | The upper limit CPU usage for a Zookeeper Pod. | see [values.yaml](values.yaml) for details |
 | `resources.requests.limit` | The upper limit memory usage for a Zookeeper Pod. | see [values.yaml](values.yaml) for details |
 
+### Annotations
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `podAnnotations` | Map of custom annotations to attach to the pod spec. | `{}` |
+
 ### JMX Configuration
 
 | Parameter | Description | Default |
@@ -178,3 +184,10 @@ The configuration parameters in this section control the resources requested and
 | `prometheus.jmx.image` | Docker Image for Prometheus JMX Exporter container. | `solsson/kafka-prometheus-jmx-exporter@sha256` |
 | `prometheus.jmx.imageTag` | Docker Image Tag for Prometheus JMX Exporter container. | `6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143` |
 | `prometheus.jmx.port` | JMX Exporter Port which exposes metrics in Prometheus format for scraping. | `5556` |
+
+### Deployment Topology
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `nodeSelector` | Dictionary containing key-value-pairs to match labels on nodes. When defined pods will only be scheduled on nodes, that have each of the indicated key-value pairs as labels. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) | `{}`
+| `tolerations`| Array containing taint references. When defined, pods can run on nodes, which would otherwise deny scheduling. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) | `{}`

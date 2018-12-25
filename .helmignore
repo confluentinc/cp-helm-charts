@@ -22,3 +22,6 @@
 # Images and archives
 *.png
 *.tgz
+scripts/
+screenshots/
+docs/index.html
