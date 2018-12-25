@@ -34,6 +34,20 @@ cp-zookeeper:
   #  requests:
   #   cpu: 100m
   #   memory: 128Mi
+  tolerations:
+  - key: "dedicated"
+    operator: "Equal"
+    value: "zookeeper"
+    effect: "NoSchedule"
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: "dedicated"
+            operator: In
+            values:
+            - "zookeeper"
 
 ## ------------------------------------------------------
 ## Kafka
@@ -47,16 +61,16 @@ cp-kafka:
   ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
   imagePullSecrets:
   #  - name: "regcred"
-  heapOptions: "-Xms8G -Xmx8G"
+  heapOptions: "-Xms16G -Xmx16G"
   persistence:
     enabled: true
     # storageClass: ""
-    size: 500Gi
+    size: 1000Gi
   configurationOverrides:
     ## Cluster level Retention set to 7 week.
     "log.retention.ms": "604800"
-    ## Cluster level retention set to 400G
-    "log.retention.bytes": "429496729600"
+    ## Cluster level retention set to 800G
+    "log.retention.bytes": "858993459200"
     ## Cluster level segment size set to 500M, to allow smaller granularity in retention
     "log.segment.bytes": "524288000"
     ## Cluster level retention interval set to 5Min
@@ -76,6 +90,20 @@ cp-kafka:
   #  requests:
   #   cpu: 100m
   #   memory: 128Mi
+  tolerations:
+  - key: "dedicated"
+    operator: "Equal"
+    value: "kafka"
+    effect: "NoSchedule"
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: "dedicated"
+            operator: In
+            values:
+            - "kafka"
 
 ## ------------------------------------------------------
 ## Schema Registry
