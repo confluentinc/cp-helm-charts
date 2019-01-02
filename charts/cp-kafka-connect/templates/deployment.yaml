@@ -95,6 +95,10 @@ spec:
             - name: KAFKA_JMX_PORT
               value: "{{ .Values.jmx.port }}"
             {{- end }}
+            {{- if .Values.heapOptions }}
+            - name: KAFKA_HEAP_OPTS
+              value: "{{ .Values.heapOptions }}"
+            {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
