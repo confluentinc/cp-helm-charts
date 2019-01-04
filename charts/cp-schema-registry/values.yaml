@@ -33,6 +33,9 @@ customEnv: {}
 ## The port on which the Schema Registry will be available and serving requests
 servicePort: 8081
 
+## Schema registry JVM Heap Option
+heapOptions: "-Xms512M -Xmx512M"
+
 ## You can list load balanced service endpoint, or list of all brokers (which is hard in K8s).  e.g.:
 ## bootstrapServers: "PLAINTEXT://dozing-prawn-kafka-headless:9092"
 ## Charts uses Kafka Coordinator Master Election: https://docs.confluent.io/current/schema-registry/docs/design.html#kafka-coordinator-master-election

@@ -114,6 +114,12 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `configurationOverrides` | Kafka REST [configuration](https://docs.confluent.io/current/kafka-rest/docs/config.html) overrides in the dictionary format | `{}` |
 
+### Confluent Kafka REST JVM Heap Options
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `heapOptions` | The JVM Heap Options for Confluent Kafka REST | `"-Xms512M -Xmx512M"` |
+
 ### Resources
 
 | Parameter | Description | Default |
