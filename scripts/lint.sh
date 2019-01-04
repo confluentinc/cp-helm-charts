@@ -1,8 +1,6 @@
 #!/bin/bash
-error=0
-RED='\033[0;31m'
-RS='\033[0m' # No Color
-GREEN='\033[0;32m'
+
+. scripts/common.sh
 
 echo -e "==> ${GREEN}Linting cp-helm-charts..${RS}."
 
@@ -18,5 +16,3 @@ for chart in `ls -1 charts`; do
   echo -e "$output" | grep "\\["
 done
 echo -e "==> ${GREEN} No linting errors${RS}"
-
-exit $error
