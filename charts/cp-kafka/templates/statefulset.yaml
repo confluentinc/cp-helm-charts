@@ -26,6 +26,16 @@ spec:
       {{- end }}
     spec:
       affinity:
+  {{- if .Values.nodeAffinity }}
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: "dedicated"
+                operator: In
+                values:
+                - "kafka"
+  {{- end }}
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
           - weight: 1
@@ -124,6 +134,13 @@ spec:
         volumeMounts:
         - name: datadir
           mountPath: /opt/kafka/data
+{{- if .Values.tolerations }}
+        tolerations:
+        - key: dedicated
+          operator: Equal
+          value: kafka
+          effect: NoSchedule
+{{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}

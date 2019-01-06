@@ -7,12 +7,15 @@ Installing Confluent Platform (cp) Kafka cluster instructions are taken from [Ku
 
 ## Updating this repo (from the repo's root)
 - Make all needed changes you desire
-- #$ helm package .
-- #$ helm repo index .
-- #$ git add -u .
-- #$ git commit -m 'I did something great'
-- #$ git push
-- #$ helm repo update
+- Test resolted yamls
+  - #$ helm install --dry-run --debug --namespace=<Namespace> -f <env>_values.yaml salt/cp-helm-charts --name <releaseName>
+- Build and update repo
+  - #$ helm package .
+  - #$ helm repo index .
+  - #$ git add -u .
+  - #$ git commit -m 'I did something great'
+  - #$ git push
+  - #$ helm repo update
 
 ## Add Salt cp-helm-charts repo to helm
 - #$ helm repo add salt https://raw.githubusercontent.com/Secful/cp-helm-charts/master

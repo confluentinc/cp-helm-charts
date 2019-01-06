@@ -34,20 +34,8 @@ cp-zookeeper:
   #  requests:
   #   cpu: 100m
   #   memory: 128Mi
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "zookeeper"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-        - matchExpressions:
-          - key: "dedicated"
-            operator: In
-            values:
-            - "zookeeper"
+  tolerations: true
+  nodeAffinity: true
 
 ## ------------------------------------------------------
 ## Kafka
@@ -90,20 +78,8 @@ cp-kafka:
   #  requests:
   #   cpu: 100m
   #   memory: 128Mi
-  tolerations:
-  - key: "dedicated"
-    operator: "Equal"
-    value: "kafka"
-    effect: "NoSchedule"
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-        - matchExpressions:
-          - key: "dedicated"
-            operator: In
-            values:
-            - "kafka"
+  tolerations: true
+  nodeAffinity: true
 
 ## ------------------------------------------------------
 ## Schema Registry

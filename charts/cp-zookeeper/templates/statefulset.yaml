@@ -25,6 +25,16 @@ spec:
       {{- end }}
     spec:
       affinity:
+  {{- if .Values.nodeAffinity }}
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: "dedicated"
+                operator: In
+                values:
+                - "zookeeper"
+  {{- end }}
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
           - weight: 1
@@ -121,6 +131,13 @@ spec:
           mountPath: /var/lib/zookeeper/data
         - name: datalogdir
           mountPath: /var/lib/zookeeper/log
+{{- if .Values.tolerations }}
+        tolerations:
+        - key: dedicated
+          operator: Equal
+          value: zookeeper
+          effect: NoSchedule
+{{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
