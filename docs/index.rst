@@ -104,7 +104,7 @@ Clone the Confluent Helm Chart repo
 
 .. code:: sh
 
-      > helm repo add confluent https://confluentinc.github.io/cp-helm-charts/
+      > helm repo add confluentinc https://confluentinc.github.io/cp-helm-charts/
     "confluentinc" has been added to your repositories
 
       > helm repo update
