@@ -1,22 +1,32 @@
 #!/bin/bash
-error=0
-RED='\033[0;31m'
-RS='\033[0m' # No Color
-GREEN='\033[0;32m'
 
-echo -e "==> ${GREEN}Linting cp-helm-charts..${RS}."
+. scripts/common.sh
 
-for chart in `ls -1 charts`; do
-  echo -e "==> ${GREEN}Linting $chart...${RS}"
-  #output=`helm lint . --debug --strict 2> /dev/null`
-  output=`helm lint . --debug 2> /dev/null`
+function lint_chart() {
+  chart_name=$1
+  chart_file=$2
+
+  echo -e "==> ${GREEN}Linting $chart_name...${RS}"
+  output=`helm lint $chart_file --debug 2> /dev/null`
   if [ $? -ne 0 ]; then
-    echo -e "===> ${RED} Liniting errors for chart $chart ${RS}"
+    echo -e "===> ${RED} Linting errors for chart $chart_name ${RS}"
     echo -e "$output" | grep "\\["
     exit 1
   fi
   echo -e "$output" | grep "\\["
-done
-echo -e "==> ${GREEN} No linting errors${RS}"
+}
 
-exit $error
+# Jenkins's working dir is not cp-helm-charts, so copy to tmp dir before linting
+if [[ $JENKINS_HOME ]]; then
+  rm -rf /tmp/cp-helm-charts
+  cp -R . /tmp/cp-helm-charts
+  cd /tmp/cp-helm-charts
+fi
+
+lint_chart cp-helm-charts .
+
+for chart in `ls -1 charts`; do
+  lint_chart $chart charts/$chart
+done
+
+echo -e "==> ${GREEN} No linting errors${RS}"

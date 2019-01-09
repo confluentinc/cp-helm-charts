@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
-RS='\033[0m' # reset
+
+. scripts/common.sh
 
 echo -e "${RS}${BLUE} Cleaning and preparing..."
 find . -iname "*.tgz" -type f | grep -v 'docs/' | xargs rm
