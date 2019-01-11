@@ -30,6 +30,9 @@ spec:
       {{- end }}
       {{- end }}
     spec:
+      {{- if .Values.serviceAccount.create}}
+      serviceAccountName: {{ template "cp-kafka.fullname" . }}
+      {{- end }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
@@ -97,6 +100,10 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.hostIP
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
         - name: KAFKA_HEAP_OPTS
           value: {{ .Values.heapOptions }}
         - name: KAFKA_ZOOKEEPER_CONNECT
@@ -125,6 +132,7 @@ spec:
         - |
           export KAFKA_BROKER_ID=${HOSTNAME##*-} && \
           export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_IP}:9092{{ if kindIs "string" $advertisedListenersOverride }}{{ printf ",%s" $advertisedListenersOverride }}{{ end }} && \
+          {{ .Values.rackAware.enabled }} && export KAFKA_BROKER_RACK=$(curl -sSk -H "Authorization: Bearer `cat /var/run/secrets/kubernetes.io/serviceaccount/token`" https://kubernetes.default/api/v1/nodes/$NODE_NAME|grep failure-domain.beta.kubernetes.io/zone | sed 's/.*: "\(.*\)",/\1/') ; \
           exec /etc/confluent/docker/run
         volumeMounts:
         {{- $disksPerBroker := .Values.persistence.disksPerBroker | int }}

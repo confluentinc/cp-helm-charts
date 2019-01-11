@@ -109,6 +109,9 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `brokers` | The number of Broker servers. | `3` |
+| `rackAware.enabled` | If enabled, copy the value of the node-label `failure-domain.beta.kubernetes.io/zone` as the `broker.rack` property. Will query kube-api for that info, so it needs service account and rbac enabled | `false` |
+| `serviceAccount.enabled` | Create account to query kube-api  | `false` |
+| `rbac.enabled` | Enable RBAC | `false` |
 
 ### Image
 
