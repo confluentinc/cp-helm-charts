@@ -18,10 +18,15 @@ spec:
       labels:
         app: {{ template "cp-kafka-connect.name" . }}
         release: {{ .Release.Name }}
-      {{- if .Values.prometheus.jmx.enabled }}
+      {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
       annotations:
+      {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
+      {{- if .Values.prometheus.jmx.enabled }}
         prometheus.io/scrape: "true"
         prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
+      {{- end }}
       {{- end }}
     spec:
       containers:
@@ -63,9 +68,7 @@ spec:
             - name: CONNECT_REST_ADVERTISED_HOST_NAME
               valueFrom:
                 fieldRef:
-                  fieldPath: metadata.name
-            - name: CONNECT_PLUGIN_PATH
-              value: {{ .Values.pluginPath }}
+                  fieldPath: status.podIP
             - name: CONNECT_BOOTSTRAP_SERVERS
               value: {{ template "cp-kafka-connect.kafka.bootstrapServers" . }}
             - name: CONNECT_GROUP_ID
@@ -80,14 +83,16 @@ spec:
               value: {{ template "cp-kafka-connect.cp-schema-registry.service-name" .}}
             - name: CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL
               value: {{ template "cp-kafka-connect.cp-schema-registry.service-name" .}}
-            - name: CONNECT_KEY_CONVERTER
-              value: {{ .Values.connectKeyConverter }}
-            - name: CONNECT_VALUE_CONVERTER
-              value: {{ .Values.connectValueConverter }}
-            - name: CONNECT_INTERNAL_KEY_CONVERTER
-              value: {{ .Values.connectInternalKeyConverter }}
-            - name: CONNECT_INTERNAL_VALUE_CONVERTER
-              value: {{ .Values.connectInternalValueConverter }}
+            - name: KAFKA_HEAP_OPTS
+              value: "{{ .Values.heapOptions }}"
+            {{- range $key, $value := .Values.configurationOverrides }}
+            - name: {{ printf "CONNECT_%s" $key | replace "." "_" | upper | quote }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- range $key, $value := .Values.customEnv }}
+            - name: {{ $key | quote }}
+              value: {{ $value | quote }}
+            {{- end }}
             {{- if .Values.jmx.port }}
             - name: KAFKA_JMX_PORT
               value: "{{ .Values.jmx.port }}"
@@ -101,4 +106,12 @@ spec:
       - name: jmx-config
         configMap:
           name: {{ template "cp-kafka-connect.fullname" . }}-jmx-configmap
+      {{- end }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
       {{- end }}

@@ -54,7 +54,6 @@ else use user-provided URL
 {{- end -}}
 {{- end -}}
 
-
 {{/*
 Form the Advertised Listeners. We will use the value of nodeport.firstListenerPort to create the
 external advertised listeners if configurationOverrides.advertised.listeners is not set.
@@ -64,5 +63,16 @@ external advertised listeners if configurationOverrides.advertised.listeners is 
 {{- printf ",%s" (first (pluck "advertised.listeners" .Values.configurationOverrides)) }}
 {{- else -}}
 {{- printf ",EXTERNAL://${HOST_IP}:$((%s + ${KAFKA_BROKER_ID}))" (.Values.nodeport.firstListenerPort | toString) }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Create a variable containing all the datadirs created.
+*/}}
+
+{{- define "cp-kafka.log.dirs" -}}
+{{- range $k, $e := until (.Values.persistence.disksPerBroker|int) -}}
+{{- if $k}}{{- printf ","}}{{end}}
+{{- printf "/opt/kafka/data-%d/logs" $k -}}
 {{- end -}}
 {{- end -}}

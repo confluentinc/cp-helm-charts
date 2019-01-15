@@ -15,7 +15,7 @@ servers: 3
 ## Images Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-zookeeper/
 image: confluentinc/cp-zookeeper
-imageTag: 5.0.0
+imageTag: 5.0.1
 
 ## Specify a imagePullPolicy
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -84,6 +84,17 @@ resources: {}
   #  requests:
   #   cpu: 100m
   #   memory: 128Mi
+
+## Custom pod annotations
+podAnnotations: {}
+
+## Node labels for pod assignment
+## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+nodeSelector: {}
+
+## Taints to tolerate on node assignment:
+## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+tolerations: {}
 
 ## Monitoring
 ## Zookeeper JMX Settings

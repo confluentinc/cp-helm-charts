@@ -18,10 +18,15 @@ spec:
       labels:
         app: {{ template "cp-kafka.name" . }}
         release: {{ .Release.Name }}
-      {{- if .Values.prometheus.jmx.enabled }}
+      {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
       annotations:
+      {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
+      {{- if .Values.prometheus.jmx.enabled }}
         prometheus.io/scrape: "true"
         prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
+      {{- end }}
       {{- end }}
     spec:
       affinity:
@@ -93,16 +98,16 @@ spec:
               fieldPath: status.hostIP
         - name: KAFKA_HEAP_OPTS
           value: {{ .Values.heapOptions }}
-        {{- if not (hasKey .Values.configurationOverrides "zookeeper.connect") }}
         - name: KAFKA_ZOOKEEPER_CONNECT
           value: {{ include "cp-kafka.cp-zookeeper.service-name" . | quote }}
-        {{- end }}
-        {{- if not (hasKey .Values.configurationOverrides "log.dirs") }}
         - name: KAFKA_LOG_DIRS
-          value: "/opt/kafka/data/logs"
-        {{- end }}
+          value: {{ include "cp-kafka.log.dirs" . | quote }}
         {{- range $key, $value := .Values.configurationOverrides }}
         - name: {{ printf "KAFKA_%s" $key | replace "." "_" | upper | quote }}
+          value: {{ $value | quote }}
+        {{- end }}
+        {{- range $key, $value := .Values.customEnv }}
+        - name: {{ $key | quote }}
           value: {{ $value | quote }}
         {{- end }}
         {{- if .Values.jmx.port }}
@@ -121,8 +126,11 @@ spec:
           export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_IP}:9092{{ include "cp-kafka.configuration.advertised.listeners" . }} && \
           exec /etc/confluent/docker/run
         volumeMounts:
-        - name: datadir
-          mountPath: /opt/kafka/data
+        {{- $disksPerBroker := .Values.persistence.disksPerBroker | int }}
+        {{- range $k, $e := until $disksPerBroker }}
+        - name: datadir-{{$k}}
+          mountPath: /opt/kafka/data-{{$k}}
+        {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
@@ -137,20 +145,32 @@ spec:
         configMap:
           name: {{ template "cp-kafka.fullname" . }}-jmx-configmap
       {{- end }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
+      {{- end }}
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
+  {{- $disksPerBroker := .Values.persistence.disksPerBroker | int }}
+  {{- $root := . }}
+  {{- range $k, $e := until $disksPerBroker }}
   - metadata:
-      name: datadir
+      name: datadir-{{$k}}
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: "{{ .Values.persistence.size }}"
-      {{- if .Values.persistence.storageClass }}
-      {{- if (eq "-" .Values.persistence.storageClass) }}
+          storage: "{{ $root.Values.persistence.size }}"
+      {{- if $root.Values.persistence.storageClass }}
+      {{- if (eq "-" $root.Values.persistence.storageClass) }}
       storageClassName: ""
       {{- else }}
-      storageClassName: "{{ .Values.persistence.storageClass }}"
+      storageClassName: "{{ $root.Values.persistence.storageClass }}"
       {{- end }}
       {{- end }}
-  {{- end }}
+{{- end }}
+{{- end }}
