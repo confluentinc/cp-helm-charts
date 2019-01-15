@@ -45,9 +45,10 @@ configurationOverrides:
   ## - http://kafka.apache.org/documentation/#security_configbroker
   ## - https://cwiki.apache.org/confluence/display/KAFKA/KIP-103%3A+Separation+of+Internal+and+External+traffic
   ##
+  ## Advertised listeners will use the firstListenerPort value as it's default unless overridden here.
   ## Setting "advertised.listeners" here appends to "PLAINTEXT://${POD_IP}:9092,"
-  "advertised.listeners": |-
-   EXTERNAL://${HOST_IP}:$((31090 + ${KAFKA_BROKER_ID}))
+  # "advertised.listeners": |-
+  # EXTERNAL://${HOST_IP}:$((31090 + ${KAFKA_BROKER_ID}))
   "listener.security.protocol.map": |-
    PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
 
