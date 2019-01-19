@@ -48,7 +48,8 @@ else use user-provided URL
 {{- if (index .Values "cp-zookeeper" "url") -}}
 {{- printf "%s" (index .Values "cp-zookeeper" "url") }}
 {{- else -}}
-{{- printf "%s:2181" (include "cp-kafka-rest.cp-zookeeper.fullname" .) }}
+{{- $chroot := default "" .Values.zkChroot -}}
+{{- printf "%s:2181%s" (include "cp-kafka-rest.cp-zookeeper.fullname" .) $chroot }}
 {{- end -}}
 {{- end -}}
 
