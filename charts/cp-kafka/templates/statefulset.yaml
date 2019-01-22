@@ -126,6 +126,10 @@ spec:
         {{- if or .Values.ssl.client.auth .Values.global.kafka.ssl.client.auth }}
         - name: KAFKA_SSL_CLIENT_AUTH
           value: {{ template "cp-kafka.ssl.client.auth.type" . }}
+        - name: KAFKA_AUTHORIZER_CLASS_NAME
+          value: kafka.security.auth.SimpleAclAuthorizer
+        - name: KAFKA_SUPER_USERS
+          value: User:{{ default .Values.ssl.client.brokerPrincipal .Values.global.kafka.ssl.client.brokerPrincipal }};User:CN=internal
         {{- end }}
         {{- else }}
         - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP

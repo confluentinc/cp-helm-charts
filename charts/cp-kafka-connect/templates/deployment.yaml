@@ -107,6 +107,15 @@ spec:
                 secretKeyRef:
                   name: {{ template "cp-kafka.ssl.secretName" . }}
                   key: client.truststore.password
+            - name: KAFKA_DISTRIBUTED_SECURITY_PROTOCOL
+              value: SSL
+            - name: KAFKA_DISTRIBUTED_SSL_TRUSTSTORE_LOCATION
+              value: /etc/kafka/secrets/{{ template "cp-kafka.ssl.client.truststore" . }}
+            - name: KAFKA_DISTRIBUTED_SSL_TRUSTSTORE_PASSWORD
+              valueFrom: 
+                secretKeyRef:
+                  name: {{ template "cp-kafka.ssl.secretName" . }}
+                  key: client.truststore.password
             {{- if or .Values.ssl.client.auth .Values.global.kafka.ssl.client.auth }}
             - name: CONNECT_SSL_KEYSTORE_LOCATION
               value: /etc/kafka/secrets/{{ template "cp-kafka.ssl.client.keystore" . }}
@@ -116,6 +125,18 @@ spec:
                   name: {{ template "cp-kafka.ssl.secretName" . }}
                   key: client.keystore.password
             - name: CONNECT_SSL_KEY_PASSWORD
+              valueFrom: 
+                secretKeyRef:
+                  name: {{ template "cp-kafka.ssl.secretName" . }}
+                  key: client.key.password
+            - name: KAFKA_DISTRIBUTED_SSL_KEYSTORE_LOCATION
+              value: /etc/kafka/secrets/{{ template "cp-kafka.ssl.client.keystore" . }}
+            - name: KAFKA_DISTRIBUTED_SSL_KEYSTORE_PASSWORD
+              valueFrom: 
+                secretKeyRef:
+                  name: {{ template "cp-kafka.ssl.secretName" . }}
+                  key: client.keystore.password
+            - name: KAFKA_DISTRIBUTED_SSL_KEY_PASSWORD
               valueFrom: 
                 secretKeyRef:
                   name: {{ template "cp-kafka.ssl.secretName" . }}

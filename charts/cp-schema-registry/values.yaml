@@ -30,6 +30,8 @@ configurationOverrides: {}
 ## The port on which the Schema Registry will be available and serving requests
 servicePort: 8081
 
+https: {}
+
 ssl:
   client: {}
 

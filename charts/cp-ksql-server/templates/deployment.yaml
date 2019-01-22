@@ -99,6 +99,8 @@ spec:
                 key: client.key.password
           {{- end }}
           {{- end }}
+          - name: KSQL_PRODUCER_RETRIES
+            value: "15"
           - name: KSQL_BOOTSTRAP_SERVERS
             value: {{ template "cp-ksql-server.kafka.bootstrapServers" . }}
           - name: KSQL_KSQL_SERVICE_ID

@@ -50,7 +50,7 @@ cp-kafka:
     "log.dirs": /opt/kafka/data/logs
     "offsets.topic.replication.factor": 3
     "advertised.listeners": |-
-     EXTERNAL://${HOSTNAME}.confluent-cp-kafka-headless.team-appops.svc.dev.cluster.local:9093
+     EXTERNAL://${HOSTNAME}.confluent-cp-kafka-headless.cp-kafka.svc.dev.cluster.local:9093
   persistence:
     enabled: true
     # storageClass: ""
@@ -70,6 +70,12 @@ cp-kafka:
 ## ------------------------------------------------------
 cp-schema-registry:
   enabled: true
+  https:
+    enabled: true
+    keystore: schema.registry.keystore.jks
+    keystorePassword: test1234
+    keyPassword: test1234
+    hostname: schema-registry.kafka-test.domain.com
   image: confluentinc/cp-schema-registry
   imageTag: 5.0.1
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
@@ -151,9 +157,11 @@ global:
       enabled: true
       client:
         auth: required
+        brokerPrincipal: CN=dev.kafka.domain.com
+        componentPrincipal: CN=internal.dev.kafka.domain.com
         truststoreFile: kafka.client.truststore.jks
         truststorePassword: test1234
-        keystoreFile: kafka.client.keystore.jks
+        keystoreFile: kafka.internal.keystore.jks
         keystorePassword: test1234
         keyPassword: test1234
       broker:
