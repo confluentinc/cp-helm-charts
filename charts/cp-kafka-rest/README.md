@@ -98,14 +98,27 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `image` | Docker Image of Confluent REST Proxy. | `confluentinc/cp-kafka-rest` |
-| `imageTag` | Docker Image Tag of Confluent REST Proxy. | `5.0.0` |
+| `imageTag` | Docker Image Tag of Confluent REST Proxy. | `5.0.1` |
 | `imagePullPolicy` | Docker Image Tag of Confluent REST Proxy. | `IfNotPresent` |
+| `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
 
 ### Port
 
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `servicePort` | The port on which the REST Proxy will be available and serving requests. | `8082` |
+
+### Confluent Kafka REST Configuration
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `configurationOverrides` | Kafka REST [configuration](https://docs.confluent.io/current/kafka-rest/docs/config.html) overrides in the dictionary format | `{}` |
+
+### Confluent Kafka REST JVM Heap Options
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `heapOptions` | The JVM Heap Options for Confluent Kafka REST | `"-Xms512M -Xmx512M"` |
 
 ### Resources
 
@@ -115,6 +128,12 @@ The configuration parameters in this section control the resources requested and
 | `resources.requests.memory` | The amount of memory to request. | see [values.yaml](values.yaml) for details |
 | `resources.requests.limit` | The upper limit CPU usage for a REST Proxy Pod. | see [values.yaml](values.yaml) for details |
 | `resources.requests.limit` | The upper limit memory usage for a REST Proxy Pod. | see [values.yaml](values.yaml) for details |
+
+### Annotations
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `podAnnotations` | Map of custom annotations to attach to the pod spec. | `{}` |
 
 ### JMX Configuration
 
@@ -128,7 +147,7 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `prometheus.jmx.enabled` | Whether or not to install Prometheus JMX Exporter as a sidecar container and expose JMX metrics to Prometheus. | `true` |
 | `prometheus.jmx.image` | Docker Image for Prometheus JMX Exporter container. | `solsson/kafka-prometheus-jmx-exporter@sha256` |
-| `prometheus.jmx.imageTag` | Docker Image Tag for Prometheus JMX Exporter container. | `a23062396cd5af1acdf76512632c20ea6be76885dfc20cd9ff40fb23846557e8` |
+| `prometheus.jmx.imageTag` | Docker Image Tag for Prometheus JMX Exporter container. | `6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143` |
 | `prometheus.jmx.port` | JMX Exporter Port which exposes metrics in Prometheus format for scraping. | `5556` |
 
 ### External Access
@@ -141,6 +160,13 @@ The configuration parameters in this section control the resources requested and
 | `external.annotations` | Map of annotations to attach to external Kafka REST Proxy service | `nil` |
 | `external.externalTrafficPolicy` | Configures `.spec.externalTrafficPolicy` which controls if load balancing occurs across all nodes (value of `Cluster`) or only active nodes (value of `Local`)  | `Cluster` |
 | `external.loadBalancerSourceRanges` | Configures `.spec.loadBalancerSourceRanges` which controls a list of source IP ranges permitted access to the load balancer | `["0.0.0.0/0"]` |
+
+### Deployment Topology
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `nodeSelector` | Dictionary containing key-value-pairs to match labels on nodes. When defined pods will only be scheduled on nodes, that have each of the indicated key-value pairs as labels. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) | `{}`
+| `tolerations`| Array containing taint references. When defined, pods can run on nodes, which would otherwise deny scheduling. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) | `{}`
 
 ## Dependencies
 

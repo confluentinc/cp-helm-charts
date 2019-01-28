@@ -3,11 +3,7 @@
 Kubernetes Helm Charts
 ======================
 
-You can use the |cos| Helm charts to deploy |cp| services on Kubernetes for development, test, and proof of concept environments.
-
-.. contents::
-      :local:
-      :depth: 1
+You can use the Helm charts to deploy |cp| services on Kubernetes for development, test, and proof of concept environments.
 
 .. important:: The |cp| Helm charts are in developer preview and are not supported for production use.
 
@@ -74,14 +70,10 @@ installation.
       kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
       helm init --service-account tiller --upgrade
 
-Run Confluent Platform
+Run |cp|
 ----------------------
 
 Follow these steps to run |cp|.
-
-.. contents::
-    :local:
-    :depth: 1
 
 Persistence
 ~~~~~~~~~~~
@@ -112,7 +104,7 @@ Clone the Confluent Helm Chart repo
 
 .. code:: sh
 
-      > helm repo add confluentinc https://raw.githubusercontent.com/confluentinc/cp-helm-charts/master
+      > helm repo add confluent https://confluentinc.github.io/cp-helm-charts/
     "confluentinc" has been added to your repositories
 
       > helm repo update

@@ -4,6 +4,13 @@
 
 The [Confluent Platform Helm charts](https://github.com/confluentinc/cp-helm-charts) enable you to deploy Confluent Platform services on Kubernetes for development, test, and proof of concept environments.
 
+## Installing Charts
+
+```
+helm repo add confluent https://confluentinc.github.io/cp-helm-charts/
+helm repo update
+```
+
 ## Documentation
 
 The Confluent Helm Chart documentation is located at [docs.confluent.io](https://docs.confluent.io/current/quickstart/cp-helm-charts/docs/index.html).

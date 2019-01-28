@@ -93,8 +93,9 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `image` | Docker Image of Confluent Kafka Connect. | `confluentinc/cp-kafka-connect` |
-| `imageTag` | Docker Image Tag of Confluent Kafka Connect. | `5.0.0` |
+| `imageTag` | Docker Image Tag of Confluent Kafka Connect. | `5.0.1` |
 | `imagePullPolicy` | Docker Image Tag of Confluent Kafka Connect. | `IfNotPresent` |
+| `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
 
 ### Port
 
@@ -106,11 +107,14 @@ The configuration parameters in this section control the resources requested and
 
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `connectKeyConverter` | Converter class for key Connect data. This controls the format of the data that will be written to Kafka for source connectors or read from Kafka for sink connectors. Popular formats include Avro and JSON. |`"io.confluent.connect.avro.AvroConverter"`|
-| `connectValueConverter` | Converter class for value Connect data. This controls the format of the data that will be written to Kafka for source connectors or read from Kafka for sink connectors. Popular formats include Avro and JSON. |`"io.confluent.connect.avro.AvroConverter"`|
-| `connectInternalKeyConverter` | Converter class for internal key Connect data that implements the Converter interface. Used for converting data like offsets and configs. |`"org.apache.kafka.connect.json.JsonConverter"`|
-| `connectInternalValueConverter` | Converter class for offset value Connect data that implements the Converter interface. Used for converting data like offsets and configs. |`"org.apache.kafka.connect.json.JsonConverter"`|
-| `pluginPath` | The comma-separated list of paths to directories that contain Kafka Connect plugins. |`"/usr/share/java"`|
+| `configurationOverrides` | Kafka Connect [configuration](https://docs.confluent.io/current/connect/references/allconfigs.html) overrides in the dictionary format. | `{}` |
+| `customEnv` | Custom environmental variables | `{}` |
+
+### Kafka Connect JVM Heap Options
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `heapOptions` | The JVM Heap Options for Kafka Connect | `"-Xms512M -Xmx512M"` |
 
 ### Resources
 
@@ -120,6 +124,12 @@ The configuration parameters in this section control the resources requested and
 | `resources.requests.memory` | The amount of memory to request. | see [values.yaml](values.yaml) for details |
 | `resources.requests.limit` | The upper limit CPU usage for a Kafka Connect Pod. | see [values.yaml](values.yaml) for details |
 | `resources.requests.limit` | The upper limit memory usage for a Kafka Connect Pod. | see [values.yaml](values.yaml) for details |
+
+### Annotations
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `podAnnotations` | Map of custom annotations to attach to the pod spec. | `{}` |
 
 ### JMX Configuration
 
@@ -133,8 +143,15 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `prometheus.jmx.enabled` | Whether or not to install Prometheus JMX Exporter as a sidecar container and expose JMX metrics to Prometheus. | `true` |
 | `prometheus.jmx.image` | Docker Image for Prometheus JMX Exporter container. | `solsson/kafka-prometheus-jmx-exporter@sha256` |
-| `prometheus.jmx.imageTag` | Docker Image Tag for Prometheus JMX Exporter container. | `a23062396cd5af1acdf76512632c20ea6be76885dfc20cd9ff40fb23846557e8` |
+| `prometheus.jmx.imageTag` | Docker Image Tag for Prometheus JMX Exporter container. | `6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143` |
 | `prometheus.jmx.port` | JMX Exporter Port which exposes metrics in Prometheus format for scraping. | `5556` |
+
+### Deployment Topology
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `nodeSelector` | Dictionary containing key-value-pairs to match labels on nodes. When defined pods will only be scheduled on nodes, that have each of the indicated key-value pairs as labels. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) | `{}`
+| `tolerations`| Array containing taint references. When defined, pods can run on nodes, which would otherwise deny scheduling. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) | `{}`
 
 ## Dependencies
 

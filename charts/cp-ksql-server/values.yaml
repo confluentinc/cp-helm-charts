@@ -7,13 +7,21 @@ replicaCount: 1
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-ksql-server/
 image: confluentinc/cp-ksql-server
-imageTag: 5.0.0
+imageTag: 5.0.1
 
 ## Specify a imagePullPolicy
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
 imagePullPolicy: IfNotPresent
 
+## Specify an array of imagePullSecrets.
+## Secrets must be manually created in the namespace.
+## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+imagePullSecrets:
+
 servicePort: 8088
+
+## KSQL JVM Heap Option
+heapOptions: "-Xms512M -Xmx512M"
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -26,6 +34,17 @@ resources: {}
   # requests:
   #  cpu: 100m
   #  memory: 128Mi
+
+## Custom pod annotations
+podAnnotations: {}
+
+## Node labels for pod assignment
+## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+nodeSelector: {}
+
+## Taints to tolerate on node assignment:
+## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+tolerations: {}
 
 ## Monitoring
 ## JMX Settings
@@ -41,7 +60,7 @@ prometheus:
   jmx:
     enabled: true
     image: solsson/kafka-prometheus-jmx-exporter@sha256
-    imageTag: a23062396cd5af1acdf76512632c20ea6be76885dfc20cd9ff40fb23846557e8
+    imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
     port: 5556
 
 ## External Access
@@ -65,3 +84,8 @@ kafka:
 ## e.g. gnoble-panther-cp-schema-registry:8081
 cp-schema-registry:
   url: ""
+
+# KSQL configuration options
+## ref: https://docs.confluent.io/current/ksql/docs/installation/server-config/config-reference.html
+configurationOverrides: {}
+  # "ksql.streams.producer.retries": "2147483647"

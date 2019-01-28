@@ -7,21 +7,38 @@ replicaCount: 1
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-kafka/
 image: confluentinc/cp-kafka-connect
-imageTag: 5.0.0
+imageTag: 5.0.1
 
 ## Specify a imagePullPolicy
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
 imagePullPolicy: IfNotPresent
 
+## Specify an array of imagePullSecrets.
+## Secrets must be manually created in the namespace.
+## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+imagePullSecrets:
+
 servicePort: 8083
 
-## Kafka Connect Worker Configurations
+## Kafka Connect properties
 ## ref: https://docs.confluent.io/current/connect/userguide.html#configuring-workers
-connectKeyConverter: "io.confluent.connect.avro.AvroConverter"
-connectValueConverter: "io.confluent.connect.avro.AvroConverter"
-connectInternalKeyConverter: "org.apache.kafka.connect.json.JsonConverter"
-connectInternalValueConverter: "org.apache.kafka.connect.json.JsonConverter"
-pluginPath: "/usr/share/java"
+configurationOverrides:
+  "plugin.path": "/usr/share/java"
+  "key.converter": "io.confluent.connect.avro.AvroConverter"
+  "value.converter": "io.confluent.connect.avro.AvroConverter"
+  "key.converter.schemas.enable": "false"
+  "value.converter.schemas.enable": "false"
+  "internal.key.converter": "org.apache.kafka.connect.json.JsonConverter"
+  "internal.value.converter": "org.apache.kafka.connect.json.JsonConverter"
+  "config.storage.replication.factor": "3"
+  "offset.storage.replication.factor": "3"
+  "status.storage.replication.factor": "3"
+
+## Kafka Connect JVM Heap Option
+heapOptions: "-Xms512M -Xmx512M"
+
+## Additional env variables
+customEnv: {}
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -34,6 +51,17 @@ resources: {}
   # requests:
   #  cpu: 100m
   #  memory: 128Mi
+
+## Custom pod annotations
+podAnnotations: {}
+
+## Node labels for pod assignment
+## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+nodeSelector: {}
+
+## Taints to tolerate on node assignment:
+## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+tolerations: {}
 
 ## Monitoring
 ## Kafka Connect JMX Settings
@@ -49,7 +77,7 @@ prometheus:
   jmx:
     enabled: true
     image: solsson/kafka-prometheus-jmx-exporter@sha256
-    imageTag: a23062396cd5af1acdf76512632c20ea6be76885dfc20cd9ff40fb23846557e8
+    imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
     port: 5556
 
 ## You can list load balanced service endpoint, or list of all brokers (which is hard in K8s).  e.g.:

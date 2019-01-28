@@ -18,10 +18,15 @@ spec:
       labels:
         app: {{ template "cp-zookeeper.name" . }}
         release: {{ .Release.Name }}
-      {{- if .Values.prometheus.jmx.enabled }}
+      {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
       annotations:
+      {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
+      {{- if .Values.prometheus.jmx.enabled }}
         prometheus.io/scrape: "true"
         prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
+      {{- end }}
       {{- end }}
     spec:
       affinity:
@@ -65,11 +70,6 @@ spec:
       - name: {{ template "cp-zookeeper.name" . }}-server
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
-        livenessProbe:
-          exec:
-            command: ['/bin/bash', '-c', 'echo "ruok" | nc -w 2 -q 2 localhost 2181 | grep imok']
-          initialDelaySeconds: 1
-          timeoutSeconds: 3
         ports:
         - containerPort: {{ .Values.clientPort }}
           name: client
@@ -115,12 +115,20 @@ spec:
         command:
         - "bash"
         - "-c"
-        - "ZOOKEEPER_SERVER_ID=$((${HOSTNAME##*-}+1)) && /etc/confluent/docker/run"
+        - |
+          ZK_FIX_HOST_REGEX="s/${HOSTNAME}\.[^:]*:/0.0.0.0:/g"
+          ZOOKEEPER_SERVER_ID=$((${HOSTNAME##*-}+1)) \
+          ZOOKEEPER_SERVERS=`echo $ZOOKEEPER_SERVERS | sed -e "$ZK_FIX_HOST_REGEX"` \
+          /etc/confluent/docker/run
         volumeMounts:
         - name: datadir
           mountPath: /var/lib/zookeeper/data
         - name: datalogdir
           mountPath: /var/lib/zookeeper/log
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+      {{- end }}
       volumes:
       {{ if not .Values.persistence.enabled }}
       - name: datadir
@@ -132,6 +140,14 @@ spec:
       - name: jmx-config
         configMap:
           name: {{ template "cp-zookeeper.fullname" . }}-jmx-configmap
+      {{- end }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
       {{- end }}
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:

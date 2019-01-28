@@ -15,11 +15,16 @@ servers: 3
 ## Images Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-zookeeper/
 image: confluentinc/cp-zookeeper
-imageTag: 5.0.0
+imageTag: 5.0.1
 
 ## Specify a imagePullPolicy
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
 imagePullPolicy: IfNotPresent
+
+## Specify an array of imagePullSecrets. 
+## Secrets must be manually created in the namespace.
+## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+imagePullSecrets:
 
 ## StatefulSet Config
 ## Start and stop pods in Parallel or OrderedReady (one-by-one.)
@@ -80,6 +85,17 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
+## Custom pod annotations
+podAnnotations: {}
+
+## Node labels for pod assignment
+## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+nodeSelector: {}
+
+## Taints to tolerate on node assignment:
+## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+tolerations: {}
+
 ## Monitoring
 ## Zookeeper JMX Settings
 ## ref: https://docs.confluent.io/current/installation/docker/docs/operations/monitoring.html
@@ -94,5 +110,5 @@ prometheus:
   jmx:
     enabled: true
     image: solsson/kafka-prometheus-jmx-exporter@sha256
-    imageTag: a23062396cd5af1acdf76512632c20ea6be76885dfc20cd9ff40fb23846557e8
+    imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
     port: 5556

@@ -115,21 +115,23 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `image` | Docker Image of Confluent Kafka. | `confluentinc/cp-kafka` |
-| `imageTag` | Docker Image Tag of Confluent Kafka. | `5.0.0` |
+| `imageTag` | Docker Image Tag of Confluent Kafka. | `5.0.1` |
 | `imagePullPolicy` | Docker Image Tag of Confluent Kafka. | `IfNotPresent` |
+| `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
 
 ### StatefulSet Configurations
 
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `podManagementPolicy` | The Kafka StatefulSet Pod Management Policy: `Parallel` or `OrderedReady`. | `OrderedReady` |
-| `updateStrategy` | The Kafka StatefulSet update strategy: `RollingUpdate` or `OnDelete`. | `OnDelete` |
+| `updateStrategy` | The Kafka StatefulSet update strategy: `RollingUpdate` or `OnDelete`. | `RollingUpdate` |
 
 ### Confluent Kafka Configuration
 
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `configurationOverrides` | Kafka [configuration](https://kafka.apache.org/documentation/#brokerconfigs) overrides in the dictionary format | `{}` |
+| `customEnv` | Custom environmental variables | `{}` |
 
 ### Persistence
 
@@ -138,12 +140,13 @@ The configuration parameters in this section control the resources requested and
 | `persistence.enabled` | Whether to create a PVC. If `false`, an `emptyDir` on the host will be used. | `true` |
 | `persistence.size` | Size for log dir, where Kafka will store log data. | `5Gi` |
 | `persistence.storageClass` | Valid options: `nil`, `"-"`, or storage class name. | `nil` |
+| `persistence.disksPerBroker` | The amount of disks that will be attached per instance of Kafka broker. | 1 |
 
 ### Kafka JVM Heap Options
 
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `heapOptions` | The JVM Heap Options for Kafka | `"-Xms1G -Xmx1G"` |
+| `heapOptions` | The JVM Heap Options for Kafka | `"-Xms512M -Xmx512M"` |
 
 ### Resources
 
@@ -153,6 +156,12 @@ The configuration parameters in this section control the resources requested and
 | `resources.requests.memory` | The amount of memory to request. | see [values.yaml](values.yaml) for details |
 | `resources.requests.limit` | The upper limit CPU usage for a Kafka Pod. | see [values.yaml](values.yaml) for details |
 | `resources.requests.limit` | The upper limit memory usage for a Kafka Pod. | see [values.yaml](values.yaml) for details |
+
+### Annotations
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `podAnnotations` | Map of custom annotations to attach to the pod spec. | `{}` |
 
 ### JMX Configuration
 
@@ -166,7 +175,7 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `prometheus.jmx.enabled` | Whether or not to install Prometheus JMX Exporter as a sidecar container and expose JMX metrics to Prometheus. | `true` |
 | `prometheus.jmx.image` | Docker Image for Prometheus JMX Exporter container. | `solsson/kafka-prometheus-jmx-exporter@sha256` |
-| `prometheus.jmx.imageTag` | Docker Image Tag for Prometheus JMX Exporter container. | `a23062396cd5af1acdf76512632c20ea6be76885dfc20cd9ff40fb23846557e8` |
+| `prometheus.jmx.imageTag` | Docker Image Tag for Prometheus JMX Exporter container. | `6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143` |
 | `prometheus.jmx.port` | JMX Exporter Port which exposes metrics in Prometheus format for scraping. | `5556` |
 
 ### External Access
@@ -176,6 +185,13 @@ The configuration parameters in this section control the resources requested and
 | `nodeport.enabled` | Whether or not to allow access to kafka cluster from outside k8s through NodePort. | `false` |
 | `nodeport.servicePort` | The Port broker will advertise to external producers and consumers.  | `19092` |
 | `nodeport.firstListenerPort` | The first NodePort that Kafka Broker will use for advertising to external producers and consumers. For each broker, advertise.listeners port for external will be set to `31090 + {index of broker pod}`. | `31090` |
+
+### Deployment Topology
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `nodeSelector` | Dictionary containing key-value-pairs to match labels on nodes. When defined pods will only be scheduled on nodes, that have each of the indicated key-value pairs as labels. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) | `{}`
+| `tolerations`| Array containing taint references. When defined, pods can run on nodes, which would otherwise deny scheduling. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) | `{}`
 
 ## Dependencies
 
