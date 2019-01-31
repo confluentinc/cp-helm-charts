@@ -18,10 +18,15 @@ spec:
       labels:
         app: {{ template "cp-ksql-server.name" . }}
         release: {{ .Release.Name }}
-      {{- if .Values.prometheus.jmx.enabled }}
+      {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
       annotations:
+      {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
+      {{- if .Values.prometheus.jmx.enabled }}
         prometheus.io/scrape: "true"
         prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
+      {{- end }}
       {{- end }}
     spec:
       containers:
@@ -69,12 +74,20 @@ spec:
             value: {{ template "cp-ksql-server.kafka.bootstrapServers" . }}
           - name: KSQL_KSQL_SERVICE_ID
             value: {{ template "cp-ksql-server.serviceId" . }}
+          - name: KSQL_KSQL_SCHEMA_REGISTRY_URL
+            value: {{ template "cp-ksql-server.cp-schema-registry.service-name" . }}
+          - name: KSQL_HEAP_OPTS
+            value: "{{ .Values.heapOptions }}"
           {{- if .Values.ksql.headless }}
           - name: KSQL_KSQL_QUERIES_FILE
             value: /etc/ksql/queries/queries.sql
           {{- else }}
           - name: KSQL_LISTENERS
             value: http://0.0.0.0:8088
+          {{- end }}
+          {{- range $key, $value := .Values.configurationOverrides }}
+          - name: {{ printf "KSQL_%s" $key | replace "." "_" | upper | quote }}
+            value: {{ $value | quote }}
           {{- end }}
           {{- if .Values.jmx.port }}
           - name: KSQL_JMX_PORT
@@ -94,4 +107,12 @@ spec:
       - name: ksql-queries
         configMap:
           name: {{ template "cp-ksql-server.fullname" . }}-ksql-queries-configmap
+      {{- end }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
       {{- end }}

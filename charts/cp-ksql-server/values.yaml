@@ -7,7 +7,7 @@ replicaCount: 1
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-ksql-server/
 image: confluentinc/cp-ksql-server
-imageTag: 5.0.0
+imageTag: 5.0.1
 
 ## Specify a imagePullPolicy
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -20,6 +20,9 @@ imagePullSecrets:
 
 servicePort: 8088
 
+## KSQL JVM Heap Option
+heapOptions: "-Xms512M -Xmx512M"
+
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -31,6 +34,17 @@ resources: {}
   # requests:
   #  cpu: 100m
   #  memory: 128Mi
+
+## Custom pod annotations
+podAnnotations: {}
+
+## Node labels for pod assignment
+## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+nodeSelector: {}
+
+## Taints to tolerate on node assignment:
+## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+tolerations: {}
 
 ## Monitoring
 ## JMX Settings
@@ -70,3 +84,8 @@ kafka:
 ## e.g. gnoble-panther-cp-schema-registry:8081
 cp-schema-registry:
   url: ""
+
+# KSQL configuration options
+## ref: https://docs.confluent.io/current/ksql/docs/installation/server-config/config-reference.html
+configurationOverrides: {}
+  # "ksql.streams.producer.retries": "2147483647"

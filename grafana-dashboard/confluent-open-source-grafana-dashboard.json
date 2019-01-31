@@ -4350,7 +4350,7 @@
   "schemaVersion": 16,
   "style": "dark",
   "tags": [
-    "5.0.0"
+    "5.0.1"
   ],
   "templating": {
     "list": [
@@ -4360,7 +4360,7 @@
         "datasource": "${DS_PROMETHEUS}",
         "hide": 0,
         "includeAll": false,
-        "label": "Rlease",
+        "label": "Release",
         "multi": false,
         "name": "Release",
         "options": [],
