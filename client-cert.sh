@@ -2,8 +2,8 @@
 VALIDITY=365
 STOREPASS=test1234
 KEYPASS=test1234
-ALIAS=internal
-DNAME="CN=internal"
+ALIAS=disallowed
+DNAME="CN=disallowed"
 CAPASS=test1234
 
 # Create client keystore and request 
