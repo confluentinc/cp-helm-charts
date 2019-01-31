@@ -48,7 +48,7 @@ You can use `helm status <release name>` to view all of the installed components
 
 For example:
 
-```console{%raw}
+```console
 $ helm status excited-lynx
 STATUS: DEPLOYED
 
@@ -112,11 +112,22 @@ The configuration parameters in this section control the resources requested and
 | `imagePullPolicy` | Docker Image Tag of Confluent KSQL Server. | `IfNotPresent` |
 | `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
 
+### KSQL Configuration
+ Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `configurationOverrides` | KSQL [configuration](https://docs.confluent.io/current/ksql/docs/installation/server-config/config-reference.html) overrides in the dictionary format | `{}` |
+
 ### Port
 
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `servicePort` | The port on which the KSQL Server will be available and serving requests. | `8088` |
+
+### KSQL JVM Heap Options
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `heapOptions` | The JVM Heap Options for KSQL | `"-Xms512M -Xmx512M"` |
 
 ### Resources
 

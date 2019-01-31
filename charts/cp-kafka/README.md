@@ -124,13 +124,14 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `podManagementPolicy` | The Kafka StatefulSet Pod Management Policy: `Parallel` or `OrderedReady`. | `OrderedReady` |
-| `updateStrategy` | The Kafka StatefulSet update strategy: `RollingUpdate` or `OnDelete`. | `OnDelete` |
+| `updateStrategy` | The Kafka StatefulSet update strategy: `RollingUpdate` or `OnDelete`. | `RollingUpdate` |
 
 ### Confluent Kafka Configuration
 
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `configurationOverrides` | Kafka [configuration](https://kafka.apache.org/documentation/#brokerconfigs) overrides in the dictionary format | `{}` |
+| `customEnv` | Custom environmental variables | `{}` |
 
 ### Persistence
 
@@ -139,12 +140,13 @@ The configuration parameters in this section control the resources requested and
 | `persistence.enabled` | Whether to create a PVC. If `false`, an `emptyDir` on the host will be used. | `true` |
 | `persistence.size` | Size for log dir, where Kafka will store log data. | `5Gi` |
 | `persistence.storageClass` | Valid options: `nil`, `"-"`, or storage class name. | `nil` |
+| `persistence.disksPerBroker` | The amount of disks that will be attached per instance of Kafka broker. | 1 |
 
 ### Kafka JVM Heap Options
 
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `heapOptions` | The JVM Heap Options for Kafka | `"-Xms1G -Xmx1G"` |
+| `heapOptions` | The JVM Heap Options for Kafka | `"-Xms512M -Xmx512M"` |
 
 ### Resources
 

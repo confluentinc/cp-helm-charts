@@ -104,6 +104,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `configurationOverrides` | Schema Registry [configuration](https://docs.confluent.io/current/schema-registry/docs/config.html) overrides in the dictionary format. | `{}` |
+| `customEnv` | Custom environmental variables | `{}` |
 
 ### Port
 
@@ -116,6 +117,12 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `kafka.bootstrapServers` | Bootstrap Servers for Schema Registry | `""` |
+
+### Confluent Schema Registry JVM Heap Options
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `heapOptions` | The JVM Heap Options for Confluent Schema Registry | `"-Xms512M -Xmx512M"` |
 
 ### Resources
 

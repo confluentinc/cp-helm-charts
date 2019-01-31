@@ -80,7 +80,8 @@ else use user-provided URL
 */}}
 {{- define "cp-kafka.cp-zookeeper.service-name" }}
 {{- if (index .Values "cp-zookeeper" "enabled") -}}
-{{- printf "%s-headless:2181" (include "cp-kafka.cp-zookeeper.fullname" .) }}
+{{- $clientPort := default 2181 (index .Values "cp-zookeeper" "clientPort") | int -}}
+{{- printf "%s:%d" (include "cp-kafka.cp-zookeeper.fullname" .) $clientPort }}
 {{- else -}}
 {{- $zookeeperConnect := printf "%s" (index .Values "cp-zookeeper" "url") }}
 {{- $zookeeperConnectOverride := (index .Values "configurationOverrides" "zookeeper.connect") }}
@@ -93,4 +94,27 @@ Return auth type for Client Certificate Authentication
 */}}
 {{- define "cp-kafka.ssl.client.auth.type" -}}
 {{- default .Values.ssl.client.auth .Values.global.kafka.ssl.client.auth "None" -}}
+{{- end -}}
+
+{{/*
+Form the Advertised Listeners. We will use the value of nodeport.firstListenerPort to create the
+external advertised listeners if configurationOverrides.advertised.listeners is not set.
+*/}}
+{{- define "cp-kafka.configuration.advertised.listeners" }}
+{{- if (index .Values "configurationOverrides" "advertised.listeners") -}}
+{{- printf ",%s" (first (pluck "advertised.listeners" .Values.configurationOverrides)) }}
+{{- else -}}
+{{- printf ",EXTERNAL://${HOST_IP}:$((%s + ${KAFKA_BROKER_ID}))" (.Values.nodeport.firstListenerPort | toString) }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Create a variable containing all the datadirs created.
+*/}}
+
+{{- define "cp-kafka.log.dirs" -}}
+{{- range $k, $e := until (.Values.persistence.disksPerBroker|int) -}}
+{{- if $k}}{{- printf ","}}{{end}}
+{{- printf "/opt/kafka/data-%d/logs" $k -}}
+{{- end -}}
 {{- end -}}
