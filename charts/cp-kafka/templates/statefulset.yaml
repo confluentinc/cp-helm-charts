@@ -175,6 +175,7 @@ spec:
         - name: ssl
           mountPath: "/etc/kafka/secrets"
         {{- end }}
+        {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
@@ -221,5 +222,5 @@ spec:
       storageClassName: "{{ $root.Values.persistence.storageClass }}"
       {{- end }}
       {{- end }}
-{{- end }}
-{{- end }}
+  {{- end }}
+  {{- end }}
