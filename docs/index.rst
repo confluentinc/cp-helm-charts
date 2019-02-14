@@ -104,7 +104,7 @@ Clone the Confluent Helm Chart repo
 
 .. code:: sh
 
-      > helm repo add confluent https://confluentinc.github.io/cp-helm-charts/
+      > helm repo add confluentinc https://confluentinc.github.io/cp-helm-charts/
     "confluentinc" has been added to your repositories
 
       > helm repo update
@@ -337,7 +337,7 @@ Exporter is installed as a sidecar container along with all Pods.
 2. Add Prometheus as Data Source in Grafana, url should be something
    like: ``http://illmannered-marmot-prometheus-server:9090``
 
-3. Import dashboard under `grafana-dashboard <grafana-dashboard>`__ into
+3. Import dashboard under `grafana-dashboard <https://github.com/confluentinc/cp-helm-charts/blob/master/grafana-dashboard/confluent-open-source-grafana-dashboard.json>`__ into
    Grafana |Kafka Dashboard|
 
    .. figure:: ../screenshots/zookeeper.png

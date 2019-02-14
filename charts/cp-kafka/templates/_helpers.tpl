@@ -46,8 +46,9 @@ else use user-provided URL
 */}}
 {{- define "cp-kafka.cp-zookeeper.service-name" }}
 {{- if (index .Values "cp-zookeeper" "enabled") -}}
+{{- $clientPort := default 2181 (index .Values "cp-zookeeper" "clientPort") | int -}}
 {{- $chroot := default "" .Values.zkChroot -}}
-{{- printf "%s-headless:2181%s" (include "cp-kafka.cp-zookeeper.fullname" .) $chroot }}
+{{- printf "%s-headless:%d%s" (include "cp-kafka.cp-zookeeper.fullname" .) $clientPort $chroot }}
 {{- else -}}
 {{- $zookeeperConnect := printf "%s" (index .Values "cp-zookeeper" "url") }}
 {{- $zookeeperConnectOverride := (index .Values "configurationOverrides" "zookeeper.connect") }}
