@@ -72,6 +72,12 @@ prometheus:
     ## See the `resources` documentation above for details.
     resources: {}
 
+    ## Custom rules for Prometheus Exporter. To add your own rules, remove [] after 'customRules'.
+    ## Example format:
+    ## - pattern : 'kafka.rest<type=jersey-metrics>([^:]+):'
+    ##   name: "cp_kafka_rest_jersey_metrics_$1"
+    customRules: []
+
 ## External Access
 ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer
 external:

@@ -84,6 +84,17 @@ prometheus:
     ## See the `resources` documentation above for details.
     resources: {}
 
+    ## Custom rules for Prometheus Exporter. To add your own rules, remove [] after 'customRules'.
+    ## Example format:
+    ## - pattern : "kafka.connect<type=connector-task-metrics, connector=([^:]+), task=([^:]+)><>status: ([^:]+)"
+    ##   name: "cp_kafka_connect_connect_connector_metrics"
+    ##   value: 1
+    ##   labels:
+    ##     connector: $1
+    ##     task: $2
+    ##     status: $3
+    customRules: []
+
 ## You can list load balanced service endpoint, or list of all brokers (which is hard in K8s).  e.g.:
 ## bootstrapServers: "PLAINTEXT://dozing-prawn-kafka-headless:9092"
 kafka:
