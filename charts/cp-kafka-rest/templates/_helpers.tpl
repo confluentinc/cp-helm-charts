@@ -48,7 +48,8 @@ else use user-provided URL
 {{- if (index .Values "cp-zookeeper" "url") -}}
 {{- printf "%s" (index .Values "cp-zookeeper" "url") }}
 {{- else -}}
-{{- printf "%s-headless:2181" (include "cp-kafka-rest.cp-zookeeper.fullname" .) }}
+{{- $clientPort := default 2181 (index .Values "cp-zookeeper" "clientPort") | int -}}
+{{- printf "%s-headless:%d" (include "cp-kafka-rest.cp-zookeeper.fullname" .) $clientPort }}
 {{- end -}}
 {{- end -}}
 
