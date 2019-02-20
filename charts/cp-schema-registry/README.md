@@ -95,7 +95,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `image` | Docker Image of Confluent Schema Registry. | `confluentinc/cp-schema-registry` |
-| `imageTag` | Docker Image Tag of Confluent Schema Registry. | `5.0.1` |
+| `imageTag` | Docker Image Tag of Confluent Schema Registry. | `5.1.2` |
 | `imagePullPolicy` | Docker Image Tag of Confluent Schema Registry. | `IfNotPresent` |
 | `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
 

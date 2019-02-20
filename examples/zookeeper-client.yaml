@@ -6,7 +6,7 @@ metadata:
 spec:
   containers:
   - name: zookeeper-client
-    image: confluentinc/cp-zookeeper:5.0.1
+    image: confluentinc/cp-zookeeper:5.1.2
     command:
       - sh
       - -c
