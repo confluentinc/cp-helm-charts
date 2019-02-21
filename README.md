@@ -7,8 +7,24 @@ The [Confluent Platform Helm charts](https://github.com/confluentinc/cp-helm-cha
 ## Installing Charts
 
 ```
-helm repo add confluentinc https://confluentinc.github.io/cp-helm-charts/
-helm repo update
+git clone git@github.com:ProjectDrgn/cp-helm-charts.git
+cd cp-helm-charts
+helm init --client-only
+rm cp-helm-charts-0.1.0.tgz
+
+echo '# manually added due to https://github.com/helm/helm/issues/3553
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kafka-cos
+' > tm-kafka-install.yaml
+
+helm package .
+helm template --name my-kafka-cos --namespace kafka-cos --values tm-values.yaml cp-helm-charts-0.1.0.tgz | sed 's/^metadata:/metadata:\'$'\n  namespace: kafka-cos/g' >> tm-kafka-install.yaml
+
+kubectl apply -f tm-kafka-install.yaml
+
+
 ```
 
 ## Documentation
