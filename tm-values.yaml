@@ -1,0 +1,199 @@
+## ------------------------------------------------------
+## Zookeeper
+## ------------------------------------------------------
+cp-zookeeper:
+  enabled: true
+  servers: 5
+  image: confluentinc/cp-zookeeper
+  imageTag: 5.1.2
+  ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
+  ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+  imagePullSecrets:
+  #  - name: "regcred"
+  heapOptions: "-Xms512M -Xmx512M"
+  persistence:
+    enabled: true
+    ## The size of the PersistentVolume to allocate to each Zookeeper Pod in the StatefulSet. For
+    ## production servers this number should likely be much larger.
+    ##
+    ## Size for Data dir, where ZooKeeper will store the in-memory database snapshots.
+    dataDirSize: 10Gi
+    # dataDirStorageClass: ""
+
+    ## Size for data log dir, which is a dedicated log device to be used, and helps avoid competition between logging and snaphots.
+    dataLogDirSize: 10Gi
+    # dataLogDirStorageClass: ""
+  resources: {}
+  tolerations:
+  - effect: "NoSchedule"
+    key: "kafka"
+    operator: "Equal"
+    value: "tm-only"
+  ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
+  ## and remove the curly braces after 'resources:'
+  #  limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+## ------------------------------------------------------
+## Kafka
+## ------------------------------------------------------
+cp-kafka:
+  enabled: true
+  brokers: 5
+  image: confluentinc/cp-kafka
+  imageTag: 5.1.2
+  ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
+  ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+  imagePullSecrets:
+  #  - name: "regcred"
+  heapOptions: "-Xms512M -Xmx512M"
+  persistence:
+    enabled: true
+    # storageClass: ""
+    size: 100Gi
+    disksPerBroker: 1
+  configurationOverrides:
+    # "default.replication.factor": 3
+    # "min.insync.replicas": 2
+    # "auto.create.topics.enable": false
+
+    ## Options required for external access via NodePort
+    ## ref:
+    ## - http://kafka.apache.org/documentation/#security_configbroker
+    ## - https://cwiki.apache.org/confluence/display/KAFKA/KIP-103%3A+Separation+of+Internal+and+External+traffic
+    ##
+    ## Advertised listeners will use the firstListenerPort value as it's default unless overridden here.
+    ## Setting "advertised.listeners" here appends to "PLAINTEXT://${POD_IP}:9092,"
+    ## use 32090 - 32094 range for NODE_PORT Advertised
+    "advertised.listeners": |-
+      EXTERNAL://${HOST_IP}:$((32090 + ${KAFKA_BROKER_ID}))
+  nodeport:
+    enabled: true
+    servicePort: 19092
+    firstListenerPort: 32090
+  tolerations:
+  - effect: "NoSchedule"
+    key: "kafka"
+    operator: "Equal"
+    value: "tm-only"
+  internal:
+    enabled: true
+    type: LoadBalancer
+    externalTrafficPolicy: Cluster
+    port: 9092
+    annotations:
+      cloud.google.com/load-balancer-type: internal
+  resources: {}
+  ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
+  ## and remove the curly braces after 'resources:'
+  #  limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  requests:
+    cpu: 200m
+    memory: 512Mi
+
+## ------------------------------------------------------
+## Schema Registry
+## ------------------------------------------------------
+cp-schema-registry:
+  enabled: true
+  image: confluentinc/cp-schema-registry
+  imageTag: 5.1.2
+  ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
+  ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+  imagePullSecrets:
+  #  - name: "regcred"
+  heapOptions: "-Xms512M -Xmx512M"
+  resources: {}
+  tolerations:
+  - effect: "NoSchedule"
+    key: "kafka"
+    operator: "Equal"
+    value: "tm-only"
+  ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
+  ## and remove the curly braces after 'resources:'
+  #  limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+## ------------------------------------------------------
+## REST Proxy
+## ------------------------------------------------------
+cp-kafka-rest:
+  enabled: true
+  image: confluentinc/cp-kafka-rest
+  imageTag: 5.1.2
+  ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
+  ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+  imagePullSecrets:
+  #  - name: "regcred"
+  heapOptions: "-Xms512M -Xmx512M"
+  resources: {}
+  tolerations:
+  - effect: "NoSchedule"
+    key: "kafka"
+    operator: "Equal"
+    value: "tm-only"
+  ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
+  ## and remove the curly braces after 'resources:'
+  #  limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+## ------------------------------------------------------
+## Kafka Connect
+## ------------------------------------------------------
+cp-kafka-connect:
+  enabled: true
+  image: confluentinc/cp-kafka-connect
+  imageTag: 5.1.2
+  ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
+  ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+  imagePullSecrets:
+  #  - name: "regcred"
+  heapOptions: "-Xms512M -Xmx512M"
+  resources: {}
+  tolerations:
+  - effect: "NoSchedule"
+    key: "kafka"
+    operator: "Equal"
+    value: "tm-only"
+  ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
+  ## and remove the curly braces after 'resources:'
+  #  limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+## ------------------------------------------------------
+## KSQL Server
+## ------------------------------------------------------
+cp-ksql-server:
+  enabled: false
+  image: confluentinc/cp-ksql-server
+  imageTag: 5.1.2
+  ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
+  ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
+  imagePullSecrets:
+  #  - name: "regcred"
+  heapOptions: "-Xms512M -Xmx512M"
+  tolerations:
+  - effect: "NoSchedule"
+    key: "kafka"
+    operator: "Equal"
+    value: "tm-only"
+  ksql:
+    headless: false

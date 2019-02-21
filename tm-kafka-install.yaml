@@ -1,0 +1,1070 @@
+---
+# Source: cp-helm-charts/charts/cp-zookeeper/templates/poddisruptionbudget.yaml
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-cp-zookeeper-pdb
+  labels:
+    app: cp-zookeeper
+    chart: cp-zookeeper-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+spec:
+  selector:
+    matchLabels:
+      app: cp-zookeeper
+      release: my-kafka-cos
+  maxUnavailable: 1
+
+---
+# Source: cp-helm-charts/charts/cp-kafka-connect/templates/jmx-configmap.yaml
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-cp-kafka-connect-jmx-configmap
+  labels:
+    app: cp-kafka-connect
+    chart: cp-kafka-connect-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+data:
+  jmx-kafka-connect-prometheus.yml: |+
+    jmxUrl: service:jmx:rmi:///jndi/rmi://localhost:5555/jmxrmi
+    lowercaseOutputName: true
+    lowercaseOutputLabelNames: true
+    ssl: false
+    rules:
+    - pattern : "kafka.connect<type=connect-worker-metrics>([^:]+):"
+      name: "cp_kafka_connect_connect_worker_metrics_$1"
+    - pattern : "kafka.connect<type=connect-metrics, client-id=([^:]+)><>([^:]+)"
+      name: "cp_kafka_connect_connect_metrics_$1_$2"
+    - pattern : "kafka.connect<type=connector-task-metrics, connector=([^:]+), task=([^:]+)><>status: ([^:]+)"
+      name: "cp_kafka_connect_connect_connector_metrics"
+      value: 1
+      labels:
+        connector: $1
+        task: $2
+        status: $3
+
+---
+# Source: cp-helm-charts/charts/cp-kafka-rest/templates/jmx-configmap.yaml
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-cp-kafka-rest-jmx-configmap
+  labels:
+    app: cp-kafka-rest
+    chart: cp-kafka-rest-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+data:
+  jmx-kafka-rest-prometheus.yml: |+
+    jmxUrl: service:jmx:rmi:///jndi/rmi://localhost:5555/jmxrmi
+    lowercaseOutputName: true
+    lowercaseOutputLabelNames: true
+    ssl: false
+    rules:
+    - pattern : 'kafka.rest<type=jetty-metrics>([^:]+):'
+      name: "cp_kafka_rest_jetty_metrics_$1"
+    - pattern : 'kafka.rest<type=jersey-metrics>([^:]+):'
+      name: "cp_kafka_rest_jersey_metrics_$1"
+---
+# Source: cp-helm-charts/charts/cp-kafka/templates/jmx-configmap.yaml
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-cp-kafka-jmx-configmap
+  labels:
+    app: cp-kafka
+    chart: cp-kafka-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+data:
+  jmx-kafka-prometheus.yml: |+
+    jmxUrl: service:jmx:rmi:///jndi/rmi://localhost:5555/jmxrmi
+    lowercaseOutputName: true
+    lowercaseOutputLabelNames: true
+    ssl: false
+    rules:
+    - pattern : kafka.server<type=ReplicaManager, name=(.+)><>(Value|OneMinuteRate)
+      name: "cp_kafka_server_replicamanager_$1"
+    - pattern : kafka.controller<type=KafkaController, name=(.+)><>Value
+      name: "cp_kafka_controller_kafkacontroller_$1"
+    - pattern : kafka.server<type=BrokerTopicMetrics, name=(.+)><>OneMinuteRate
+      name: "cp_kafka_server_brokertopicmetrics_$1"
+    - pattern : kafka.network<type=RequestMetrics, name=RequestsPerSec, request=(.+)><>OneMinuteRate
+      name: "cp_kafka_network_requestmetrics_requestspersec_$1"
+    - pattern : kafka.network<type=SocketServer, name=NetworkProcessorAvgIdlePercent><>Value
+      name: "cp_kafka_network_socketserver_networkprocessoravgidlepercent"
+    - pattern : kafka.server<type=ReplicaFetcherManager, name=MaxLag, clientId=(.+)><>Value
+      name: "cp_kafka_server_replicafetchermanager_maxlag_$1"
+    - pattern : kafka.server<type=KafkaRequestHandlerPool, name=RequestHandlerAvgIdlePercent><>OneMinuteRate
+      name: "cp_kafka_kafkarequesthandlerpool_requesthandleravgidlepercent"
+    - pattern : kafka.controller<type=ControllerStats, name=(.+)><>OneMinuteRate
+      name: "cp_kafka_controller_controllerstats_$1"
+    - pattern : kafka.server<type=SessionExpireListener, name=(.+)><>OneMinuteRate
+      name: "cp_kafka_server_sessionexpirelistener_$1"
+---
+# Source: cp-helm-charts/charts/cp-schema-registry/templates/jmx-configmap.yaml
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-cp-schema-registry-jmx-configmap
+  labels:
+    app: cp-schema-registry
+    chart: cp-schema-registry-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+data:
+  jmx-schema-registry-prometheus.yml: |+
+    jmxUrl: service:jmx:rmi:///jndi/rmi://localhost:5555/jmxrmi
+    lowercaseOutputName: true
+    lowercaseOutputLabelNames: true
+    ssl: false
+    rules:
+    - pattern : 'kafka.schema.registry<type=jetty-metrics>([^:]+):'
+      name: "cp_kafka_schema_registry_jetty_metrics_$1"
+    - pattern : 'kafka.schema.registry<type=master-slave-role>([^:]+):'
+      name: "cp_kafka_schema_registry_master_slave_role"
+    - pattern : 'kafka.schema.registry<type=jersey-metrics>([^:]+):'
+      name: "cp_kafka_schema_registry_jersey_metrics_$1"
+---
+# Source: cp-helm-charts/charts/cp-zookeeper/templates/jmx-configmap.yaml
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-cp-zookeeper-jmx-configmap
+  labels:
+    app: cp-zookeeper
+    chart: cp-zookeeper-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+data:
+  jmx-zookeeper-prometheus.yml: |+
+    jmxUrl: service:jmx:rmi:///jndi/rmi://localhost:5555/jmxrmi
+    lowercaseOutputName: true
+    lowercaseOutputLabelNames: true
+    ssl: false
+    rules:
+    - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+)><>(\\w+)"
+      name: "cp_zookeeper_$2"
+    - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+), name1=replica.(\\d+)><>(\\w+)"
+      name: "cp_zookeeper_$3"
+      labels:
+        replicaId: "$2"
+    - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+), name1=replica.(\\d+), name2=(\\w+)><>(\\w+)"
+      name: "cp_zookeeper_$4"
+      labels:
+        replicaId: "$2"
+        memberType: "$3"
+    - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+), name1=replica.(\\d+), name2=(\\w+), name3=(\\w+)><>(\\w+)"
+      name: "cp_zookeeper_$4_$5"
+      labels:
+        replicaId: "$2"
+        memberType: "$3"
+---
+# Source: cp-helm-charts/charts/cp-kafka-connect/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-cp-kafka-connect
+  labels:
+    app: cp-kafka-connect
+    chart: cp-kafka-connect-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+spec:
+  ports:
+    - name: kafka-connect
+      port: 8083
+  selector:
+    app: cp-kafka-connect
+    release: my-kafka-cos
+
+---
+# Source: cp-helm-charts/charts/cp-kafka-rest/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-cp-kafka-rest
+  labels:
+    app: cp-kafka-rest
+    chart: cp-kafka-rest-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+spec:
+  ports:
+    - name: rest-proxy
+      port: 8082
+  selector:
+    app: cp-kafka-rest
+    release: my-kafka-cos
+
+---
+# Source: cp-helm-charts/charts/cp-kafka/templates/headless-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-cp-kafka-headless
+  labels:
+    app: cp-kafka
+    chart: cp-kafka-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+spec:
+  ports:
+    - port: 9092
+      name: broker
+  clusterIP: None
+  selector:
+    app: cp-kafka
+    release: my-kafka-cos
+---
+# Source: cp-helm-charts/charts/cp-kafka/templates/internal-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-cp-kafka-internal-lb
+  annotations:
+    cloud.google.com/load-balancer-type: "internal"
+  labels:
+    app: cp-kafka
+    chart: cp-kafka-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Cluster
+  ports:
+    - name: broker
+      port: 9092
+      targetPort: 9092
+  selector:
+    app: cp-kafka
+    release: my-kafka-cos
+---
+# Source: cp-helm-charts/charts/cp-kafka/templates/nodeport-service.yaml
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-0-nodeport
+  labels:
+    app: cp-kafka
+    chart: cp-kafka-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+    pod: my-kafka-cos-cp-kafka-0
+spec:
+  type: NodePort
+  ports:
+    - name: external-broker
+      port: 19092
+      targetPort: 32090
+      nodePort: 32090
+      protocol: TCP
+  selector:
+    app: cp-kafka
+    release: my-kafka-cos
+    statefulset.kubernetes.io/pod-name: "my-kafka-cos-cp-kafka-0"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-1-nodeport
+  labels:
+    app: cp-kafka
+    chart: cp-kafka-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+    pod: my-kafka-cos-cp-kafka-1
+spec:
+  type: NodePort
+  ports:
+    - name: external-broker
+      port: 19092
+      targetPort: 32091
+      nodePort: 32091
+      protocol: TCP
+  selector:
+    app: cp-kafka
+    release: my-kafka-cos
+    statefulset.kubernetes.io/pod-name: "my-kafka-cos-cp-kafka-1"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-2-nodeport
+  labels:
+    app: cp-kafka
+    chart: cp-kafka-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+    pod: my-kafka-cos-cp-kafka-2
+spec:
+  type: NodePort
+  ports:
+    - name: external-broker
+      port: 19092
+      targetPort: 32092
+      nodePort: 32092
+      protocol: TCP
+  selector:
+    app: cp-kafka
+    release: my-kafka-cos
+    statefulset.kubernetes.io/pod-name: "my-kafka-cos-cp-kafka-2"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-3-nodeport
+  labels:
+    app: cp-kafka
+    chart: cp-kafka-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+    pod: my-kafka-cos-cp-kafka-3
+spec:
+  type: NodePort
+  ports:
+    - name: external-broker
+      port: 19092
+      targetPort: 32093
+      nodePort: 32093
+      protocol: TCP
+  selector:
+    app: cp-kafka
+    release: my-kafka-cos
+    statefulset.kubernetes.io/pod-name: "my-kafka-cos-cp-kafka-3"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-4-nodeport
+  labels:
+    app: cp-kafka
+    chart: cp-kafka-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+    pod: my-kafka-cos-cp-kafka-4
+spec:
+  type: NodePort
+  ports:
+    - name: external-broker
+      port: 19092
+      targetPort: 32094
+      nodePort: 32094
+      protocol: TCP
+  selector:
+    app: cp-kafka
+    release: my-kafka-cos
+    statefulset.kubernetes.io/pod-name: "my-kafka-cos-cp-kafka-4"
+---
+# Source: cp-helm-charts/charts/cp-kafka/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-cp-kafka
+  labels:
+    app: cp-kafka
+    chart: cp-kafka-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+spec:
+  ports:
+    - port: 9092
+      name: broker
+  selector:
+    app: cp-kafka
+    release: my-kafka-cos
+---
+# Source: cp-helm-charts/charts/cp-schema-registry/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-cp-schema-registry
+  labels:
+    app: cp-schema-registry
+    chart: cp-schema-registry-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+spec:
+  ports:
+    - name: schema-registry
+      port: 8081
+  selector:
+    app: cp-schema-registry
+    release: my-kafka-cos
+
+---
+# Source: cp-helm-charts/charts/cp-zookeeper/templates/headless-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-cp-zookeeper-headless
+  labels:
+    app: cp-zookeeper
+    chart: cp-zookeeper-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+spec:
+  ports:
+    - port: 2888
+      name: server
+    - port: 3888
+      name: leader-election
+  clusterIP: None
+  selector:
+    app: cp-zookeeper
+    release: my-kafka-cos
+---
+# Source: cp-helm-charts/charts/cp-zookeeper/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-cp-zookeeper
+  labels:
+    app: cp-zookeeper
+    chart: cp-zookeeper-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+spec:
+  type: 
+  ports:
+    - port: 2181
+      name: client
+  selector:
+    app: cp-zookeeper
+    release: my-kafka-cos
+---
+# Source: cp-helm-charts/charts/cp-kafka/templates/tests/canary-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: kafka-cos
+  name: "my-kafka-cos-canary"
+  annotations:
+    "helm.sh/hook": test-success
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
+spec:
+  containers:
+  - name: my-kafka-cos-canary
+    image: "confluentinc/cp-kafka:5.1.2"
+    imagePullPolicy: "IfNotPresent"
+    command:
+    - sh
+    - -c
+    - |
+      # Delete the topic if it exists
+      kafka-topics --zookeeper my-kafka-cos-cp-zookeeper-headless:2181 --topic my-kafka-cos-cp-kafka-canary-topic --delete --if-exists
+      # Create the topic
+      kafka-topics --zookeeper my-kafka-cos-cp-zookeeper-headless:2181 --topic my-kafka-cos-cp-kafka-canary-topic --create --partitions 1 --replication-factor 1 --if-not-exists && \
+      # Create a message
+      MESSAGE="`date -u`" && \
+      # Produce a test message to the topic
+      echo "$MESSAGE" | kafka-console-producer --broker-list my-kafka-cos-cp-kafka:9092 --topic my-kafka-cos-cp-kafka-canary-topic && \
+      # Consume a test message from the topic
+      kafka-console-consumer --bootstrap-server my-kafka-cos-cp-kafka-headless:9092 --topic my-kafka-cos-cp-kafka-canary-topic --from-beginning --timeout-ms 2000 | grep "$MESSAGE"
+  restartPolicy: Never
+---
+# Source: cp-helm-charts/charts/cp-kafka-connect/templates/deployment.yaml
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-cp-kafka-connect
+  labels:
+    app: cp-kafka-connect
+    chart: cp-kafka-connect-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cp-kafka-connect
+      release: my-kafka-cos
+  template:
+    metadata:
+      labels:
+        app: cp-kafka-connect
+        release: my-kafka-cos
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "5556"
+    spec:
+      containers:
+        - name: prometheus-jmx-exporter
+          image: "solsson/kafka-prometheus-jmx-exporter@sha256:6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143"
+          command:
+          - java
+          - -XX:+UnlockExperimentalVMOptions
+          - -XX:+UseCGroupMemoryLimitForHeap
+          - -XX:MaxRAMFraction=1
+          - -XshowSettings:vm
+          - -jar
+          - jmx_prometheus_httpserver.jar
+          - "5556"
+          - /etc/jmx-kafka-connect/jmx-kafka-connect-prometheus.yml
+          ports:
+          - containerPort: 5556
+          resources:
+            {}
+            
+          volumeMounts:
+          - name: jmx-config
+            mountPath: /etc/jmx-kafka-connect
+        - name: cp-kafka-connect-server
+          image: "confluentinc/cp-kafka-connect:5.1.2"
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - name: kafka-connect
+              containerPort: 8083
+              protocol: TCP
+            - containerPort: 5555
+              name: jmx
+          resources:
+            {}
+            
+          env:
+            - name: CONNECT_REST_ADVERTISED_HOST_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: CONNECT_BOOTSTRAP_SERVERS
+              value: PLAINTEXT://my-kafka-cos-cp-kafka-headless:9092
+            - name: CONNECT_GROUP_ID
+              value: my-kafka-cos
+            - name: CONNECT_CONFIG_STORAGE_TOPIC
+              value: my-kafka-cos-cp-kafka-connect-config
+            - name: CONNECT_OFFSET_STORAGE_TOPIC
+              value: my-kafka-cos-cp-kafka-connect-offset
+            - name: CONNECT_STATUS_STORAGE_TOPIC
+              value: my-kafka-cos-cp-kafka-connect-status
+            - name: CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL
+              value: http://my-kafka-cos-cp-schema-registry:8081
+            - name: CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL
+              value: http://my-kafka-cos-cp-schema-registry:8081
+            - name: KAFKA_HEAP_OPTS
+              value: "-Xms512M -Xmx512M"
+            - name: "CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR"
+              value: "3"
+            - name: "CONNECT_INTERNAL_KEY_CONVERTER"
+              value: "org.apache.kafka.connect.json.JsonConverter"
+            - name: "CONNECT_INTERNAL_VALUE_CONVERTER"
+              value: "org.apache.kafka.connect.json.JsonConverter"
+            - name: "CONNECT_KEY_CONVERTER"
+              value: "io.confluent.connect.avro.AvroConverter"
+            - name: "CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE"
+              value: "false"
+            - name: "CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR"
+              value: "3"
+            - name: "CONNECT_PLUGIN_PATH"
+              value: "/usr/share/java"
+            - name: "CONNECT_STATUS_STORAGE_REPLICATION_FACTOR"
+              value: "3"
+            - name: "CONNECT_VALUE_CONVERTER"
+              value: "io.confluent.connect.avro.AvroConverter"
+            - name: "CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE"
+              value: "false"
+            - name: KAFKA_JMX_PORT
+              value: "5555"
+      volumes:
+      - name: jmx-config
+        configMap:
+          name: my-kafka-cos-cp-kafka-connect-jmx-configmap
+      tolerations:
+        - effect: NoSchedule
+          key: kafka
+          operator: Equal
+          value: tm-only
+        
+
+---
+# Source: cp-helm-charts/charts/cp-kafka-rest/templates/deployment.yaml
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-cp-kafka-rest
+  labels:
+    app: cp-kafka-rest
+    chart: cp-kafka-rest-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cp-kafka-rest
+      release: my-kafka-cos
+  template:
+    metadata:
+      labels:
+        app: cp-kafka-rest
+        release: my-kafka-cos
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "5556"
+    spec:
+      containers:
+        - name: prometheus-jmx-exporter
+          image: "solsson/kafka-prometheus-jmx-exporter@sha256:6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143"
+          command:
+          - java
+          - -XX:+UnlockExperimentalVMOptions
+          - -XX:+UseCGroupMemoryLimitForHeap
+          - -XX:MaxRAMFraction=1
+          - -XshowSettings:vm
+          - -jar
+          - jmx_prometheus_httpserver.jar
+          - "5556"
+          - /etc/jmx-kafka-rest/jmx-kafka-rest-prometheus.yml
+          ports:
+          - containerPort: 5556
+          resources:
+            {}
+            
+          volumeMounts:
+          - name: jmx-config
+            mountPath: /etc/jmx-kafka-rest
+        - name: cp-kafka-rest-server
+          image: "confluentinc/cp-kafka-rest:5.1.2"
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - name: rest-proxy
+              containerPort: 8082
+              protocol: TCP
+            - containerPort: 5555
+              name: jmx
+          resources:
+            {}
+            
+          env:
+          - name: KAFKA_REST_HOST_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: KAFKA_REST_ZOOKEEPER_CONNECT
+            value: my-kafka-cos-cp-zookeeper-headless:2181
+          - name: KAFKA_REST_SCHEMA_REGISTRY_URL
+            value: http://my-kafka-cos-cp-schema-registry:8081
+          - name: KAFKAREST_HEAP_OPTS
+            value: "-Xms512M -Xmx512M"
+          - name: KAFKA_REST_JMX_PORT
+            value: "5555"
+      volumes:
+      - name: jmx-config
+        configMap:
+          name: my-kafka-cos-cp-kafka-rest-jmx-configmap
+      tolerations:
+        - effect: NoSchedule
+          key: kafka
+          operator: Equal
+          value: tm-only
+        
+
+---
+# Source: cp-helm-charts/charts/cp-schema-registry/templates/deployment.yaml
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-cp-schema-registry
+  labels:
+    app: cp-schema-registry
+    chart: cp-schema-registry-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cp-schema-registry
+      release: my-kafka-cos
+  template:
+    metadata:
+      labels:
+        app: cp-schema-registry
+        release: my-kafka-cos
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "5556"
+    spec:
+      containers:
+        - name: prometheus-jmx-exporter
+          image: "solsson/kafka-prometheus-jmx-exporter@sha256:6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143"
+          command:
+          - java
+          - -XX:+UnlockExperimentalVMOptions
+          - -XX:+UseCGroupMemoryLimitForHeap
+          - -XX:MaxRAMFraction=1
+          - -XshowSettings:vm
+          - -jar
+          - jmx_prometheus_httpserver.jar
+          - "5556"
+          - /etc/jmx-schema-registry/jmx-schema-registry-prometheus.yml
+          ports:
+          - containerPort: 5556
+          resources:
+            {}
+            
+          volumeMounts:
+          - name: jmx-config
+            mountPath: /etc/jmx-schema-registry
+        - name: cp-schema-registry-server
+          image: "confluentinc/cp-schema-registry:5.1.2"
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - name: schema-registry
+              containerPort: 8081
+              protocol: TCP
+            - containerPort: 5555
+              name: jmx
+          resources:
+            {}
+            
+          env:
+          - name: SCHEMA_REGISTRY_HOST_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: SCHEMA_REGISTRY_LISTENERS
+            value: http://0.0.0.0:8081
+          - name: SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS
+            value: PLAINTEXT://my-kafka-cos-cp-kafka-headless:9092
+          - name: SCHEMA_REGISTRY_KAFKASTORE_GROUP_ID
+            value: my-kafka-cos
+          - name: SCHEMA_REGISTRY_MASTER_ELIGIBILITY
+            value: "true"
+          - name: SCHEMA_REGISTRY_HEAP_OPTS
+            value: "-Xms512M -Xmx512M"
+          
+          - name: JMX_PORT
+            value: "5555"
+      volumes:
+      - name: jmx-config
+        configMap:
+          name: my-kafka-cos-cp-schema-registry-jmx-configmap
+      tolerations:
+        - effect: NoSchedule
+          key: kafka
+          operator: Equal
+          value: tm-only
+        
+
+---
+# Source: cp-helm-charts/charts/cp-kafka/templates/statefulset.yaml
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-cp-kafka
+  labels:
+    app: cp-kafka
+    chart: cp-kafka-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+spec:
+  serviceName: my-kafka-cos-cp-kafka-headless
+  podManagementPolicy: OrderedReady
+  replicas: 5
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: cp-kafka
+        release: my-kafka-cos
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "5556"
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                    - cp-kafka
+                  - key: "release"
+                    operator: In
+                    values:
+                    - my-kafka-cos
+              topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: prometheus-jmx-exporter
+        image: "solsson/kafka-prometheus-jmx-exporter@sha256:6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143"
+        command:
+        - java
+        - -XX:+UnlockExperimentalVMOptions
+        - -XX:+UseCGroupMemoryLimitForHeap
+        - -XX:MaxRAMFraction=1
+        - -XshowSettings:vm
+        - -jar
+        - jmx_prometheus_httpserver.jar
+        - "5556"
+        - /etc/jmx-kafka/jmx-kafka-prometheus.yml
+        ports:
+        - containerPort: 5556
+        resources:
+          {}
+          
+        volumeMounts:
+        - name: jmx-config
+          mountPath: /etc/jmx-kafka
+      - name: cp-kafka-broker
+        image: "confluentinc/cp-kafka:5.1.2"
+        imagePullPolicy: "IfNotPresent"
+        ports:
+        - containerPort: 9092
+          name: kafka
+        - containerPort: 5555
+          name: jmx
+        - containerPort: 32090
+          name: nodeport-0
+        - containerPort: 32091
+          name: nodeport-1
+        - containerPort: 32092
+          name: nodeport-2
+        - containerPort: 32093
+          name: nodeport-3
+        - containerPort: 32094
+          name: nodeport-4
+        resources:
+          {}
+          
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: HOST_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: KAFKA_HEAP_OPTS
+          value: -Xms512M -Xmx512M
+        - name: KAFKA_ZOOKEEPER_CONNECT
+          value: "my-kafka-cos-cp-zookeeper-headless:2181"
+        - name: KAFKA_LOG_DIRS
+          value: "/opt/kafka/data-0/logs"
+        - name: "KAFKA_ADVERTISED_LISTENERS"
+          value: "EXTERNAL://${HOST_IP}:$((32090 + ${KAFKA_BROKER_ID}))"
+        - name: "KAFKA_LISTENER_SECURITY_PROTOCOL_MAP"
+          value: "PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT"
+        - name: "KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR"
+          value: "3"
+        - name: KAFKA_JMX_PORT
+          value: "5555"
+        # This is required because the Downward API does not yet support identification of
+        # pod numbering in statefulsets. Thus, we are required to specify a command which
+        # allows us to extract the pod ID for usage as the Kafka Broker ID.
+        # See: https://github.com/kubernetes/kubernetes/issues/31218
+        command:
+        - sh
+        - -exc
+        - |
+          export KAFKA_BROKER_ID=${HOSTNAME##*-} && \
+          export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_IP}:9092,EXTERNAL://${HOST_IP}:$((32090 + ${KAFKA_BROKER_ID})) && \
+          exec /etc/confluent/docker/run
+        volumeMounts:
+        - name: datadir-0
+          mountPath: /opt/kafka/data-0
+      volumes:
+      - name: jmx-config
+        configMap:
+          name: my-kafka-cos-cp-kafka-jmx-configmap
+      tolerations:
+        - effect: NoSchedule
+          key: kafka
+          operator: Equal
+          value: tm-only
+        
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir-0
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: "100Gi"
+
+---
+# Source: cp-helm-charts/charts/cp-zookeeper/templates/statefulset.yaml
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  namespace: kafka-cos
+  name: my-kafka-cos-cp-zookeeper
+  labels:
+    app: cp-zookeeper
+    chart: cp-zookeeper-0.1.0
+    release: my-kafka-cos
+    heritage: Tiller
+spec:
+  serviceName: my-kafka-cos-cp-zookeeper-headless
+  podManagementPolicy: OrderedReady
+  replicas: 5
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: cp-zookeeper
+        release: my-kafka-cos
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "5556"
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                  - key: "app"
+                    operator: In
+                    values:
+                    - cp-zookeeper
+                  - key: "release"
+                    operator: In
+                    values:
+                    - my-kafka-cos
+              topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: prometheus-jmx-exporter
+        image: "solsson/kafka-prometheus-jmx-exporter@sha256:6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143"
+        command:
+        - java
+        - -XX:+UnlockExperimentalVMOptions
+        - -XX:+UseCGroupMemoryLimitForHeap
+        - -XX:MaxRAMFraction=1
+        - -XshowSettings:vm
+        - -jar
+        - jmx_prometheus_httpserver.jar
+        - "5556"
+        - /etc/jmx-zookeeper/jmx-zookeeper-prometheus.yml
+        ports:
+        - containerPort: 5556
+        resources:
+          {}
+          
+        volumeMounts:
+        - name: jmx-config
+          mountPath: /etc/jmx-zookeeper
+      - name: cp-zookeeper-server
+        image: "confluentinc/cp-zookeeper:5.1.2"
+        imagePullPolicy: "IfNotPresent"
+        ports:
+        - containerPort: 2181
+          name: client
+        - containerPort: 2888
+          name: server
+        - containerPort: 3888
+          name: leader-election
+        - containerPort: 5555
+          name: jmx
+        resources:
+          {}
+          
+        env:
+        - name : KAFKA_HEAP_OPTS
+          value: "-Xms512M -Xmx512M"
+        - name : KAFKA_JMX_PORT
+          value: "5555"
+        - name : ZOOKEEPER_TICK_TIME
+          value: "2000"
+        - name : ZOOKEEPER_SYNC_LIMIT
+          value: "5"
+        - name : ZOOKEEPER_INIT_LIMIT
+          value: "10"
+        - name : ZOOKEEPER_MAX_CLIENT_CNXNS
+          value: "60"
+        - name : ZOOKEEPER_AUTOPURGE_SNAP_RETAIN_COUNT
+          value: "3"
+        - name : ZOOKEEPER_AUTOPURGE_PURGE_INTERVAL
+          value: "24"
+        - name: ZOOKEEPER_CLIENT_PORT
+          value: "2181"
+        - name : ZOOKEEPER_SERVERS
+          value: "my-kafka-cos-cp-zookeeper-0.my-kafka-cos-cp-zookeeper-headless.kafka-cos:2888:3888;my-kafka-cos-cp-zookeeper-1.my-kafka-cos-cp-zookeeper-headless.kafka-cos:2888:3888;my-kafka-cos-cp-zookeeper-2.my-kafka-cos-cp-zookeeper-headless.kafka-cos:2888:3888;my-kafka-cos-cp-zookeeper-3.my-kafka-cos-cp-zookeeper-headless.kafka-cos:2888:3888;my-kafka-cos-cp-zookeeper-4.my-kafka-cos-cp-zookeeper-headless.kafka-cos:2888:3888"
+        # ZOOKEEPER_SERVER_ID is required just to pass cp-zookeeper ensure script for env check,
+        # the value(metadata.mame) is not used and will be overwritten in command part
+        - name: ZOOKEEPER_SERVER_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        command:
+        - "bash"
+        - "-c"
+        - |
+          ZK_FIX_HOST_REGEX="s/${HOSTNAME}\.[^:]*:/0.0.0.0:/g"
+          ZOOKEEPER_SERVER_ID=$((${HOSTNAME##*-}+1)) \
+          ZOOKEEPER_SERVERS=`echo $ZOOKEEPER_SERVERS | sed -e "$ZK_FIX_HOST_REGEX"` \
+          /etc/confluent/docker/run
+        volumeMounts:
+        - name: datadir
+          mountPath: /var/lib/zookeeper/data
+        - name: datalogdir
+          mountPath: /var/lib/zookeeper/log
+      volumes:
+      
+      - name: jmx-config
+        configMap:
+          name: my-kafka-cos-cp-zookeeper-jmx-configmap
+      tolerations:
+        - effect: NoSchedule
+          key: kafka
+          operator: Equal
+          value: tm-only
+        
+  volumeClaimTemplates:
+  - metadata:
+      name: datadir
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: "10Gi"
+  - metadata:
+      name: datalogdir
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: "10Gi"
+
+---
+# Source: cp-helm-charts/charts/cp-kafka-rest/templates/external-service.yaml
+

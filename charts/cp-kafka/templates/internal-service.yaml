@@ -1,0 +1,27 @@
+{{- if .Values.internal.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "cp-kafka.fullname" . }}-internal-lb
+  {{- if .Values.internal.annotations }}
+  annotations:
+  {{- range $key, $value := .Values.internal.annotations }}
+    {{ $key }}: "{{ $value }}"
+  {{- end }}
+  {{- end }}
+  labels:
+    app: {{ template "cp-kafka.name" . }}
+    chart: {{ template "cp-kafka.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.internal.type }}
+  externalTrafficPolicy: Cluster
+  ports:
+    - name: broker
+      port: {{ .Values.internal.port }}
+      targetPort: 9092
+  selector:
+    app: {{ template "cp-kafka.name" . }}
+    release: {{ .Release.Name }}
+{{- end -}}
