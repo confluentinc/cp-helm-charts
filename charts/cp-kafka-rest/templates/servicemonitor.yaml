@@ -23,4 +23,6 @@ spec:
   endpoints:
     - port: metrics
       interval: {{ .Values.prometheus.jmx.serviceMonitor.interval }}
+  targetLabels:
+    - release
 {{- end }}
