@@ -1,0 +1,20 @@
+{{- if and .Values.prometheus.jmx.enabled .Values.prometheus.jmx.serviceMonitor }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "cp-kafka.fullname" . }}-metrics
+  labels:
+    app: {{ template "cp-kafka.name" . }}
+    chart: {{ template "cp-kafka.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    component: metrics
+spec:
+  ports:
+    - port: {{ .Values.prometheus.jmx.port }}
+      name: metrics
+  selector:
+    app: {{ template "cp-kafka.name" . }}
+    release: {{ .Release.Name }}
+{{- end }}

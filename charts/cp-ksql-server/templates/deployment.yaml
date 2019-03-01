@@ -18,12 +18,12 @@ spec:
       labels:
         app: {{ template "cp-ksql-server.name" . }}
         release: {{ .Release.Name }}
-      {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
+      {{- if or .Values.podAnnotations (and .Values.prometheus.jmx.enabled (not .Values.prometheus.jmx.serviceMonitor.enabled)) }}
       annotations:
       {{- range $key, $value := .Values.podAnnotations }}
         {{ $key }}: {{ $value | quote }}
       {{- end }}
-      {{- if .Values.prometheus.jmx.enabled }}
+      {{- if and .Values.prometheus.jmx.enabled (not .Values.prometheus.jmx.serviceMonitor.enabled) }}
         prometheus.io/scrape: "true"
         prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
       {{- end }}
