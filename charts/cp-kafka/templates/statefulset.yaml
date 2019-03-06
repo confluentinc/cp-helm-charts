@@ -103,6 +103,14 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.hostIP
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
         - name: KAFKA_HEAP_OPTS
           value: {{ .Values.heapOptions }}
         {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
@@ -164,7 +172,7 @@ spec:
           {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
           export KAFKA_ADVERTISED_LISTENERS=SSL://${HOSTNAME}.{{ template "cp-kafka.fullname" . }}-headless:9092{{ include "cp-kafka.configuration.advertised.listeners" . }} && \
           {{- else }}
-          export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_IP}:9092{{ include "cp-kafka.configuration.advertised.listeners" . }} && \
+          export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_NAME}.{{ template "cp-kafka.fullname" . }}-headless.${POD_NAMESPACE}:9092{{ include "cp-kafka.configuration.advertised.listeners" . }} && \
           {{- end }}
           exec /etc/confluent/docker/run
         volumeMounts:

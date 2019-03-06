@@ -37,7 +37,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 */}}
 {{- define "cp-kafka-rest.cp-zookeeper.fullname" -}}
 {{- $name := default "cp-zookeeper" (index .Values "cp-zookeeper" "nameOverride") -}}
-{{- printf "%s-%s-headless" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
@@ -49,7 +49,7 @@ else use user-provided URL
 {{- printf "%s" (index .Values "cp-zookeeper" "url") }}
 {{- else -}}
 {{- $clientPort := default 2181 (index .Values "cp-zookeeper" "clientPort") | int -}}
-{{- printf "%s:%d" (include "cp-kafka-rest.cp-zookeeper.fullname" .) $clientPort }}
+{{- printf "%s-headless:%d" (include "cp-kafka-rest.cp-zookeeper.fullname" .) $clientPort }}
 {{- end -}}
 {{- end -}}
 
