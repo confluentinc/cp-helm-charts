@@ -22,9 +22,7 @@
 # Images and archives
 *.png
 *.tgz
-<<<<<<< HEAD
-=======
 scripts/
 screenshots/
 docs/index.html
->>>>>>> master
+misc

@@ -50,21 +50,21 @@ cp-kafka:
     "log.dirs": /opt/kafka/data/logs
     "offsets.topic.replication.factor": 3
     "advertised.listeners": |-
-     EXTERNAL://${HOSTNAME}.confluent-cp-kafka-headless.cp-kafka.svc.dev.cluster.local:9093
+     EXTERNAL://${HOSTNAME}.confluent-cp-kafka-headless.team-appops.svc.dev.cluster.local:9093
   persistence:
     enabled: true
-    # storageClass: ""
-    size: 5Gi
+    storageClass: "hyperspeed"
+    size: 15Gi
     disksPerBroker: 1
-  resources: {}
+  resources:
   ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
   ## and remove the curly braces after 'resources:'
-  #  limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  #  requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+    limits:
+     cpu: 12288m
+     memory: 24Gi
+    requests:
+     cpu: 6144m
+     memory: 12Gi
 
 ## ------------------------------------------------------
 ## Schema Registry
@@ -161,8 +161,8 @@ global:
       enabled: true
       client:
         auth: required
-        brokerPrincipal: CN=dev.kafka.domain.com
-        componentPrincipal: CN=internal.dev.kafka.domain.com
+        brokerPrincipal: CN=dev.kafka.idanalytics.com
+        componentPrincipal: CN=internal
         truststoreFile: kafka.client.truststore.jks
         truststorePassword: test1234
         keystoreFile: kafka.internal.keystore.jks
