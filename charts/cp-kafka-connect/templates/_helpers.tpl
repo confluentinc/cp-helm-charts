@@ -25,6 +25,19 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 
 {{/*
+Create a default prefix for the topics (config, offsets and status).
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+If an override not supplied, we'll use cp-kafka-connect.fullname.
+*/}}
+{{- define "cp-kafka-connect.topics-prefix" -}}
+{{- if .Values.topicsPrefix -}}
+{{- .Values.topicsPrefix | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- (include "cp-kafka-connect.fullname" .) -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Create chart name and version as used by the chart label.
 */}}
 {{- define "cp-kafka-connect.chart" -}}
