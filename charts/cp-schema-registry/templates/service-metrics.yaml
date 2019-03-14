@@ -1,0 +1,18 @@
+{{- if and .Values.prometheus.jmx.enabled .Values.prometheus.serviceMonitor.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "cp-schema-registry.fullname" . }}-metrics
+  labels:
+    app: {{ template "cp-schema-registry.name" . }}
+    chart: {{ template "cp-schema-registry.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  ports:
+    - port: {{ .Values.prometheus.jmx.port | quote }}
+      name: metrics
+  selector:
+    app: {{ template "cp-schema-registry.name" . }}
+    release: {{ .Release.Name }}
+{{- end }}

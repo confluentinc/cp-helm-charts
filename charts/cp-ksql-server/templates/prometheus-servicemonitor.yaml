@@ -1,0 +1,33 @@
+{{- if and .Values.prometheus.jmx.enabled .Values.prometheus.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "cp-ksql-server.fullname" . }}
+  labels:
+    app: {{ template "cp-ksql-server.name" . }}
+    chart: {{ template "cp-ksql-server.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    {{- if .Values.prometheus.serviceMonitor.additionalLabels }}
+{{ toYaml .Values.prometheus.serviceMonitor.additionalLabels | indent 4 }}
+    {{- end }}
+spec:
+  {{- if .Values.prometheus.serviceMonitor.targetLabels }}
+  targetLabels:
+{{ toYaml .Values.prometheus.serviceMonitor.targetLabels | indent 4 }}
+  {{- end }}
+  {{- if .Values.prometheus.serviceMonitor.podTargetLabels }}
+  podTargetLabels:
+{{ toYaml .Values.prometheus.serviceMonitor.podTargetLabels | indent 4 }}
+  {{- end }}
+  endpoints:
+    - port: metrics
+      interval: 30s
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      app: {{ template "cp-ksql-server.name" . }}
+      release: {{ .Release.Name }}
+{{- end }}

@@ -83,6 +83,19 @@ prometheus:
     ## Resources configuration for the JMX exporter container.
     ## See the `resources` documentation above for details.
     resources: {}
+  # prometheus-operator - ServiceMonitor
+  serviceMonitor:
+    enabled: false
+    # ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#servicemonitorspec
+    targetLabels: []
+    # example:
+    # targetLabels:
+    #   - release
+    podTargetLabels: []
+    # example:
+    # podTargetLabels:
+    #   - release
+    additionalLabels: {}
 
 ## You can list load balanced service endpoint, or list of all brokers (which is hard in K8s).  e.g.:
 ## bootstrapServers: "PLAINTEXT://dozing-prawn-kafka-headless:9092"

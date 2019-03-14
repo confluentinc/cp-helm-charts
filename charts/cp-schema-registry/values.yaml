@@ -83,3 +83,16 @@ prometheus:
     port: 5556
 
     resources: {}
+  # prometheus-operator - ServiceMonitor
+  serviceMonitor:
+    enabled: false
+    # ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#servicemonitorspec
+    targetLabels: []
+    # example:
+    # targetLabels:
+    #   - release
+    podTargetLabels: []
+    # example:
+    # podTargetLabels:
+    #   - release
+    additionalLabels: {}
