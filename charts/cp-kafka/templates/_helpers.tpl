@@ -36,8 +36,12 @@ Create a default fully qualified zookeeper name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "cp-kafka.cp-zookeeper.fullname" -}}
+{{- if (index .Values "cp-zookeeper" "fullnameOverride") -}}
+{{- (index .Values "cp-zookeeper" "fullnameOverride") | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
 {{- $name := default "cp-zookeeper" (index .Values "cp-zookeeper" "nameOverride") -}}
 {{- printf "%s-%s-headless" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
 {{- end -}}
 
 {{/*
