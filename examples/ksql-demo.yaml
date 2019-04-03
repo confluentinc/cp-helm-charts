@@ -23,7 +23,7 @@ metadata:
 spec:
   containers:
   - name: ksql-datagen-pageviews
-    image: confluentinc/ksql-examples:5.2.0
+    image: confluentinc/ksql-examples:5.2.1
     command:
       - sh
       - -c
