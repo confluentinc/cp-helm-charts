@@ -20,25 +20,15 @@ imagePullSecrets:
 
 servicePort: 8083
 
-## Kafka Connect properties
+## Kafka Connect Worker Configurations
 ## ref: https://docs.confluent.io/current/connect/userguide.html#configuring-workers
-configurationOverrides:
-  "plugin.path": "/usr/share/java"
-  "key.converter": "io.confluent.connect.avro.AvroConverter"
-  "value.converter": "io.confluent.connect.avro.AvroConverter"
-  "key.converter.schemas.enable": "false"
-  "value.converter.schemas.enable": "false"
-  "internal.key.converter": "org.apache.kafka.connect.json.JsonConverter"
-  "internal.value.converter": "org.apache.kafka.connect.json.JsonConverter"
-  "config.storage.replication.factor": "3"
-  "offset.storage.replication.factor": "3"
-  "status.storage.replication.factor": "3"
-
-## Kafka Connect JVM Heap Option
-heapOptions: "-Xms512M -Xmx512M"
-
-## Additional env variables
-customEnv: {}
+connectKeyConverter: "io.confluent.connect.avro.AvroConverter"
+connectValueConverter: "io.confluent.connect.avro.AvroConverter"
+connectKeyConverterSchemaEnable: false
+connectValueConverterSchemaEnable: false
+connectInternalKeyConverter: "org.apache.kafka.connect.json.JsonConverter"
+connectInternalValueConverter: "org.apache.kafka.connect.json.JsonConverter"
+pluginPath: "/usr/share/java"
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -68,6 +58,9 @@ tolerations: {}
 ## ref: https://kafka.apache.org/documentation/#connect_monitoring
 jmx:
   port: 5555
+
+ssl:
+  client: {}
 
 ## Prometheus Exporter Configuration
 ## ref: https://prometheus.io/docs/instrumenting/exporters/

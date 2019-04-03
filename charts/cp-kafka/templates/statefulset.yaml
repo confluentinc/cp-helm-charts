@@ -71,8 +71,15 @@ spec:
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
         ports:
+        {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
+        - containerPort: 9093
+          name: kafka
+        - containerPort: 9092
+          name: kafka-internal
+        {{- else }}
         - containerPort: 9092
           name: kafka
+        {{- end }}
         {{- if .Values.prometheus.jmx.enabled }}
         - containerPort: {{ .Values.jmx.port }}
           name: jmx
@@ -106,8 +113,39 @@ spec:
               fieldPath: metadata.namespace
         - name: KAFKA_HEAP_OPTS
           value: {{ .Values.heapOptions }}
+        {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
+        - name: KAFKA_SSL_KEYSTORE_FILENAME
+          value: {{ template "cp-kafka.ssl.broker.keystore" . }}
+        - name: KAFKA_SSL_KEYSTORE_CREDENTIALS
+          value: broker.keystore.password
+        - name: KAFKA_SSL_KEY_CREDENTIALS
+          value: broker.key.password
+        - name: KAFKA_SSL_TRUSTSTORE_FILENAME
+          value: {{ template "cp-kafka.ssl.broker.truststore" . }}
+        - name: KAFKA_SSL_TRUSTSTORE_LOCATION
+          value: /etc/kafka/secrets/{{ template "cp-kafka.ssl.broker.truststore" . }}
+        - name: KAFKA_SSL_TRUSTSTORE_CREDENTIALS
+          value: broker.truststore.password
+        - name: KAFKA_SECURITY_INTER_BROKER_PROTOCOL
+          value: SSL
+        - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+          value: PLAINTEXT:PLAINTEXT,SSL:SSL,EXTERNAL:SSL
+        {{- if or .Values.ssl.client.auth .Values.global.kafka.ssl.client.auth }}
+        - name: KAFKA_SSL_CLIENT_AUTH
+          value: {{ template "cp-kafka.ssl.client.auth.type" . }}
+        - name: KAFKA_AUTHORIZER_CLASS_NAME
+          value: kafka.security.auth.SimpleAclAuthorizer
+        - name: KAFKA_SUPER_USERS
+          value: User:{{ default .Values.ssl.client.brokerPrincipal .Values.global.kafka.ssl.client.brokerPrincipal }};User:CN=internal
+        {{- end }}
+        {{- else }}
+        - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+          value: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+        {{- end }}
+        {{- if not (hasKey .Values.configurationOverrides "zookeeper.connect") }}
         - name: KAFKA_ZOOKEEPER_CONNECT
           value: {{ include "cp-kafka.cp-zookeeper.service-name" . | quote }}
+        {{- end }}
         - name: KAFKA_LOG_DIRS
           value: {{ include "cp-kafka.log.dirs" . | quote }}
         {{- range $key, $value := .Values.configurationOverrides }}
@@ -131,13 +169,21 @@ spec:
         - -exc
         - |
           export KAFKA_BROKER_ID=${HOSTNAME##*-} && \
+          {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
+          export KAFKA_ADVERTISED_LISTENERS=SSL://${HOSTNAME}.{{ template "cp-kafka.fullname" . }}-headless:9092{{ include "cp-kafka.configuration.advertised.listeners" . }} && \
+          {{- else }}
           export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_NAME}.{{ template "cp-kafka.fullname" . }}-headless.${POD_NAMESPACE}:9092{{ include "cp-kafka.configuration.advertised.listeners" . }} && \
+          {{- end }}
           exec /etc/confluent/docker/run
         volumeMounts:
         {{- $disksPerBroker := .Values.persistence.disksPerBroker | int }}
         {{- range $k, $e := until $disksPerBroker }}
         - name: datadir-{{$k}}
           mountPath: /opt/kafka/data-{{$k}}
+        {{- end }}
+        {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
+        - name: ssl
+          mountPath: "/etc/kafka/secrets"
         {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -147,6 +193,11 @@ spec:
       {{- if not .Values.persistence.enabled }}
       - name: datadir-0
         emptyDir: {}
+      {{- end }}
+      {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
+      - name: ssl
+        secret:
+          secretName: {{ template "cp-kafka.ssl.secretName" . }}
       {{- end }}
       {{- if .Values.prometheus.jmx.enabled }}
       - name: jmx-config
@@ -180,5 +231,5 @@ spec:
       storageClassName: "{{ $root.Values.persistence.storageClass }}"
       {{- end }}
       {{- end }}
-{{- end }}
-{{- end }}
+  {{- end }}
+  {{- end }}

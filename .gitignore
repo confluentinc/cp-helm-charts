@@ -2,3 +2,7 @@
 charts/cp-kafka/requirements.lock
 charts/*/charts
 charts/*/requirements.lock
+certs
+ida-certs.sh
+ida-values.sh
+misc

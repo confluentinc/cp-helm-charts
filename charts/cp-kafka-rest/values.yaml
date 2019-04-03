@@ -20,6 +20,9 @@ imagePullSecrets:
 
 servicePort: 8082
 
+ssl:
+  client: {}
+  
 ## Kafka rest JVM Heap Option
 heapOptions: "-Xms512M -Xmx512M"
 
@@ -88,4 +91,7 @@ cp-zookeeper:
 ## If the Kafka Chart is disabled a URL and port are required to connect
 ## e.g. gnoble-panther-cp-schema-registry:8081
 cp-schema-registry:
+  url: ""
+
+cp-kafka:
   url: ""

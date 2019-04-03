@@ -20,6 +20,9 @@ imagePullSecrets:
 
 servicePort: 8088
 
+ssl:
+  client: {}
+
 ## KSQL JVM Heap Option
 heapOptions: "-Xms512M -Xmx512M"
 

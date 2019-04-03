@@ -33,6 +33,11 @@ customEnv: {}
 ## The port on which the Schema Registry will be available and serving requests
 servicePort: 8081
 
+https: {}
+
+ssl:
+  client: {}
+
 ## Schema registry JVM Heap Option
 heapOptions: "-Xms512M -Xmx512M"
 
