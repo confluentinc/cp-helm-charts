@@ -68,6 +68,15 @@ external advertised listeners if configurationOverrides.advertised.listeners is 
 {{- end -}}
 
 {{/*
+Create a default fully qualified kafka headless name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "cp-kafka.cp-kafka-headless.fullname" -}}
+{{- $name := "cp-kafka-headless" -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
 Create a variable containing all the datadirs created.
 */}}
 
