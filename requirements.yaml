@@ -2,24 +2,24 @@ dependencies:
 - name: cp-kafka
   version: 0.1.0
   repository: file://./charts/cp-kafka
-  condition: cp-kafka.enabled
+  condition: cp-helm-charts.cp-kafka.enabled,cp-kafka.enabled
 - name: cp-zookeeper
   version: 0.1.0
   repository: file://./charts/cp-zookeeper
-  condition: cp-zookeeper.enabled
+  condition: cp-helm-charts.cp-zookeeper.enabled,cp-zookeeper.enabled
 - name: cp-schema-registry
   version: 0.1.0
   repository: file://./charts/cp-schema-registry
-  condition: cp-schema-registry.enabled
+  condition: cp-helm-charts.cp-schema-registry.enabled,cp-schema-registry.enabled
 - name: cp-kafka-rest
   version: 0.1.0
   repository: file://./charts/cp-kafka-rest
-  condition: cp-kafka-rest.enabled
+  condition: cp-helm-charts.cp-kafka-rest.enabled,cp-kafka-rest.enabled
 - name: cp-kafka-connect
   version: 0.1.0
   repository: file://./charts/cp-kafka-connect
-  condition: cp-kafka-connect.enabled
+  condition: cp-helm-charts.cp-kafka-connect.enabled,cp-kafka-connect.enabled
 - name: cp-ksql-server
   version: 0.1.0
   repository: file://./charts/cp-ksql-server
-  condition: cp-ksql-server.enabled
+  condition: cp-helm-charts.cp-ksql-server.enabled,cp-ksql-server.enabled
