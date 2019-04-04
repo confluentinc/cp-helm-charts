@@ -1,22 +1,22 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ include "cp-enterprise-control-center.fullname" . }}
+  name: {{ include "cp-control-center.fullname" . }}
   labels:
-    app: {{ include "cp-enterprise-control-center.name" . }}
-    chart: {{ include "cp-enterprise-control-center.chart" . }}
+    app: {{ include "cp-control-center.name" . }}
+    chart: {{ include "cp-control-center.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "cp-enterprise-control-center.name" . }}
+      app: {{ include "cp-control-center.name" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ include "cp-enterprise-control-center.name" . }}
+        app: {{ include "cp-control-center.name" . }}
         release: {{ .Release.Name }}
       {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
       annotations:
@@ -41,17 +41,17 @@ spec:
 {{- toYaml .Values.resources | indent 12 }}
           env:
             - name: CONTROL_CENTER_BOOTSTRAP_SERVERS
-              value: {{ template "cp-enterprise-control-center.kafka.bootstrapServers" . }}
+              value: {{ template "cp-control-center.kafka.bootstrapServers" . }}
             - name: CONTROL_CENTER_ZOOKEEPER_CONNECT
-              value: {{ template "cp-enterprise-control-center.cp-zookeeper.service-name" . }}
+              value: {{ template "cp-control-center.cp-zookeeper.service-name" . }}
             - name: CONTROL_CENTER_CONNECT_CLUSTER
-              value: {{ template "cp-enterprise-control-center.cp-kafka-connect.service-name" . }}
+              value: {{ template "cp-control-center.cp-kafka-connect.service-name" . }}
             - name: CONTROL_CENTER_KSQL_URL
-              value: {{ template "cp-enterprise-control-center.cp-ksql-server.service-name" . }}
+              value: {{ template "cp-control-center.cp-ksql-server.service-name" . }}
             - name: CONTROL_CENTER_KSQL_ADVERTISED_URL
-              value: {{ template "cp-enterprise-control-center.cp-ksql-server.service-name" . }}
+              value: {{ template "cp-control-center.cp-ksql-server.service-name" . }}
             - name: CONTROL_CENTER_SCHEMA_REGISTRY_URL
-              value: {{ template "cp-enterprise-control-center.cp-schema-registry.service-name" . }}
+              value: {{ template "cp-control-center.cp-schema-registry.service-name" . }}
             - name: KAFKA_HEAP_OPTS
               value: "{{ .Values.heapOptions }}"
             {{- range $key, $value := .Values.configurationOverrides }}
