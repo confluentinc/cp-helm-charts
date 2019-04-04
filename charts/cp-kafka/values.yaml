@@ -11,7 +11,7 @@ brokers: 3
 
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-kafka/
-image: confluentinc/cp-kafka
+image: confluentinc/cp-enterprise-kafka
 imageTag: 5.2.0
 
 ## Specify a imagePullPolicy
@@ -54,6 +54,8 @@ configurationOverrides:
 
 ## Additional env variables
 customEnv: {}
+  # KAFKA_METRIC_REPORTERS: "io.confluent.metrics.reporter.ConfluentMetricsReporter"
+  # CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: "localhost:9092"
 
 persistence:
   enabled: true

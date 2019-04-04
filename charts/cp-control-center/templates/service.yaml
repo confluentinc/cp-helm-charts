@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "cp-control-center.fullname" . }}
+  labels:
+    app: {{ template "cp-control-center.name" . }}
+    chart: {{ template "cp-control-center.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  ports:
+    - name: cc-http
+      port: {{ .Values.serviceHttpPort }}
+  selector:
+    app: {{ template "cp-control-center.name" . }}
+    release: {{ .Release.Name }}
