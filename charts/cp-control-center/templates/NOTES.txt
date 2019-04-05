@@ -1,0 +1,9 @@
+This chart installs a Confluent Control Center
+
+To connect to Confluent Control Center directly from outside the k8s cluster:
+
+1. Execute the following command to setup port forward from k8s to localhost 
+	export POD_NAME=$(kubectl get pods --namespace {{ .Release.Namespace }} -l "app={{ template "cp-control-center.name" . }}" -o jsonpath="{.items[0].metadata.name}")
+ 	kubectl port-forward $POD_NAME {{ .Values.serviceHttpPort }}
+
+2. Open a browser and visit http://localhost:{{ .Values.serviceHttpPort }}
