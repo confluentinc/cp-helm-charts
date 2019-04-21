@@ -51,7 +51,7 @@ cp-kafka:
   persistence:
     enabled: true
     # storageClass: ""
-    size: 20Gi
+    size: 200Gi
   configurationOverrides:
     ## Cluster level Retention set to 7 week.
     "log.retention.ms": "604800"

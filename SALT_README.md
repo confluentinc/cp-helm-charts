@@ -8,7 +8,7 @@ Installing Confluent Platform (cp) Kafka cluster instructions are taken from [Ku
 ## Updating this repo (from the repo's root)
 - Make all needed changes you desire
 - Test resolted yamls
-  - #$ helm install --dry-run --debug --namespace=<Namespace> -f <env>_values.yaml salt/cp-helm-charts --name <releaseName>
+  - #$ helm install --dry-run --debug --namespace=\<Namespace\> -f \<env\>_values.yaml salt/cp-helm-charts --name \<releaseName\>
 - Build and update repo
   - #$ helm package .
   - #$ helm repo index .
