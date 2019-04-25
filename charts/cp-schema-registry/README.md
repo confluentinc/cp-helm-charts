@@ -130,8 +130,8 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `resources.requests.cpu` | The amount of CPU to request. | see [values.yaml](values.yaml) for details |
 | `resources.requests.memory` | The amount of memory to request. | see [values.yaml](values.yaml) for details |
-| `resources.requests.limit` | The upper limit CPU usage for a Schema Registry Pod. | see [values.yaml](values.yaml) for details |
-| `resources.requests.limit` | The upper limit memory usage for a Schema Registry Pod. | see [values.yaml](values.yaml) for details |
+| `resources.limit.cpu`  | The upper limit CPU usage for a Schema Registry Pod. | see [values.yaml](values.yaml) for details |
+| `resources.limit.memory` | The upper limit memory usage for a Schema Registry Pod. | see [values.yaml](values.yaml) for details |
 
 ### Annotations
 
