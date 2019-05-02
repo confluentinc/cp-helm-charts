@@ -29,6 +29,12 @@ spec:
       {{- end }}
       {{- end }}
     spec:
+      {{- if .Values.hostAlias.enabled }}
+      hostAliases:
+      - ip: {{ .Values.hostAlias.elasticsearch.ipAddress | quote }}
+        hostnames:
+        - {{ .Values.hostAlias.elasticsearch.hostName | quote }}
+      {{- end }}
       containers:
         {{- if .Values.prometheus.jmx.enabled }}
         - name: prometheus-jmx-exporter

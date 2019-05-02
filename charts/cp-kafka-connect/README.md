@@ -154,6 +154,14 @@ The configuration parameters in this section control the resources requested and
 | `nodeSelector` | Dictionary containing key-value-pairs to match labels on nodes. When defined pods will only be scheduled on nodes, that have each of the indicated key-value pairs as labels. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) | `{}`
 | `tolerations`| Array containing taint references. When defined, pods can run on nodes, which would otherwise deny scheduling. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) | `{}`
 
+### Host alias for Elasticsearch server
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `hostAlias.enabled` | Enable [hostAliases](https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/) entry in deployment. | `false`
+| `hostAlias.elasticsearch.ipAddress`| IP address of Elasticsearch server. | `10.10.10.10`
+| `hostAlias.elasticsearch.hostName`| Host name of Elasticsearch server. | `elasticsearch`
+
 ## Dependencies
 
 ### Kafka
