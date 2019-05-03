@@ -70,6 +70,12 @@ spec:
             {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
+          {{- if .Values.secretMount.enabled }}
+          volumeMounts:
+          - name: certs
+            mountPath: {{ .Values.secretMount.certs.mountPath | quote }}
+            readOnly: true
+          {{- end }}
           env:
             - name: CONNECT_REST_ADVERTISED_HOST_NAME
               valueFrom:
@@ -108,6 +114,12 @@ spec:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
       {{- end }}
       volumes:
+      {{- if .Values.secretMount.enabled }}
+      - name: certs
+        secret:
+          defaultMode: 420
+          secretName: {{ .Values.secretMount.certs.secretName | quote }}
+      {{- end }}
       {{- if .Values.prometheus.jmx.enabled }}
       - name: jmx-config
         configMap:

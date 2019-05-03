@@ -162,6 +162,18 @@ The configuration parameters in this section control the resources requested and
 | `hostAlias.elasticsearch.ipAddress`| IP address of Elasticsearch server. | `10.10.10.10`
 | `hostAlias.elasticsearch.hostName`| Host name of Elasticsearch server. | `elasticsearch`
 
+### Secrets mount for certificates
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `secretMount.enabled` | Enable mounting a secret volume. | `false`
+| `secretMount.certs.secretName`| Secret name. Secret must be in the same namespace as Kafka deployment. | `logging-elk-certs`
+| `secretMount.certs.mountPath`| Mount path in container. | `/opt/certs`
+
+If you have existing secret in some namespace, use following command to copy it to another namespace:
+
+`kubectl get secret logging-elk-certs --namespace=kube-system --export -o yaml | kubectl apply --namespace=kafka -f -`
+
 ## Dependencies
 
 ### Kafka

@@ -103,3 +103,9 @@ hostAlias:
     ipAddress: 10.10.10.10
     hostName: elasticsearch
   
+## Mount secrets as directories
+secretMount:
+  enabled: false
+  certs:
+    secretName: logging-elk-certs
+    mountPath: /opt/certs
