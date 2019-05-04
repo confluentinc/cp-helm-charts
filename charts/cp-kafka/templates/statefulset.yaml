@@ -49,6 +49,7 @@ spec:
       {{- if .Values.prometheus.jmx.enabled }}
       - name: prometheus-jmx-exporter
         image: "{{ .Values.prometheus.jmx.image }}:{{ .Values.prometheus.jmx.imageTag }}"
+        imagePullPolicy: "{{ .Values.prometheus.jmx.imagePullPolicy }}"
         command:
         - java
         - -XX:+UnlockExperimentalVMOptions
