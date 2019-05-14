@@ -33,7 +33,7 @@ spec:
           - path: {{ . }}
             backend:
               serviceName: {{ $fullName }}
-              servicePort: http
+              servicePort: kafka-connect
         {{- end }}
   {{- end }}
 {{- end }}
