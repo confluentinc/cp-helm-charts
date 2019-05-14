@@ -112,6 +112,17 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `servicePort` | The port on which the Schema Registry will be available and serving requests. | `8081` |
 
+### Ingress
+
+| Parameter                        | Description                                | Default                                                 |
+| -------------------------------- | ------------------------------------------ | ------------------------------------------------------- |
+| `ingress.enabled`                | Enable ingress controller resource         | `false`                                                 |
+| `ingress.annotations`            | Ingress annotations                        | `[]`                                                    |
+| `ingress.hosts[0].name`          | Hostname of your installation              | `chart-example.local`                                   |
+| `ingress.hosts[0].path`          | Path within the url structure              | `/`                                                     |
+| `ingress.tls[0].hosts[0]`        | TLS hosts                                  | `chart-example.local`                                   |
+| `ingress.tls[0].secretName`      | TLS Secret (certificates)                  | `chart-example-tls`                                     |
+
 ### Kafka
 
 | Parameter | Description | Default |
