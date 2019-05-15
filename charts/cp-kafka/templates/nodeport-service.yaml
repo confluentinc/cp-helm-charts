@@ -10,7 +10,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $root.Release.Name }}-{{ $i }}-nodeport
+  name: {{ template "cp-kafka.fullname" $root }}-{{ $i }}-nodeport
   labels:
     app: {{ include "cp-kafka.name" $root }}
     chart: {{ template "cp-kafka.chart" $root }}

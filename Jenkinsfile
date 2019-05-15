@@ -1,5 +1,5 @@
 def config = jobConfig {
-    slackChannel = 'tools-eng'  // TODO: Change this when Viktor provides one
+    slackChannel = 'tools-notifications'
 }
 
 def job = {

@@ -1,0 +1,80 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ include "cp-control-center.fullname" . }}
+  labels:
+    app: {{ include "cp-control-center.name" . }}
+    chart: {{ include "cp-control-center.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "cp-control-center.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "cp-control-center.name" . }}
+        release: {{ .Release.Name }}
+      {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
+      annotations:
+      {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
+      {{- if .Values.prometheus.jmx.enabled }}
+        prometheus.io/scrape: "true"
+        prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
+      {{- end }}
+      {{- end }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          ports:
+            - name: cc-http
+              containerPort: {{ .Values.serviceHttpPort}}
+              protocol: TCP
+          resources:
+{{- toYaml .Values.resources | indent 12 }}
+          env:
+            - name: CONTROL_CENTER_BOOTSTRAP_SERVERS
+              value: {{ template "cp-control-center.kafka.bootstrapServers" . }}
+            - name: CONTROL_CENTER_ZOOKEEPER_CONNECT
+              value: {{ template "cp-control-center.cp-zookeeper.service-name" . }}
+            - name: CONTROL_CENTER_CONNECT_CLUSTER
+              value: {{ template "cp-control-center.cp-kafka-connect.service-name" . }}
+            - name: CONTROL_CENTER_KSQL_URL
+              value: {{ template "cp-control-center.cp-ksql-server.service-name" . }}
+            - name: CONTROL_CENTER_KSQL_ADVERTISED_URL
+              value: {{ template "cp-control-center.cp-ksql-server.service-name" . }}
+            - name: CONTROL_CENTER_SCHEMA_REGISTRY_URL
+              value: {{ template "cp-control-center.cp-schema-registry.service-name" . }}
+            - name: KAFKA_HEAP_OPTS
+              value: "{{ .Values.heapOptions }}"
+            {{- range $key, $value := .Values.configurationOverrides }}
+            - name: {{ printf "CONTROL_CENTER_%s" $key | replace "." "_" | upper | quote }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- range $key, $value := .Values.customEnv }}
+            - name: {{ $key | quote }}
+              value: {{ $value | quote }}
+            {{- end }}            
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+{{ toYaml .Values.imagePullSecrets | indent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
