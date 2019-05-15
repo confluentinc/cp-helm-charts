@@ -56,15 +56,15 @@ cp-kafka:
     storageClass: "hyperspeed"
     size: 15Gi
     disksPerBroker: 1
-  resources:
+  resources: {}
   ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
   ## and remove the curly braces after 'resources:'
-    limits:
-     cpu: 12288m
-     memory: 24Gi
-    requests:
-     cpu: 6144m
-     memory: 12Gi
+  #  limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  #  requests:
+  #   cpu: 100m
+  #   memory: 128Mi
 
 ## ------------------------------------------------------
 ## Schema Registry

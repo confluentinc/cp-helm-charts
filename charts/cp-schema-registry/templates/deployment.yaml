@@ -98,7 +98,7 @@ spec:
             value: {{ template "cp-schema-registry.groupId" . }}
           - name: SCHEMA_REGISTRY_MASTER_ELIGIBILITY
             value: "true"
-          {{- if .Values.https }}
+          {{- if .Values.https.enabled }}
           - name: SCHEMA_REGISTRY_INTER_INSTANCE_PROTOCOL
             value: https
           {{- end }}
