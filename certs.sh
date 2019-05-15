@@ -1,9 +1,16 @@
 #!/bin/bash
+if [ "$#" -ne 2 ]; then
+    echo "Illegal number of parameters ($#)"
+    echo "Usage:"
+    echo "certs.sh <confluent-namespace>"
+    exit 1
+fi
+
 VALIDITY=365
 CLIENTSTOREPASS=test1234
 BROKERSTOREPASS=test1234
 KUBERNETES_SERVICE_DNS_DOMAIN=cluster.local
-NAMESPACE=cp-kafka
+NAMESPACE=$1
 SERVICE_NAME=confluent-cp-kafka-headless
 KEYPASS=test1234
 DNAME=dev.kafka.domain.com
@@ -11,7 +18,7 @@ HOSTNAME=dev.kafka.domain.com
 CAPASS=test1234
 CACN=confluent-cp-kafka-headless
 
-mkdir certs
+mkdir -p certs
 
 cat << EOF > certs/extensions.cnf
 [req]

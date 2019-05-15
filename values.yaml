@@ -71,18 +71,18 @@ cp-kafka:
 ## ------------------------------------------------------
 cp-schema-registry:
   enabled: true
-  https:
-    enabled: true
-    keystore: schema.registry.keystore.jks
-    keystorePassword: test1234
-    keyPassword: test1234
-    hostname: schema-registry.kafka-test.domain.com
   image: confluentinc/cp-schema-registry
   imageTag: 5.2.1
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
   ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
   imagePullSecrets:
   #  - name: "regcred"
+  https:
+    enabled: true
+    keystore: schema.registry.keystore.jks
+    keystorePassword: test1234
+    keyPassword: test1234
+    hostname: schema-registry.kafka-test.domain.com
   heapOptions: "-Xms512M -Xmx512M"
   resources: {}
   ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
