@@ -33,7 +33,12 @@ customEnv: {}
 ## The port on which the Schema Registry will be available and serving requests
 servicePort: 8081
 
-https: {}
+https:
+  enabled: false
+#  keystore: schema.registry.keystore.jks
+#  keystorePassword: test1234
+#  keyPassword: test1234
+#  hostname: schema-registry.kafka-test.domain.com
 
 ssl:
   client: {}

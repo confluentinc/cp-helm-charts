@@ -93,7 +93,7 @@ else use user-provided URL
 Return auth type for Client Certificate Authentication
 */}}
 {{- define "cp-kafka.ssl.client.auth.type" -}}
-{{- default .Values.ssl.client.auth .Values.global.kafka.ssl.client.auth "None" -}}
+{{- default .Values.ssl.client.auth .Values.global.kafka.ssl.client.auth "none" -}}
 {{- end -}}
 
 {{/*

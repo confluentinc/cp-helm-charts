@@ -4,7 +4,7 @@
 
 Either modify certs.sh variables with desired values to generate your certificates with some default SAN settings, or create your own keystore files following the official [SSL intructions](https://docs.confluent.io/current/kafka/authentication_ssl.html)
 
-Running ./certs.sh will generate a CA, broker certificates and truststores, as well as a client truststore that contains the CA cert.
+Running `./certs.sh <confluent-namespace>` will generate a CA, broker certificates and truststores, as well as a client truststore that contains the CA cert.
 
 You can then run client-certs.sh to generate additional client certificates signed by the trusted CA.
 

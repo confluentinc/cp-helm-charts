@@ -3,7 +3,7 @@ VALIDITY=365
 STOREPASS=test1234
 KEYPASS=test1234
 ALIAS=internal
-DNAME="CN=internal"
+DNAME="CN=*.confluent-cp-kafka-headless.confluent.svc.cluster.local"
 CAPASS=test1234
 
 # Create client keystore and request 

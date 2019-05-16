@@ -49,8 +49,6 @@ cp-kafka:
   configurationOverrides:
     "log.dirs": /opt/kafka/data/logs
     "offsets.topic.replication.factor": 3
-    "advertised.listeners": |-
-     EXTERNAL://${HOSTNAME}.confluent-cp-kafka-headless.team-appops.svc.dev.cluster.local:9093
   persistence:
     enabled: true
     storageClass: "hyperspeed"
@@ -187,7 +185,6 @@ global:
       client:
         auth: required
         brokerPrincipal: CN=dev.kafka.idanalytics.com
-        componentPrincipal: CN=internal
         truststoreFile: kafka.client.truststore.jks
         truststorePassword: test1234
         keystoreFile: kafka.internal.keystore.jks
