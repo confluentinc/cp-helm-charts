@@ -137,6 +137,28 @@ spec:
           export KAFKA_BROKER_ID=${HOSTNAME##*-} && \
           export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_NAME}.{{ template "cp-kafka.fullname" . }}-headless.${POD_NAMESPACE}:9092{{ include "cp-kafka.configuration.advertised.listeners" . }} && \
           exec /etc/confluent/docker/run
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - echo dump | nc {{ include "cp-kafka.cp-zookeeper.fullname" . }} 2181 | grep -q /brokers/ids/${HOSTNAME##*-} || exit 1
+          initialDelaySeconds: 5
+          periodSeconds: 90
+          timeoutSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - echo dump | nc {{ include "cp-kafka.cp-zookeeper.fullname" . }} 2181 | grep -q /brokers/ids/${HOSTNAME##*-} || exit 1
+          initialDelaySeconds: 5
+          periodSeconds: 90
+          timeoutSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
         volumeMounts:
         {{- $disksPerBroker := .Values.persistence.disksPerBroker | int }}
         {{- range $k, $e := until $disksPerBroker }}

@@ -120,6 +120,28 @@ spec:
           ZOOKEEPER_SERVER_ID=$((${HOSTNAME##*-}+1)) \
           ZOOKEEPER_SERVERS=`echo $ZOOKEEPER_SERVERS | sed -e "$ZK_FIX_HOST_REGEX"` \
           /etc/confluent/docker/run
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - [ $$(echo dump | nc localhost 2181 | head -c1 | wc -c) -gt 0 ] || exit 1
+          initialDelaySeconds: 5
+          periodSeconds: 90
+          timeoutSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - [ $$(echo dump | nc localhost 2181 | head -c1 | wc -c) -gt 0 ] || exit 1
+          initialDelaySeconds: 5
+          periodSeconds: 90
+          timeoutSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
         volumeMounts:
         - name: datadir
           mountPath: /var/lib/zookeeper/data
