@@ -49,7 +49,7 @@ else use user-provided URL
 {{- .Values.kafka.bootstrapServers -}}
 {{- else if .Values.global.kafka.ssl.enabled -}}
 {{- $name := default "cp-kafka" .Values.kafka.nameOverride -}}
-{{- printf "SSL://%s-%s-0.%s:9092" .Release.Name $name (include "cp-kafka-connect.cp-kafka-headless.fullname" .) -}}
+{{- printf "SSL://%s-%s-0.%s:9093" .Release.Name $name (include "cp-kafka-connect.cp-kafka-headless.fullname" .) -}}
 {{- else -}}
 {{- printf "PLAINTEXT://%s:9092" (include "cp-kafka-connect.cp-kafka-headless.fullname" .) -}}
 {{- end -}}
