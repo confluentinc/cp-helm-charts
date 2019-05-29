@@ -177,12 +177,13 @@ global:
       enabled: true
       client:
         auth: required
-        brokerPrincipals: User:CN=*.confluent-cp-kafka-headless.confluent.svc.cluster.local;User:CN=internal
+        brokerPrincipals: User:CN=internal
         truststoreFile: kafka.client.truststore.jks
         truststorePassword: test1234
         keystoreFile: kafka.internal.keystore.jks
         keystorePassword: test1234
         keyPassword: test1234
+      # Comment this broker section out if you're using an external Kafka cluster
       broker:
         truststoreFile: kafka.server.truststore.jks
         keystoreFile: kafka.server.keystore.jks
