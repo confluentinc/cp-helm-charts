@@ -62,19 +62,19 @@ spec:
               valueFrom: 
                 secretKeyRef:
                   name: {{ template "cp-kafka.ssl.secretName" . }}
-                  key: broker.truststore.password
+                  key: client.truststore.password
             - name: CONTROL_CENTER_STREAMS_SSL_KEYSTORE_LOCATION
               value: /etc/kafka/secrets/{{ template "cp-kafka.ssl.client.keystore" . }}
             - name: CONTROL_CENTER_STREAMS_SSL_KEYSTORE_PASSWORD
               valueFrom: 
                 secretKeyRef:
                   name: {{ template "cp-kafka.ssl.secretName" . }}
-                  key: broker.keystore.password
+                  key: client.keystore.password
             - name: CONTROL_CENTER_STREAMS_SSL_KEY_PASSWORD
               valueFrom: 
                 secretKeyRef:
                   name: {{ template "cp-kafka.ssl.secretName" . }}
-                  key: broker.key.password
+                  key: client.key.password
             {{- end }}
             # Other configs
             - name: KAFKA_HEAP_OPTS

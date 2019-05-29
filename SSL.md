@@ -4,7 +4,7 @@
 
 Either modify certs.sh variables with desired values to generate your certificates with some default SAN settings, or create your own keystore files following the official [SSL intructions](https://docs.confluent.io/current/kafka/authentication_ssl.html)
 
-Running `./certs.sh <confluent-namespace>` will generate a CA, broker certificates and truststores, as well as a client truststore that contains the CA cert.
+Running `./certs.sh <confluent-namespace>` will generate a CA, broker certificates (wildcard) and truststores, as well as a client truststore that contains the CA cert.
 
 You can then run client-certs.sh to generate additional client certificates signed by the trusted CA.
 
@@ -13,3 +13,29 @@ Then, you can install the helm chart from your cloned repository (e.g. helm --up
 Alternativey, you can create your own secret by specifying kafka.global.ssl.secretName, and then running something like 'kubectl create secret generic {name} --from-file=kafka.client.truststore.jks --from-file=kafka.server.keystore.jks --from-literal=client.keystore.password=changeme...'
 
 This will allow you to run the chart from the Helm repository directly without needing to clone the git repo.
+
+
+## Using your own certificates
+
+You can use your own truststore and keystore for securing the Kafka cluster and having other Confluent components (e.g.: REST proxy, Schema Registry) connect to a TLS secured cluster.  To do so, copy your trustore.jks/keystore.jks files under the `certs` folder and change the following properties in your values.yaml.  The properties under the client sub-section are for all Confluent components to encrypt/authenticate against the broker.
+
+```
+global:
+  kafka:
+    ssl:
+      enabled: true
+      client:
+        auth: required
+        brokerPrincipals: User:CN=<some company CN>
+        truststoreFile: <name of your truststore>.jks  <-- This needs to be located in the certs folder
+        truststorePassword: test1234
+        keystoreFile: <name of your keystore>.jks  <-- This needs to be located in the certs folder
+        keystorePassword: test1234
+        keyPassword: test1234
+      broker:
+        truststoreFile: <name of kafka truststore>.jks  <-- This needs to be located in the certs folder
+        keystoreFile: <name of kafka keystore>.jks  <-- This needs to be located in the certs folder
+        keystorePassword: test1234
+        keyPassword: test1234
+        truststorePassword: test1234
+```

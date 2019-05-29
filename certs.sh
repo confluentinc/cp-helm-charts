@@ -1,22 +1,24 @@
 #!/bin/bash
-if [ "$#" -ne 1 ]; then
+if [ "$#" -ne 2 ]; then
     echo "Illegal number of parameters ($#)"
     echo "Usage:"
-    echo "certs.sh <confluent-namespace>"
+    echo "certs.sh <confluent-namespace> <helm-deployment-name>"
     exit 1
 fi
+
+NAMESPACE=$1
+HELM_DEPLOYMENT_NAME=$2
 
 VALIDITY=365
 CLIENTSTOREPASS=test1234
 BROKERSTOREPASS=test1234
 KUBERNETES_SERVICE_DNS_DOMAIN=cluster.local
-NAMESPACE=$1
-SERVICE_NAME=confluent-cp-kafka-headless
+SERVICE_NAME=$HELM_DEPLOYMENT_NAME-cp-kafka-headless
 KEYPASS=test1234
-DNAME=*.confluent-cp-kafka-headless.confluent.svc.cluster.local
+DNAME=*.$HELM_DEPLOYMENT_NAME-cp-kafka-headless.$NAMESPACE.svc.cluster.local
 HOSTNAME=svc.cluster.local
 CAPASS=test1234
-CACN=confluent-cp-kafka-headless
+CACN=$HELM_DEPLOYMENT_NAME-cp-kafka-headless
 
 mkdir -p certs
 

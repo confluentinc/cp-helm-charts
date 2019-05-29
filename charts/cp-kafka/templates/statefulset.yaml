@@ -166,7 +166,7 @@ spec:
 
         {{- if or .Values.ssl.client.auth .Values.global.kafka.ssl.client.auth }}
         - name: KAFKA_SUPER_USERS
-          value: {{ default .Values.ssl.client.brokerPrincipals .Values.global.kafka.ssl.client.brokerPrincipals }}
+          value: User:CN=*.{{ template "cp-kafka.cp-kafka-headless.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local;{{ default .Values.ssl.client.brokerPrincipals .Values.global.kafka.ssl.client.brokerPrincipals }}
         {{- end }}
         {{- else }}
         - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
