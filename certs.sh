@@ -13,10 +13,10 @@ KUBERNETES_SERVICE_DNS_DOMAIN=cluster.local
 NAMESPACE=$1
 SERVICE_NAME=confluent-cp-kafka-headless
 KEYPASS=test1234
-DNAME=*.svc.cluster.local
+DNAME=*.confluent-cp-kafka-headless.confluent.svc.cluster.local
 HOSTNAME=svc.cluster.local
 CAPASS=test1234
-CACN=*.svc.cluster.local
+CACN=confluent-cp-kafka-headless
 
 mkdir -p certs
 
@@ -39,6 +39,7 @@ DNS.3 = *.$SERVICE_NAME.$NAMESPACE
 DNS.4 = *.$SERVICE_NAME.$NAMESPACE.svc.$KUBERNETES_SERVICE_DNS_DOMAIN
 DNS.5 = $HOSTNAME
 DNS.6 = *.$HOSTNAME
+DNS.7 = $DNAME
 EOF
 
 

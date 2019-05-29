@@ -69,9 +69,11 @@ else use user-provided URL
 {{- define "cp-kafka-rest.cp-kafka.broker-url" }}
 {{- if (index .Values "cp-kafka" "url") -}}
 {{- printf "%s" (index .Values "cp-kafka" "url") }}
+{{- else if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled -}}
+{{- printf "SSL://%s:9093" (include "cp-kafka-rest.cp-kafka.fullname" .) -}}
 {{- else -}}
 {{- $name := default "cp-kafka" (index .Values "cp-kafka" "nameOverride") -}}
-{{- printf "%s-%s-0.%s:9092" .Release.Name $name (include "cp-kafka-rest.cp-kafka.fullname" .) }}
+{{- printf "PLAINTEXT://%s:9092" (include "cp-kafka-rest.cp-kafka.fullname" .) -}}
 {{- end -}}
 {{- end -}}
 

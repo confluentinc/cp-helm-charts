@@ -35,7 +35,7 @@ Create chart name and version as used by the chart label.
 Create a default fully qualified kafka headless name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
-{{- define "cp-kafka-rest.cp-kafka-headless.fullname" -}}
+{{- define "cp-schema-registry.cp-kafka-headless.fullname" -}}
 {{- $name := "cp-kafka-headless" -}}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
@@ -48,10 +48,9 @@ else use user-provided URL
 {{- if .Values.kafka.bootstrapServers -}}
 {{- .Values.kafka.bootstrapServers -}}
 {{- else if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled -}}
-{{- $name := default "cp-kafka" .Values.kafka.nameOverride -}}
-{{- printf "SSL://%s-%s-0.%s:9093" .Release.Name $name (include "cp-kafka-rest.cp-kafka-headless.fullname" .) -}}
+{{- printf "SSL://%s:9093" (include "cp-schema-registry.cp-kafka-headless.fullname" .) -}}
 {{- else -}}
-{{- printf "PLAINTEXT://%s:9092" (include "cp-kafka-rest.cp-kafka-headless.fullname" .) -}}
+{{- printf "PLAINTEXT://%s:9092" (include "cp-schema-registry.cp-kafka-headless.fullname" .) -}}
 {{- end -}}
 {{- end -}}
 

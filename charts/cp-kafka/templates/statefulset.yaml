@@ -114,6 +114,8 @@ spec:
         - name: KAFKA_HEAP_OPTS
           value: {{ .Values.heapOptions }}
         {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
+
+        # Kafka configurations
         - name: KAFKA_SSL_KEYSTORE_FILENAME
           value: {{ template "cp-kafka.ssl.broker.keystore" . }}
         - name: KAFKA_SSL_KEYSTORE_CREDENTIALS
@@ -135,14 +137,42 @@ spec:
         - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
           value: SSL:SSL,PLAINTEXT:PLAINTEXT,EXTERNAL:SSL
         - name: KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND
-          value: "true"        
+          value: "false"
+
+        # Confluent metrics
+        - name: CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS
+          value: {{ printf "SSL://%s:9093" (include "cp-kafka.cp-kafka-headless.fullname" .) | quote }}
+        - name: CONFLUENT_METRICS_REPORTER_SECURITY_PROTOCOL
+          value: SSL
+        - name: CONFLUENT_METRICS_REPORTER_SSL_TRUSTSTORE_LOCATION
+          value: /etc/kafka/secrets/{{ template "cp-kafka.ssl.broker.truststore" . }}
+        - name: CONFLUENT_METRICS_REPORTER_SSL_TRUSTSTORE_PASSWORD
+          valueFrom: 
+            secretKeyRef:
+              name: {{ template "cp-kafka.ssl.secretName" . }}
+              key: broker.truststore.password
+        - name: CONFLUENT_METRICS_REPORTER_SSL_KEYSTORE_LOCATION
+          value: /etc/kafka/secrets/{{ template "cp-kafka.ssl.broker.keystore" . }}
+        - name: CONFLUENT_METRICS_REPORTER_SSL_KEYSTORE_PASSWORD
+          valueFrom: 
+            secretKeyRef:
+              name: {{ template "cp-kafka.ssl.secretName" . }}
+              key: broker.keystore.password
+        - name: CONFLUENT_METRICS_REPORTER_SSL_KEY_PASSWORD
+          valueFrom: 
+            secretKeyRef:
+              name: {{ template "cp-kafka.ssl.secretName" . }}
+              key: broker.key.password
+
         {{- if or .Values.ssl.client.auth .Values.global.kafka.ssl.client.auth }}
         - name: KAFKA_SUPER_USERS
-          value: User:{{ default .Values.ssl.client.brokerPrincipal .Values.global.kafka.ssl.client.brokerPrincipal }}
+          value: {{ default .Values.ssl.client.brokerPrincipals .Values.global.kafka.ssl.client.brokerPrincipals }}
         {{- end }}
         {{- else }}
         - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
           value: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+        - name: CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS
+          value: {{ printf "SSL://%s:9092" (include "cp-kafka.cp-kafka-headless.fullname" .) | quote }}
         {{- end }}
         {{- if not (hasKey .Values.configurationOverrides "zookeeper.connect") }}
         - name: KAFKA_ZOOKEEPER_CONNECT
@@ -152,8 +182,6 @@ spec:
           value: {{ include "cp-kafka.log.dirs" . | quote }}
         - name: KAFKA_METRIC_REPORTERS
           value: "io.confluent.metrics.reporter.ConfluentMetricsReporter"
-        - name: CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS
-          value: {{ printf "SSL://%s:9093" (include "cp-kafka.cp-kafka-headless.fullname" .) | quote }}
         {{- range $key, $value := .Values.configurationOverrides }}
         - name: {{ printf "KAFKA_%s" $key | replace "." "_" | upper | quote }}
           value: {{ $value | quote }}
