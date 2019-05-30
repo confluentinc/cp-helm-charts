@@ -146,3 +146,12 @@ cp-zookeeper:
 
   ## If the Zookeeper Chart is disabled a URL and port are required to connect
   url: ""
+
+
+## ------------------------------------------------------
+## Global variables
+## ------------------------------------------------------
+global:
+  kafka:
+    ssl:
+      enabled: false

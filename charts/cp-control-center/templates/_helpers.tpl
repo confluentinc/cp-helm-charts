@@ -45,9 +45,10 @@ Form the Kafka URL. If Kafka is installed as part of this chart, use k8s service
 else use user-provided URL
 */}}
 {{- define "cp-control-center.kafka.bootstrapServers" -}}
+{{- $ssl_enabled := default .Values.ssl.enabled .Values.global.kafka.ssl.enabled false }}
 {{- if .Values.kafka.bootstrapServers -}}
 {{- .Values.kafka.bootstrapServers -}}
-{{- else if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled -}}
+{{- else if $ssl_enabled -}}
 {{- printf "SSL://%s:9093" (include "cp-control-center.cp-kafka-headless.fullname" .) -}}
 {{- else -}}
 {{- printf "PLAINTEXT://%s:9092" (include "cp-control-center.cp-kafka-headless.fullname" .) -}}
@@ -130,20 +131,36 @@ else use user-provided URL
 {{- end -}}
 
 {{/*
+Returns true if SSL is enabled
+*/}}
+{{- define "cp-control-center.kafka.ssl.enabled" -}}
+{{- default .Values.ssl.enabled .Values.global.kafka.ssl.enabled false }}
+{{- end -}}
+
+{{/*
 Create a secret name depending on if we're using shared SSL settings from a parent chart
 */}}
-{{- define "cp-kafka.ssl.secretName" -}}
+{{- define "cp-control-center.kafka.ssl.secretName" -}}
 {{- if .Values.global.kafka.ssl.enabled -}}
-{{ default (printf "%s-%s" .Release.Name "kafka-ssl-secret") .Values.global.kafka.ssl.secretName }}
+{{- default (printf "%s-%s" .Release.Name "kafka-ssl-secret") .Values.global.kafka.ssl.secretName }}
 {{- else -}}
 {{- default (printf "%s-%s" (include "cp-control-center.fullname" .) "ssl-secret") .Values.ssl.secretName -}}
 {{- end -}}
-{{- end -}} 
-
-{{- define "cp-kafka.ssl.client.truststore" -}}
-{{ default .Values.ssl.client.truststoreFile .Values.global.kafka.ssl.client.truststoreFile }}
 {{- end -}}
 
-{{- define "cp-kafka.ssl.client.keystore" -}}
-{{ default .Values.ssl.client.keystoreFile .Values.global.kafka.ssl.client.keystoreFile }}
+{{/*
+Return truststore file name
+*/}}
+{{- define "cp-control-center.kafka.ssl.client.truststore" -}}
+{{- $ssl_enabled := default .Values.ssl.enabled .Values.global.kafka.ssl.enabled false }}
+{{- if $ssl_enabled }}
+{{- default .Values.ssl.client.truststoreFile .Values.global.kafka.ssl.client.truststoreFile }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return keystore file name
+*/}}
+{{- define "cp-control-center.kafka.ssl.client.keystore" -}}
+{{- default .Values.ssl.client.keystoreFile .Values.global.kafka.ssl.client.keystoreFile }}
 {{- end -}}
