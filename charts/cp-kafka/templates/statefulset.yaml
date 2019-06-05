@@ -99,21 +99,10 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.hostIP
-<<<<<<< HEAD
-        - name: POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-=======
         - name: NODE_NAME
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
->>>>>>> 42179b9f579b339a4b66f9d404e2d09f90f7be10
         - name: KAFKA_HEAP_OPTS
           value: {{ .Values.heapOptions }}
         - name: KAFKA_ZOOKEEPER_CONNECT
