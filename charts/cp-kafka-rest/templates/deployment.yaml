@@ -83,6 +83,28 @@ spec:
           - name: KAFKA_REST_JMX_PORT
             value: "{{ .Values.jmx.port }}"
           {{- end }}
+          livenessProbe:
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - curl -f localhost:8082/topics
+            initialDelaySeconds: 5
+            periodSeconds: 90
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - curl -f localhost:8082/topics
+            initialDelaySeconds: 5
+            periodSeconds: 90
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
