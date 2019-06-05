@@ -127,6 +127,21 @@ nodeport:
   servicePort: 19092
   firstListenerPort: 31090
 
+# Rack Aware
+# Set the failure-domain.beta.kubernetes.io/zone value as the rack id.
+# Needs RBAC enabled, see below.
+rackAware:
+  enabled: false
+
+## RBAC configuration
+## Used to get info to set the broker.rack property of the brokers
+serviceAccount:
+  create: false
+
+rbac:
+  create: false
+
+
 ## ------------------------------------------------------
 ## Zookeeper
 ## ------------------------------------------------------
