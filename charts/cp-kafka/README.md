@@ -142,6 +142,11 @@ The configuration parameters in this section control the resources requested and
 | `persistence.storageClass` | Valid options: `nil`, `"-"`, or storage class name. | `nil` |
 | `persistence.disksPerBroker` | The amount of disks that will be attached per instance of Kafka broker. | 1 |
 
+### Scheduler
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `schedulerName` | Alternate scheduler name | `nil` |
+
 ### Kafka JVM Heap Options
 
 | Parameter | Description | Default |
@@ -206,3 +211,4 @@ The configuration parameters in this section control the resources requested and
 | `cp-zookeeper.persistence.dataLogDirSize` | Size for data log dir, which is a dedicated log device to be used, and helps avoid competition between logging and snapshots. This will overwrite corresponding value in cp-zookeeper chart's value.yaml. | `5Gi` |
 | `cp-zookeeper.url` | Service name of Zookeeper cluster (Not needed if zookeeper.enabled is set to true). | `""` |
 | `cp-zookeeper.clientPort` | Port of Zookeeper Cluster | `2181` |
+| `cp-zookeeper.schedulerName`   | Alternate scheduler nane  | `nil`  |

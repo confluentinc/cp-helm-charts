@@ -33,6 +33,11 @@ cp-zookeeper:
   #   cpu: 100m
   #   memory: 128Mi
 
+  ## Use an alternate scheduler.
+  ## ref: https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
+  ##
+  ## schedulerName: ""
+
 ## ------------------------------------------------------
 ## Kafka
 ## ------------------------------------------------------
@@ -60,6 +65,11 @@ cp-kafka:
   #  requests:
   #   cpu: 100m
   #   memory: 128Mi
+
+  ## Use an alternate scheduler.
+  ## ref: https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
+  ##
+  ## schedulerName: ""
 
 ## ------------------------------------------------------
 ## Schema Registry

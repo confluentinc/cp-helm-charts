@@ -155,6 +155,11 @@ The configuration parameters in this section control the resources requested and
 | `persistence.dataLogDirSize` | Size for data log dir, which is a dedicated log device to be used, and helps avoid competition between logging and snaphots. | `5Gi` |
 | `persistence.dataLogDirStorageClass` | Valid options: `nil`, `"-"`, or storage class name. | `nil` |
 
+### Scheduler
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `schedulerName` | Alternate scheduler name | `nil` |
+
 ### Resources
 
 | Parameter | Description | Default |
