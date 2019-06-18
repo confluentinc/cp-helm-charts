@@ -2,17 +2,17 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{ template "cp-kafka.fullname" . }}
+  name: {{ template "cp-schema-registry.fullname" . }}
   labels:
-    app: {{ template "cp-kafka.name" . }}
-    chart: {{ template "cp-kafka.chart" . }}
+    app: {{ template "cp-schema-registry.name" . }}
+    chart: {{ template "cp-schema-registry.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   selector:
     matchLabels:
-      app: {{ template "cp-kafka.name" . }}
-      chart: {{ template "cp-kafka.chart" . }}
+      app: {{ template "cp-schema-registry.name" . }}
+      chart: {{ template "cp-schema-registry.chart" . }}
       release: {{ .Release.Name }}
       heritage: {{ .Release.Service }}
   endpoints:
