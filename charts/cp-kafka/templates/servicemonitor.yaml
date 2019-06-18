@@ -1,0 +1,21 @@
+{{- if and .Values.prometheus.jmx.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "cp-kafka.fullname" . }}
+  labels:
+    app: {{ template "cp-kafka.name" . }}
+    chart: {{ template "cp-kafka.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "cp-kafka.name" . }}
+      chart: {{ template "cp-kafka.chart" . }}
+      release: {{ .Release.Name }}
+      heritage: {{ .Release.Service }}
+  endpoints:
+  - port: metrics
+    interval: 15s
+{{- end }}
