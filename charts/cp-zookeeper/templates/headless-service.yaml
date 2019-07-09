@@ -14,6 +14,7 @@ spec:
     - port: {{ .Values.leaderElectionPort }}
       name: leader-election
   clusterIP: None
+  publishNotReadyAddresses: true
   selector:
     app: {{ template "cp-zookeeper.name" . }}
     release: {{ .Release.Name }}

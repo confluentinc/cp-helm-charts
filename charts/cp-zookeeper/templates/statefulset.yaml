@@ -83,6 +83,28 @@ spec:
         {{- end }}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - echo ruok | nc 127.0.0.1 2181 | grep -q imok || exit 1
+          initialDelaySeconds: 20
+          periodSeconds: 15
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - echo ruok | nc 127.0.0.1 2181 | grep -q imok || exit 1
+          initialDelaySeconds: 20
+          periodSeconds: 15
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
         env:
         - name : KAFKA_HEAP_OPTS
           value: "{{ .Values.heapOptions }}"
