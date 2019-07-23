@@ -6,7 +6,7 @@ replicaCount: 1
 
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-kafka/
-image: confluentinc/cp-kafka-connect
+image: gcr.io/byond-infinity-platform/cp-kafka-connect
 imageTag: 5.2.2
 
 ## Specify a imagePullPolicy

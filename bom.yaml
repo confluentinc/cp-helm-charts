@@ -1,0 +1,16 @@
+# For usage with helm images plugin:
+# https://github.com/b-yond-infinite-network/helm-images
+
+# enter each image in this format: <registry>/<repository>:<tag>
+imagesFromChartValues:
+  - cp-zookeeper.image:cp-zookeeper.imageTag
+  - cp-kafka.image:cp-kafka.imageTag
+  - cp-schema-registry.image:cp-schema-registry.imageTag
+  - cp-kafka-rest.image:cp-kafka-rest.imageTag
+  - cp-kafka-rest.prometheus.jmx.image:cp-kafka-rest.prometheus.jmx.imageTag
+  - cp-ksql-server.prometheus.jmx.image:cp-ksql-server.prometheus.jmx.imageTag
+  - cp-schema-registry.prometheus.jmx.image:cp-schema-registry.prometheus.jmx.imageTag
+  - cp-kafka-connect.image:cp-kafka-connect.imageTag
+  - cp-kafka-connect.persistence.cephFs.initImage
+  - cp-ksql-server.image:cp-ksql-server.imageTag
+  - cp-control-center.image:cp-control-center.imageTag
