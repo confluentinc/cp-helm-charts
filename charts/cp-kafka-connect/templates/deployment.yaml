@@ -65,6 +65,7 @@ spec:
             {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
+          envFrom: {{ .Values.envFrom }}
           env:
             - name: CONNECT_REST_ADVERTISED_HOST_NAME
               valueFrom:

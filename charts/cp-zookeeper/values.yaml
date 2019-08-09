@@ -45,6 +45,10 @@ maxClientCnxns: 60
 autoPurgeSnapRetainCount: 3
 autoPurgePurgeInterval: 24
 
+## Additional environment variables from ConfigMap or Secret
+## Ref: https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/#configure-all-key-value-pairs-in-a-secret-as-container-environment-variables
+envFrom: []
+
 ## Zookeeper JVM Heap Option
 heapOptions: "-Xms512M -Xmx512M"
 

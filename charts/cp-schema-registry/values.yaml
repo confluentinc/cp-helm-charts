@@ -30,6 +30,10 @@ configurationOverrides: {}
 ## Additional env variables
 customEnv: {}
 
+## Additional environment variables from ConfigMap or Secret
+## Ref: https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/#configure-all-key-value-pairs-in-a-secret-as-container-environment-variables
+envFrom: []
+
 ## The port on which the Schema Registry will be available and serving requests
 servicePort: 8081
 

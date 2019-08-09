@@ -116,6 +116,7 @@ The configuration parameters in this section control the resources requested and
  Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `configurationOverrides` | KSQL [configuration](https://docs.confluent.io/current/ksql/docs/installation/server-config/config-reference.html) overrides in the dictionary format | `{}` |
+| `envFrom` | Custom environment variables from Secret or ConfigMap [configuration](https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/#configure-all-key-value-pairs-in-a-secret-as-container-environment-variables) | `[]` |
 
 ### Port
 

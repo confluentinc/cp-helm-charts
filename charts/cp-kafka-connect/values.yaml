@@ -40,6 +40,10 @@ heapOptions: "-Xms512M -Xmx512M"
 ## Additional env variables
 customEnv: {}
 
+## Additional environment variables from ConfigMap or Secret
+## Ref: https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/#configure-all-key-value-pairs-in-a-secret-as-container-environment-variables
+envFrom: []
+
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
