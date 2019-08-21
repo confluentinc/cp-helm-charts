@@ -141,7 +141,10 @@ cp-ksql-server:
   heapOptions: "-Xms512M -Xmx512M"
   ksql:
     headless: false
-
+  persistence:
+    enabled: true
+    # storageClass: ""
+    size: 500Mi
 ## ------------------------------------------------------
 ## Control Center
 ## ------------------------------------------------------
