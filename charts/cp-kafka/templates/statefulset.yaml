@@ -139,10 +139,12 @@ spec:
           export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_NAME}.{{ template "cp-kafka.fullname" . }}-headless.${POD_NAMESPACE}:9092{{ include "cp-kafka.configuration.advertised.listeners" . }} && \
           exec /etc/confluent/docker/run
         volumeMounts:
-        {{- $disksPerBroker := .Values.persistence.disksPerBroker | int }}
-        {{- range $k, $e := until $disksPerBroker }}
-        - name: datadir-{{$k}}
-          mountPath: /opt/kafka/data-{{$k}}
+        {{- if .Values.persistence.enabled }}
+          {{- $disksPerBroker := .Values.persistence.disksPerBroker | int }}
+          {{- range $k, $e := until $disksPerBroker }}
+          - name: datadir-{{$k}}
+            mountPath: /opt/kafka/data-{{$k}}
+          {{- end }}
         {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
