@@ -42,6 +42,15 @@ heapOptions: "-Xms512M -Xmx512M"
 kafka:
   bootstrapServers: ""
 
+# SSL enabled Kafka
+# If setting to true, you need to set the other attributes are set as well
+ssl:
+  enabled: false
+  # secretName: cp-schema-registry-secret   <- If you intend to pre-create the secret outside of helm chart, use this.  Otherwise, leave commented out
+  client: {}
+  #   truststoreFile: "truststore_under_certs_folder.jks"
+  #   keystoreFile: "keystore_under_certs_folder.jks"
+
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -84,3 +93,12 @@ prometheus:
     port: 5556
 
     resources: {}
+
+
+## ------------------------------------------------------
+## Global variables
+## ------------------------------------------------------
+global:
+  kafka:
+    ssl:
+      enabled: false

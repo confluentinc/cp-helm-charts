@@ -54,6 +54,31 @@ else use user-provided URL
 {{- end -}}
 
 {{/*
+Create a default fully qualified kafka broker name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "cp-kafka-rest.cp-kafka.fullname" -}}
+{{- $name := default "cp-kafka" (index .Values "cp-kafka" "nameOverride") -}}
+{{- printf "%s-%s-headless" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+Form the Kafka Broker Service URL. If kafka is installed as part of this chart, use k8s service discovery,
+else use user-provided URL
+*/}}
+{{- define "cp-kafka-rest.cp-kafka.broker-url" }}
+{{- if (index .Values "cp-kafka" "url") -}}
+{{- printf "%s" (index .Values "cp-kafka" "url") }}
+{{- else if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled -}}
+{{- printf "SSL://%s:9093" (include "cp-kafka-rest.cp-kafka.fullname" .) -}}
+{{- else -}}
+{{- $name := default "cp-kafka" (index .Values "cp-kafka" "nameOverride") -}}
+{{- printf "PLAINTEXT://%s:9092" (include "cp-kafka-rest.cp-kafka.fullname" .) -}}
+{{- end -}}
+{{- end -}}
+
+
+{{/*
 Create a default fully qualified schema registry name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
@@ -68,4 +93,23 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- else -}}
 {{- printf "http://%s:8081" (include "cp-kafka-rest.cp-schema-registry.fullname" .) -}}
 {{- end -}}
+{{- end -}}
+
+{{/*
+Create a secret name depending on if we're using shared SSL settings from a parent chart
+*/}}
+{{- define "cp-kafka.ssl.secretName" -}}
+{{- if .Values.global.kafka.ssl.enabled -}}
+{{ default (printf "%s-%s" .Release.Name "kafka-ssl-secret") .Values.global.kafka.ssl.secretName }}
+{{- else -}}
+{{ default (printf "%s-%s" (include "cp-kafka-rest.fullname" .) "ssl-secret") .Values.ssl.secretName }}
+{{- end -}}
+{{- end -}} 
+
+{{- define "cp-kafka.ssl.client.truststore" -}}
+{{ default .Values.ssl.client.truststoreFile .Values.global.kafka.ssl.client.truststoreFile }}
+{{- end -}}
+
+{{- define "cp-kafka.ssl.client.keystore" -}}
+{{ default .Values.ssl.client.keystoreFile .Values.global.kafka.ssl.client.keystoreFile }}
 {{- end -}}

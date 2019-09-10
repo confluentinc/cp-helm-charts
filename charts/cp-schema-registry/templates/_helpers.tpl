@@ -35,7 +35,7 @@ Create chart name and version as used by the chart label.
 Create a default fully qualified kafka headless name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
-{{- define "cp-kafka-rest.cp-kafka-headless.fullname" -}}
+{{- define "cp-schema-registry.cp-kafka-headless.fullname" -}}
 {{- $name := "cp-kafka-headless" -}}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
@@ -47,8 +47,10 @@ else use user-provided URL
 {{- define "cp-schema-registry.kafka.bootstrapServers" -}}
 {{- if .Values.kafka.bootstrapServers -}}
 {{- .Values.kafka.bootstrapServers -}}
+{{- else if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled -}}
+{{- printf "SSL://%s:9093" (include "cp-schema-registry.cp-kafka-headless.fullname" .) -}}
 {{- else -}}
-{{- printf "PLAINTEXT://%s:9092" (include "cp-kafka-rest.cp-kafka-headless.fullname" .) -}}
+{{- printf "PLAINTEXT://%s:9092" (include "cp-schema-registry.cp-kafka-headless.fullname" .) -}}
 {{- end -}}
 {{- end -}}
 
@@ -61,4 +63,23 @@ Default GroupId to Release Name but allow it to be overridden
 {{- else -}}
 {{- .Release.Name -}}
 {{- end -}}
+{{- end -}}
+
+{{/*
+Create a secret name depending on if we're using shared SSL settings from a parent chart
+*/}}
+{{- define "cp-kafka.ssl.secretName" -}}
+{{- if .Values.global.kafka.ssl.enabled -}}
+{{ default (printf "%s-%s" .Release.Name "kafka-ssl-secret") .Values.global.kafka.ssl.secretName }}
+{{- else -}}
+{{- default (printf "%s-%s" (include "cp-schema-registry.fullname" .) "ssl-secret") .Values.ssl.secretName -}}
+{{- end -}}
+{{- end -}} 
+
+{{- define "cp-kafka.ssl.client.truststore" -}}
+{{ default .Values.ssl.client.truststoreFile .Values.global.kafka.ssl.client.truststoreFile }}
+{{- end -}}
+
+{{- define "cp-kafka.ssl.client.keystore" -}}
+{{ default .Values.ssl.client.keystoreFile .Values.global.kafka.ssl.client.keystoreFile }}
 {{- end -}}

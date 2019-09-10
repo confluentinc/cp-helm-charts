@@ -19,7 +19,7 @@ imagePullPolicy: IfNotPresent
 imagePullSecrets:
 
 servicePort: 8082
-
+  
 ## Kafka rest JVM Heap Option
 heapOptions: "-Xms512M -Xmx512M"
 
@@ -90,3 +90,24 @@ cp-zookeeper:
 ## e.g. gnoble-panther-cp-schema-registry:8081
 cp-schema-registry:
   url: ""
+
+cp-kafka:
+  url: ""
+
+# SSL enabled Kafka
+# If setting to true, you need to set the other attributes are set as well
+ssl:
+  enabled: false
+  # secretName: cp-kafka-rest-secret   <- If you intend to pre-create the secret outside of helm chart, use this.  Otherwise, leave commented out
+  client: {}
+  #   truststoreFile: "truststore_under_certs_folder.jks"
+  #   keystoreFile: "keystore_under_certs_folder.jks"
+
+
+## ------------------------------------------------------
+## Global variables
+## ------------------------------------------------------
+global:
+  kafka:
+    ssl:
+      enabled: false

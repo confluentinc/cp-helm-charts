@@ -78,6 +78,31 @@ spec:
             value: {{ template "cp-schema-registry.groupId" . }}
           - name: SCHEMA_REGISTRY_MASTER_ELIGIBILITY
             value: "true"
+          {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
+          - name: SCHEMA_REGISTRY_KAFKASTORE_SECURITY_PROTOCOL
+            value: SSL
+          - name: SCHEMA_REGISTRY_KAFKASTORE_SSL_TRUSTSTORE_LOCATION
+            value: /etc/kafka/secrets/{{ template "cp-kafka.ssl.client.truststore" . }}
+          - name: SCHEMA_REGISTRY_KAFKASTORE_SSL_TRUSTSTORE_PASSWORD
+            valueFrom: 
+              secretKeyRef:
+                name: {{ template "cp-kafka.ssl.secretName" . }}
+                key: client.truststore.password
+          {{- if or .Values.ssl.client.auth .Values.global.kafka.ssl.client.auth }}
+          - name: SCHEMA_REGISTRY_KAFKASTORE_SSL_KEYSTORE_LOCATION
+            value: /etc/kafka/secrets/{{ template "cp-kafka.ssl.client.keystore" . }}
+          - name: SCHEMA_REGISTRY_KAFKASTORE_SSL_KEYSTORE_PASSWORD
+            valueFrom: 
+              secretKeyRef:
+                name: {{ template "cp-kafka.ssl.secretName" . }}
+                key: client.keystore.password
+          - name: SCHEMA_REGISTRY_KAFKASTORE_SSL_KEY_PASSWORD
+            valueFrom: 
+              secretKeyRef:
+                name: {{ template "cp-kafka.ssl.secretName" . }}
+                key: client.key.password
+          {{- end }}
+          {{- end }}
           - name: SCHEMA_REGISTRY_HEAP_OPTS
             value: "{{ .Values.heapOptions }}"
           {{ range $configName, $configValue := .Values.configurationOverrides }}
@@ -96,11 +121,21 @@ spec:
           - name: JMX_PORT
             value: "{{ .Values.jmx.port }}"
           {{- end }}
+          volumeMounts:
+          {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
+          - name: ssl
+            mountPath: "/etc/kafka/secrets"
+          {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
       {{- end }}
       volumes:
+      {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
+      - name: ssl
+        secret:
+          secretName: {{ template "cp-kafka.ssl.secretName" . }}
+      {{- end }}
       {{- if .Values.prometheus.jmx.enabled }}
       - name: jmx-config
         configMap:

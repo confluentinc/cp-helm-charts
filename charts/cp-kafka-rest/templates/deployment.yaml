@@ -66,6 +66,33 @@ spec:
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           env:
+          {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
+          - name: KAFKA_REST_CLIENT_SECURITY_PROTOCOL
+            value: SSL
+          - name: KAFKA_REST_CLIENT_SSL_TRUSTSTORE_LOCATION
+            value: /etc/kafka/secrets/{{ template "cp-kafka.ssl.client.truststore" . }}
+          - name: KAFKA_REST_CLIENT_SSL_TRUSTSTORE_PASSWORD
+            valueFrom: 
+              secretKeyRef:
+                name: {{ template "cp-kafka.ssl.secretName" . }}
+                key: client.truststore.password
+          - name: KAFKA_REST_BOOTSTRAP_SERVERS
+            value: {{ template "cp-kafka-rest.cp-kafka.broker-url" . }}
+          {{- if or .Values.ssl.client.auth .Values.global.kafka.ssl.client.auth }}
+          - name: KAFKA_REST_CLIENT_SSL_KEYSTORE_LOCATION
+            value: /etc/kafka/secrets/{{ template "cp-kafka.ssl.client.keystore" . }}
+          - name: KAFKA_REST_CLIENT_SSL_KEYSTORE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "cp-kafka.ssl.secretName" . }}
+                key: client.keystore.password
+          - name: KAFKA_REST_CLIENT_SSL_KEY_PASSWORD
+            valueFrom: 
+              secretKeyRef:
+                name: {{ template "cp-kafka.ssl.secretName" . }}
+                key: client.key.password
+          {{- end }}
+          {{- end }}
           - name: KAFKA_REST_HOST_NAME
             valueFrom:
               fieldRef:
@@ -84,11 +111,21 @@ spec:
           - name: KAFKA_REST_JMX_PORT
             value: "{{ .Values.jmx.port }}"
           {{- end }}
+          {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
+          volumeMounts:
+          - name: ssl
+            mountPath: "/etc/kafka/secrets"
+          {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
       {{- end }}
       volumes:
+      {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
+      - name: ssl
+        secret:
+          secretName: {{ template "cp-kafka.ssl.secretName" . }}
+      {{- end }}
       {{- if .Values.prometheus.jmx.enabled }}
       - name: jmx-config
         configMap:

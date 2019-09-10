@@ -52,6 +52,31 @@ spec:
               value: {{ template "cp-control-center.cp-ksql-server.service-name" . }}
             - name: CONTROL_CENTER_SCHEMA_REGISTRY_URL
               value: {{ template "cp-control-center.cp-schema-registry.service-name" . }}
+              # SSL
+            {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
+            - name: CONTROL_CENTER_STREAMS_SECURITY_PROTOCOL
+              value: SSL
+            - name: CONTROL_CENTER_STREAMS_SSL_TRUSTSTORE_LOCATION
+              value: /etc/kafka/secrets/{{ template "cp-control-center.kafka.ssl.client.truststore" . }}
+            - name: CONTROL_CENTER_STREAMS_SSL_TRUSTSTORE_PASSWORD
+              valueFrom: 
+                secretKeyRef:
+                  name: {{ template "cp-control-center.kafka.ssl.secretName" . }}
+                  key: client.truststore.password
+            - name: CONTROL_CENTER_STREAMS_SSL_KEYSTORE_LOCATION
+              value: /etc/kafka/secrets/{{ template "cp-control-center.kafka.ssl.client.keystore" . }}
+            - name: CONTROL_CENTER_STREAMS_SSL_KEYSTORE_PASSWORD
+              valueFrom: 
+                secretKeyRef:
+                  name: {{ template "cp-control-center.kafka.ssl.secretName" . }}
+                  key: client.keystore.password
+            - name: CONTROL_CENTER_STREAMS_SSL_KEY_PASSWORD
+              valueFrom: 
+                secretKeyRef:
+                  name: {{ template "cp-control-center.kafka.ssl.secretName" . }}
+                  key: client.key.password
+            {{- end }}
+            # Other configs
             - name: KAFKA_HEAP_OPTS
               value: "{{ .Values.heapOptions }}"
             {{- range $key, $value := .Values.configurationOverrides }}
@@ -61,10 +86,21 @@ spec:
             {{- range $key, $value := .Values.customEnv }}
             - name: {{ $key | quote }}
               value: {{ $value | quote }}
-            {{- end }}            
+            {{- end }}
+          {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
+          volumeMounts:
+          - name: ssl
+            mountPath: "/etc/kafka/secrets"
+          {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
+      {{- end }}
+      volumes:
+      {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
+      - name: ssl
+        secret:
+          secretName: {{ template "cp-control-center.kafka.ssl.secretName" . }}
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

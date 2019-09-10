@@ -70,7 +70,38 @@ spec:
           - name: ksql-queries
             mountPath: /etc/ksql/queries
           {{- end }}
+          {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
+          - name: ssl
+            mountPath: "/etc/kafka/secrets"
+          {{- end }}
           env:
+          {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
+          - name: KSQL_SECURITY_PROTOCOL
+            value: SSL
+          - name: KSQL_SSL_TRUSTSTORE_LOCATION
+            value: /etc/kafka/secrets/{{ template "cp-kafka.ssl.client.truststore" . }}
+          - name: KSQL_SSL_TRUSTSTORE_PASSWORD
+            valueFrom: 
+              secretKeyRef:
+                name: {{ template "cp-kafka.ssl.secretName" . }}
+                key: client.truststore.password
+          {{- if or .Values.ssl.client.auth .Values.global.kafka.ssl.client.auth }}
+          - name: KSQL_SSL_KEYSTORE_LOCATION
+            value: /etc/kafka/secrets/{{ template "cp-kafka.ssl.client.keystore" . }}
+          - name: KSQL_SSL_KEYSTORE_PASSWORD
+            valueFrom: 
+              secretKeyRef:
+                name: {{ template "cp-kafka.ssl.secretName" . }}
+                key: client.keystore.password
+          - name: KSQL_SSL_KEY_PASSWORD
+            valueFrom: 
+              secretKeyRef:
+                name: {{ template "cp-kafka.ssl.secretName" . }}
+                key: client.key.password
+          {{- end }}
+          {{- end }}
+          - name: KSQL_PRODUCER_RETRIES
+            value: "15"
           - name: KSQL_BOOTSTRAP_SERVERS
             value: {{ template "cp-ksql-server.kafka.bootstrapServers" . }}
           - name: KSQL_KSQL_SERVICE_ID
@@ -103,6 +134,11 @@ spec:
       - name: jmx-config
         configMap:
           name: {{ template "cp-ksql-server.fullname" . }}-jmx-configmap
+      {{- end }}
+      {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
+      - name: ssl
+        secret:
+          secretName: {{ template "cp-kafka.ssl.secretName" . }}
       {{- end }}
       {{- if .Values.ksql.headless }}
       - name: ksql-queries
