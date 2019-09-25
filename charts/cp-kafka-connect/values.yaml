@@ -23,7 +23,7 @@ servicePort: 8083
 ## Kafka Connect properties
 ## ref: https://docs.confluent.io/current/connect/userguide.html#configuring-workers
 configurationOverrides:
-  "plugin.path": "/usr/share/java"
+  "plugin.path": "/usr/share/java,/usr/share/confluent-hub-components"
   "key.converter": "io.confluent.connect.avro.AvroConverter"
   "value.converter": "io.confluent.connect.avro.AvroConverter"
   "key.converter.schemas.enable": "false"
