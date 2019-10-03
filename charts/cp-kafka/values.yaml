@@ -35,7 +35,6 @@ updateStrategy: RollingUpdate
 ## Kafka Server properties
 ## ref: https://kafka.apache.org/documentation/#configuration
 configurationOverrides:
-  "offsets.topic.replication.factor": "3"
   # "default.replication.factor": 3
   # "min.insync.replicas": 2
   # "auto.create.topics.enable": false
@@ -56,6 +55,15 @@ configurationOverrides:
 customEnv: {}
   # KAFKA_METRIC_REPORTERS: "io.confluent.metrics.reporter.ConfluentMetricsReporter"
   # CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: "localhost:9092"
+
+## The replication factor for the offsets topic (set higher to ensure availability). 
+## Internal topic creation will fail until the cluster size meets this replication factor requirement.
+## If desired broker count is lower, will use the broker count
+offsetsReplication: 3
+
+## Number of replicas in the metric topic. It must not be higher than the number of brokers in the Kafka cluster.
+## If desired broker count is lower, will use the broker count
+metricsReplication: 3
 
 persistence:
   enabled: true
