@@ -3,6 +3,10 @@ kind: StatefulSet
 metadata:
   name: {{ template "cp-zookeeper.fullname" . }}
   labels:
+    helm.sh/chart: {{ include "cp-zookeeper.chart" . }}
+    app.kubernetes.io/name: {{ include "cp-zookeeper.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
     app: {{ template "cp-zookeeper.name" . }}
     chart: {{ template "cp-zookeeper.chart" . }}
     release: {{ .Release.Name }}
@@ -16,6 +20,8 @@ spec:
   template:
     metadata:
       labels:
+        app.kubernetes.io/name: {{ include "cp-zookeeper.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
         app: {{ template "cp-zookeeper.name" . }}
         release: {{ .Release.Name }}
       {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
