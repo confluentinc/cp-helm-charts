@@ -108,6 +108,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `configurationOverrides` | Kafka Connect [configuration](https://docs.confluent.io/current/connect/references/allconfigs.html) overrides in the dictionary format. | `{}` |
+| `secretConfOverrides` | Kafka Connect [configuration](https://docs.confluent.io/current/connect/references/allconfigs.html) secret overrides in the dictionary format. These settings are identical to `configurationOverrides`, except that they are exposed to the pod via a secret. | `{}` |
 | `customEnv` | Custom environmental variables | `{}` |
 
 ### Kafka Connect JVM Heap Options

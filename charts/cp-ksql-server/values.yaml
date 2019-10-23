@@ -23,7 +23,8 @@ servicePort: 8088
 ## KSQL JVM Heap Option
 heapOptions: "-Xms512M -Xmx512M"
 
-resources: {}
+resources:
+  {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -90,7 +91,13 @@ kafka:
 cp-schema-registry:
   url: ""
 
-# KSQL configuration options
+## KSQL configuration options
 ## ref: https://docs.confluent.io/current/ksql/docs/installation/server-config/config-reference.html
-configurationOverrides: {}
+configurationOverrides:
+  {}
   # "ksql.streams.producer.retries": "2147483647"
+
+## KSQL secret configuration options (identical to the configurationOverrides, but stores values in a secret)
+## ref: https://docs.confluent.io/current/ksql/docs/installation/server-config/config-reference.html
+secretConfOverrides:
+  # kafkastore.sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="<ACCESS_KEY>" password="<ACCESS_SECRET>";

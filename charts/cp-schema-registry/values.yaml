@@ -27,6 +27,11 @@ imagePullSecrets:
 ## Configuration Options can be found here: https://docs.confluent.io/current/schema-registry/docs/config.html
 configurationOverrides: {}
 
+## Schema Registry Secret Settings Overrides (identical to the configurationOverrides, but stores values in a secret)
+## Configuration Options can be found here: https://docs.confluent.io/current/schema-registry/docs/config.html
+secretConfOverrides:
+  # kafkastore.sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="<ACCESS_KEY>" password="<ACCESS_SECRET>";
+
 ## Additional env variables
 customEnv: {}
 
@@ -42,7 +47,8 @@ heapOptions: "-Xms512M -Xmx512M"
 kafka:
   bootstrapServers: ""
 
-resources: {}
+resources:
+  {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following

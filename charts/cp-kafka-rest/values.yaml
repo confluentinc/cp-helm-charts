@@ -23,7 +23,8 @@ servicePort: 8082
 ## Kafka rest JVM Heap Option
 heapOptions: "-Xms512M -Xmx512M"
 
-resources: {}
+resources:
+  {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -50,6 +51,11 @@ tolerations: {}
 ## ref: https://docs.confluent.io/current/kafka-rest/docs/config.html
 configurationOverrides:
   # "consumer.request.timeout.ms": 5000
+
+## Kafka REST secret configuration options (identical to configurationOverrides, but stores values in the secret)
+## ref: https://docs.confluent.io/current/kafka-rest/docs/config.html
+secretConfOverrides:
+  # kafkastore.sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="<ACCESS_KEY>" password="<ACCESS_SECRET>";
 
 ## Monitoring
 ## Kafka REST JMX Settings

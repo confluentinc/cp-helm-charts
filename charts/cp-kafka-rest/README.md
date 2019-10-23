@@ -113,6 +113,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `configurationOverrides` | Kafka REST [configuration](https://docs.confluent.io/current/kafka-rest/docs/config.html) overrides in the dictionary format | `{}` |
+| `secretConfOverrides` | Kafka REST [configuration](https://docs.confluent.io/current/kafka-rest/docs/config.html) secret overrides in the dictionary format. These settings are identical to `configurationOverrides`, except that they are exposed to the pod via a secret. | `{}` |
 
 ### Confluent Kafka REST JVM Heap Options
 

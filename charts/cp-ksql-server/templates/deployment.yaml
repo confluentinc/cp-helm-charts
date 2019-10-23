@@ -70,6 +70,9 @@ spec:
           - name: ksql-queries
             mountPath: /etc/ksql/queries
           {{- end }}
+          envFrom:
+          - secretRef:
+              name: {{ template "cp-ksql-server.fullname" . }}-env
           env:
           - name: KSQL_BOOTSTRAP_SERVERS
             value: {{ template "cp-ksql-server.kafka.bootstrapServers" . }}

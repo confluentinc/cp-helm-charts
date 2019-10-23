@@ -21,7 +21,7 @@ imagePullSecrets:
 serviceHttpPort: 9021
 
 ## Control Center properties
-## ref: 
+## ref:
 configurationOverrides:
   "replication.factor": "3"
   # "internal.topics.replication": "1"
@@ -32,13 +32,19 @@ configurationOverrides:
   # "streams.consumer.request.timeout.ms": "960032"
   # "rest.listeners": "http://0.0.0.0:9021"
 
+## Control Center secret properties (identical to the configurationOverrides, but stores values in a secret)
+## ref:
+secretConfOverrides:
+  # kafkastore.sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="<ACCESS_KEY>" password="<ACCESS_SECRET>";
+
 ## Kafka Connect JVM Heap Option
 heapOptions: "-Xms512M -Xmx512M"
 
 ## Additional env variables
 customEnv: {}
 
-resources: {}
+resources:
+  {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -100,4 +106,4 @@ cp-ksql-server:
 
 cp-zookeeper:
   ## If the Zookeeper Chart is disabled a URL and port are required to connect
-  url: ""  
+  url: ""
