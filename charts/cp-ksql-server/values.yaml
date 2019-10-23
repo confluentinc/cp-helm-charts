@@ -101,3 +101,6 @@ configurationOverrides:
 ## ref: https://docs.confluent.io/current/ksql/docs/installation/server-config/config-reference.html
 secretConfOverrides:
   # kafkastore.sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="<ACCESS_KEY>" password="<ACCESS_SECRET>";
+
+## Additional env variables
+customEnv: {}

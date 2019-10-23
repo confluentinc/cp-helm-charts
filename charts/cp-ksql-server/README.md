@@ -117,6 +117,7 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `configurationOverrides` | KSQL [configuration](https://docs.confluent.io/current/ksql/docs/installation/server-config/config-reference.html) overrides in the dictionary format | `{}` |
 | `secretConfOverrides` | KSQL [configuration](https://docs.confluent.io/current/ksql/docs/installation/server-config/config-reference.html) secret overrides in the dictionary format. These settings are identical to `configurationOverrides`, except that they are exposed to the pod via a secret. | `{}` |
+| `customEnv` | Custom environmental variables | `{}` |
 
 ### Port
 
