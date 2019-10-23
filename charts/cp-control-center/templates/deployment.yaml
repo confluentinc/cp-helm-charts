@@ -39,9 +39,11 @@ spec:
               protocol: TCP
           resources:
 {{- toYaml .Values.resources | indent 12 }}
+          {{- if .Values.secretConfOverrides }}
           envFrom:
           - secretRef:
               name: {{ template "cp-control-center.fullname" . }}-env
+          {{- end }}
           env:
             - name: CONTROL_CENTER_BOOTSTRAP_SERVERS
               value: {{ template "cp-control-center.kafka.bootstrapServers" . }}

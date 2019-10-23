@@ -65,9 +65,11 @@ spec:
             {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
+          {{- if .Values.secretConfOverrides }}
           envFrom:
           - secretRef:
               name: {{ template "cp-kafka-rest.fullname" . }}-env
+          {{- end }}
           env:
           - name: KAFKA_REST_HOST_NAME
             valueFrom:

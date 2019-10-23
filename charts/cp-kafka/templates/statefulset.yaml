@@ -88,9 +88,11 @@ spec:
         {{- end }}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
+        {{- if .Values.secretConfOverrides }}
         envFrom:
         - secretRef:
             name: {{ template "cp-kafka.fullname" . }}-env
+        {{- end }}
         env:
         - name: POD_IP
           valueFrom:
