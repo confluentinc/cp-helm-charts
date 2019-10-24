@@ -29,6 +29,9 @@ spec:
       {{- end }}
       {{- end }}
     spec:
+      {{- if .Values.serviceAccount.create }}
+      serviceAccountName: {{ template "cp-kafka-connect.serviceAccountName" . }}
+      {{- end }}
       containers:
         {{- if .Values.prometheus.jmx.enabled }}
         - name: prometheus-jmx-exporter
@@ -116,6 +119,3 @@ spec:
       tolerations:
 {{ toYaml .Values.tolerations | indent 8 }}
       {{- end }}
-      {{- if .Values.serviceAccount.create -}}
-      serviceAccountName: {{ template "cp-kafka-connect.serviceAccountName" . }}
-      {{- end -}}

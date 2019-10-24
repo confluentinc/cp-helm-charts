@@ -85,7 +85,7 @@ Create the name of the service account to use
 */}}
 {{- define "cp-kafka-connect.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create -}}
-    {{ default (include "cp-kafka-connect.fullname" .) .Values.serviceAccount.name }}
+    {{ default (include "cp-kafka-connect.name" .) .Values.serviceAccount.name }}
 {{- else -}}
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}
