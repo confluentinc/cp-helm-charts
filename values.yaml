@@ -167,7 +167,6 @@ cp-control-center:
   #  requests:
   #   cpu: 100m
   #   memory: 128Mi
-<<<<<<< HEAD
 
 ## ------------------------------------------------------
 ## Global variables for all charts
@@ -175,7 +174,7 @@ cp-control-center:
 global:
   kafka:
     ssl:
-      enabled: true
+      enabled: false
       client:
         auth: required
         brokerPrincipals: User:CN=internal
@@ -191,5 +190,3 @@ global:
         keystorePassword: test1234
         keyPassword: test1234
         truststorePassword: test1234
-=======
->>>>>>> 9b120fcdcbd5126390fcb32a4a0fb60ba8da3d0b
