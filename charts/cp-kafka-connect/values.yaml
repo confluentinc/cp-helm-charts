@@ -7,7 +7,7 @@ replicaCount: 1
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-kafka/
 image: confluentinc/cp-kafka-connect
-imageTag: 5.2.1
+imageTag: 5.3.1
 
 ## Specify a imagePullPolicy
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -22,6 +22,7 @@ servicePort: 8083
 
 ## Kafka Connect Worker Configurations
 ## ref: https://docs.confluent.io/current/connect/userguide.html#configuring-workers
+<<<<<<< HEAD
 connectKeyConverter: "io.confluent.connect.avro.AvroConverter"
 connectValueConverter: "io.confluent.connect.avro.AvroConverter"
 connectKeyConverterSchemaEnable: false
@@ -29,6 +30,25 @@ connectValueConverterSchemaEnable: false
 connectInternalKeyConverter: "org.apache.kafka.connect.json.JsonConverter"
 connectInternalValueConverter: "org.apache.kafka.connect.json.JsonConverter"
 pluginPath: "/usr/share/java"
+=======
+configurationOverrides:
+  "plugin.path": "/usr/share/java,/usr/share/confluent-hub-components"
+  "key.converter": "io.confluent.connect.avro.AvroConverter"
+  "value.converter": "io.confluent.connect.avro.AvroConverter"
+  "key.converter.schemas.enable": "false"
+  "value.converter.schemas.enable": "false"
+  "internal.key.converter": "org.apache.kafka.connect.json.JsonConverter"
+  "internal.value.converter": "org.apache.kafka.connect.json.JsonConverter"
+  "config.storage.replication.factor": "3"
+  "offset.storage.replication.factor": "3"
+  "status.storage.replication.factor": "3"
+
+## Kafka Connect JVM Heap Option
+heapOptions: "-Xms512M -Xmx512M"
+
+## Additional env variables
+customEnv: {}
+>>>>>>> 9b120fcdcbd5126390fcb32a4a0fb60ba8da3d0b
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -68,6 +88,7 @@ prometheus:
     enabled: true
     image: solsson/kafka-prometheus-jmx-exporter@sha256
     imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
+    imagePullPolicy: IfNotPresent
     port: 5556
 
     ## Resources configuration for the JMX exporter container.

@@ -49,6 +49,7 @@ spec:
       {{- if .Values.prometheus.jmx.enabled }}
       - name: prometheus-jmx-exporter
         image: "{{ .Values.prometheus.jmx.image }}:{{ .Values.prometheus.jmx.imageTag }}"
+        imagePullPolicy: "{{ .Values.prometheus.jmx.imagePullPolicy }}"
         command:
         - java
         - -XX:+UnlockExperimentalVMOptions
@@ -210,10 +211,12 @@ spec:
           {{- end }}
           exec /etc/confluent/docker/run
         volumeMounts:
-        {{- $disksPerBroker := .Values.persistence.disksPerBroker | int }}
-        {{- range $k, $e := until $disksPerBroker }}
-        - name: datadir-{{$k}}
-          mountPath: /opt/kafka/data-{{$k}}
+        {{- if .Values.persistence.enabled }}
+          {{- $disksPerBroker := .Values.persistence.disksPerBroker | int }}
+          {{- range $k, $e := until $disksPerBroker }}
+          - name: datadir-{{$k}}
+            mountPath: /opt/kafka/data-{{$k}}
+          {{- end }}
         {{- end }}
         {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
         - name: ssl

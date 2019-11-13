@@ -5,7 +5,7 @@ cp-zookeeper:
   enabled: true
   servers: 3
   image: confluentinc/cp-zookeeper
-  imageTag: 5.2.1
+  imageTag: 5.3.1
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
   ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
   imagePullSecrets:
@@ -40,7 +40,7 @@ cp-kafka:
   enabled: true
   brokers: 3
   image: confluentinc/cp-enterprise-kafka
-  imageTag: 5.2.1
+  imageTag: 5.3.1
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
   ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
   imagePullSecrets:
@@ -69,7 +69,7 @@ cp-kafka:
 cp-schema-registry:
   enabled: true
   image: confluentinc/cp-schema-registry
-  imageTag: 5.2.1
+  imageTag: 5.3.1
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
   ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
   imagePullSecrets:
@@ -91,7 +91,7 @@ cp-schema-registry:
 cp-kafka-rest:
   enabled: true
   image: confluentinc/cp-kafka-rest
-  imageTag: 5.2.1
+  imageTag: 5.3.1
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
   ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
   imagePullSecrets:
@@ -113,7 +113,7 @@ cp-kafka-rest:
 cp-kafka-connect:
   enabled: true
   image: confluentinc/cp-kafka-connect
-  imageTag: 5.2.1
+  imageTag: 5.3.1
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
   ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
   imagePullSecrets:
@@ -137,7 +137,7 @@ cp-kafka-connect:
 cp-ksql-server:
   enabled: true
   image: confluentinc/cp-ksql-server
-  imageTag: 5.2.1
+  imageTag: 5.3.1
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
   ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
   imagePullSecrets:
@@ -167,6 +167,7 @@ cp-control-center:
   #  requests:
   #   cpu: 100m
   #   memory: 128Mi
+<<<<<<< HEAD
 
 ## ------------------------------------------------------
 ## Global variables for all charts
@@ -190,3 +191,5 @@ global:
         keystorePassword: test1234
         keyPassword: test1234
         truststorePassword: test1234
+=======
+>>>>>>> 9b120fcdcbd5126390fcb32a4a0fb60ba8da3d0b
