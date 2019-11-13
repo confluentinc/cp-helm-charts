@@ -219,8 +219,8 @@ spec:
           {{- end }}
         {{- end }}
         {{- if or .Values.ssl.enabled .Values.global.kafka.ssl.enabled }}
-        - name: ssl
-          mountPath: "/etc/kafka/secrets"
+          - name: ssl
+            mountPath: "/etc/kafka/secrets"
         {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
