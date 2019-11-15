@@ -39,7 +39,7 @@ helm install --name my-confluent cp-helm-charts
 ### Install with a existing cp-kafka and cp-schema-registry release
 
 ```console
-helm install --set cp-zookeeper.url="unhinged-robin-cp-zookeeper:2181",cp-schema-registry.url="lolling-chinchilla-cp-schema-registry:8081" cp-helm-charts/charts/cp-ksql-server
+helm install --set cp-zookeeper.url="unhinged-robin-cp-zookeeper:2181",cp-schema-registry.url="http://lolling-chinchilla-cp-schema-registry:8081" cp-helm-charts/charts/cp-ksql-server
 ```
 
 ### Installed Components
