@@ -63,6 +63,14 @@ spec:
             - containerPort: {{ .Values.jmx.port }}
               name: jmx
             {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: rest-proxy
+          readinessProbe:
+            httpGet:
+              path: /
+              port: rest-proxy
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           env:
