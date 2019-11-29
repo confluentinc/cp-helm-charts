@@ -200,7 +200,7 @@ Manual Test
 
    ::
 
-   git clone https://github.com/confluentinc/cp-helm-charts.git
+    git clone https://github.com/confluentinc/cp-helm-charts.git
 
 1. Deploy a |zk| client pod.
 
