@@ -52,6 +52,15 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
+volumeMounts: []
+#  - name: gcs
+#    mountPath: /usr/share/credentials
+
+volumes: []
+#  - name: gcs
+#    secret:
+#      secretName: connect-gcs
+
 ## Custom pod annotations
 podAnnotations: {}
 

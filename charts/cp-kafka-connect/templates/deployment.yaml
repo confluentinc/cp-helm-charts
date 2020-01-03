@@ -69,6 +69,10 @@ spec:
             {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
+          {{- if gt (len .Values.volumeMounts) 0 }}
+          volumeMounts:
+{{ toYaml .Values.volumeMounts | indent 10 }}
+          {{- end}}
           env:
             - name: CONNECT_REST_ADVERTISED_HOST_NAME
               valueFrom:
@@ -112,6 +116,9 @@ spec:
         configMap:
           name: {{ template "cp-kafka-connect.fullname" . }}-jmx-configmap
       {{- end }}
+      {{- if gt (len .Values.volumes) 0 }}
+{{ toYaml .Values.volumes | indent 6 }}
+      {{- end}}
       {{- if .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}

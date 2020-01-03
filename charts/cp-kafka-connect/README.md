@@ -125,6 +125,18 @@ The configuration parameters in this section control the resources requested and
 | `resources.requests.limit` | The upper limit CPU usage for a Kafka Connect Pod. | see [values.yaml](values.yaml) for details |
 | `resources.requests.limit` | The upper limit memory usage for a Kafka Connect Pod. | see [values.yaml](values.yaml) for details |
 
+### Volume Mounts
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `volumeMounts` | Volume mounts to configure for Kafka Connect containers | see [values.yaml](values.yaml) for details |
+
+### Volumes
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `volumes` | Volumes to configure for Kafka Connect containers | see [values.yaml](values.yaml) for details |
+
 ### Annotations
 
 | Parameter | Description | Default |
