@@ -105,6 +105,7 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `configurationOverrides` | Schema Registry [configuration](https://docs.confluent.io/current/schema-registry/docs/config.html) overrides in the dictionary format. | `{}` |
 | `customEnv` | Custom environmental variables | `{}` |
+| `envFrom` | Custom environment variables from Secret or ConfigMap [configuration](https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/#configure-all-key-value-pairs-in-a-secret-as-container-environment-variables) | `[]` |
 
 ### Port
 

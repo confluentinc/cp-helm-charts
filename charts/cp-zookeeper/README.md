@@ -130,6 +130,7 @@ The configuration parameters in this section control the resources requested and
 | `maxClientCnxns` | Limits the number of concurrent connections (at the socket level) that a single client, identified by IP address, may make to a single member of the ZooKeeper ensemble. This is used to prevent certain classes of DoS attacks, including file descriptor exhaustion. | `60` |
 | `autoPurgeSnapRetainCount` | When enabled, ZooKeeper auto purge feature retains the autopurge.snapRetainCount most recent snapshots and the corresponding transaction logs in the dataDir and dataLogDir respectively and deletes the rest. | `3` |
 | `autoPurgePurgeInterval` | The time interval in hours for which the purge task has to be triggered. Set to a positive integer (1 and above) to enable the auto purging. | `72` |
+| `envFrom` | Custom environment variables from Secret or ConfigMap [configuration](https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/#configure-all-key-value-pairs-in-a-secret-as-container-environment-variables) | `[]` |
 
 ### Zookeeper JVM Heap Options
 

@@ -57,6 +57,10 @@ customEnv: {}
   # KAFKA_METRIC_REPORTERS: "io.confluent.metrics.reporter.ConfluentMetricsReporter"
   # CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: "localhost:9092"
 
+## Additional environment variables from ConfigMap or Secret
+## Ref: https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/#configure-all-key-value-pairs-in-a-secret-as-container-environment-variables
+envFrom: []
+
 persistence:
   enabled: true
 

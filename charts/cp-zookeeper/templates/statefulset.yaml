@@ -94,6 +94,7 @@ spec:
         {{- end }}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
+        envFrom: {{ .Values.envFrom }}
         env:
         - name : KAFKA_HEAP_OPTS
           value: "{{ .Values.heapOptions }}"
