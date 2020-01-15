@@ -98,7 +98,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `image` | Docker Image of Confluent REST Proxy. | `confluentinc/cp-kafka-rest` |
-| `imageTag` | Docker Image Tag of Confluent REST Proxy. | `5.3.1` |
+| `imageTag` | Docker Image Tag of Confluent REST Proxy. | `5.4.0` |
 | `imagePullPolicy` | Docker Image Tag of Confluent REST Proxy. | `IfNotPresent` |
 | `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
 
