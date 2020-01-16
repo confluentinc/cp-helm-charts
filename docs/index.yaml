@@ -17,6 +17,6 @@ entries:
     digest: de1696d67b7388b958f1cd901e0bdc5d52c193e568e55e1ce4572dcfcbc4ef55
     name: cp-helm-charts
     urls:
-    - docs/cp-helm-charts-0.1.0.tgz
+    - cp-helm-charts-0.1.0.tgz
     version: 0.1.0
 generated: 2020-01-16T10:05:41.199758-05:00
