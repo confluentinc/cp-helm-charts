@@ -1,6 +1,6 @@
 dependencies:
 - name: cp-kafka
-  version: 0.1.0
+  version: 0.1.1
   repository: file://./charts/cp-kafka
   condition: cp-kafka.enabled
 - name: cp-zookeeper

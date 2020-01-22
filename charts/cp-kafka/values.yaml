@@ -139,6 +139,8 @@ nodeport:
   servicePort: 19092
   firstListenerPort: 31090
 
+enableEnterpriseFeatures: true
+
 ## ------------------------------------------------------
 ## Zookeeper
 ## ------------------------------------------------------
