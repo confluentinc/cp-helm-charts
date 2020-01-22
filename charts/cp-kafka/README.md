@@ -118,6 +118,7 @@ The configuration parameters in this section control the resources requested and
 | `imageTag` | Docker Image Tag of Confluent Kafka. | `5.4.0` |
 | `imagePullPolicy` | Docker Image Tag of Confluent Kafka. | `IfNotPresent` |
 | `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
+| `enableEnterpriseFeatures` | If enterprise feautres shall be enabled. Requries the image to be `confluentinc/cp-enterprise-kafka`. If disabled, it works with `confluentinc/cp-kafka` | `true`
 
 ### StatefulSet Configurations
 
