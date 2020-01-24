@@ -18,7 +18,7 @@ spec:
       app: {{ template "cp-kafka.name" . }}
       release: {{ .Release.Name }}
   {{- end }}
-  serviceName: {{ template "cp-kafka.fullname" . }}-headless
+  serviceName: {{ template "cp-kafka.cp-kafka-headless.fullname" . }}
   podManagementPolicy: {{ .Values.podManagementPolicy }}
   replicas: {{ default 3 .Values.brokers }}
   updateStrategy:
@@ -146,7 +146,7 @@ spec:
         - -exc
         - |
           export KAFKA_BROKER_ID=${HOSTNAME##*-} && \
-          export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_NAME}.{{ template "cp-kafka.fullname" . }}-headless.${POD_NAMESPACE}:9092{{ include "cp-kafka.configuration.advertised.listeners" . }} && \
+          export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_NAME}.{{ template "cp-kafka.cp-kafka-headless.fullname" . }}.${POD_NAMESPACE}:9092{{ include "cp-kafka.configuration.advertised.listeners" . }} && \
           exec /etc/confluent/docker/run
         volumeMounts:
         {{- if .Values.persistence.enabled }}
