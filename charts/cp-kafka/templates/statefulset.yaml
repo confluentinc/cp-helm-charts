@@ -1,4 +1,8 @@
+{{- if .Capabilities.APIVersions.Has "apps/v1" }}
+apiVersion: apps/v1
+{{- else }}
 apiVersion: apps/v1beta1
+{{- end }}
 kind: StatefulSet
 metadata:
   name: {{ template "cp-kafka.fullname" . }}
@@ -8,6 +12,12 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+  {{- if .Capabilities.APIVersions.Has "apps/v1" }}
+  selector:
+    matchLabels:
+      app: {{ template "cp-kafka.name" . }}
+      release: {{ .Release.Name }}
+  {{- end }}
   serviceName: {{ template "cp-kafka.fullname" . }}-headless
   podManagementPolicy: {{ .Values.podManagementPolicy }}
   replicas: {{ default 3 .Values.brokers }}
@@ -139,10 +149,12 @@ spec:
           export KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://${POD_NAME}.{{ template "cp-kafka.fullname" . }}-headless.${POD_NAMESPACE}:9092{{ include "cp-kafka.configuration.advertised.listeners" . }} && \
           exec /etc/confluent/docker/run
         volumeMounts:
-        {{- $disksPerBroker := .Values.persistence.disksPerBroker | int }}
-        {{- range $k, $e := until $disksPerBroker }}
-        - name: datadir-{{$k}}
-          mountPath: /opt/kafka/data-{{$k}}
+        {{- if .Values.persistence.enabled }}
+          {{- $disksPerBroker := .Values.persistence.disksPerBroker | int }}
+          {{- range $k, $e := until $disksPerBroker }}
+          - name: datadir-{{$k}}
+            mountPath: /opt/kafka/data-{{$k}}
+          {{- end }}
         {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:

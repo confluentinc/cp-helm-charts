@@ -1,6 +1,6 @@
 # Confluent Open Source Helm Chart
 
-**The Confluent Platform Helm charts are in developer preview and are not supported for production use.**
+**CAUTION: Open Source Helm charts are not supported by Confluent. If you want to use Confluent Platform on Kubernetes in a test or production environment, follow these instructions to install [Confluent Operator](https://docs.confluent.io/current/installation/operator/index.html#operator-about-intro).**
 
 The [Confluent Platform Helm charts](https://github.com/confluentinc/cp-helm-charts) enable you to deploy Confluent Platform services on Kubernetes for development, test, and proof of concept environments.
 

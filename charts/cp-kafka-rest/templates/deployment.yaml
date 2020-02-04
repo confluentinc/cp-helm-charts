@@ -1,4 +1,8 @@
+{{- if .Capabilities.APIVersions.Has "apps/v1" }}
+apiVersion: apps/v1
+{{- else }}
 apiVersion: apps/v1beta2
+{{- end }}
 kind: Deployment
 metadata:
   name: {{ template "cp-kafka-rest.fullname" . }}

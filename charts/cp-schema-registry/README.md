@@ -95,7 +95,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `image` | Docker Image of Confluent Schema Registry. | `confluentinc/cp-schema-registry` |
-| `imageTag` | Docker Image Tag of Confluent Schema Registry. | `5.3.0` |
+| `imageTag` | Docker Image Tag of Confluent Schema Registry. | `5.4.0` |
 | `imagePullPolicy` | Docker Image Tag of Confluent Schema Registry. | `IfNotPresent` |
 | `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
 
@@ -130,8 +130,8 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `resources.requests.cpu` | The amount of CPU to request. | see [values.yaml](values.yaml) for details |
 | `resources.requests.memory` | The amount of memory to request. | see [values.yaml](values.yaml) for details |
-| `resources.requests.limit` | The upper limit CPU usage for a Schema Registry Pod. | see [values.yaml](values.yaml) for details |
-| `resources.requests.limit` | The upper limit memory usage for a Schema Registry Pod. | see [values.yaml](values.yaml) for details |
+| `resources.limits.cpu` | The upper limit CPU usage for a Schema Registry Pod. | see [values.yaml](values.yaml) for details |
+| `resources.limits.memory` | The upper limit memory usage for a Schema Registry Pod. | see [values.yaml](values.yaml) for details |
 
 ### Annotations
 
