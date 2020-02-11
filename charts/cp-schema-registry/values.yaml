@@ -33,6 +33,9 @@ customEnv: {}
 ## The port on which the Schema Registry will be available and serving requests
 servicePort: 8081
 
+## Additional labels for deployment
+labels: {}
+
 ## Schema registry JVM Heap Option
 heapOptions: "-Xms512M -Xmx512M"
 
@@ -84,3 +87,22 @@ prometheus:
     port: 5556
 
     resources: {}
+
+    # containerSecurityContext:
+    #   capabilities:
+    #     drop:
+    #       - all
+
+## Security context for pod
+## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+# securityContext:
+#   runAsNonRoot: true
+#   runAsUser: 1001
+#   runAsGroup: 1001
+
+## Security context for container
+## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+# containerSecurityContext:
+#   capabilities:
+#     drop:
+#       - all
