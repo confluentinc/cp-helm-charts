@@ -117,6 +117,12 @@ The configuration parameters in this section control the resources requested and
 | `volumes` | Volumes for connect-server container | see [values.yaml](values.yaml) for details |
 | `volumeMounts` | Volume mounts for connect-server container | see [values.yaml](values.yaml) for details |
 
+### Secrets
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `secrets` | Secret with one or more `key:value` pairs | see [values.yaml](values.yaml) for details |
+
 ### Kafka Connect JVM Heap Options
 
 | Parameter | Description | Default |

@@ -107,3 +107,10 @@ volumes:
 # - name: credentials
 #   secret:
 #     secretName: creds
+
+## Secret with multiple keys to serve the purpose of multiple secrets
+## Values for all the keys will be base64 encoded when the Secret is created or updated
+## ref: https://kubernetes.io/docs/concepts/configuration/secret/
+secrets:
+  # username: kafka123
+  # password: connect321
