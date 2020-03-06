@@ -148,7 +148,7 @@ cp-ksql-server:
 cp-control-center:
   enabled: true
   image: confluentinc/cp-enterprise-control-center
-  imageTag: 5.2.0
+  imageTag: 5.4.1
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
   ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
   imagePullSecrets:
