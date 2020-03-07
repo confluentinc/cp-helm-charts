@@ -100,6 +100,28 @@ spec:
           - name: JMX_PORT
             value: "{{ .Values.jmx.port }}"
           {{- end }}
+          livenessProbe:
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - curl -f localhost:8081/subjects
+            initialDelaySeconds: 5
+            periodSeconds: 90
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - curl -f localhost:8081/subjects
+            initialDelaySeconds: 5
+            periodSeconds: 90
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}

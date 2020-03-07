@@ -163,6 +163,17 @@ The configuration parameters in this section control the resources requested and
 | `external.externalTrafficPolicy` | Configures `.spec.externalTrafficPolicy` which controls if load balancing occurs across all nodes (value of `Cluster`) or only active nodes (value of `Local`)  | `Cluster` |
 | `external.loadBalancerSourceRanges` | Configures `.spec.loadBalancerSourceRanges` which controls a list of source IP ranges permitted access to the load balancer | `["0.0.0.0/0"]` |
 
+### Ingress
+
+| Parameter                        | Description                                | Default                                                 |
+| -------------------------------- | ------------------------------------------ | ------------------------------------------------------- |
+| `ingress.enabled`                | Enable ingress controller resource         | `false`                                                 |
+| `ingress.annotations`            | Ingress annotations                        | `[]`                                                    |
+| `ingress.hosts[0].name`          | Hostname of your installation              | `chart-example.local`                                   |
+| `ingress.hosts[0].path`          | Path within the url structure              | `/`                                                     |
+| `ingress.tls[0].hosts[0]`        | TLS hosts                                  | `chart-example.local`                                   |
+| `ingress.tls[0].secretName`      | TLS Secret (certificates)                  | `chart-example-tls`                                     |
+
 ### Deployment Topology
 
 | Parameter | Description | Default |
