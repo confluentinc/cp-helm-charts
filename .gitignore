@@ -2,3 +2,6 @@
 charts/cp-kafka/requirements.lock
 charts/*/charts
 charts/*/requirements.lock
+certs/*
+!certs/.gitkeep
+misc

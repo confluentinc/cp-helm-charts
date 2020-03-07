@@ -47,10 +47,14 @@ configurationOverrides:
   ##
   ## Advertised listeners will use the firstListenerPort value as it's default unless overridden here.
   ## Setting "advertised.listeners" here appends to "PLAINTEXT://${POD_IP}:9092,"
-  # "advertised.listeners": |-
+  #"advertised.listeners": |-
   # EXTERNAL://${HOST_IP}:$((31090 + ${KAFKA_BROKER_ID}))
-  "listener.security.protocol.map": |-
-   PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+  #"listener.security.protocol.map": |-
+  # PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+ssl:
+  broker: {}
+  client: {}
+
 
 ## Additional env variables
 customEnv: {}
@@ -143,3 +147,12 @@ cp-zookeeper:
 
   ## If the Zookeeper Chart is disabled a URL and port are required to connect
   url: ""
+
+
+## ------------------------------------------------------
+## Global variables
+## ------------------------------------------------------
+global:
+  kafka:
+    ssl:
+      enabled: false

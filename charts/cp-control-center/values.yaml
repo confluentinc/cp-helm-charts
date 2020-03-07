@@ -87,6 +87,15 @@ prometheus:
 kafka:
   bootstrapServers: ""
 
+# SSL enabled Kafka
+# If setting to true, you need to set the other attributes are set as well
+ssl:
+  enabled: false
+  # secretName: cp-control-center-secret   <- If you intend to pre-create the secret outside of helm chart, use this.  Otherwise, leave commented out
+  client: {}
+  #   truststoreFile: "truststore_under_certs_folder.jks"
+  #   keystoreFile: "keystore_under_certs_folder.jks"
+
 ## If the Kafka Chart is disabled a URL and port are required to connect
 ## e.g. gnoble-panther-cp-schema-registry:8081
 cp-schema-registry:
@@ -100,4 +109,13 @@ cp-ksql-server:
 
 cp-zookeeper:
   ## If the Zookeeper Chart is disabled a URL and port are required to connect
-  url: ""  
+  url: ""
+
+
+## ------------------------------------------------------
+## Global variables
+## ------------------------------------------------------
+global:
+  kafka:
+    ssl:
+      enabled: false
