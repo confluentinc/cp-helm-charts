@@ -79,3 +79,14 @@ Default GroupId to Release Name but allow it to be overridden
 {{- .Release.Name -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "cp-kafka-connect.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create -}}
+    {{ default (include "cp-kafka-connect.name" .) .Values.serviceAccount.name }}
+{{- else -}}
+    {{ default "default" .Values.serviceAccount.name }}
+{{- end -}}
+{{- end -}}
