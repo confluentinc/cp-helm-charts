@@ -44,7 +44,7 @@ nodeSelector: {}
 
 ## Taints to tolerate on node assignment:
 ## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
-tolerations: {}
+tolerations: []
 
 ## Kafka REST configuration options
 ## ref: https://docs.confluent.io/current/kafka-rest/docs/config.html
