@@ -101,3 +101,5 @@ serviceAccount:
   # The name of the ServiceAccount to use.
   # If not set and create is true, a name is generated using the template name
   name:
+
+securityContext: {}
