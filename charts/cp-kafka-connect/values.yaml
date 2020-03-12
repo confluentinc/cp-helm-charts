@@ -103,3 +103,7 @@ serviceAccount:
   name:
 
 securityContext: {}
+
+awsCredentialsSecret:
+  secretId: ""
+  versionId: ""
