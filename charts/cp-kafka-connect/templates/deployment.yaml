@@ -95,12 +95,14 @@ spec:
               value: "{{ .Values.heapOptions }}"
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
-                key: AWS_ACCESS_KEY_ID
-                name: {{ template "cp-kafka-connect.fullname" . }}-secret
+                secretKeyRef:
+                  key: AWS_ACCESS_KEY_ID
+                  name: {{ template "cp-kafka-connect.fullname" . }}-secret
             - name: AWS_SECRET_ACCESS_KEY
               valueFrom:
-                key: AWS_SECRET_ACCESS_KEY
-                name: {{ template "cp-kafka-connect.fullname" . }}-secret
+                secretKeyRef:
+                  key: AWS_SECRET_ACCESS_KEY
+                  name: {{ template "cp-kafka-connect.fullname" . }}-secret
             {{- range $key, $value := .Values.configurationOverrides }}
             - name: {{ printf "CONNECT_%s" $key | replace "." "_" | upper | quote }}
               value: {{ $value | quote }}
