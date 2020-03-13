@@ -103,6 +103,13 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `servicePort` | The port on which the Kafka Connect will be available and serving requests. | `8082` |
 
+### ServiceAccount
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `serviceAccount.create` | Specifies whether a ServiceAccount should be created. | `false` |
+| `serviceAccount.name` | The name of the ServiceAccount to use, otherwise a default name is used. | `` |
+
 ### Kafka Connect Worker Configurations
 
 | Parameter | Description | Default |

@@ -95,6 +95,19 @@ kafka:
 cp-schema-registry:
   url: ""
 
+serviceAccount:
+  # Specifies whether a ServiceAccount should be created
+  create: false
+  # The name of the ServiceAccount to use.
+  # If not set and create is true, a name is generated using the template name
+  name:
+
+securityContext: {}
+
+awsCredentialsSecret:
+  secretId: ""
+  versionId: ""
+
 ## List of volumeMounts for connect server container
 ## ref: https://kubernetes.io/docs/concepts/storage/volumes/
 volumeMounts:
