@@ -1,4 +1,8 @@
+{{- if .Capabilities.APIVersions.Has "apps/v1" }}
+apiVersion: apps/v1
+{{- else }}
 apiVersion: apps/v1beta1
+{{- end }}
 kind: StatefulSet
 metadata:
   name: {{ template "cp-zookeeper.fullname" . }}
@@ -8,6 +12,12 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+  {{- if .Capabilities.APIVersions.Has "apps/v1" }}
+  selector:
+    matchLabels:
+      app: {{ template "cp-zookeeper.name" . }}
+      release: {{ .Release.Name }}
+  {{- end }}
   serviceName: {{ template "cp-zookeeper.fullname" . }}-headless
   podManagementPolicy: {{ .Values.podManagementPolicy }}
   replicas: {{ default 3 .Values.servers }}

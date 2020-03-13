@@ -114,8 +114,8 @@ The configuration parameters in this section control the resources requested and
 
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `image` | Docker Image of Confluent Kafka. | `confluentinc/cp-kafka` |
-| `imageTag` | Docker Image Tag of Confluent Kafka. | `5.3.1` |
+| `image` | Docker Image of Confluent Kafka. | `confluentinc/cp-enterprise-kafka` |
+| `imageTag` | Docker Image Tag of Confluent Kafka. | `5.4.1` |
 | `imagePullPolicy` | Docker Image Tag of Confluent Kafka. | `IfNotPresent` |
 | `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
 
@@ -154,8 +154,8 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `resources.requests.cpu` | The amount of CPU to request. | see [values.yaml](values.yaml) for details |
 | `resources.requests.memory` | The amount of memory to request. | see [values.yaml](values.yaml) for details |
-| `resources.requests.limit` | The upper limit CPU usage for a Kafka Pod. | see [values.yaml](values.yaml) for details |
-| `resources.requests.limit` | The upper limit memory usage for a Kafka Pod. | see [values.yaml](values.yaml) for details |
+| `resources.limits.cpu` | The upper limit CPU usage for a Kafka Pod. | see [values.yaml](values.yaml) for details |
+| `resources.limits.memory` | The upper limit memory usage for a Kafka Pod. | see [values.yaml](values.yaml) for details |
 
 ### Annotations
 

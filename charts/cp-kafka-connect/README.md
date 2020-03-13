@@ -93,7 +93,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `image` | Docker Image of Confluent Kafka Connect. | `confluentinc/cp-kafka-connect` |
-| `imageTag` | Docker Image Tag of Confluent Kafka Connect. | `5.3.1` |
+| `imageTag` | Docker Image Tag of Confluent Kafka Connect. | `5.4.1` |
 | `imagePullPolicy` | Docker Image Tag of Confluent Kafka Connect. | `IfNotPresent` |
 | `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
 
@@ -116,6 +116,19 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `configurationOverrides` | Kafka Connect [configuration](https://docs.confluent.io/current/connect/references/allconfigs.html) overrides in the dictionary format. | `{}` |
 | `customEnv` | Custom environmental variables | `{}` |
+
+### Volumes
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `volumes` | Volumes for connect-server container | see [values.yaml](values.yaml) for details |
+| `volumeMounts` | Volume mounts for connect-server container | see [values.yaml](values.yaml) for details |
+
+### Secrets
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `secrets` | Secret with one or more `key:value` pairs | see [values.yaml](values.yaml) for details |
 
 ### Kafka Connect JVM Heap Options
 

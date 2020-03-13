@@ -39,7 +39,7 @@ helm install --name my-confluent cp-helm-charts
 ### Install with a existing cp-kafka and cp-schema-registry release
 
 ```console
-helm install --set cp-zookeeper.url="unhinged-robin-cp-zookeeper:2181",cp-schema-registry.url="lolling-chinchilla-cp-schema-registry:8081" cp-helm-charts/charts/cp-ksql-server
+helm install --set cp-zookeeper.url="unhinged-robin-cp-zookeeper:2181",cp-schema-registry.url="http://lolling-chinchilla-cp-schema-registry:8081" cp-helm-charts/charts/cp-ksql-server
 ```
 
 ### Installed Components
@@ -108,7 +108,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `image` | Docker Image of Confluent KSQL Server. | `confluentinc/cp-ksql-server` |
-| `imageTag` | Docker Image Tag of Confluent KSQL Server. | `5.3.1` |
+| `imageTag` | Docker Image Tag of Confluent KSQL Server. | `5.4.1` |
 | `imagePullPolicy` | Docker Image Tag of Confluent KSQL Server. | `IfNotPresent` |
 | `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
 

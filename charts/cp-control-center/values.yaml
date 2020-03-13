@@ -7,7 +7,7 @@ replicaCount: 1
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-kafka/
 image: confluentinc/cp-enterprise-control-center
-imageTag: 5.2.0
+imageTag: 5.4.1
 
 ## Specify a imagePullPolicy
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -59,7 +59,7 @@ nodeSelector: {}
 
 ## Taints to tolerate on node assignment:
 ## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
-tolerations: {}
+tolerations: []
 
 ## Monitoring
 ## Kafka JMX Settings
