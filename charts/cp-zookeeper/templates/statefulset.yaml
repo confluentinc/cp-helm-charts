@@ -123,6 +123,10 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
+        {{- range $key, $value := .Values.customEnv }}
+        - name: {{ $key | quote }}
+          value: {{ $value | quote }}
+        {{- end }}
         command:
         - "bash"
         - "-c"
