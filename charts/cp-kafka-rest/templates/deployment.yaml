@@ -73,11 +73,17 @@ spec:
           - name: KAFKA_REST_HOST_NAME
             valueFrom:
               fieldRef:
-                fieldPath: status.podIP
+                fieldPath: status.podIPs
+          {{- if .Values.zookeeper.url }}
           - name: KAFKA_REST_ZOOKEEPER_CONNECT
             value: {{ template "cp-kafka-rest.cp-zookeeper.service-name" . }}
+          {{- end }}
           - name: KAFKA_REST_SCHEMA_REGISTRY_URL
             value: {{ template "cp-kafka-rest.cp-schema-registry.service-name" . }}
+          {{- if .Values.bootstrap-server.url }}
+          - name: KAFKA_REST_BOOTSTRAP_SERVERS
+            value: "{{ .Values.bootstrap-server.url }}"
+          {{- end }}
           - name: KAFKAREST_HEAP_OPTS
             value: "{{ .Values.heapOptions }}"
           {{- range $key, $value := .Values.configurationOverrides }}
