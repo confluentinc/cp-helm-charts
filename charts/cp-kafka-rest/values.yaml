@@ -91,5 +91,5 @@ cp-zookeeper:
 cp-schema-registry:
   url: ""
 
-bootstrap-server:
+bootstrapServers:
   url: ""
