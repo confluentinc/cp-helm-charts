@@ -73,7 +73,8 @@ spec:
           - name: KAFKA_REST_HOST_NAME
             valueFrom:
               fieldRef:
-                fieldPath: status.podIPs
+                apiVersion: v1
+                fieldPath: status.podIP
           {{- if (index .Values "zookeeper") }}
           - name: KAFKA_REST_ZOOKEEPER_CONNECT
             value: {{ template "cp-kafka-rest.cp-zookeeper.service-name" . }}
