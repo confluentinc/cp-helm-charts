@@ -1,0 +1,124 @@
+---
+# Source: cp-kafka-rest/templates/jmx-configmap.yaml
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-rest-cp-kafka-rest-jmx-configmap
+  labels:
+    app: cp-kafka-rest
+    chart: cp-kafka-rest-0.1.0
+    release: kafka-rest
+    heritage: Tiller
+data:
+  jmx-kafka-rest-prometheus.yml: |+
+    jmxUrl: service:jmx:rmi:///jndi/rmi://localhost:5555/jmxrmi
+    lowercaseOutputName: true
+    lowercaseOutputLabelNames: true
+    ssl: false
+    rules:
+    - pattern : 'kafka.rest<type=jetty-metrics>([^:]+):'
+      name: "cp_kafka_rest_jetty_metrics_$1"
+    - pattern : 'kafka.rest<type=jersey-metrics>([^:]+):'
+      name: "cp_kafka_rest_jersey_metrics_$1"
+---
+# Source: cp-kafka-rest/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-rest-cp-kafka-rest
+  labels:
+    app: cp-kafka-rest
+    chart: cp-kafka-rest-0.1.0
+    release: kafka-rest
+    heritage: Tiller
+spec:
+  ports:
+    - name: rest-proxy
+      port: 8082
+  selector:
+    app: cp-kafka-rest
+    release: kafka-rest
+
+---
+# Source: cp-kafka-rest/templates/deployment.yaml
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-rest-cp-kafka-rest
+  labels:
+    app: cp-kafka-rest
+    chart: cp-kafka-rest-0.1.0
+    release: kafka-rest
+    heritage: Tiller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cp-kafka-rest
+      release: kafka-rest
+  template:
+    metadata:
+      labels:
+        app: cp-kafka-rest
+        release: kafka-rest
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "5556"
+    spec:
+      containers:
+        - name: prometheus-jmx-exporter
+          image: "solsson/kafka-prometheus-jmx-exporter@sha256:6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143"
+          imagePullPolicy: "IfNotPresent"
+          command:
+          - java
+          - -XX:+UnlockExperimentalVMOptions
+          - -XX:+UseCGroupMemoryLimitForHeap
+          - -XX:MaxRAMFraction=1
+          - -XshowSettings:vm
+          - -jar
+          - jmx_prometheus_httpserver.jar
+          - "5556"
+          - /etc/jmx-kafka-rest/jmx-kafka-rest-prometheus.yml
+          ports:
+          - containerPort: 5556
+          resources:
+            {}
+            
+          volumeMounts:
+          - name: jmx-config
+            mountPath: /etc/jmx-kafka-rest
+        - name: cp-kafka-rest-server
+          image: "confluentinc/cp-kafka-rest:5.4.1"
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - name: rest-proxy
+              containerPort: 8082
+              protocol: TCP
+            - containerPort: 5555
+              name: jmx
+          resources:
+            {}
+            
+          env:
+          - name: KAFKA_REST_HOST_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIPs
+          - name: KAFKA_REST_SCHEMA_REGISTRY_URL
+            value: http://schema-registry-cp-schema-registry.kafka:8081
+          - name: KAFKA_REST_BOOTSTRAP_SERVERS
+            value: "kafka-cluster-kafka-bootstrap.kafka:9092"
+          - name: KAFKAREST_HEAP_OPTS
+            value: "-Xms512M -Xmx512M"
+          - name: KAFKA_REST_JMX_PORT
+            value: "5555"
+      volumes:
+      - name: jmx-config
+        configMap:
+          name: kafka-rest-cp-kafka-rest-jmx-configmap
+
+---
+# Source: cp-kafka-rest/templates/external-service.yaml
+
