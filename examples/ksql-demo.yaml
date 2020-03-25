@@ -35,7 +35,7 @@ spec:
       - -c
       - "ksql-datagen quickstart=users format=json topic=users iterations=1000 bootstrap-server=my-confluent-oss-cp-kafka:9092"
   - name: ksql
-    image: confluentinc/ksql-cli:5.4.1
+    image: confluentinc/cp-ksql-cli:5.4.1
     command:
       - sh
       - -c
