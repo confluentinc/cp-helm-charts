@@ -155,6 +155,7 @@ The configuration parameters in this section control the resources requested and
 | `prometheus.jmx.imagePullPolicy` | Docker Image Pull Policy for Prometheus JMX Exporter container. | `IfNotPresent` |
 | `prometheus.jmx.port` | JMX Exporter Port which exposes metrics in Prometheus format for scraping. | `5556` |
 | `prometheus.jmx.resources` | JMX Exporter resources configuration. | see [values.yaml](values.yaml) for details |
+| `prometheus.jmx.containerSecurityContext` | [Security context for container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) | `nil` |
 
 ### Deployment Topology
 
@@ -162,3 +163,10 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `nodeSelector` | Dictionary containing key-value-pairs to match labels on nodes. When defined pods will only be scheduled on nodes, that have each of the indicated key-value pairs as labels. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) | `{}`
 | `tolerations`| Array containing taint references. When defined, pods can run on nodes, which would otherwise deny scheduling. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) | `{}`
+
+### Security
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `securityContext` | [Security context for pod](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) | `nil` |
+| `containerSecurityContext` | [Security context for container](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) | `nil` |

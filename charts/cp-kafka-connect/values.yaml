@@ -20,6 +20,9 @@ imagePullSecrets:
 
 servicePort: 8083
 
+## Additional labels for deployment
+labels: {}
+
 ## Kafka Connect properties
 ## ref: https://docs.confluent.io/current/connect/userguide.html#configuring-workers
 configurationOverrides:
@@ -85,6 +88,11 @@ prometheus:
     ## See the `resources` documentation above for details.
     resources: {}
 
+    # containerSecurityContext:
+    #   capabilities:
+    #     drop:
+    #       - all
+
 ## You can list load balanced service endpoint, or list of all brokers (which is hard in K8s).  e.g.:
 ## bootstrapServers: "PLAINTEXT://dozing-prawn-kafka-headless:9092"
 kafka:
@@ -114,3 +122,17 @@ volumes:
 secrets:
   # username: kafka123
   # password: connect321
+
+## Security context for pod
+## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+# securityContext:
+#   runAsNonRoot: true
+#   runAsUser: 1001
+#   runAsGroup: 1001
+
+## Security context for container
+## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+# containerSecurityContext:
+#   capabilities:
+#     drop:
+#       - all
