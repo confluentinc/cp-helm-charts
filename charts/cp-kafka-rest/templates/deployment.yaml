@@ -85,7 +85,7 @@ spec:
             value: {{ $value | quote }}
           {{- end }}
           {{- if .Values.jmx.port }}
-          - name: KAFKA_REST_JMX_PORT
+          - name: KAFKAREST_JMX_PORT
             value: "{{ .Values.jmx.port }}"
           {{- end }}
       {{- if .Values.imagePullSecrets }}
