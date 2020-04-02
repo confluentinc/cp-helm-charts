@@ -161,6 +161,13 @@ The configuration parameters in this section control the resources requested and
 | `prometheus.jmx.port` | JMX Exporter Port which exposes metrics in Prometheus format for scraping. | `5556` |
 | `prometheus.jmx.resources` | JMX Exporter resources configuration. | see [values.yaml](values.yaml) for details |
 
+### Running Custom Scripts
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `customEnv.CUSTOM_SCRIPT_PATH` | Path to external bash script to run inside the container | see [values.yaml](values.yaml) for details |
+| `livenessProbe` | Requirement of `livenessProbe` depends on the custom script to be run  | see [values.yaml](values.yaml) for details |
+
 ### Deployment Topology
 
 | Parameter | Description | Default |
