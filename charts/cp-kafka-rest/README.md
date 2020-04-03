@@ -185,3 +185,12 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `cp-schema-registry.url` | Service name of Schema Registry (Not needed if this is installed along with cp-kafka chart). | `""` |
 | `cp-schema-registry.port` | Port of Schema Registry Service | `8081` |
+
+### External bootstrap broker
+
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `enableBootstrapServer` | Choose whether we want to inject bootstrap broker in our kafka rest service | `false` |
+| `bootstrapServer` | Connection string to bootstrap servers | `nil` |
+| `enableZookeeperURL` | If set to false will omit whatever is generated as cp-zookeeper.url parameter, if zookeeper connection is unwanted | `true` |

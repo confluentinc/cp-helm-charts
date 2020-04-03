@@ -90,3 +90,7 @@ cp-zookeeper:
 ## e.g. gnoble-panther-cp-schema-registry:8081
 cp-schema-registry:
   url: ""
+
+enableBootstrapServer: false
+bootstrapServer: ""
+enableZookeeperURL: true
