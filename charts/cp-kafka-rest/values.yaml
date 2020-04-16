@@ -86,6 +86,11 @@ external:
 cp-zookeeper:
   url: ""
 
+## If the Kafka Chart is disabled a URL of the kafka bootstrap server are required to connect
+## e.g. PLAINTEXT://ungaged-sparrow-cp-kafka-bootstrap:9092
+cp-kafka:
+  url: ""
+
 ## If the Kafka Chart is disabled a URL and port are required to connect
 ## e.g. gnoble-panther-cp-schema-registry:8081
 cp-schema-registry:
