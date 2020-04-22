@@ -48,16 +48,6 @@ autoPurgePurgeInterval: 24
 ## Zookeeper JVM Heap Option
 heapOptions: "-Xms512M -Xmx512M"
 
-## Zookeeper Server properties
-## ref: https://zookeeper.apache.org/doc/r3.3.2/zookeeperAdmin.html#sc_configuration
-configurationOverrides: {}
-  # "log4j.root.loglevel: WARN"
-  # "tools.log4j.loglevel: ERROR"
-
-## Additional env variables
-customEnv: {}
-
-
 ## Port
 ## ref: https://zookeeper.apache.org/doc/r3.4.10/zookeeperAdmin.html#sc_configuration
 serverPort: 2888
@@ -80,6 +70,21 @@ persistence:
   dataLogDirSize: 5Gi
   # dataLogDirStorageClass: ""
 
+livenessProbe:
+  enabled: false
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
+  successThreshold: 1
+
+readinessProbe:
+  enabled: true
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
+  successThreshold: 1
 
 ## Pod Compute Resources
 ## ref: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/

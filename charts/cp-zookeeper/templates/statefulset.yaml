@@ -92,6 +92,26 @@ spec:
         - containerPort: {{ .Values.jmx.port }}
           name: jmx
         {{- end }}
+        {{- if .Values.livenessProbe.enabled }}
+        livenessProbe:
+          tcpSocket:
+            port: client
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+          successThreshold: {{ .Values.livenessProbe.successThreshold }}
+          failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+        {{- end }}
+        {{- if .Values.readinessProbe.enabled }}
+        readinessProbe:
+          tcpSocket:
+            port: client
+          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+          successThreshold: {{ .Values.readinessProbe.successThreshold }}
+          failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+        {{- end }}        
         resources:
 {{ toYaml .Values.resources | indent 10 }}
         env:
@@ -123,14 +143,6 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
-        {{- range $key, $value := .Values.configurationOverrides }}
-        - name: {{ printf "ZOOKEEPER_%s" $key | replace "." "_" | upper | quote }}
-          value: {{ $value | quote }}
-        {{- end }}
-        {{- range $key, $value := .Values.customEnv }}
-        - name: {{ $key | quote }}
-          value: {{ $value | quote }}              
-        {{- end }}
         command:
         - "bash"
         - "-c"
