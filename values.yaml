@@ -132,7 +132,7 @@ cp-kafka-connect:
 ## ------------------------------------------------------
 cp-ksql-server:
   enabled: true
-  image: confluentinc/cp-ksql-server
+  image: confluentinc/cp-ksqldb-server
   imageTag: 5.5.0
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
   ## https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
