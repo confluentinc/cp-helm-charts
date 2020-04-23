@@ -22,6 +22,7 @@ spec:
       labels:
         app: {{ template "cp-schema-registry.name" . }}
         release: {{ .Release.Name }}
+        {{ toYaml .Values.podLabels | indent 8 }}
       {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
       annotations:
       {{- range $key, $value := .Values.podAnnotations }}

@@ -38,6 +38,9 @@ resources: {}
 ## Custom pod annotations
 podAnnotations: {}
 
+## Custom pod labels
+podLabels: {}
+
 ## Node labels for pod assignment
 ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
 nodeSelector: {}

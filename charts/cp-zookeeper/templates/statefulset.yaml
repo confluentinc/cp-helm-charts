@@ -28,6 +28,7 @@ spec:
       labels:
         app: {{ template "cp-zookeeper.name" . }}
         release: {{ .Release.Name }}
+        {{ toYaml .Values.podLabels | indent 8 }}
       {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
       annotations:
       {{- range $key, $value := .Values.podAnnotations }}
@@ -123,14 +124,6 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
-        {{- range $key, $value := .Values.configurationOverrides }}
-        - name: {{ printf "ZOOKEEPER_%s" $key | replace "." "_" | upper | quote }}
-          value: {{ $value | quote }}
-        {{- end }}
-        {{- range $key, $value := .Values.customEnv }}
-        - name: {{ $key | quote }}
-          value: {{ $value | quote }}              
-        {{- end }}
         command:
         - "bash"
         - "-c"
