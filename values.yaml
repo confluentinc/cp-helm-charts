@@ -3,7 +3,7 @@
 ## ------------------------------------------------------
 cp-zookeeper:
   enabled: true
-  servers: 3
+  servers: 1
   image: confluentinc/cp-zookeeper
   imageTag: 5.4.1
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
@@ -38,7 +38,7 @@ cp-zookeeper:
 ## ------------------------------------------------------
 cp-kafka:
   enabled: true
-  brokers: 3
+  brokers: 1
   image: confluentinc/cp-enterprise-kafka
   imageTag: 5.4.1
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
