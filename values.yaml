@@ -3,7 +3,7 @@
 ## ------------------------------------------------------
 cp-zookeeper:
   enabled: true
-  servers: 3
+  servers: 1
   image: confluentinc/cp-zookeeper
   imageTag: 5.4.1
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
@@ -12,7 +12,7 @@ cp-zookeeper:
   #  - name: "regcred"
   heapOptions: "-Xms512M -Xmx512M"
   persistence:
-    enabled: true
+    enabled: false
     ## The size of the PersistentVolume to allocate to each Zookeeper Pod in the StatefulSet. For
     ## production servers this number should likely be much larger.
     ##
@@ -38,7 +38,7 @@ cp-zookeeper:
 ## ------------------------------------------------------
 cp-kafka:
   enabled: true
-  brokers: 3
+  brokers: 1
   image: confluentinc/cp-enterprise-kafka
   imageTag: 5.4.1
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
@@ -47,7 +47,7 @@ cp-kafka:
   #  - name: "regcred"
   heapOptions: "-Xms512M -Xmx512M"
   persistence:
-    enabled: true
+    enabled: false
     # storageClass: ""
     size: 5Gi
     disksPerBroker: 1
@@ -65,7 +65,7 @@ cp-kafka:
 ## Schema Registry
 ## ------------------------------------------------------
 cp-schema-registry:
-  enabled: true
+  enabled: false
   image: confluentinc/cp-schema-registry
   imageTag: 5.4.1
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
@@ -87,7 +87,7 @@ cp-schema-registry:
 ## REST Proxy
 ## ------------------------------------------------------
 cp-kafka-rest:
-  enabled: true
+  enabled: false
   image: confluentinc/cp-kafka-rest
   imageTag: 5.4.1
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
@@ -109,7 +109,7 @@ cp-kafka-rest:
 ## Kafka Connect
 ## ------------------------------------------------------
 cp-kafka-connect:
-  enabled: true
+  enabled: false
   image: confluentinc/cp-kafka-connect
   imageTag: 5.4.1
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
@@ -131,7 +131,7 @@ cp-kafka-connect:
 ## KSQL Server
 ## ------------------------------------------------------
 cp-ksql-server:
-  enabled: true
+  enabled: false
   image: confluentinc/cp-ksql-server
   imageTag: 5.4.1
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
@@ -146,7 +146,7 @@ cp-ksql-server:
 ## Control Center
 ## ------------------------------------------------------
 cp-control-center:
-  enabled: true
+  enabled: false
   image: confluentinc/cp-enterprise-control-center
   imageTag: 5.4.1
   ## Optionally specify an array of imagePullSecrets. Secrets must be manually created in the namespace.
