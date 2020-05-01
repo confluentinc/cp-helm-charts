@@ -51,6 +51,10 @@ tolerations: []
 configurationOverrides:
   # "consumer.request.timeout.ms": 5000
 
+## Additional env variables
+customEnv: {}
+  # ZOOKEEPER_SASL_ENABLED: "false"
+
 ## Monitoring
 ## Kafka REST JMX Settings
 ## ref: https://docs.confluent.io/current/kafka-rest/docs/monitoring.html
