@@ -14,6 +14,16 @@ data:
     lowercaseOutputName: true
     lowercaseOutputLabelNames: true
     ssl: false
+    whitelistObjectNames:
+    - kafka.server:type=ReplicaManager, name=*
+    - kafka.controller:type=KafkaController, name=*
+    - kafka.server:type=BrokerTopicMetrics, name=*
+    - kafka.network:type=RequestMetrics, name=RequestsPerSec, request=*
+    - kafka.network:type=SocketServer, name=NetworkProcessorAvgIdlePercent
+    - kafka.server:type=ReplicaFetcherManager, name=MaxLag, clientId=*
+    - kafka.server:type=KafkaRequestHandlerPool, name=RequestHandlerAvgIdlePercent
+    - kafka.controller:type=ControllerStats, name=*
+    - kafka.server:type=SessionExpireListener, name=*
     rules:
     - pattern : kafka.server<type=ReplicaManager, name=(.+)><>(Value|OneMinuteRate)
       name: "cp_kafka_server_replicamanager_$1"
