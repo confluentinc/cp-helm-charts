@@ -9,7 +9,11 @@ The [Confluent Platform Helm charts](https://github.com/confluentinc/cp-helm-cha
 ```
 helm repo add confluentinc https://confluentinc.github.io/cp-helm-charts/
 helm repo update
+helm install confluent confluentinc/cp-helm-charts
+helm install -f custom-values.yaml cp-helm-charts
 ```
+
+custom-values.yaml: create a copy of the [default YAML template](https://github.com/confluentinc/cp-helm-charts/blob/master/charts/cp-kafka/values.yaml)
 
 ## Documentation
 
