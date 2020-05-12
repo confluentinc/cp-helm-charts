@@ -74,12 +74,12 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: status.podIP
-          {{- if index .Values "cp-kafka" "url" }}
-          - name: KAFKA_REST_BOOTSTRAP_SERVERS
-            value: {{ index .Values "cp-kafka" "url" }}
-          {{- else }}
+          {{- if index .Values "cp-zookeeper" "enabled" }}
           - name: KAFKA_REST_ZOOKEEPER_CONNECT
             value: {{ template "cp-kafka-rest.cp-zookeeper.service-name" . }}
+          {{- else }}
+          - name: KAFKA_REST_BOOTSTRAP_SERVERS
+            value: {{ template "cp-kafka-rest.cp-kafka.service-name" . }}
           {{- end }}
           - name: KAFKA_REST_SCHEMA_REGISTRY_URL
             value: {{ template "cp-kafka-rest.cp-schema-registry.service-name" . }}
