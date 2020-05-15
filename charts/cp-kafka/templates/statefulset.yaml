@@ -81,6 +81,12 @@ spec:
       - name: {{ template "cp-kafka.name" . }}-broker
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+        readinessProbe:
+         tcpSocket:
+           port: 9092
+         initialDelaySeconds: 10
+         periodSeconds: 10
+
         ports:
         - containerPort: 9092
           name: kafka
