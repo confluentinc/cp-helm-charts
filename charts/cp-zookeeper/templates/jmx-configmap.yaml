@@ -16,9 +16,9 @@ data:
     ssl: false
     whitelistObjectNames:
     - org.apache.ZooKeeperService:name0=ReplicatedServer_id*
-    - org.apache.ZooKeeperService:name0=ReplicatedServer_id*, name1=replica.*
-    - org.apache.ZooKeeperService:name0=ReplicatedServer_id*, name1=replica.*, name2=*
-    - org.apache.ZooKeeperService:name0=ReplicatedServer_id*, name1=replica.*, name2=*, name3=*
+    - org.apache.ZooKeeperService:name0=ReplicatedServer_id*,name1=replica.*
+    - org.apache.ZooKeeperService:name0=ReplicatedServer_id*,name1=replica.*,name2=*
+    - org.apache.ZooKeeperService:name0=ReplicatedServer_id*,name1=replica.*,name2=*,name3=*
     rules:
     - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+)><>(\\w+)"
       name: "cp_zookeeper_$2"
