@@ -1,0 +1,23 @@
+{{- if .Values.pdb.enabled }}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ template "cp-kafka-connect.fullname" . }}
+  labels:
+    app: {{ template "cp-kafka-connect.name" . }}
+    chart: {{ template "cp-kafka-connect.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  {{- with .Values.pdb.minAvailable }}
+  minAvailable: {{ . }}
+  {{- end }}
+  {{- with .Values.pdb.maxUnavailable }}
+  maxUnavailable: {{ . }}
+  {{- end }}
+
+  selector:
+    matchLabels:
+      app: {{ template "cp-kafka-connect.name" . }}
+      release: {{ .Release.Name }}
+{{- end }}

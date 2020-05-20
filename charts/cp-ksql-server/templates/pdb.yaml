@@ -1,0 +1,23 @@
+{{- if .Values.pdb.enabled }}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ template "cp-ksql-server.fullname" . }}
+  labels:
+    app: {{ template "cp-ksql-server.name" . }}
+    chart: {{ template "cp-ksql-server.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  {{- with .Values.pdb.minAvailable }}
+  minAvailable: {{ . }}
+  {{- end }}
+  {{- with .Values.pdb.maxUnavailable }}
+  maxUnavailable: {{ . }}
+  {{- end }}
+
+  selector:
+    matchLabels:
+      app: {{ template "cp-ksql-server.name" . }}
+      release: {{ .Release.Name }}
+{{- end }}

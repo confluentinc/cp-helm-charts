@@ -65,6 +65,13 @@ nodeSelector: {}
 ## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 tolerations: []
 
+## Pod Disruption Budget
+## ref: https://kubernetes.io/docs/concepts/workloads/pods/disruptions/
+pdb:
+  enabled: true
+  minAvailable: 1
+  # maxUnavailable: 1
+
 ## Monitoring
 ## Kafka Connect JMX Settings
 ## ref: https://kafka.apache.org/documentation/#connect_monitoring

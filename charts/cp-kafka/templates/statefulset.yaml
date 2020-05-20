@@ -39,6 +39,9 @@ spec:
       {{- end }}
       {{- end }}
     spec:
+      {{- with .Values.priorityClassName }}
+      priorityClassName: {{ . }}
+      {{- end }}
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
