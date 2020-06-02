@@ -23,7 +23,7 @@ To connect from a client pod:
 
 2. Log into the Pod
 
-  kubectl exec -it zookeeper-client -- /bin/bash
+  kubectl exec -it zookeeper-client -n {{ .Release.Namespace }}-- /bin/bash
 
 3. Use zookeeper-shell to connect in the zookeeper-client Pod:
 
