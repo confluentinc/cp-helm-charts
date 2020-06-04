@@ -101,7 +101,7 @@ The configuration parameters in this section control the resources requested and
 
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `servicePort` | The port on which the Kafka Connect will be available and serving requests. | `8082` |
+| `servicePort` | The port on which the Kafka Connect will be available and serving requests. | `8083` |
 
 ### Kafka Connect Worker Configurations
 
