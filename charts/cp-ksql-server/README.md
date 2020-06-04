@@ -57,12 +57,12 @@ RESOURCES:
 NAME                         TYPE       CLUSTER-IP    EXTERNAL-IP  PORT(S)   AGE
 excited-lynx-cp-ksql-server  ClusterIP  10.31.253.70  <none>       8088/TCP  10s
 
-==> v1beta2/Deployment
-NAME                         DESIRED  CURRENT  UP-TO-DATE  AVAILABLE  AGE
-excited-lynx-cp-ksql-server  1        1        1           0          10s
+==> v1beta1/StatefulSet
+NAME                        READY  AGE
+excited-lynx-cp-ksql-server  1/1    10s
 
 ==> v1/Pod(related)
-NAME                                         READY  STATUS  RESTARTS  AGE
+NAME                                         READY  STATUS  RESTARTS    AGE
 excited-lynx-cp-ksql-server-d4848ff94-x5fmn  2/2    Running   1         10s
 
 ==> v1/ConfigMap
@@ -78,7 +78,7 @@ https://docs.confluent.io/current/ksql/docs
 ```
 
 There are
-1. A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) `excited-lynx-cp-ksql-server` which contains 1 KSQL Server instance [Pod](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/): `excited-lynx-cp-ksql-server-d4848ff94-x5fmn`.
+1. A [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) `excited-lynx-cp-ksql-server` which contains 1 KSQL Server instance [Pod](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/): `excited-lynx-cp-ksql-server-d4848ff94-x5fmn`.
 1. A [Service](https://kubernetes.io/docs/concepts/services-networking/service/) `excited-lynx-cp-ksql-server` for clients to connect to KSQL Server.
 1. A [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) which contains configuration for Prometheus JMX Exporter.
 1. A [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) which contains SQL queries for the server to run in non-interactive mode.
@@ -112,10 +112,25 @@ The configuration parameters in this section control the resources requested and
 | `imagePullPolicy` | Docker Image Tag of Confluent KSQL Server. | `IfNotPresent` |
 | `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
 
+### StatefulSet Configurations
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `podManagementPolicy` | The KSQL Server StatefulSet Pod Management Policy: `Parallel` or `OrderedReady`. | `OrderedReady` |
+| `updateStrategy` | The KSQL Server StatefulSet update strategy: `RollingUpdate` or `OnDelete`. | `RollingUpdate` |
+
 ### KSQL Configuration
  Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `configurationOverrides` | KSQL [configuration](https://docs.confluent.io/current/ksql/docs/installation/server-config/config-reference.html) overrides in the dictionary format | `{}` |
+
+### Persistence
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `persistence.enabled` | Whether to create a PVC. If `false`, an `emptyDir` on the host will be used. | `true` |
+| `persistence.size` | Size for log dir, where Kafka will store log data. | `5Gi` |
+| `persistence.storageClass` | Valid options: `nil`, `"-"`, or storage class name. | `nil` |
 
 ### Port
 
