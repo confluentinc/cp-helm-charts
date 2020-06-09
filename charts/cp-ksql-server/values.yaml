@@ -5,7 +5,7 @@
 replicaCount: 1
 
 ## Image Info
-## ref: https://hub.docker.com/r/confluentinc/cp-ksql-server/
+## ref: https://hub.docker.com/r/confluentinc/cp-ksqldb-server/
 image: confluentinc/cp-ksqldb-server
 imageTag: 5.5.0
 
