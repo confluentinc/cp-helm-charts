@@ -113,11 +113,19 @@ The configuration parameters in this section control the resources requested and
 | `configurationOverrides` | Schema Registry [configuration](https://docs.confluent.io/current/schema-registry/docs/config.html) overrides in the dictionary format. | `{}` |
 | `customEnv` | Custom environmental variables | `{}` |
 
-### Port
+### Networking
 
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `servicePort` | The port on which the Schema Registry will be available and serving requests. | `8081` |
+| `ingress.enabled` | Flag to control whether to create or not an ingress for Schema registry. [Kubernetes documetnation](https://kubernetes.io/docs/concepts/services-networking/ingress/) | `false` |
+| `ingress.annotations` | Map of custom annotations to attach to the ingress. | `{}` |
+| `ingress.hosts` | Array of hostnames and paths managed by the ingress. | `[]` |
+| `ingress.hosts[].host` | Hostname that will receive traffic for Schema registry. | `""` |
+| `ingress.hosts[].paths` | Array of paths managed bu the hostname. | `[]` |
+| `ingress.tls` | Array of `tls` configuration. | `[]` |
+| `ingress.tls[].secretName` | Name of the secret where the TLS certificate will be stored. | `""` |
+| `ingress.tls[].hosts` | Array of hostnames for which the TLS certificate will be valid. | `[]` |
 
 ### Kafka
 
