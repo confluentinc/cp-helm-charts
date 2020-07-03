@@ -12,9 +12,6 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
-  {{- if .Values.priorityClass.name }}
-  priorityClassName: {{ .Values.priorityClass.name | quote }}
-  {{- end }}
   replicas: {{ .Values.replicaCount }}
   {{- if .Values.updateStrategy }}
   strategy:
@@ -40,6 +37,9 @@ spec:
       {{- end }}
       {{- end }}
     spec:
+      {{- if .Values.priorityClass.name }}
+      priorityClassName: {{ .Values.priorityClass.name | quote }}
+      {{- end }}
       containers:
         {{- if .Values.prometheus.jmx.enabled }}
         - name: prometheus-jmx-exporter
