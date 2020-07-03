@@ -95,7 +95,9 @@ The configuration parameters in this section control the resources requested and
 | `priorityClass.value` | [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/) | `100` |
 | `priorityClass.globalDefault` | [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/) | `false` |
 | `priorityClass.description` | [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/) | `""` |
-
+| `podDisruptionBudget.enabled` | [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) | `false` |
+| `podDisruptionBudget.maxUnavailable` | [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) | `1` |
+| `podDisruptionBudget.minAvailable` | [Kubernetes documentation](https://kubernetes.io/docs/tasks/run-application/configure-pdb/) | `nil` |
 
 ### Image
 
