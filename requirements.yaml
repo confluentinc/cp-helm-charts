@@ -8,7 +8,7 @@ dependencies:
   repository: file://./charts/cp-zookeeper
   condition: cp-zookeeper.enabled
 - name: cp-schema-registry
-  version: 0.1.0
+  version: 0.2.0
   repository: file://./charts/cp-schema-registry
   condition: cp-schema-registry.enabled
 - name: cp-kafka-rest

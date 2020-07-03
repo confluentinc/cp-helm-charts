@@ -89,6 +89,13 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `replicaCount` | The number of Schema Registry Servers. | `1` |
+| `updateStrategy` | Specifies the strategy used to replace old Pods by new ones. | `{}` |
+| `priorityClass.name` | Name of the priority class to use on the Schema registry PODs and when `priorityClass.create: true` the name of the resource created | `""` |
+| `priorityClass.create` | Flag to create the `PriorityClass` as part of the Helm release. [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/) | `false` |
+| `priorityClass.value` | [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/) | `100` |
+| `priorityClass.globalDefault` | [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/) | `false` |
+| `priorityClass.description` | [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/) | `""` |
+
 
 ### Image
 
@@ -162,3 +169,4 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `nodeSelector` | Dictionary containing key-value-pairs to match labels on nodes. When defined pods will only be scheduled on nodes, that have each of the indicated key-value pairs as labels. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) | `{}`
 | `tolerations`| Array containing taint references. When defined, pods can run on nodes, which would otherwise deny scheduling. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) | `{}`
+| `affinity`| Dictionay to configure affinity and anti-affinity for Schema Registry PODs. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity) | `{}`
