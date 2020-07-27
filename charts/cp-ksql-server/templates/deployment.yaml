@@ -95,7 +95,7 @@ spec:
             value: {{ $value | quote }}
           {{- end }}
           {{- if .Values.jmx.port }}
-          - name: KSQL_JMX_PORT
+          - name: JMX_PORT
             value: "{{ .Values.jmx.port }}"
           {{- end }}
       {{- if .Values.imagePullSecrets }}
