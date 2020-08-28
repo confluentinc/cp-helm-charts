@@ -7,7 +7,7 @@ replicaCount: 1
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-kafka/
 image: confluentinc/cp-kafka-connect
-imageTag: 5.0.0
+imageTag: 5.5.0
 
 ## Specify a imagePullPolicy
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -20,15 +20,27 @@ imagePullSecrets:
 
 servicePort: 8083
 
-## Kafka Connect Worker Configurations
+## Kafka Connect properties
 ## ref: https://docs.confluent.io/current/connect/userguide.html#configuring-workers
-connectKeyConverter: "io.confluent.connect.avro.AvroConverter"
-connectValueConverter: "io.confluent.connect.avro.AvroConverter"
-connectKeyConverterSchemaEnable: true
-connectValueConverterSchemaEnable: true
-connectInternalKeyConverter: "org.apache.kafka.connect.json.JsonConverter"
-connectInternalValueConverter: "org.apache.kafka.connect.json.JsonConverter"
-pluginPath: "/usr/share/java"
+configurationOverrides:
+  "plugin.path": "/usr/share/java,/usr/share/confluent-hub-components"
+  "key.converter": "io.confluent.connect.avro.AvroConverter"
+  "value.converter": "io.confluent.connect.avro.AvroConverter"
+  "key.converter.schemas.enable": "false"
+  "value.converter.schemas.enable": "false"
+  "internal.key.converter": "org.apache.kafka.connect.json.JsonConverter"
+  "internal.value.converter": "org.apache.kafka.connect.json.JsonConverter"
+  "config.storage.replication.factor": "3"
+  "offset.storage.replication.factor": "3"
+  "status.storage.replication.factor": "3"
+
+## Kafka Connect JVM Heap Option
+heapOptions: "-Xms512M -Xmx512M"
+
+## Additional env variables
+## CUSTOM_SCRIPT_PATH is the path of the custom shell script to be ran mounted in a volume
+customEnv: {}
+  # CUSTOM_SCRIPT_PATH: /etc/scripts/create-connectors.sh
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -41,6 +53,17 @@ resources: {}
   # requests:
   #  cpu: 100m
   #  memory: 128Mi
+
+## Custom pod annotations
+podAnnotations: {}
+
+## Node labels for pod assignment
+## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+nodeSelector: {}
+
+## Taints to tolerate on node assignment:
+## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+tolerations: []
 
 ## Monitoring
 ## Kafka Connect JMX Settings
@@ -57,7 +80,12 @@ prometheus:
     enabled: true
     image: solsson/kafka-prometheus-jmx-exporter@sha256
     imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
+    imagePullPolicy: IfNotPresent
     port: 5556
+
+    ## Resources configuration for the JMX exporter container.
+    ## See the `resources` documentation above for details.
+    resources: {}
 
 ## You can list load balanced service endpoint, or list of all brokers (which is hard in K8s).  e.g.:
 ## bootstrapServers: "PLAINTEXT://dozing-prawn-kafka-headless:9092"
@@ -68,3 +96,36 @@ kafka:
 ## e.g. gnoble-panther-cp-schema-registry:8081
 cp-schema-registry:
   url: ""
+
+## List of volumeMounts for connect server container
+## ref: https://kubernetes.io/docs/concepts/storage/volumes/
+volumeMounts:
+# - name: credentials
+#   mountPath: /etc/creds-volume
+
+## List of volumeMounts for connect server container
+## ref: https://kubernetes.io/docs/concepts/storage/volumes/
+volumes:
+# - name: credentials
+#   secret:
+#     secretName: creds
+
+## Secret with multiple keys to serve the purpose of multiple secrets
+## Values for all the keys will be base64 encoded when the Secret is created or updated
+## ref: https://kubernetes.io/docs/concepts/configuration/secret/
+secrets:
+  # username: kafka123
+  # password: connect321
+
+## These values are used only when "customEnv.CUSTOM_SCRIPT_PATH" is defined.
+## "livenessProbe" is required only for the edge cases where the custom script to be ran takes too much time
+## and errors by the ENTRYPOINT are ignored by the container
+## As an example such a similar script is added to "cp-helm-charts/examples/create-connectors.sh"
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+livenessProbe:
+  # httpGet:
+  #   path: /connectors
+  #   port: 8083
+  # initialDelaySeconds: 30
+  # periodSeconds: 5
+  # failureThreshold: 10
