@@ -38,10 +38,7 @@ configurationOverrides:
 heapOptions: "-Xms512M -Xmx512M"
 
 ## Additional env variables
-## CUSTOM_SCRIPT_PATH is the path of the custom shell script to be ran mounted in a volume
-customEnv:
-  {}
-  # CUSTOM_SCRIPT_PATH: /etc/scripts/create-connectors.sh
+customEnv: {}
 
 resources:
   {}
