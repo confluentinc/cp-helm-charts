@@ -32,8 +32,8 @@ spec:
         prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
       {{- end }}
       {{- end }}
-      {{- if .Values.secrets }}
-        checksum/secrets: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
+      {{- if .Values.configScripts }}
+        checksum/config-scripts: {{ include (print $.Template.BasePath "/config-scripts.yaml") . | sha256sum }}
       {{- end }}
     spec:
       containers:
