@@ -136,7 +136,7 @@ spec:
       - name: config-scripts
         configMap:
           name: {{ template "cp-kafka-connect.fullname" . }}-config-scripts
-          defaultMode: 777
+          defaultMode:  0777
       {{- end }}
       {{- if .Values.prometheus.jmx.enabled }}
       - name: jmx-config
