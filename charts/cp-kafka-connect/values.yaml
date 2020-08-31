@@ -39,10 +39,12 @@ heapOptions: "-Xms512M -Xmx512M"
 
 ## Additional env variables
 ## CUSTOM_SCRIPT_PATH is the path of the custom shell script to be ran mounted in a volume
-customEnv: {}
+customEnv:
+  {}
   # CUSTOM_SCRIPT_PATH: /etc/scripts/create-connectors.sh
 
-resources: {}
+resources:
+  {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -96,36 +98,11 @@ kafka:
 ## e.g. gnoble-panther-cp-schema-registry:8081
 cp-schema-registry:
   url: ""
+## configScripts can be used to setup scripts
+## Do not forget to setup the scripToRun as well, you probably want to pull to make sure the service is up and running first
+# configScripts:
+#   list-connections.sh: |
+#     curl -X GET http://localhost:8083/connectors
 
-## List of volumeMounts for connect server container
-## ref: https://kubernetes.io/docs/concepts/storage/volumes/
-volumeMounts:
-# - name: credentials
-#   mountPath: /etc/creds-volume
-
-## List of volumeMounts for connect server container
-## ref: https://kubernetes.io/docs/concepts/storage/volumes/
-volumes:
-# - name: credentials
-#   secret:
-#     secretName: creds
-
-## Secret with multiple keys to serve the purpose of multiple secrets
-## Values for all the keys will be base64 encoded when the Secret is created or updated
-## ref: https://kubernetes.io/docs/concepts/configuration/secret/
-secrets:
-  # username: kafka123
-  # password: connect321
-
-## These values are used only when "customEnv.CUSTOM_SCRIPT_PATH" is defined.
-## "livenessProbe" is required only for the edge cases where the custom script to be ran takes too much time
-## and errors by the ENTRYPOINT are ignored by the container
-## As an example such a similar script is added to "cp-helm-charts/examples/create-connectors.sh"
-## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
-livenessProbe:
-  # httpGet:
-  #   path: /connectors
-  #   port: 8083
-  # initialDelaySeconds: 30
-  # periodSeconds: 5
-  # failureThreshold: 10
+## Can be used to run a scripts during startup
+runScripts: false

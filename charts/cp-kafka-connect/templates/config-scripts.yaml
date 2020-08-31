@@ -1,16 +1,16 @@
-{{- if .Values.secrets }}
+{{- if .Values.configScripts }}
 apiVersion: v1
-kind: Secret
+kind: ConfigMap
 metadata:
-  name: {{ template "cp-kafka-connect.fullname" . }}
+  name: {{ template "cp-kafka-connect.fullname" . }}-config-scripts
   labels:
     app: {{ template "cp-kafka-connect.name" . }}
     chart: {{ template "cp-kafka-connect.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-type: Opaque
 data:
-  {{- range $key, $value := .Values.secrets }}
-    {{ $key }}: {{ $value | b64enc }}
-  {{- end }}
+{{- range $key, $value := .Values.configScripts }}
+  {{ $key }}: |
+{{ $value | indent 4 }}
+{{- end }}
 {{- end }}
