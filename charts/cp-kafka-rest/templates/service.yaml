@@ -11,6 +11,10 @@ spec:
   ports:
     - name: rest-proxy
       port: {{ .Values.servicePort }}
+    {{- if .Values.prometheus.jmx.enabled }}
+    - name: metrics
+      port: {{ .Values.prometheus.jmx.port }}
+    {{- end }}
   selector:
     app: {{ template "cp-kafka-rest.name" . }}
     release: {{ .Release.Name }}

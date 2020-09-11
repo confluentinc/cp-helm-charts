@@ -11,6 +11,10 @@ spec:
   ports:
       - name: ksql-server
         port: {{ .Values.servicePort }}
+    {{- if .Values.prometheus.jmx.enabled }}
+      - name: metrics
+        port: {{ .Values.prometheus.jmx.port }}
+    {{- end }}
   selector:
     app: {{ template "cp-ksql-server.name" . }}
     release: {{ .Release.Name }}
