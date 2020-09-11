@@ -123,6 +123,10 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
+        {{- range $key, $value := .Values.configurationOverrides }}
+        - name: {{ printf "ZOOKEEPER_%s" $key | replace "." "_" | upper | quote }}
+          value: {{ $value | quote }}
+        {{- end }}
         command:
         - "bash"
         - "-c"

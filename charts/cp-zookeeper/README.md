@@ -145,6 +145,13 @@ The configuration parameters in this section control the resources requested and
 | `leaderElectionPort` | The port on which the ZooKeeper servers perform leader election. | `3888` |
 | `clientPort` | The port to listen for client connections; that is, the port that clients attempt to connect to. | `2181` |
 
+### Confluent Zookeeper Configuration
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `configurationOverrides` | Zookeeper [configuration](https://zookeeper.apache.org/doc/r3.2.2/zookeeperAdmin.html#sc_configuration) overrides in the dictionary format | `{}` |
+
+
 ### Persistence
 
 | Parameter | Description | Default |
