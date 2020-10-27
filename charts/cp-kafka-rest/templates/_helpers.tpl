@@ -32,6 +32,28 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
+Create a default fully qualified Kafka name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "cp-kafka-rest.cp-kafka.fullname" -}}
+{{- $name := default "cp-kafka" (index .Values "cp-kafka" "nameOverride") -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+Form the Kafka URL. If Kafka is installed as part of this chart, use k8s service discovery,
+else use user-provided URL
+*/}}
+{{- define "cp-kafka-rest.cp-kafka.service-name" }}
+{{- if (index .Values "cp-kafka" "url") -}}
+{{- printf "%s" (index .Values "cp-kafka" "url") }}
+{{- else -}}
+{{- $clientPort := default 9092 (index .Values "cp-kafka" "clientPort") | int -}}
+{{- printf "PLAINTEXT://%s-headless:%d" (include "cp-kafka-rest.cp-kafka.fullname" .) $clientPort }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Create a default fully qualified zookeeper name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}

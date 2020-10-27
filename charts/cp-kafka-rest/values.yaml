@@ -88,6 +88,12 @@ external:
 ## If the Kafka Chart is disabled a URL of zookeeper are required to connect
 ## e.g. ungaged-sparrow-cp-zookeeper:2181
 cp-zookeeper:
+  enabled: false
+  url: ""
+
+## If the Kafka Chart is disabled a URL of the kafka bootstrap server are required to connect
+## e.g. PLAINTEXT://ungaged-sparrow-cp-kafka-bootstrap:9092
+cp-kafka:
   url: ""
 
 ## If the Kafka Chart is disabled a URL and port are required to connect

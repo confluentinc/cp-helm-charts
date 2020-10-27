@@ -177,8 +177,15 @@ The configuration parameters in this section control the resources requested and
 
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
+| `cp-zookeeper.enabled` | Using the Zookeeper connection string is DEPRECATED | `false` |
 | `cp-zookeeper.url` | Service name of Zookeeper cluster (Not needed if this is installed along with cp-kafka chart). | `""` |
 | `cp-zookeeper.clientPort` | Port of Zookeeper Cluster | `2181` |
+
+### Kafka Bootstrap
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `cp-kafka.url` | Url to connect to Kafka Bootstrap servers (Not needed if this is installed along with cp-kafka chart). | `""` |
 
 ### Schema Registry (optional)
 
