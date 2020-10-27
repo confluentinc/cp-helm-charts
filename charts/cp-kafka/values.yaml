@@ -32,6 +32,13 @@ podManagementPolicy: OrderedReady
 ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies
 updateStrategy: RollingUpdate
 
+# Security Context
+# ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+# for Kafka container
+securityContext: {}
+  #  runAsUser: 1000
+  #  runAsGroup: 1000
+
 ## Kafka Server properties
 ## ref: https://kafka.apache.org/documentation/#configuration
 configurationOverrides:
