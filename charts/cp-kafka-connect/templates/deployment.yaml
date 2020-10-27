@@ -32,6 +32,9 @@ spec:
         prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
       {{- end }}
       {{- end }}
+      {{- if .Values.configScripts }}
+        checksum/config-scripts: {{ include (print $.Template.BasePath "/config-scripts.yaml") . | sha256sum }}
+      {{- end }}
     spec:
       containers:
         {{- if .Values.prometheus.jmx.enabled }}
@@ -102,31 +105,39 @@ spec:
             - name: KAFKA_JMX_PORT
               value: "{{ .Values.jmx.port }}"
             {{- end }}
-        {{- if .Values.customEnv.CUSTOM_SCRIPT_PATH }}
+        {{- if .Values.runScripts }}
           command:
             - /bin/bash
             - -c
             - |
               /etc/confluent/docker/run &
-              $CUSTOM_SCRIPT_PATH
+              /tmp/scripts/*.sh
               sleep infinity
-          {{- if .Values.livenessProbe }}
-          livenessProbe:
-{{ toYaml .Values.livenessProbe | trim | indent 12 }}
-          {{- end }}
         {{- end }}
-          {{- if .Values.volumeMounts }}
+          livenessProbe:
+            httpGet:
+              path: /connectors
+              port: 8083
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            failureThreshold: 10
+          {{- if .Values.configScripts }}
           volumeMounts:
-{{ toYaml .Values.volumeMounts | indent 10 }}
-          {{- end}}
+          - name: config-scripts
+            mountPath: /tmp/scripts/
+            readOnly: true
+          {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
       {{- end }}
       volumes:
-      {{- if .Values.volumes }}
-{{ toYaml .Values.volumes | trim | indent 6 }}
-      {{- end}}
+      {{- if .Values.configScripts }}
+      - name: config-scripts
+        configMap:
+          name: {{ template "cp-kafka-connect.fullname" . }}-config-scripts
+          defaultMode:  0777
+      {{- end }}
       {{- if .Values.prometheus.jmx.enabled }}
       - name: jmx-config
         configMap:

@@ -12,7 +12,9 @@ while :; do
     sleep 5
 done
 
-echo "======> Creating connectors"
+echo -e $(date) "Delete previous connector"
+curl -X DELETE http://localhost:8083/connectors/sample-connector
+echo -e $(date) "Create new connector"
 # Send a simple POST request to create the connector
 curl -X POST \
     -H "Content-Type: application/json" \
@@ -28,4 +30,5 @@ curl -X POST \
         "topic.prefix": "sample-connector-",
         "poll.interval.ms": 1000
         }
-    }' http://$CONNECT_REST_ADVERTISED_HOST_NAME:8083/connectors
+    }' http://localhost:8083/connectors
+echo -e $(date) "Done creating connector"
