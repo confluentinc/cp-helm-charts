@@ -1,4 +1,4 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ template "cp-kafka.fullname" . }}
@@ -11,6 +11,10 @@ spec:
   serviceName: {{ template "cp-kafka.fullname" . }}-headless
   podManagementPolicy: {{ .Values.podManagementPolicy }}
   replicas: {{ default 3 .Values.brokers }}
+  selector:
+    matchLabels:
+      app: {{ template "cp-kafka.name" . }}
+      release: {{ .Release.Name }}
   updateStrategy:
     type: {{ .Values.updateStrategy }}
   template:
