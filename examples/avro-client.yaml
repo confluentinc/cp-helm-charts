@@ -6,7 +6,7 @@ metadata:
 spec:
   containers:
   - name: avro-client
-    image: confluentinc/cp-schema-registry:6.0.0
+    image: confluentinc/cp-schema-registry:6.0.1
     command:
       - sh
       - -c
