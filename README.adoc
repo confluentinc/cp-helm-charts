@@ -29,17 +29,17 @@ The https://github.com/confluentinc/cp-helm-charts[Confluent Platform Helm Chart
 ----
 helm repo add confluentinc https://confluentinc.github.io/cp-helm-charts/   #<1>
 helm repo update    #<2>
-helm install confluentinc/cp-helm-charts --name my-confluent --version 0.5.0    #<3>
+helm install confluentinc/cp-helm-charts --name my-confluent --version 0.6.0    #<3>
 ----
 <1> Add `confluentinc` helm charts repo
 <2> Update repo information 
-<3> Install Confluent Platform with release name «my-confluent» and version `0.5.0` 
+<3> Install Confluent Platform with release name «my-confluent» and version `0.6.0` 
 
 == Contributing
 
 We welcome any contributions:
 
-NOTE: It's not officially supported repo, hence support is on "best effort" basis.
+NOTE: It's not officially supported repo, hence support is on __"best effort"__ basis.
 
 * Report all enhancements, bugs, and tasks as https://github.com/confluentinc/cp-helm-charts/issues[GitHub issues]
 * Provide fixes or enhancements by opening pull requests in GitHub
@@ -72,6 +72,9 @@ These Helm charts have been tested with the following software versions:
 * https://kubernetes.io/[Kubernetes] 1.9.2+
 * https://helm.sh/[Helm] 2.8.2+
 * https://hub.docker.com/u/confluentinc/[Confluent Platform Docker Images]
+
+WARNING: This guide assumes that you're Helm 2 (tested with Helm `2.16`).
+You can follow up on Helm 3 issues in https://github.com/confluentinc/cp-helm-charts/issues/480
 
 For local Kubernetes installation with Minikube, see <<create-local-minikube>>.
 
