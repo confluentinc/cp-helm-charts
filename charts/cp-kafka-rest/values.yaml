@@ -7,7 +7,7 @@ replicaCount: 1
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-kafka/
 image: confluentinc/cp-kafka-rest
-imageTag: 5.5.0
+imageTag: 6.0.1
 
 ## Specify a imagePullPolicy
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -94,3 +94,6 @@ cp-zookeeper:
 ## e.g. gnoble-panther-cp-schema-registry:8081
 cp-schema-registry:
   url: ""
+
+cp-kafka:
+  bootstrapServers: ""

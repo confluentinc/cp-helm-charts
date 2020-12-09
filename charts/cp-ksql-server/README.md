@@ -108,7 +108,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `image` | Docker Image of Confluent KSQL Server. | `confluentinc/cp-ksql-server` |
-| `imageTag` | Docker Image Tag of Confluent KSQL Server. | `5.5.0` |
+| `imageTag` | Docker Image Tag of Confluent KSQL Server. | `6.0.1` |
 | `imagePullPolicy` | Docker Image Tag of Confluent KSQL Server. | `IfNotPresent` |
 | `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
 
