@@ -1,0 +1,23 @@
+{{- if .Values.pdb.enabled }}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ template "cp-schema-registry.fullname" . }}
+  labels:
+    app: {{ template "cp-schema-registry.name" . }}
+    chart: {{ template "cp-schema-registry.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  {{- with .Values.pdb.minAvailable }}
+  minAvailable: {{ . }}
+  {{- end }}
+  {{- with .Values.pdb.maxUnavailable }}
+  maxUnavailable: {{ . }}
+  {{- end }}
+
+  selector:
+    matchLabels:
+      app: {{ template "cp-schema-registry.name" . }}
+      release: {{ .Release.Name }}
+{{- end }}
