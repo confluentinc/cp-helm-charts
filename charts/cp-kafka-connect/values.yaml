@@ -68,6 +68,8 @@ tolerations: []
 ## Monitoring
 ## Kafka Connect JMX Settings
 ## ref: https://kafka.apache.org/documentation/#connect_monitoring
+## Debezium Connector Specific Metrics
+## Ref: https://debezium.io/documentation/reference/operations/monitoring.html
 jmx:
   port: 5555
 
