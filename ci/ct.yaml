@@ -1,0 +1,6 @@
+---
+helm-extra-args: --timeout 600s
+validate-maintainers: false
+validate-chart-schema: false
+chart-repos:
+  - stable=https://charts.helm.sh/stable

@@ -1,0 +1,46 @@
+version: v1.0
+name: Run in Docker
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Run shellcheck
+    task:
+      agent:
+        machine:
+          type: e1-standard-2
+        containers:
+          - name: shellcheck
+            image: 'koalaman/shellcheck:v0.6.0'
+      jobs:
+        - name: Run shellcheck
+          commands:
+            - checkout
+            - shellcheck -x ci/e2e-kind.sh
+
+  - name: Lint charts
+    task:
+      agent:
+        machine:
+          type: e1-standard-2
+        containers:
+          - name: chart-testing
+            image: 'quay.io/helmpack/chart-testing:v3.3.1'
+      jobs:
+        - name: Lint charts
+          commands:
+            - checkout
+            - ct lint --config ci/ct.yaml
+
+  - name: Run E2E Chart Test
+    task:
+      agent:
+        machine:
+          type: e1-standard-2
+          os_image: ubuntu1804
+      jobs:
+        - name: Run e2e-kind
+          commands:
+            - checkout
+            - ci/e2e-kind.sh
