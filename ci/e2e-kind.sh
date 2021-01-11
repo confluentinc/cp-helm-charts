@@ -49,12 +49,13 @@ create_kind_cluster() {
 
     kind create cluster --name "$CLUSTER_NAME" --config ci/kind-config.yaml --image "kindest/node:$K8S_VERSION" --wait 60s
 
-    ls -alh
+    # TODO: Remove debugging steps
+    docker_exec whoami
 
-    docker_exec ls -alh
+    docker_exec mkdir -p /root/.kube
 
     echo 'Copying kubeconfig to container...'
-    docker cp $HOME/.kube/config ct:/root/.kube/config
+    docker cp "${HOME}"/.kube/config ct:/root/.kube/config
 
     docker_exec kubectl cluster-info
     echo

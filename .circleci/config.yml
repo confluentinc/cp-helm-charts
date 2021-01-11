@@ -1,0 +1,32 @@
+version: 2.1
+jobs:
+  lint-scripts:
+    docker:
+      - image: koalaman/shellcheck-alpine
+    steps:
+      - checkout
+      - run:
+          command: shellcheck -x ci/e2e-kind.sh
+
+  lint-charts:
+    docker:
+      - image: quay.io/helmpack/chart-testing:v3.1.1
+    steps:
+      - checkout
+      - run:
+          command: ct lint --config ci/ct.yaml
+
+  install-charts:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          command: ci/e2e-kind.sh
+
+workflows:
+  version: 2
+  untagged-build:
+    jobs:
+      - lint-scripts
+      - lint-charts
+      - install-charts
