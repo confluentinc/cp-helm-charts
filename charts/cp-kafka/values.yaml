@@ -108,6 +108,10 @@ nodeSelector: {}
 ## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 tolerations: []
 
+## Pod scheduling constraints
+## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity
+affinity: {}
+
 ## Monitoring
 ## Kafka JMX Settings
 ## ref: https://docs.confluent.io/current/kafka/monitoring.html
