@@ -40,6 +40,9 @@ spec:
       {{- end }}
     spec:
       affinity:
+      {{- if .Values.affinity }}
+{{ toYaml .Values.affinity | indent 8 }}
+      {{- else }}
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
           - weight: 1
@@ -55,6 +58,7 @@ spec:
                     values:
                     - {{ .Release.Name }}
               topologyKey: "kubernetes.io/hostname"
+      {{- end }}
       containers:
       {{- if .Values.prometheus.jmx.enabled }}
       - name: prometheus-jmx-exporter
