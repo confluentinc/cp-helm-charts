@@ -37,4 +37,4 @@ To connect from a client pod:
   echo "$MESSAGE" | kafka-console-producer --bootstrap-server {{ template "cp-kafka.fullname" . }}:9092 --topic {{ template "cp-kafka.fullname" . }}-topic && \
 
   # Consume a test message from the topic
-  kafka-console-consumer --bootstrap-server {{ template "cp-kafka.fullname" . }}-headless:9092 --topic {{ template "cp-kafka.fullname" . }}-topic --from-beginning --timeout-ms 2000 | grep "$MESSAGE"
+  kafka-console-consumer --bootstrap-server {{ template "cp-kafka.cp-kafka-headless.fullname" . }}:9092 --topic {{ template "cp-kafka.fullname" . }}-topic --from-beginning --timeout-ms 2000 | grep "$MESSAGE"
