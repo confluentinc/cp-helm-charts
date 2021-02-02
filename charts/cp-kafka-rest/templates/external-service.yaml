@@ -10,7 +10,7 @@ metadata:
   {{- end }}
   {{- end }}
   labels:
-    app: {{ template "cp-kafka-rest.name" . }}
+    app: {{ template "cp-kafka-rest.fullname" . }}
     chart: {{ template "cp-kafka-rest.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -28,6 +28,6 @@ spec:
       port: {{ .Values.external.port }}
       targetPort: {{ .Values.servicePort }}
   selector:
-    app: {{ template "cp-kafka-rest.name" . }}
+    app: {{ template "cp-kafka-rest.fullname" . }}
     release: {{ .Release.Name }}
 {{- end -}}

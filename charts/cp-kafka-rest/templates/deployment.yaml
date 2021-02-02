@@ -7,21 +7,29 @@ kind: Deployment
 metadata:
   name: {{ template "cp-kafka-rest.fullname" . }}
   labels:
-    app: {{ template "cp-kafka-rest.name" . }}
+    app: {{ template "cp-kafka-rest.fullname" . }}
     chart: {{ template "cp-kafka-rest.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
+  {{- range $key, $value := .Values.serviceInventoryLabels }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "cp-kafka-rest.name" . }}
+      app: {{ template "cp-kafka-rest.fullname" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "cp-kafka-rest.name" . }}
+        app: {{ template "cp-kafka-rest.fullname" . }}
         release: {{ .Release.Name }}
+      {{- if .Values.serviceInventoryLabels }}
+      {{- range $key, $value := .Values.serviceInventoryLabels }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
+      {{- end }}
       {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
       annotations:
       {{- range $key, $value := .Values.podAnnotations }}

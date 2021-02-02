@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "cp-kafka-rest.fullname" . }}-servicemonitor
+  labels:
+    release: prom-op
+    app: {{ template "cp-kafka-rest.fullname" . }}-servicemonitor
+    chart: {{ template "cp-kafka-rest.chart" . }}
+    heritage: {{ .Release.Service }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "cp-kafka-rest.fullname" . }}
+  namespaceSelector:
+    matchNames:
+    - {{ .Release.Namespace }}
+  endpoints:
+  - port: metrics
+    interval: 10s
+    honorLabels: true

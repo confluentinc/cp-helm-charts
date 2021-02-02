@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   name: {{ template "cp-kafka-rest.fullname" . }}-jmx-configmap
   labels:
-    app: {{ template "cp-kafka-rest.name" . }}
+    app: {{ template "cp-kafka-rest.fullname" . }}
     chart: {{ template "cp-kafka-rest.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
