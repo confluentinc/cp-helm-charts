@@ -69,6 +69,10 @@ spec:
             {{- end }}
           resources:
 {{ toYaml .Values.resources | indent 12 }}
+          {{- if .Values.volumeMounts }}
+          volumeMounts:
+{{ toYaml .Values.volumeMounts | indent 10 }}
+          {{- end}}
           env:
           - name: SCHEMA_REGISTRY_HOST_NAME
             valueFrom:
@@ -110,6 +114,9 @@ spec:
         configMap:
           name: {{ template "cp-schema-registry.fullname" . }}-jmx-configmap
       {{- end }}
+      {{- if .Values.volumes }}
+{{ toYaml .Values.volumes | trim | indent 6 }}
+      {{- end}}
       {{- if .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
