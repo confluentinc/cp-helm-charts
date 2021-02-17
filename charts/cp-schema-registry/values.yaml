@@ -27,6 +27,14 @@ imagePullSecrets:
 ## Configuration Options can be found here: https://docs.confluent.io/current/schema-registry/docs/config.html
 configurationOverrides: {}
 
+## Schema Registry Settings Overrides
+## Can load values from secrets or configmap
+configurationOverridesFromK8S: {}
+  # kafkastore.ssl.truststore.password:
+  #   secretKeyRef:
+  #     name: name-of-secret
+  #     key: keyName
+
 ## Additional env variables
 customEnv: {}
 

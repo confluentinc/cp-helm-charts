@@ -92,6 +92,11 @@ spec:
           - name: SCHEMA_REGISTRY_{{ $configName | replace "." "_" | upper }}
             value: {{ $configValue | quote }}
           {{ end }}
+          {{ range $configName, $configValue := .Values.configurationOverridesFromK8S }}
+          - name: SCHEMA_REGISTRY_{{ $configName | replace "." "_" | upper }}
+            valueFrom:
+{{- toYaml $configValue  | nindent 14 }}
+          {{ end }}
           {{- range $key, $value := .Values.customEnv }}
           - name: {{ $key | quote }}
             value: {{ $value | quote }}
