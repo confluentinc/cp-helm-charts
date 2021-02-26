@@ -17,7 +17,7 @@ data:
     whitelistObjectNames:
     - kafka.server:type=ReplicaManager,name=*
     - kafka.controller:type=KafkaController,name=*
-    - kafka.server:type=BrokerTopicMetrics,name=*
+    - kafka.server:type=BrokerTopicMetrics,name=*,topic=*
     - kafka.network:type=RequestMetrics,name=RequestsPerSec,request=*
     - kafka.network:type=SocketServer,name=NetworkProcessorAvgIdlePercent
     - kafka.server:type=ReplicaFetcherManager,name=MaxLag,clientId=*
