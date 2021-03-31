@@ -25,16 +25,16 @@ To connect from a client pod:
 3. Explore with kafka commands:
 
   # Delete the topic if it exists
-  kafka-topics --zookeeper {{ template "cp-kafka.cp-zookeeper.service-name" . }} --topic {{ template "cp-kafka.fullname" . }}-topic --delete --if-exists
+  kafka-topics --bootstrap-server {{ template "cp-kafka.fullname" . }}-headless:9092 --topic {{ template "cp-kafka.fullname" . }}-topic --delete --if-exists
 
   # Create the topic
-  kafka-topics --zookeeper {{ template "cp-kafka.cp-zookeeper.service-name" . }} --topic {{ template "cp-kafka.fullname" . }}-topic --create --partitions 1 --replication-factor 1 --if-not-exists
+  kafka-topics --bootstrap-server {{ template "cp-kafka.fullname" . }}-headless:9092 --topic {{ template "cp-kafka.fullname" . }}-topic --create --partitions 1 --replication-factor 1 --if-not-exists
 
   # Create a message
   MESSAGE="`date -u`"
 
   # Produce a test message to the topic
-  echo "$MESSAGE" | kafka-console-producer --broker-list {{ template "cp-kafka.fullname" . }}:9092 --topic {{ template "cp-kafka.fullname" . }}-topic && \
+  echo "$MESSAGE" | kafka-console-producer --bootstrap-server {{ template "cp-kafka.fullname" . }}:9092 --topic {{ template "cp-kafka.fullname" . }}-topic && \
 
   # Consume a test message from the topic
   kafka-console-consumer --bootstrap-server {{ template "cp-kafka.fullname" . }}-headless:9092 --topic {{ template "cp-kafka.fullname" . }}-topic --from-beginning --timeout-ms 2000 | grep "$MESSAGE"

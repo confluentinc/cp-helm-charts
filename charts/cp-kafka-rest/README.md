@@ -98,7 +98,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `image` | Docker Image of Confluent REST Proxy. | `confluentinc/cp-kafka-rest` |
-| `imageTag` | Docker Image Tag of Confluent REST Proxy. | `5.4.1` |
+| `imageTag` | Docker Image Tag of Confluent REST Proxy. | `6.0.1` |
 | `imagePullPolicy` | Docker Image Tag of Confluent REST Proxy. | `IfNotPresent` |
 | `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
 
@@ -113,6 +113,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `configurationOverrides` | Kafka REST [configuration](https://docs.confluent.io/current/kafka-rest/docs/config.html) overrides in the dictionary format | `{}` |
+| `customEnv` | Custom environmental variables | `{}` |
 
 ### Confluent Kafka REST JVM Heap Options
 

@@ -15,13 +15,13 @@ servers: 3
 ## Images Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-zookeeper/
 image: confluentinc/cp-zookeeper
-imageTag: 5.4.1
+imageTag: 6.0.1
 
 ## Specify a imagePullPolicy
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
 imagePullPolicy: IfNotPresent
 
-## Specify an array of imagePullSecrets. 
+## Specify an array of imagePullSecrets.
 ## Secrets must be manually created in the namespace.
 ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
 imagePullSecrets:
@@ -34,6 +34,13 @@ podManagementPolicy: OrderedReady
 ## The StatefulSet Update Strategy which Zookeeper will use when changes are applied: OnDelete or RollingUpdate
 ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies
 updateStrategy: RollingUpdate
+
+# Security Context
+# ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+# for Zookeeper container
+securityContext: {}
+  #  runAsUser: 1000
+  #  runAsGroup: 1000
 
 ## Zookeeper Configuration
 ## ref: https://zookeeper.apache.org/doc/r3.4.10/zookeeperAdmin.html#sc_configuration
@@ -95,6 +102,10 @@ nodeSelector: {}
 ## Taints to tolerate on node assignment:
 ## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 tolerations: []
+
+## Pod scheduling constraints
+## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity
+affinity: {}
 
 ## Monitoring
 ## Zookeeper JMX Settings

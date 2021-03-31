@@ -12,7 +12,7 @@ brokers: 3
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-kafka/
 image: confluentinc/cp-enterprise-kafka
-imageTag: 5.4.1
+imageTag: 6.0.1
 
 ## Specify a imagePullPolicy
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -31,6 +31,13 @@ podManagementPolicy: OrderedReady
 ## The StatefulSet Update Strategy which Kafka will use when changes are applied: OnDelete or RollingUpdate
 ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies
 updateStrategy: RollingUpdate
+
+# Security Context
+# ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+# for Kafka container
+securityContext: {}
+  #  runAsUser: 1000
+  #  runAsGroup: 1000
 
 ## Kafka Server properties
 ## ref: https://kafka.apache.org/documentation/#configuration
@@ -100,6 +107,10 @@ nodeSelector: {}
 ## Taints to tolerate on node assignment:
 ## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 tolerations: []
+
+## Pod scheduling constraints
+## Ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity
+affinity: {}
 
 ## Monitoring
 ## Kafka JMX Settings

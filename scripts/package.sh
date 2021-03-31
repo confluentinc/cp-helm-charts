@@ -5,6 +5,10 @@
 echo -e "${RS}${BLUE} Cleaning and preparing..."
 find . -iname "*.tgz" -type f | grep -v 'docs/' | xargs rm
 
+echo -e "${RS}${BLUE} Generating docs...${RS}"
+scripts/generate_docs.sh
+RET=$?
+
 echo -e "${RS}${BLUE} Linting and checking...${RS}"
 scripts/lint.sh
 RET=$?
