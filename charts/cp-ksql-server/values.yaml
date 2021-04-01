@@ -6,8 +6,8 @@ replicaCount: 1
 
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-ksql-server/
-image: confluentinc/cp-ksql-server
-imageTag: 5.2.1
+image: confluentinc/cp-ksqldb-server
+imageTag: 5.5.0
 
 ## Specify a imagePullPolicy
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -44,7 +44,7 @@ nodeSelector: {}
 
 ## Taints to tolerate on node assignment:
 ## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
-tolerations: {}
+tolerations: []
 
 ## Monitoring
 ## JMX Settings
@@ -61,6 +61,7 @@ prometheus:
     enabled: true
     image: solsson/kafka-prometheus-jmx-exporter@sha256
     imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
+    imagePullPolicy: IfNotPresent
     port: 5556
 
     ## Resources configuration for the JMX exporter container.
@@ -85,7 +86,7 @@ ksql:
 kafka:
   bootstrapServers: ""
 
-## e.g. gnoble-panther-cp-schema-registry:8081
+## e.g. http://gnoble-panther-cp-schema-registry:8081
 cp-schema-registry:
   url: ""
 

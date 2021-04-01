@@ -98,7 +98,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `image` | Docker Image of Confluent REST Proxy. | `confluentinc/cp-kafka-rest` |
-| `imageTag` | Docker Image Tag of Confluent REST Proxy. | `5.2.1` |
+| `imageTag` | Docker Image Tag of Confluent REST Proxy. | `5.5.0` |
 | `imagePullPolicy` | Docker Image Tag of Confluent REST Proxy. | `IfNotPresent` |
 | `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
 
@@ -113,6 +113,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `configurationOverrides` | Kafka REST [configuration](https://docs.confluent.io/current/kafka-rest/docs/config.html) overrides in the dictionary format | `{}` |
+| `customEnv` | Custom environmental variables | `{}` |
 
 ### Confluent Kafka REST JVM Heap Options
 
@@ -126,8 +127,8 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `resources.requests.cpu` | The amount of CPU to request. | see [values.yaml](values.yaml) for details |
 | `resources.requests.memory` | The amount of memory to request. | see [values.yaml](values.yaml) for details |
-| `resources.limit.cpu` | The upper limit CPU usage for a REST Proxy Pod. | see [values.yaml](values.yaml) for details |
-| `resources.limit.memory` | The upper limit memory usage for a REST Proxy Pod. | see [values.yaml](values.yaml) for details |
+| `resources.limits.cpu` | The upper limit CPU usage for a REST Proxy Pod. | see [values.yaml](values.yaml) for details |
+| `resources.limits.memory` | The upper limit memory usage for a REST Proxy Pod. | see [values.yaml](values.yaml) for details |
 
 ### Annotations
 
@@ -148,6 +149,7 @@ The configuration parameters in this section control the resources requested and
 | `prometheus.jmx.enabled` | Whether or not to install Prometheus JMX Exporter as a sidecar container and expose JMX metrics to Prometheus. | `true` |
 | `prometheus.jmx.image` | Docker Image for Prometheus JMX Exporter container. | `solsson/kafka-prometheus-jmx-exporter@sha256` |
 | `prometheus.jmx.imageTag` | Docker Image Tag for Prometheus JMX Exporter container. | `6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143` |
+| `prometheus.jmx.imagePullPolicy` | Docker Image Pull Policy for Prometheus JMX Exporter container. | `IfNotPresent` |
 | `prometheus.jmx.port` | JMX Exporter Port which exposes metrics in Prometheus format for scraping. | `5556` |
 | `prometheus.jmx.resources` | JMX Exporter resources configuration. | see [values.yaml](values.yaml) for details |
 

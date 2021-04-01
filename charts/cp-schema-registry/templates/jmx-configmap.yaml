@@ -14,6 +14,10 @@ data:
     lowercaseOutputName: true
     lowercaseOutputLabelNames: true
     ssl: false
+    whitelistObjectNames:
+    - kafka.schema.registry:type=jetty-metrics
+    - kafka.schema.registry:type=master-slave-role
+    - kafka.schema.registry:type=jersey-metrics
     rules:
     - pattern : 'kafka.schema.registry<type=jetty-metrics>([^:]+):'
       name: "cp_kafka_schema_registry_jetty_metrics_$1"

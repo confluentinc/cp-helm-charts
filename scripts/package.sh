@@ -5,6 +5,10 @@
 echo -e "${RS}${BLUE} Cleaning and preparing..."
 find . -iname "*.tgz" -type f | grep -v 'docs/' | xargs rm
 
+echo -e "${RS}${BLUE} Generating docs...${RS}"
+scripts/generate_docs.sh
+RET=$?
+
 echo -e "${RS}${BLUE} Linting and checking...${RS}"
 scripts/lint.sh
 RET=$?
@@ -17,7 +21,7 @@ if [[ "${RET}" == 0 ]]; then
     helm repo index .
 
     echo -e "Copying chart packages and index to docs ${RS}"
-    rm -f docs/*.tgz
+    # rm -f docs/*.tgz
     rm -f docs/*.yaml
     mv ./*.tgz docs/
     mv ./index.yaml docs/

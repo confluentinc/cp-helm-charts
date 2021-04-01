@@ -1,4 +1,8 @@
+{{- if .Capabilities.APIVersions.Has "apps/v1" }}
+apiVersion: apps/v1
+{{- else }}
 apiVersion: apps/v1beta2
+{{- end }}
 kind: Deployment
 metadata:
   name: {{ include "cp-control-center.fullname" . }}
@@ -38,7 +42,7 @@ spec:
               containerPort: {{ .Values.serviceHttpPort}}
               protocol: TCP
           resources:
-{{- toYaml .Values.resources | indent 12 }}
+{{ toYaml .Values.resources | indent 12 }}
           env:
             - name: CONTROL_CENTER_BOOTSTRAP_SERVERS
               value: {{ template "cp-control-center.kafka.bootstrapServers" . }}

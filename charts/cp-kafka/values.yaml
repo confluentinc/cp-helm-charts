@@ -12,7 +12,7 @@ brokers: 3
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-kafka/
 image: confluentinc/cp-enterprise-kafka
-imageTag: 5.2.1
+imageTag: 5.5.0
 
 ## Specify a imagePullPolicy
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -31,6 +31,13 @@ podManagementPolicy: OrderedReady
 ## The StatefulSet Update Strategy which Kafka will use when changes are applied: OnDelete or RollingUpdate
 ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies
 updateStrategy: RollingUpdate
+
+# Security Context
+# ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+# for Kafka container
+securityContext: {}
+  #  runAsUser: 1000
+  #  runAsGroup: 1000
 
 ## Kafka Server properties
 ## ref: https://kafka.apache.org/documentation/#configuration
@@ -99,7 +106,7 @@ nodeSelector: {}
 
 ## Taints to tolerate on node assignment:
 ## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
-tolerations: {}
+tolerations: []
 
 ## Monitoring
 ## Kafka JMX Settings
@@ -116,6 +123,7 @@ prometheus:
     enabled: true
     image: solsson/kafka-prometheus-jmx-exporter@sha256
     imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
+    imagePullPolicy: IfNotPresent
     port: 5556
 
     ## Resources configuration for the JMX exporter container.
