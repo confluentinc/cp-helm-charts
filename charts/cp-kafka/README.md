@@ -119,6 +119,14 @@ The configuration parameters in this section control the resources requested and
 | `imagePullPolicy` | Docker Image Tag of Confluent Kafka. | `IfNotPresent` |
 | `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
 
+### Port
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `service.type` | Kubernetes service type | `ClusterIP` |
+| `service.port` | The port on which the Kafka Connect will be available and serving requests. | `8083` |
+| `service.nodePort` | The nodePort port on which the Kafka Connect will be available and serving requests. |  |
+
 ### StatefulSet Configurations
 
 | Parameter | Description | Default |

@@ -121,7 +121,9 @@ The configuration parameters in this section control the resources requested and
 
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `servicePort` | The port on which the KSQL Server will be available and serving requests. | `8088` |
+| `service.type` | Kubernetes service type | `ClusterIP` |
+| `service.port` | The port on which the Kafka Connect will be available and serving requests. | `8088` |
+| `service.nodePort` | The nodePort port on which the Kafka Connect will be available and serving requests. |  |
 
 ### KSQL JVM Heap Options
 
