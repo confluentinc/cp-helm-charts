@@ -29,7 +29,7 @@ The https://github.com/confluentinc/cp-helm-charts[Confluent Platform Helm Chart
 ----
 helm repo add confluentinc https://confluentinc.github.io/cp-helm-charts/   #<1>
 helm repo update    #<2>
-helm install confluentinc/cp-helm-charts --name my-confluent --version 0.6.0    #<3>
+helm install my-confluent confluentinc/cp-helm-charts --version 0.6.0    #<3>
 ----
 <1> Add `confluentinc` helm charts repo
 <2> Update repo information 
@@ -70,11 +70,8 @@ You must have a Kubernetes cluster that has Helm configured.
 These Helm charts have been tested with the following software versions:
 
 * https://kubernetes.io/[Kubernetes] 1.9.2+
-* https://helm.sh/[Helm] 2.8.2+
+* https://helm.sh/[Helm] 3.2+
 * https://hub.docker.com/u/confluentinc/[Confluent Platform Docker Images]
-
-WARNING: This guide assumes that you're Helm 2 (tested with Helm `2.16`).
-You can follow up on Helm 3 issues in https://github.com/confluentinc/cp-helm-charts/issues/480
 
 For local Kubernetes installation with Minikube, see <<create-local-minikube>>.
 
@@ -86,21 +83,7 @@ View a list of all deployed releases in the local installation.
 
 [source,sh]
 ----
-helm init
-helm repo update
 helm list
-----
-
-IMPORTANT: For Helm versions prior to 2.9.1, you may see `"connect: connection refused"`, and will need to fix up the deployment before proceeding.
-
-[source,sh]
-----
-kubectl delete --namespace kube-system svc tiller-deploy
-kubectl delete --namespace kube-system deploy tiller-deploy
-kubectl create serviceaccount --namespace kube-system tiller
-kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
-kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
-helm init --service-account tiller --upgrade
 ----
 
 === Persistence
@@ -150,19 +133,16 @@ Update Complete. ⎈ Happy Helming!⎈
 
 Install a 3 node Zookeeper ensemble, a Kafka cluster of 3 brokers, 1 Confluent  Schema Registry instance, 1 REST Proxy instance, and 1 Kafka Connect worker, 1 ksqlDB server in your Kubernetes environment.
 
-NOTE: Naming the chart `--name my-confluent-oss` is optional, but we assume this is the name in the remainder of the documentation.
-Otherwise, helm will generate release name.
-
 [source,sh]
 ----
-helm install confluentinc/cp-helm-charts --name my-confluent-oss
+helm install my-confluent-oss confluentinc/cp-helm-charts
 ----
 
 If you want to install without the Confluent Schema Registry instance, the REST Proxy instance, and the Kafka Connect worker:
 
 [source,sh]
 ----
-helm install --set cp-schema-registry.enabled=false,cp-kafka-rest.enabled=false,cp-kafka-connect.enabled=false confluentinc/cp-helm-charts
+helm install my-confluent-oss --set cp-schema-registry.enabled=false,cp-kafka-rest.enabled=false,cp-kafka-connect.enabled=false confluentinc/cp-helm-charts
 ----
 
 View the installed Helm releases:
@@ -282,19 +262,19 @@ The number of nodes should always be odd number.
 Install cp-helm-charts with default 3 node ensemble
 
 ----
-helm install cp-helm-charts
+helm install my-confluent-oss confluentinc/cp-helm-charts
 ----
 
 Scale nodes up to 5, change `servers` under `cp-zookeeper` to 5 in `values.yaml`
 
 ----
-helm upgrade <release name> cp-helm-charts
+helm upgrade <release name> confluentinc/cp-helm-charts
 ----
 
 Scale nodes down to 3, change `servers` under `cp-zookeeper` to 3 in `values.yaml`
 
 ----
-helm upgrade <release name> cp-helm-charts
+helm upgrade <release name> confluentinc/cp-helm-charts
 ----
 
 ==== Scaling Kafka
@@ -305,20 +285,20 @@ You must reassign partitions correctly before https://kafka.apache.org/documenta
 ===== Install cp-helm-charts with default 3 brokers kafka cluster
 
 ----
-helm install cp-helm-charts
+helm install my-confluent-oss confluentinc/cp-helm-charts
 ----
 
 Scale kafka brokers up to 5, change `brokers+` under `cp-kafka` to 5 in `values.yaml`
 
 ----
-helm upgrade <release name> cp-helm-charts
+helm upgrade <release name> confluentinc/cp-helm-charts
 ----
 
 Scale kafka brokers down to 3, change `+brokers+` under `+cp-kafka+` to
 3 in values.yaml
 
 ----
-helm upgrade <release name> cp-helm-charts
+helm upgrade <release name> confluentinc/cp-helm-charts
 ----
 
 ==== Monitoring
@@ -329,8 +309,16 @@ JMX Metrics are enabled by default for all components, Prometheus JMX  Exporter 
 +
 [source,bash]
 ----
-helm install stable/prometheus
-helm install stable/grafana
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add kube-state-metrics https://kubernetes.github.io/kube-state-metrics
+helm repo update
+
+helm install [RELEASE_NAME] prometheus-community/prometheus
+
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+
+helm install [RELEASE_NAME] grafana/grafana
 ----
 
 . Add Prometheus as Data Source in Grafana, url should be something  like: `+http://illmannered-marmot-prometheus-server:9090+`
