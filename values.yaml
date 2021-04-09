@@ -23,9 +23,13 @@ cp-zookeeper:
     dataLogDirSize: 10Gi
     # dataLogDirStorageClass: ""
     
-  # TODO: find correct security context for user in this zk-image  
-  securityContext: 
+  #podsecurityContext:
+  #  fsGroup: 1000
+  securityContext:
     runAsUser: 0
+  #  runAsGroup: 1000
+  #serviceAccount:
+  #  create: true
 
   resources: {}
   ## If you do want to specify resources, uncomment the following lines, adjust them as necessary,
@@ -64,8 +68,13 @@ cp-kafka:
   #  requests:
   #   cpu: 100m
   #   memory: 128Mi
-  securityContext: 
+  #podSecurityContext:
+  #  fsGroup: 1000
+  securityContext:
     runAsUser: 0
+  #  runAsGroup: 1000
+  #serviceAccount:
+  #  create: true
 
 ## ------------------------------------------------------
 ## Schema Registry

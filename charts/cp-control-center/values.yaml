@@ -13,6 +13,26 @@ imageTag: 6.0.1
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
 imagePullPolicy: IfNotPresent
 
+securityContext: {}
+  #  runAsUser: 1000
+  #  runAsGroup: 1000
+
+## securityContextConstraints. useful for OpenShift/OKD with default restricted securityContextConstraints
+securityContextConstraints: {}
+  # name: cp-control-center
+  # create: true
+
+## serviceAccount. useful for OpenShift/OKD with default restricted securityContextConstraints
+## if serviceAccount.create == true and securityContextConstraints == true it will add serviceAccount to SCC
+serviceAccount: {}
+  ## if create is true and name undefined will be created default SA == kafka
+  # name: cp-control-center
+  # create: true
+
+## podSecurityContext. useful for OpenShift/OKD with default restricted securityContextConstraints
+podSecurityContext: {}
+  # fsGroup: 1000
+
 ## Specify an array of imagePullSecrets.
 ## Secrets must be manually created in the namespace.
 ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod

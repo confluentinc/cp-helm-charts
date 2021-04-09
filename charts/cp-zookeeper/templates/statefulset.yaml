@@ -39,6 +39,17 @@ spec:
       {{- end }}
       {{- end }}
     spec:
+    {{- if .Values.serviceAccount.name  }}
+      serviceAccount: {{ .Values.serviceAccount.name }}
+    {{- else  }}
+    {{- if .Values.serviceAccount.create }}
+      serviceAccount: {{ .Release.Name }}-zookeeper
+    {{- end }}
+    {{- end  }}
+    {{- if .Values.podSecurityContext }}
+      securityContext:
+{{ toYaml .Values.podSecurityContext | indent 8 }}
+    {{- end }}
       affinity:
       {{- if .Values.affinity }}
 {{ toYaml .Values.affinity | indent 8 }}
@@ -64,6 +75,9 @@ spec:
       - name: prometheus-jmx-exporter
         image: "{{ .Values.prometheus.jmx.image }}:{{ .Values.prometheus.jmx.imageTag }}"
         imagePullPolicy: "{{ .Values.prometheus.jmx.imagePullPolicy }}"
+        {{- if .Values.securityContext }}
+        securityContext: {{- toYaml .Values.securityContext | nindent 10 }}
+        {{- end }}
         command:
         - java
         - -XX:+UnlockExperimentalVMOptions
