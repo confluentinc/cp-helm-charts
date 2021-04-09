@@ -1,4 +1,4 @@
-{{ if .Values.serviceContextConstraints.create }}
+{{ if .Values.securityContextConstraints.create }}
 apiVersion: security.openshift.io/v1
 kind: SecurityContextConstraints
 metadata:
@@ -8,8 +8,8 @@ metadata:
     nonroot provides all features of the restricted SCC but allows users to run with any non-root UID.
     The user must specify the UID or it must be specified on the by the manifest of the container runtime."
     release.openshift.io/create-only: "true"
-{{ if .Values.serviceContextConstraints.name }}
-  name: {{ .Values.serviceContextConstraints.name }}
+{{ if .Values.securityContextConstraints.name }}
+  name: {{ .Values.securityContextConstraints.name }}
 {{ else }}
   name: {{ .Namespace.Name }}-{{ .Release.Name }}-cp-control-center
 {{ end }}
@@ -40,7 +40,7 @@ supplementalGroups:
   type: RunAsAny
 users:
 {{ if .Values.serviceAccount.name }}
-  - system:serviceaccount:{{ .Release.Name }}:{{ if .Values.serviceAccount.name }}
+  - system:serviceaccount:{{ .Release.Name }}:{{ .Values.serviceAccount.name }}
 {{ else }}
 {{ if .Values.serviceAccount.create }}
   - system:serviceaccount:{{ .Release.Name }}:{{ .Release.Name }}-cp-control-center
