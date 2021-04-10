@@ -11,7 +11,7 @@ metadata:
 {{ if .Values.securityContextConstraints.name }}
   name: {{ .Values.securityContextConstraints.name }}
 {{ else }}
-  name: {{ .Namespace.Name }}-{{ .Release.Name }}-cp-ksql-server
+  name: {{ .Release.Namespace }}-{{ .Release.Name }}-kafka
 {{ end }}
 allowHostDirVolumePlugin: false
 allowHostIPC: false
@@ -40,10 +40,10 @@ supplementalGroups:
   type: RunAsAny
 users:
 {{ if .Values.serviceAccount.name }}
-  - system:serviceaccount:{{ .Release.Name }}:{{ .Values.serviceAccount.name }}
+  - system:serviceaccount:{{ .Release.Namespace }}:{{ .Values.serviceAccount.name }}
 {{ else }}
 {{ if .Values.serviceAccount.create }}
-  - system:serviceaccount:{{ .Release.Name }}:{{ .Release.Name }}-cp-ksql-server
+  - system:serviceaccount:{{ .Release.Namespace }}:{{ .Release.Name }}-cp-ksql-server
 {{ end }}
 {{ end }}
 volumes:
