@@ -10,8 +10,8 @@
 brokers: 3
 
 ## Image Info
-## ref: https://hub.docker.com/r/confluentinc/cp-kafka/
-image: confluentinc/cp-enterprise-kafka
+## ref: https://hub.docker.com/r/confluentinc/cp-server/
+image: confluentinc/cp-server
 imageTag: 6.1.0
 
 ## Specify a imagePullPolicy
