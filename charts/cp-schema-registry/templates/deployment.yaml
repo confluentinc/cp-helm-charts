@@ -33,6 +33,10 @@ spec:
       {{- end }}
       {{- end }}
     spec:
+      securityContext:
+      {{- if .Values.securityContext }}
+{{ toYaml .Values.securityContext | indent 8 }}
+      {{- end}}
       containers:
         {{- if .Values.prometheus.jmx.enabled }}
         - name: prometheus-jmx-exporter
