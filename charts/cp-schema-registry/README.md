@@ -156,6 +156,14 @@ The configuration parameters in this section control the resources requested and
 | `prometheus.jmx.port` | JMX Exporter Port which exposes metrics in Prometheus format for scraping. | `5556` |
 | `prometheus.jmx.resources` | JMX Exporter resources configuration. | see [values.yaml](values.yaml) for details |
 
+### Prometheus ServiceMonitor Configuration
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `prometheus.servicemonitor.enabled` | Whether or not to create a servicemonitor resource in order to define monitoring for a service when using prometheus operator. | `false` |
+| `prometheus.servicemonitor.jobLabel` | The label to use to retrieve the job name from. | `app` |
+
+
 ### Deployment Topology
 
 | Parameter | Description | Default |

@@ -86,5 +86,8 @@ prometheus:
     imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
     imagePullPolicy: IfNotPresent
     port: 5556
-
     resources: {}
+  serviceMonitor: # defines monitoring for a service when using prometheus operator
+    enabled: false
+    jobLabel: app
+
