@@ -345,6 +345,15 @@ Exporter is installed as a sidecar container along with all Pods.
 
       ZooKeeper Dashboard
 
+ServiceMonitor
+^^^^^^^^^^^^^^
+
+In order to use ``ServiceMonitor`` resource which is provided by `prometheus-operator <https://github.com/coreos/prometheus-operator>`__
+you have to set parameter ``prometheus.serviceMonitor.enabled`` on ``true``.
+
+It'll create additional ``Service`` resource for metrics endpoint and ``ServiceMonitor`` resource which determine what
+metrics endpoint should be scraping by Prometheus.
+
 Teardown
 --------
 

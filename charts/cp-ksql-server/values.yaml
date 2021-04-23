@@ -71,6 +71,19 @@ prometheus:
     ## Resources configuration for the JMX exporter container.
     ## See the `resources` documentation above for details.
     resources: {}
+  # prometheus-operator - ServiceMonitor
+  serviceMonitor:
+    enabled: false
+    # ref: https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#servicemonitorspec
+    targetLabels: []
+    # example:
+    # targetLabels:
+    #   - release
+    podTargetLabels: []
+    # example:
+    # podTargetLabels:
+    #   - release
+    additionalLabels: {}
 
 ## External Access
 ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer
