@@ -79,3 +79,20 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- printf "http://%s:8081" (include "cp-ksql-server.cp-schema-registry.fullname" .) -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Create a default fully qualified kafka connect name.
+We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+*/}}
+{{- define "cp-ksql-server.cp-kafka-connect.fullname" -}}
+{{- $name := default "cp-kafka-connect" (index .Values "cp-kafka-connect" "nameOverride") -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "cp-ksql-server.cp-kafka-connect.service-name" -}}
+{{- if (index .Values "cp-kafka-connect" "url") -}}
+{{- printf "%s" (index .Values "cp-kafka-connect" "url") -}}
+{{- else -}}
+{{- printf "http://%s:8083" (include "cp-ksql-server.cp-kafka-connect.fullname" .) -}}
+{{- end -}}
+{{- end -}}
