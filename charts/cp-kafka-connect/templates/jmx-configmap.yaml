@@ -18,6 +18,8 @@ data:
     - kafka.connect:type=connect-worker-metrics
     - kafka.connect:type=connect-metrics,client-id=*
     - kafka.connect:type=connector-task-metrics,connector=*,task=*
+    - kafka.connect:type=source-task-metrics,connector=*,task=*
+    - kafka.connect:type=sink-task-metrics,connector=*,task=*
     rules:
     - pattern : "kafka.connect<type=connect-worker-metrics>([^:]+):"
       name: "cp_kafka_connect_connect_worker_metrics_$1"
@@ -30,4 +32,9 @@ data:
         connector: $1
         task: $2
         status: $3
+    - pattern: kafka.connect<type=(.+)-metrics, connector=(.+), task=(.+)><>([^:]+)
+      name: cp_kafka_connect_$1_$4
+      labels:
+        connector: "$2"
+        task: "$3"
 {{- end }}
