@@ -18,7 +18,11 @@ imagePullPolicy: IfNotPresent
 ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
 imagePullSecrets:
 
-servicePort: 8082
+service:
+  type: ClusterIP
+  port: 8082
+  # if you want to force a specific nodePort. Must be use with service.type=NodePort
+  # nodePort:
 
 ## Kafka rest JVM Heap Option
 heapOptions: "-Xms512M -Xmx512M"

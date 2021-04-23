@@ -26,7 +26,7 @@ spec:
   ports:
     - name: rest-proxy
       port: {{ .Values.external.port }}
-      targetPort: {{ .Values.servicePort }}
+      targetPort: {{ .Values.service.port }}
   selector:
     app: {{ template "cp-kafka-rest.name" . }}
     release: {{ .Release.Name }}
