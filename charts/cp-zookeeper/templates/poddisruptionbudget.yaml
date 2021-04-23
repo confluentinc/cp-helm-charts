@@ -3,10 +3,7 @@ kind: PodDisruptionBudget
 metadata:
   name: {{ template "cp-zookeeper.fullname" . }}-pdb
   labels:
-    app: {{ template "cp-zookeeper.name" . }}
-    chart: {{ template "cp-zookeeper.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  {{ include "cp-zookeeper.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:

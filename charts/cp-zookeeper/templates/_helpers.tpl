@@ -46,3 +46,16 @@ in a format like "zkhost1:port:port;zkhost2:port:port"
 {{- end }}
 {{- printf "%s" (join ";" $zk.servers) | quote -}}
 {{- end -}}
+
+{{/*
+Common labels
+*/}}
+{{- define "cp-zookeeper.labels" -}}
+app.kubernetes.io/name: {{ include "cp-zookeeper.name" . }}
+helm.sh/chart: {{ include "cp-zookeeper.chart" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end -}}
