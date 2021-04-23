@@ -32,6 +32,17 @@ spec:
         prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
       {{- end }}
       {{- end }}
+    {{- if .Values.serviceAccount.name  }}
+      serviceAccount: {{ .Values.serviceAccount.name }}
+    {{- else  }}
+    {{- if .Values.serviceAccount.create }}
+      serviceAccount: {{ .Release.Name }}-cp-schema-registry
+    {{- end }}
+    {{- end  }}
+    {{- if .Values.podSecurityContext }}
+      securityContext:
+{{ toYaml .Values.podSecurityContext | indent 8 }}
+    {{- end }}
     spec:
       securityContext:
       {{- if .Values.securityContext }}
@@ -42,6 +53,9 @@ spec:
         - name: prometheus-jmx-exporter
           image: "{{ .Values.prometheus.jmx.image }}:{{ .Values.prometheus.jmx.imageTag }}"
           imagePullPolicy: "{{ .Values.prometheus.jmx.imagePullPolicy }}"
+        {{- if .Values.securityContext }}
+          securityContext: {{- toYaml .Values.securityContext | nindent 10 }}
+        {{- end }}
           command:
           - java
           - -XX:+UnlockExperimentalVMOptions
@@ -63,6 +77,9 @@ spec:
         - name: {{ template "cp-schema-registry.name" . }}-server
           image: "{{ .Values.image }}:{{ .Values.imageTag }}"
           imagePullPolicy: "{{ .Values.imagePullPolicy }}"
+        {{- if .Values.securityContext }}
+          securityContext: {{- toYaml .Values.securityContext | nindent 10 }}
+        {{- end }}
           ports:
             - name: schema-registry
               containerPort: {{ .Values.servicePort }}

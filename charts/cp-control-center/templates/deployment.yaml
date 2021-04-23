@@ -32,11 +32,25 @@ spec:
         prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
       {{- end }}
       {{- end }}
+    {{- if .Values.serviceAccount.name  }}
+      serviceAccount: {{ .Values.serviceAccount.name }}
+    {{- else  }}
+    {{- if .Values.serviceAccount.create }}
+      serviceAccount: {{ .Release.Name }}-cp-control-center
+    {{- end }}
+    {{- end  }}
+    {{- if .Values.podSecurityContext }}
+      securityContext:
+{{ toYaml .Values.podSecurityContext | indent 8 }}
+    {{- end }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image }}:{{ .Values.imageTag }}"
           imagePullPolicy: {{ .Values.imagePullPolicy }}
+        {{- if .Values.securityContext }}
+          securityContext: {{- toYaml .Values.securityContext | nindent 10 }}
+        {{- end }}
           ports:
             - name: cc-http
               containerPort: {{ .Values.serviceHttpPort}}

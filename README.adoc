@@ -272,6 +272,55 @@ kafka-consumer-perf-test --broker-list $KAFKAS --messages 6000000 --threads 1 --
 ksqlDB is the streaming SQL engine that enables real-time data  processing against Apache Kafka.
 Now that you have running in your Kubernetes cluster, you may run a https://github.com/confluentinc/cp-helm-charts/blob/master/examples/ksql-demo.yaml[ksqlDB example].
 
+=== Openshift/OKD Pods and Containers execution policy
+
+By default, main components of this chart (Zookeeper and Kafka) execute
+as root with UID 0. It could be unacceptable for Kubernetes-based
+platforms using restrictions for your pods and containers execution like
+OpenShift/OKD.
+
+In OpenShift, you must define some objects for correct deploy:
+
+- `SecurityContextConstraint` `(SCC)` which allows you to execute
+containers with fixed GID and UID (1000). By default, you can execute
+something only in namespace-predefined random range of UIDs. `SCC`
+is cluster-wide object so you can have restricted access for it.
+- `serviceAccount` `(SA)` binded to `SCC`
+- `securityContext` for containers and, probably, pods: `runAsUser: UID`
+and `runAsGroup: GID`
+
+You *must* define these things for `Kafka`, `Zookeeper` and every other
+app which use fixed UID and RW access for volumes at the same time.
+
+Examples:
+
+```yaml
+cp-zookeeper:
+    serviceAccount:
+        create: true # will create serviceAccount with name based on release name and service name and bind it to container spec
+    securityContext: # will add securityCon
+        runAsUser: 1000
+        runAsGroup: 1000
+    securityContextConstraints:
+        create: true # will create SCC with name based on namespace name, release name and service name and bind serviceAccount to it by its name
+cp-kafka:
+    serviceAccount:
+        name: my-kafka-installation # will use existing SA
+    securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+    securityContextConstraints:
+        create: true # will create SCC and bind existing SA to it
+        name: my-security-constraint # will use existing SCC
+cp-kafka-connect:
+    serviceAccount:
+        name: my-kafka-installation # will bind containers to existing SA which is manually binded to SCC. dont actually need because by default your containers will execute on predefined default SA with Restricted SCC (random UID range)
+    securityContext: # dont actually need because this service can be executed on random UID
+        runAsUser: 1000
+        runAsGroup: 1000
+    securityContextConstraints: {} # default value, will not create SCC
+```
+
 === Operations
 
 ==== Scaling Zookeeper
