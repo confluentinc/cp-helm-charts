@@ -95,4 +95,10 @@ prometheus:
     imagePullPolicy: IfNotPresent
     port: 5556
 
+    ## Service monitor
+    serviceMonitor:
+      enabled: false
+      namespace: kube-system
+      interval: 30s
+
     resources: {}

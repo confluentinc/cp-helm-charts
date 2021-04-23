@@ -1,0 +1,28 @@
+{{- if and .Values.prometheus.jmx.enabled .Values.prometheus.jmx.serviceMonitor.enabled }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "cp-zookeeper.fullname" . }}
+  namespace: {{ .Values.prometheus.jmx.serviceMonitor.namespace }}
+  labels:
+    app: {{ template "cp-zookeeper.name" . }}
+    chart: {{ template "cp-zookeeper.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  jobLabel: {{ template "cp-zookeeper.fullname" . }}
+  selector:
+    matchLabels:
+      app: {{ template "cp-zookeeper.name" . }}
+      release: {{ .Release.Name }}
+      component: metrics
+  namespaceSelector:
+    matchNames:
+      - {{ $.Release.Namespace }}
+  endpoints:
+    - port: metrics
+      interval: {{ .Values.prometheus.jmx.serviceMonitor.interval }}
+  targetLabels:
+    - release
+{{- end }}
