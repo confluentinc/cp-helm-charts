@@ -139,6 +139,16 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `podAnnotations` | Map of custom annotations to attach to the pod spec. | `{}` |
 
+### Security Context
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `securityContext.runAsUser` | All processes for the container will run with this user ID | 10001
+| `securityContext.runAsGroup` | All processes for the container will run with this primary group ID | 10001
+| `securityContext.fsGroup` | All processes for the container will run with this supplementary group ID | 10001
+| `securityContext.runAsNonRoot` | The kubelet will validate the image at runtime to make sure that it does not run as UID 0 (root) and won’t start the container if it does | true
+
+
 ### JMX Configuration
 
 | Parameter | Description | Default |
