@@ -20,7 +20,7 @@ To connect from a client pod:
 
 2. Log into the Pod
 
-  kubectl exec -it kafka-client -- /bin/bash
+  kubectl exec -it kafka-client -n {{ .Release.Namespace }} -- /bin/bash
 
 3. Explore with kafka commands:
 
