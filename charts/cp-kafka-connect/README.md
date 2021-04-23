@@ -101,7 +101,9 @@ The configuration parameters in this section control the resources requested and
 
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
-| `servicePort` | The port on which the Kafka Connect will be available and serving requests. | `8083` |
+| `service.type` | Kubernetes service type | `ClusterIP` |
+| `service.port` | The port on which the Kafka Connect will be available and serving requests. | `8083` |
+| `service.nodePort` | The nodePort port on which the Kafka Connect will be available and serving requests. |  |
 
 ### Kafka Connect Worker Configurations
 

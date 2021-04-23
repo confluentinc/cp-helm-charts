@@ -39,7 +39,7 @@ spec:
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           ports:
             - name: cc-http
-              containerPort: {{ .Values.serviceHttpPort}}
+              containerPort: {{ .Values.service.port }}
               protocol: TCP
           resources:
 {{ toYaml .Values.resources | indent 12 }}
