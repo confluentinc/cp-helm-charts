@@ -43,4 +43,7 @@ data:
       name: "cp_kafka_controller_controllerstats_$1"
     - pattern : kafka.server<type=SessionExpireListener, name=(.+)><>OneMinuteRate
       name: "cp_kafka_server_sessionexpirelistener_$1"
+    {{- if .Values.prometheus.jmx.customRules }}
+{{ toYaml .Values.prometheus.jmx.customRules | indent 4 }}
+    {{- end }}
 {{- end }}

@@ -134,6 +134,14 @@ prometheus:
     ## See the `resources` documentation above for details.
     resources: {}
 
+    ## Custom rules for Prometheus Exporter. To add your own rules, remove [] after 'customRules'.
+    ## Example format:
+    ## - pattern : kafka.server<type=ReplicaManager, name=(.+)><>(Value|OneMinuteRate)
+    ##   name: "cp_kafka_server_replicamanager_$1"
+    ## - pattern : kafka.controller<type=KafkaController, name=(.+)><>Value
+    ##   name: "cp_kafka_controller_kafkacontroller_$1"
+    customRules: []
+
 nodeport:
   enabled: false
   servicePort: 19092
