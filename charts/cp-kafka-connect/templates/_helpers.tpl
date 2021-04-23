@@ -79,3 +79,34 @@ Default GroupId to Release Name but allow it to be overridden
 {{- .Release.Name -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Common labels
+*/}}
+{{- define "cp-kafka-connect.labels" -}}
+helm.sh/chart: {{ include "cp-kafka-connect.chart" . }}
+{{ include "cp-kafka-connect.selectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Selector labels
+*/}}
+{{- define "cp-kafka-connect.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "cp-kafka-connect.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "cp-kafka-connect.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create }}
+{{- default (include "cp-kafka-connect.fullname" .) .Values.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.serviceAccount.name }}
+{{- end }}
+{{- end }}

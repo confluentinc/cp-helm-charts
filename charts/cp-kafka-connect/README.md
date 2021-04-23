@@ -144,6 +144,15 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `podAnnotations` | Map of custom annotations to attach to the pod spec. | `{}` |
 
+### Security
+| Parameter | Description | Default |
+| --------- | ----------- | --------|
+| `serviceAccount.create` | If true, create the cp-kafka-connect service account | `true` |
+| `serviceAccount.name` | name of the cp-kafka-connect service account to use or create | `{{ cp-kafka-connect.fullname }}` |
+| `serviceAccount.annotations` | annotations for the cp-kafka-connect service account | `{}` |
+| `podSecurityContext` | podSecurityContext | `{}` |
+| `securityContext` | securityContext for containers in pod | `{}` |
+
 ### JMX Configuration
 
 | Parameter | Description | Default |
