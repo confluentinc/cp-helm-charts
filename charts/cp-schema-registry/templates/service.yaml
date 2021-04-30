@@ -12,7 +12,7 @@ spec:
     - name: schema-registry
       port: {{ .Values.servicePort }}
     {{- if .Values.prometheus.jmx.enabled }}
-    - name: metrics
+    - name: http-metrics
       port: {{ .Values.prometheus.jmx.port }}
     {{- end }}
   selector:
