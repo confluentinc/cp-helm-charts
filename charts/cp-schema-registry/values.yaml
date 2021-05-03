@@ -25,10 +25,16 @@ imagePullSecrets:
 
 ## Schema Registry Settings Overrides
 ## Configuration Options can be found here: https://docs.confluent.io/current/schema-registry/docs/config.html
-configurationOverrides: {}
+configurationOverrides:
+  kafkastore.security.protocol: "SSL"
+  kafkastore.ssl.keystore.location: "/data/client_crt/user.p12"
+  kafkastore.ssl.keystore.type: "PKCS12"
+  kafkastore.ssl.truststore.location: "/data/server_crt/ca.p12"
+  kafkastore.ssl.truststore.type: "PKCS12"
 
 ## Additional env variables
-customEnv: {}
+customEnv:
+  SCHEMA_REGISTRY_KAFKASTORE_GROUP_ID: "schema-registry-consumer-group-id"
 
 ## The port on which the Schema Registry will be available and serving requests
 servicePort: 8081
@@ -42,6 +48,26 @@ heapOptions: "-Xms512M -Xmx512M"
 kafka:
   bootstrapServers: ""
 
+clientCrtSecret: "schema-registry-service-account"
+serverCrtSecret: "" # depending on the kafka cluster to connect to, the pattern is {cluster-name}-cluster-ca-c
+
+volumeMounts: {}
+#  - name: server-secret-volume
+#    mountPath: /data/server_crt
+
+env: {}
+#  - name: SCHEMA_REGISTRY_KAFKASTORE_SSL_TRUSTSTORE_PASSWORD
+#    valueFrom:
+#      secretKeyRef:
+#        name: my-cluster-name-cluster-ca-cert
+#        key: ca.password
+
+## List of volumeMounts for connect server container
+## ref: https://kubernetes.io/docs/concepts/storage/volumes/
+volumes: {}
+#  - name: server-secret-volume
+#    secret:
+#      secretName: my-cluster-name-cluster-ca-cert
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -55,7 +81,9 @@ resources: {}
   #  memory: 128Mi
 
 ## Custom pod annotations
-podAnnotations: {}
+podAnnotations:
+  cluster-autoscaler.kubernetes.io/safe-to-evict: "true"  # Allow the autoscaler to downscale the cluster.
+  sidecar.istio.io/inject: "false"  # We already experienced some issues with this sidecar
 
 ## Node labels for pod assignment
 ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
@@ -72,7 +100,7 @@ affinity: {}
 ## Privilege and access control settings for a Pod or Container
 ## https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 securityContext:
-  runAsUser: 10001
+  runAsUser: 10001 # this value is set following the security team recommendations https://blablacar.atlassian.net/wiki/spaces/SEC/pages/955908228/Sysdig+alerts+runbook+for+service+owners#Create-Pod-Running-As-Root
   runAsGroup: 10001
   fsGroup: 10001
   runAsNonRoot: true
@@ -94,5 +122,18 @@ prometheus:
     imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
     imagePullPolicy: IfNotPresent
     port: 5556
-
     resources: {}
+  serviceMonitor: # defines monitoring for a service when using prometheus operator
+    enabled: true
+    jobLabel: app
+
+ui:
+  annotations: {}
+  labels: {}
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 10m
+      memory: 30Mi
+    limits:
+      memory: 100Mi

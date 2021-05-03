@@ -148,7 +148,6 @@ The configuration parameters in this section control the resources requested and
 | `securityContext.fsGroup` | All processes for the container will run with this supplementary group ID | 10001
 | `securityContext.runAsNonRoot` | The kubelet will validate the image at runtime to make sure that it does not run as UID 0 (root) and won’t start the container if it does | true
 
-
 ### JMX Configuration
 
 | Parameter | Description | Default |
@@ -165,6 +164,13 @@ The configuration parameters in this section control the resources requested and
 | `prometheus.jmx.imagePullPolicy` | Docker Image Pull Policy for Prometheus JMX Exporter container. | `IfNotPresent` |
 | `prometheus.jmx.port` | JMX Exporter Port which exposes metrics in Prometheus format for scraping. | `5556` |
 | `prometheus.jmx.resources` | JMX Exporter resources configuration. | see [values.yaml](values.yaml) for details |
+
+### Prometheus ServiceMonitor Configuration
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `prometheus.servicemonitor.enabled` | Whether or not to create a servicemonitor resource in order to define monitoring for a service when using prometheus operator. | `false` |
+| `prometheus.servicemonitor.jobLabel` | The label to use to retrieve the job name from. | `app` |
 
 ### Deployment Topology
 

@@ -62,3 +62,10 @@ Default GroupId to Release Name but allow it to be overridden
 {{- .Release.Name -}}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Create a default value for SCHEMAREGISTRY_URL environment variable used by the UI in order to connect to the Schema Registry api.
+*/}}
+{{- define "cp-schema-registry.connectUrlValue" -}}
+{{- printf "%s:8081" (include "cp-schema-registry.fullname" .) -}}
+{{- end -}}

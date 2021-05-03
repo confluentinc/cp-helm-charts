@@ -1,0 +1,18 @@
+{{- if and .Values.prometheus.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  jobLabel: {{ .Values.prometheus.serviceMonitor.jobLabel }}
+  selector:
+    matchLabels:
+      app: {{ template "cp-schema-registry.name" . }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  endpoints:
+    - port: http-metrics
+{{- end }}
