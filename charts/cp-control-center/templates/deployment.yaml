@@ -66,10 +66,18 @@ spec:
             - name: {{ $key | quote }}
               value: {{ $value | quote }}
             {{- end }}            
+          {{- if .Values.volumeMounts }}
+          volumeMounts:
+{{ toYaml .Values.volumeMounts | indent 10 }}
+          {{- end}}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
       {{- end }}
+      volumes:
+      {{- if .Values.volumes }}
+{{ toYaml .Values.volumes | trim | indent 6 }}
+      {{- end}}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
