@@ -35,6 +35,9 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
+## Custom pod labels
+podLabels: {}
+
 ## Custom pod annotations
 podAnnotations: {}
 
