@@ -118,6 +118,19 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `kafka.bootstrapServers` | Bootstrap Servers for Schema Registry | `""` |
 
+### Volumes
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `volumes` | Volumes for schema-registry-server container | see [values.yaml](values.yaml) for details |
+| `volumeMounts` | Volume mounts for schema-registry-server container | see [values.yaml](values.yaml) for details |
+
+### Secrets
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `secrets` | Secret with one or more `key:value` pairs | see [values.yaml](values.yaml) for details |
+
 ### Confluent Schema Registry JVM Heap Options
 
 | Parameter | Description | Default |
