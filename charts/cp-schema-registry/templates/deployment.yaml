@@ -44,8 +44,7 @@ spec:
           imagePullPolicy: "{{ .Values.prometheus.jmx.imagePullPolicy }}"
           command:
           - java
-          - -XX:+UnlockExperimentalVMOptions
-          - -XX:+UseCGroupMemoryLimitForHeap
+          - -XX:+UseContainerSupport
           - -XX:MaxRAMFraction=1
           - -XshowSettings:vm
           - -jar
