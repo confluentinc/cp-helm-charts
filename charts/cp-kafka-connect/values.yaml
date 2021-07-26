@@ -133,3 +133,10 @@ livenessProbe:
   # initialDelaySeconds: 30
   # periodSeconds: 5
   # failureThreshold: 10
+
+## Security context for the pod
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+securityContext:
+  # runAsUser: 1000
+  # runAsGroup: 1000
+  # fsGroup: 1000
