@@ -142,6 +142,19 @@ The configuration parameters in this section control the resources requested and
 | `persistence.storageClass` | Valid options: `nil`, `"-"`, or storage class name. | `nil` |
 | `persistence.disksPerBroker` | The amount of disks that will be attached per instance of Kafka broker. | 1 |
 
+### Volumes
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `volumes` | Volumes for connect-server container | see [values.yaml](values.yaml) for details |
+| `volumeMounts` | Volume mounts for connect-server container | see [values.yaml](values.yaml) for details |
+
+### Secrets
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `secrets` | Secret with one or more `key:value` pairs | see [values.yaml](values.yaml) for details |
+
 ### Kafka JVM Heap Options
 
 | Parameter | Description | Default |

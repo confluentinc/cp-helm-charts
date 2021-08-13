@@ -163,6 +163,9 @@ spec:
             mountPath: /opt/kafka/data-{{$k}}
           {{- end }}
         {{- end }}
+        {{- if .Values.volumeMounts }}
+{{ toYaml .Values.volumeMounts | indent 10 }}
+        {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
@@ -178,6 +181,9 @@ spec:
           name: {{ template "cp-kafka.fullname" . }}-jmx-configmap
       {{- end }}
       {{- if .Values.nodeSelector }}
+      {{- if .Values.volumes }}
+{{ toYaml .Values.volumes | trim | indent 6 }}
+      {{- end}}
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
       {{- end }}
