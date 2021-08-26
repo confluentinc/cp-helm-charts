@@ -112,7 +112,7 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   hosts:
     - host: schema-registry-common.dev.data.kurly.services
-      paths: '/*'
+      paths: /*
 
   tls: []
   #  - secretName: chart-example-tls
