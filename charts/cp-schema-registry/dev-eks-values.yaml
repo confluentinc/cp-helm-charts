@@ -7,7 +7,7 @@
 ## ------------------------------------------------------
 
 ## Number of Scheme Registry Pod
-replicaCount: 1
+replicaCount: 2
 
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-schema-registry/
@@ -108,7 +108,7 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: schema-registry-common.dev.data.kurlycorp.kr
+    - host: schema-registry-common.dev.data.kurly.services
       paths: []
 
   tls: []
