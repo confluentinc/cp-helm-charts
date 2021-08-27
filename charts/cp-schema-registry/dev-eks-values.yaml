@@ -44,7 +44,7 @@ heapOptions: "-Xms512M -Xmx512M"
 ## bootstrapServers: "PLAINTEXT://dozing-prawn-kafka-headless:9092"
 ## Charts uses Kafka Coordinator Master Election: https://docs.confluent.io/current/schema-registry/docs/design.html#kafka-coordinator-master-election
 kafka:
-  bootstrapServers: "PLAINTEXT://10.172.53.181:9092"
+  bootstrapServers: "PLAINTEXT://15.15.21.193:9092"
 
 ingress:
   ## If true provide ingress to the schema registry
