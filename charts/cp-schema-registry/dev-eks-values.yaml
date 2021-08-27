@@ -7,7 +7,7 @@
 ## ------------------------------------------------------
 
 ## Number of Scheme Registry Pod
-replicaCount: 2
+replicaCount: 1
 
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-schema-registry/
