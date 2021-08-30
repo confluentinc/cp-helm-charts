@@ -144,3 +144,6 @@ spec:
       affinity:
 {{ toYaml .Values.affinity | indent 8 }}
       {{- end }}
+      {{- if .Values.serviceAccountName }}
+      serviceAccountName: {{ .Values.serviceAccountName }}
+      {{- end -}}
