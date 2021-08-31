@@ -20,7 +20,7 @@ spec:
     - host: {{ .Values.ingress.hostname }}
       http:
         paths:
-          - path: /
+          - path: /*
             backend:
               serviceName: {{ template "cp-schema-registry.fullname" . }}
               servicePort: {{ .Values.servicePort }}
