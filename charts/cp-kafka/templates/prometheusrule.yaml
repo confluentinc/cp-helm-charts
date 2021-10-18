@@ -1,0 +1,53 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ template "cp-kafka.fullname" . }}
+  labels:
+    app: {{ template "cp-kafka.name" . }}
+    chart: {{ template "cp-kafka.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  groups:
+  - name: kafka
+    rules:
+    - alert: KafkaBrokerDown
+      annotations:
+        message: 'etcd cluster "{{ $labels.job }}": insufficient members ({{ $value
+          }}).'
+      expr: count(cp_kafka_server_replicamanager_leadercount) < {{ default 3 .Values.brokers }}
+      for: 3m
+      labels:
+        severity: critical
+    - alert: KafkaUnderReplicatedPartitions
+      annotations:
+        message: 'etcd cluster "{{ $labels.job }}": member {{ $labels.instance }}
+          has no leader.'
+      expr: count(cp_kafka_server_replicamanager_underreplicatedpartitions) > 1
+      for: 5m
+      labels:
+        severity: critical
+    - alert: KafkaPartitionsOffline
+      annotations:
+        message: 'etcd cluster "{{ $labels.job }}": member {{ $labels.instance }}
+          has no leader.'
+      expr: count(cp_kafka_controller_kafkacontroller_offlinepartitionscount) > 1
+      for: 5m
+      labels:
+        severity: critical
+    - alert: KafkaNetworkProcessorBusy
+      annotations:
+        message: 'etcd cluster "{{ $labels.job }}": member {{ $labels.instance }}
+          has no leader.'
+      expr: cp_kafka_network_socketserver_networkprocessoravgidlepercent < 0.10
+      for: 5m
+      labels:
+        severity: critical
+    - alert: KafkaRequestHandlerBusy
+      annotations:
+        message: 'etcd cluster "{{ $labels.job }}": member {{ $labels.instance }}
+          has no leader.'
+      expr: cp_kafka_kafkarequesthandlerpool_requesthandleravgidlepercent < 0.10
+      for: 5m
+      labels:
+        severity: critical

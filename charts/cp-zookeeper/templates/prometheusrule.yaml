@@ -1,0 +1,29 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ template "cp-zookeeper.fullname" . }}
+  labels:
+    app: {{ template "cp-zookeeper.name" . }}
+    chart: {{ template "cp-zookeeper.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  groups:
+  - name: zookeeper
+    rules:
+    - alert: zookeeperQuorum
+      annotations:
+        message: 'zookeeper cluster "{{ $labels.job }}": insufficient members ({{ $value
+          }}).'
+      expr: count(cp_zookeeper_quorumsize) < {{ default 3 .Values.servers }}
+      for: 3m
+      labels:
+        severity: critical
+    - alert: etcdNoLeader
+      annotations:
+        message: 'etcd cluster "{{ $labels.job }}": member {{ $labels.instance }}
+          has no leader.'
+      expr: etcd_server_has_leader{job=~".*etcd.*"} == 0
+      for: 1m
+      labels:
+        severity: critical
