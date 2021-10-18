@@ -1,0 +1,2 @@
+# Do not modify existing released charts
+skip-existing: true

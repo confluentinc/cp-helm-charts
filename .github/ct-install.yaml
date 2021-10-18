@@ -1,0 +1,11 @@
+chart-dirs:
+  - charts
+  - cp-helm-charts/charts
+chart-repos:
+  - bitnami=https://charts.bitnami.com/bitnami
+  - velero=https://vmware-tanzu.github.io/helm-charts
+debug: true
+#excluded-charts:
+#  - common
+remote: origin
+namespace: default
