@@ -18,7 +18,16 @@ data:
     - kafka.connect:type=connect-worker-metrics
     - kafka.connect:type=connect-metrics,client-id=*
     - kafka.connect:type=connector-task-metrics,connector=*,task=*
+    - kafka.connect:type=task-error-metrics,connector=*,task=*
+    - kafka.connect:type=sink-task-metrics,connector=*,task=*
     rules:
+    - pattern: kafka.connect<type=(.+)-metrics, connector=(.+), task=(.+)><>(.+-total|.+-count|.+-ms|.+-ratio|.+-avg|.+-failures|.+-requests|.+-timestamp|.+-logged|.+-errors|.+-retries|.+-skipped)
+      name: kafka_connect_$1_$4
+      labels:
+        connector: "$2"
+        task: "$3"
+      help: "Kafka Connect JMX metric type $1"
+      type: GAUGE
     - pattern : "kafka.connect<type=connect-worker-metrics>([^:]+):"
       name: "cp_kafka_connect_connect_worker_metrics_$1"
     - pattern : "kafka.connect<type=connect-metrics, client-id=([^:]+)><>([^:]+)"
