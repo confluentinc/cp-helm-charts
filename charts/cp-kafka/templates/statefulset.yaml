@@ -83,7 +83,13 @@ spec:
           mountPath: /etc/jmx-kafka
       {{- end }}
       - name: {{ template "cp-kafka.name" . }}-broker
+        {{- if .Values.image }}
         image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+        {{- else if .Values.enableEnterpriseFeatures }}
+        image: "confluentinc/cp-enterprise-kafka:{{ .Values.imageTag }}"
+        {{- else }}
+        image: "confluentinc/cp-kafka:{{ .Values.imageTag }}"
+        {{- end }}
         imagePullPolicy: "{{ .Values.imagePullPolicy }}"
         {{- if .Values.securityContext }}
         securityContext: {{- toYaml .Values.securityContext | nindent 10 }}
