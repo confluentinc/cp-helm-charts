@@ -4350,7 +4350,7 @@
   "schemaVersion": 16,
   "style": "dark",
   "tags": [
-    "5.5.0"
+    "6.0.1"
   ],
   "templating": {
     "list": [
@@ -4406,7 +4406,7 @@
     ]
   },
   "timezone": "",
-  "title": "Confluent Open Source",
+  "title": "Confluent Platform Community",
   "uid": "AEaSQ97mz",
-  "version": 4
+  "version": 6
 }
