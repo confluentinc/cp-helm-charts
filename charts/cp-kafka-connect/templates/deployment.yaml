@@ -115,7 +115,6 @@ spec:
           livenessProbe:
 {{ toYaml .Values.livenessProbe | trim | indent 12 }}
           {{- end }}
-        {{- end }}
           {{- if .Values.volumeMounts }}
           volumeMounts:
 {{ toYaml .Values.volumeMounts | indent 10 }}
