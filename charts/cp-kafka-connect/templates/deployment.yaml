@@ -107,6 +107,9 @@ spec:
             - /bin/bash
             - -c
             - |
+              mkdir -p /usr/share/java/kafka-connect-jdbc
+              cd /usr/share/java/kafka-connect-jdbc/
+              curl https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-8.0.27.tar.gz | tar xz 
               /etc/confluent/docker/run &
               $CUSTOM_SCRIPT_PATH
               sleep infinity
