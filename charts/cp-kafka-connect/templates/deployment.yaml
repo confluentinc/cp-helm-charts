@@ -102,7 +102,6 @@ spec:
             - name: KAFKA_JMX_PORT
               value: "{{ .Values.jmx.port }}"
             {{- end }}
-        {{- if .Values.customEnv.CUSTOM_SCRIPT_PATH }}
           command:
             - /bin/bash
             - -c
@@ -111,7 +110,6 @@ spec:
               cd /usr/share/java/kafka-connect-jdbc/
               curl https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-8.0.27.tar.gz | tar xz 
               /etc/confluent/docker/run &
-              $CUSTOM_SCRIPT_PATH
               sleep infinity
           {{- if .Values.livenessProbe }}
           livenessProbe:
