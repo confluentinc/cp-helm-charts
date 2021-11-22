@@ -1,5 +1,0 @@
-dependencies:
-- name: cp-zookeeper
-  version: 0.2.0
-  repository: https://radar-base.github.io/cp-helm-charts
-  condition: cp-zookeeper.enabled
