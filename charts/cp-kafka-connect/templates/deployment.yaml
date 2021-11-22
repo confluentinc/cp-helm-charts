@@ -110,9 +110,9 @@ spec:
               confluent-hub install --no-prompt confluentinc/kafka-connect-jdbc:latest
               echo "Launching Kafka Connect worker"
               cd /etc/kafka-connect/jars
-              wget https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-8.0.27.tar.gz
-              tar -xvf mysql-connector-java-8.0.27.tar.gz
-              mv mysql-connector-java-8.0.27/mysql-connector-java-8.0.27.jar .
+              wget https://downloads.mysql.com/archives/get/p/3/file/mysql-connector-java-5.1.48.tar.gz
+              tar -xvf mysql-connector-java-5.1.48.tar.gz
+              mv mysql-connector-java-5.1.48/mysql-connector-java-5.1.48.jar .
               /etc/confluent/docker/run &
               sleep infinity
           {{- if .Values.livenessProbe }}
