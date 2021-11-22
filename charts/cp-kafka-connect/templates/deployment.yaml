@@ -112,6 +112,7 @@ spec:
               cd /etc/kafka-connect/jars
               wget https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-8.0.27.tar.gz
               tar -xvf mysql-connector-java-8.0.27.tar.gz
+              mv mysql-connector-java-8.0.27/mysql-connector-java-8.0.27.jar .
               /etc/confluent/docker/run &
               sleep infinity
           {{- if .Values.livenessProbe }}
