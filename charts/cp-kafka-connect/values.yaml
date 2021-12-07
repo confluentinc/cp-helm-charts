@@ -33,6 +33,7 @@ configurationOverrides:
   "config.storage.replication.factor": "3"
   "offset.storage.replication.factor": "3"
   "status.storage.replication.factor": "3"
+  "offset.flush.timeout.ms": "600000"
 
 ## Kafka Connect JVM Heap Option
 heapOptions: "-Xms512M -Xmx512M"
