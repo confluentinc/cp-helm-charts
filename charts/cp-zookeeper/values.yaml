@@ -133,7 +133,6 @@ prometheus:
 livenessProbe:
   exec:
     command:
-    - zookeeper-shell
-    - 127.0.0.1:$ZOOKEEPER_CLIENT_PORT stat /
-  initialDelaySeconds: 50
+    - bash -c "zookeeper-shell 127.0.0.1:$ZOOKEEPER_CLIENT_PORT stat /"
+  initialDelaySeconds: 60
   periodSeconds: 5
