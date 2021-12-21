@@ -159,6 +159,8 @@ cp-zookeeper:
 livenessProbe:
   exec:
     command:
-    - bash -c "kafka-broker-api-versions --bootstrap-server 127.0.0.1:$HC_PORT"
+    - /bin/bash
+    - -c
+    - kafka-broker-api-versions --bootstrap-server 127.0.0.1:$HC_PORT
   initialDelaySeconds: 50
   periodSeconds: 5
