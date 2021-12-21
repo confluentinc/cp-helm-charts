@@ -128,3 +128,12 @@ prometheus:
     ## Resources configuration for the JMX exporter container.
     ## See the `resources` documentation above for details.
     resources: {}
+
+## ZooKeeper livenessProbe configuration
+livenessProbe:
+  exec:
+    command:
+    - zookeeper-shell
+    - 127.0.0.1:$ZOOKEEPER_CLIENT_PORT stat /
+  initialDelaySeconds: 5
+  periodSeconds: 5
