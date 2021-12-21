@@ -154,3 +154,12 @@ cp-zookeeper:
 
   ## If the Zookeeper Chart is disabled a URL and port are required to connect
   url: ""
+
+## Kafka livenessProbe configuration
+livenessProbe:
+  exec:
+    command:
+    - kafka-broker-api-versions
+    - --bootstrap-server 127.0.0.1:$HC_PORT
+  initialDelaySeconds: 10
+  periodSeconds: 5

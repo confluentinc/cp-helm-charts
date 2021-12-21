@@ -76,6 +76,15 @@ cp-kafka:
   securityContext:
     runAsUser: 0
 
+  livenessProbe:
+  # Values specified here will replace the default ../cp-kafka/values.yaml
+  # exec:
+  #   command:
+  #   - kafka-broker-api-versions
+  #   - --bootstrap-server 127.0.0.1:$HC_PORT
+  # initialDelaySeconds: 10
+  # periodSeconds: 5
+
 ## ------------------------------------------------------
 ## Schema Registry
 ## ------------------------------------------------------
