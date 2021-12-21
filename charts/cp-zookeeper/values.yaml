@@ -135,6 +135,6 @@ livenessProbe:
     command:
     - /bin/bash
     - -c
-    - zookeeper-shell 127.0.0.1:$ZOOKEEPER_CLIENT_PORT stat /
+    - nc -vz 127.0.0.1 $ZOOKEEPER_CLIENT_PORT
   initialDelaySeconds: 60
   periodSeconds: 5

@@ -161,6 +161,6 @@ livenessProbe:
     command:
     - /bin/bash
     - -c
-    - kafka-broker-api-versions --bootstrap-server 127.0.0.1:$HC_PORT
+    - nc -vz 127.0.0.1 $HC_PORT
   initialDelaySeconds: 50
   periodSeconds: 5
