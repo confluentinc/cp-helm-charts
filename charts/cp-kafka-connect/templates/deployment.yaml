@@ -32,6 +32,9 @@ spec:
         prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
       {{- end }}
       {{- end }}
+    {{- if .Values.serviceAccount }}
+    serviceAccount: {{ .Values.serviceAccount }}
+    {{- end }}
     spec:
       containers:
         {{- if .Values.prometheus.jmx.enabled }}
