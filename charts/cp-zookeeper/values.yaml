@@ -6,6 +6,11 @@
 ## Zookeeper
 ## ------------------------------------------------------
 
+serviceAccount:
+  create: true
+  name:
+  annotations: {}  
+
 ## Number of zookeeper servers, should be odd number
 servers: 3
 

@@ -6,6 +6,11 @@
 ## Schema Registry
 ## ------------------------------------------------------
 
+serviceAccount:
+  create: true
+  name:
+  annotations: {}  
+
 ## Number of Scheme Registry Pod
 replicaCount: 1
 
