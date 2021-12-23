@@ -1,10 +1,10 @@
 dependencies:
 - name: cp-kafka
-  version: 0.1.0
+  version: 0.1.1
   repository: file://./charts/cp-kafka
   condition: cp-kafka.enabled
 - name: cp-zookeeper
-  version: 0.1.0
+  version: 0.1.1
   repository: file://./charts/cp-zookeeper
   condition: cp-zookeeper.enabled
 - name: cp-schema-registry
@@ -16,7 +16,7 @@ dependencies:
   repository: file://./charts/cp-kafka-rest
   condition: cp-kafka-rest.enabled
 - name: cp-kafka-connect
-  version: 0.1.0
+  version: 0.1.1
   repository: file://./charts/cp-kafka-connect
   condition: cp-kafka-connect.enabled
 - name: cp-ksql-server
