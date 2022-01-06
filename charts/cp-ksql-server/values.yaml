@@ -72,6 +72,12 @@ prometheus:
     ## See the `resources` documentation above for details.
     resources: {}
 
+    whitelistObjectNames:
+      - io.confluent.ksql.metrics:type=ksql-engine-query-stats
+    rules: |
+      - pattern: 'io.confluent.ksql.metrics<type=ksql-engine-query-stats>([^:]+):'
+        name: "cp_ksql_server_metrics_$1"
+
 ## External Access
 ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer
 external:

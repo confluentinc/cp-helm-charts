@@ -81,6 +81,15 @@ prometheus:
     ## See the `resources` documentation above for details.
     resources: {}
 
+    whitelistObjectNames:
+      - kafka.rest:type=jetty-metrics
+      - kafka.rest:type=jersey-metrics
+    rules: |
+      - pattern : 'kafka.rest<type=jetty-metrics>([^:]+):'
+        name: "cp_kafka_rest_jetty_metrics_$1"
+      - pattern : 'kafka.rest<type=jersey-metrics>([^:]+):'
+        name: "cp_kafka_rest_jersey_metrics_$1"
+
 ## External Access
 ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer
 external:

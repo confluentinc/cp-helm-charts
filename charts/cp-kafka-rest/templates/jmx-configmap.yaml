@@ -14,12 +14,10 @@ data:
     lowercaseOutputName: true
     lowercaseOutputLabelNames: true
     ssl: false
+    {{- if .Values.prometheus.jmx.whitelistObjectNames }}
     whitelistObjectNames:
-    - kafka.rest:type=jetty-metrics
-    - kafka.rest:type=jersey-metrics
+{{ toYaml .Values.prometheus.jmx.whitelistObjectNames | trim | indent 4 }}
+    {{- end }}
     rules:
-    - pattern : 'kafka.rest<type=jetty-metrics>([^:]+):'
-      name: "cp_kafka_rest_jetty_metrics_$1"
-    - pattern : 'kafka.rest<type=jersey-metrics>([^:]+):'
-      name: "cp_kafka_rest_jersey_metrics_$1"
+{{ tpl .Values.prometheus.jmx.rules . | indent 4 }}
 {{- end }}

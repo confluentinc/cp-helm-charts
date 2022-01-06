@@ -96,3 +96,15 @@ prometheus:
     port: 5556
 
     resources: {}
+
+    whitelistObjectNames:
+      - kafka.schema.registry:type=jetty-metrics
+      - kafka.schema.registry:type=master-slave-role
+      - kafka.schema.registry:type=jersey-metrics
+    rules: |
+      - pattern: 'kafka.schema.registry<type=jetty-metrics>([^:]+):'
+        name: "cp_kafka_schema_registry_jetty_metrics_$1"
+      - pattern: 'kafka.schema.registry<type=master-slave-role>([^:]+):'
+        name: "cp_kafka_schema_registry_master_slave_role"
+      - pattern: 'kafka.schema.registry<type=jersey-metrics>([^:]+):'
+        name: "cp_kafka_schema_registry_jersey_metrics_$1"

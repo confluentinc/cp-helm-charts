@@ -14,15 +14,10 @@ data:
     lowercaseOutputName: true
     lowercaseOutputLabelNames: true
     ssl: false
+    {{- if .Values.prometheus.jmx.whitelistObjectNames }}
     whitelistObjectNames:
-    - kafka.schema.registry:type=jetty-metrics
-    - kafka.schema.registry:type=master-slave-role
-    - kafka.schema.registry:type=jersey-metrics
+{{ toYaml .Values.prometheus.jmx.whitelistObjectNames | trim | indent 4 }}
+    {{- end }}
     rules:
-    - pattern : 'kafka.schema.registry<type=jetty-metrics>([^:]+):'
-      name: "cp_kafka_schema_registry_jetty_metrics_$1"
-    - pattern : 'kafka.schema.registry<type=master-slave-role>([^:]+):'
-      name: "cp_kafka_schema_registry_master_slave_role"
-    - pattern : 'kafka.schema.registry<type=jersey-metrics>([^:]+):'
-      name: "cp_kafka_schema_registry_jersey_metrics_$1"
+{{ tpl .Values.prometheus.jmx.rules . | indent 4 }}
 {{- end }}

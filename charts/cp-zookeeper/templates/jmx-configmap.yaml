@@ -14,26 +14,10 @@ data:
     lowercaseOutputName: true
     lowercaseOutputLabelNames: true
     ssl: false
+    {{- if .Values.prometheus.jmx.whitelistObjectNames }}
     whitelistObjectNames:
-    - org.apache.ZooKeeperService:name0=ReplicatedServer_id*
-    - org.apache.ZooKeeperService:name0=ReplicatedServer_id*,name1=replica.*
-    - org.apache.ZooKeeperService:name0=ReplicatedServer_id*,name1=replica.*,name2=*
-    - org.apache.ZooKeeperService:name0=ReplicatedServer_id*,name1=replica.*,name2=*,name3=*
+{{ toYaml .Values.prometheus.jmx.whitelistObjectNames | trim | indent 4 }}
+    {{- end }}
     rules:
-    - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+)><>(\\w+)"
-      name: "cp_zookeeper_$2"
-    - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+), name1=replica.(\\d+)><>(\\w+)"
-      name: "cp_zookeeper_$3"
-      labels:
-        replicaId: "$2"
-    - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+), name1=replica.(\\d+), name2=(\\w+)><>(\\w+)"
-      name: "cp_zookeeper_$4"
-      labels:
-        replicaId: "$2"
-        memberType: "$3"
-    - pattern: "org.apache.ZooKeeperService<name0=ReplicatedServer_id(\\d+), name1=replica.(\\d+), name2=(\\w+), name3=(\\w+)><>(\\w+)"
-      name: "cp_zookeeper_$4_$5"
-      labels:
-        replicaId: "$2"
-        memberType: "$3"
+{{ tpl .Values.prometheus.jmx.rules . | indent 4 }}
 {{- end }}

@@ -14,9 +14,10 @@ data:
     lowercaseOutputName: true
     lowercaseOutputLabelNames: true
     ssl: false
+    {{- if .Values.prometheus.jmx.whitelistObjectNames }}
     whitelistObjectNames:
-    - io.confluent.ksql.metrics:type=ksql-engine-query-stats
+{{ toYaml .Values.prometheus.jmx.whitelistObjectNames | trim | indent 4 }}
+    {{- end }}
     rules:
-    - pattern : 'io.confluent.ksql.metrics<type=ksql-engine-query-stats>([^:]+):'
-      name: "cp_ksql_server_metrics_$1"
+{{ tpl .Values.prometheus.jmx.rules . | indent 4 }}
 {{- end }}
