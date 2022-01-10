@@ -85,13 +85,6 @@ spec:
             value: {{ template "cp-ksql-server.cp-kafka-connect.service-name" . }}
           - name: KSQL_HEAP_OPTS
             value: "{{ .Values.heapOptions }}"
-          {{- if .Values.ksql.headless }}
-          - name: KSQL_KSQL_QUERIES_FILE
-            value: /etc/ksql/queries/queries.sql
-          {{- else }}
-          - name: KSQL_LISTENERS
-            value: http://0.0.0.0:8088
-          {{- end }}
           {{- range $key, $value := .Values.configurationOverrides }}
           - name: {{ printf "KSQL_%s" $key | replace "." "_" | upper | quote }}
             value: {{ $value | quote }}
