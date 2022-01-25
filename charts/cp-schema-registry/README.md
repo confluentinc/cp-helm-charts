@@ -95,7 +95,7 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `image` | Docker Image of Confluent Schema Registry. | `confluentinc/cp-schema-registry` |
-| `imageTag` | Docker Image Tag of Confluent Schema Registry. | `6.0.1` |
+| `imageTag` | Docker Image Tag of Confluent Schema Registry. | `6.1.0` |
 | `imagePullPolicy` | Docker Image Tag of Confluent Schema Registry. | `IfNotPresent` |
 | `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
 
@@ -138,6 +138,16 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `podAnnotations` | Map of custom annotations to attach to the pod spec. | `{}` |
+
+### Security Context
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `securityContext.runAsUser` | All processes for the container will run with this user ID | 10001
+| `securityContext.runAsGroup` | All processes for the container will run with this primary group ID | 10001
+| `securityContext.fsGroup` | All processes for the container will run with this supplementary group ID | 10001
+| `securityContext.runAsNonRoot` | The kubelet will validate the image at runtime to make sure that it does not run as UID 0 (root) and won’t start the container if it does | true
+
 
 ### JMX Configuration
 
