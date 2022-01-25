@@ -64,7 +64,7 @@ spec:
           - name: jmx-config
             mountPath: /etc/jmx-kafka-connect
         {{- end }}
-        - name: {{ template "cp-kafka-connect.fullname" . }}-server
+        - name: {{ template "cp-kafka-connect.name" . }}-server
           image: {{ $.Values.image.digest }}
           imagePullPolicy: "{{ .Values.imagePullPolicy }}"
           ports:
