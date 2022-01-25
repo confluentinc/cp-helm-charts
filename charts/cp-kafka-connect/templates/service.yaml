@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: {{ template "cp-kafka-connect.fullname" . }}
   labels:
-    app: {{ template "cp-kafka-connect.name" . }}
+    app: {{ template "cp-kafka-connect.fullname" . }}
     chart: {{ template "cp-kafka-connect.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -16,5 +16,5 @@ spec:
       port: {{ .Values.prometheus.jmx.port }}
     {{- end }}
   selector:
-    app: {{ template "cp-kafka-connect.name" . }}
+    app: {{ template "cp-kafka-connect.fullname" . }}
     release: {{ .Release.Name }}

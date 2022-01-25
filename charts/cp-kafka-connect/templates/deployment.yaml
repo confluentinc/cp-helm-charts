@@ -7,7 +7,7 @@ kind: Deployment
 metadata:
   name: {{ template "cp-kafka-connect.fullname" . }}
   labels:
-    app: {{ template "cp-kafka-connect.name" . }}
+    app: {{ template "cp-kafka-connect.fullname" . }}
     chart: {{ template "cp-kafka-connect.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -18,12 +18,12 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "cp-kafka-connect.name" . }}
+      app: {{ template "cp-kafka-connect.fullname" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "cp-kafka-connect.name" . }}
+        app: {{ template "cp-kafka-connect.fullname" . }}
         release: {{ .Release.Name }}
       {{- if .Values.serviceInventoryLabels }}
       {{- range $key, $value := .Values.serviceInventoryLabels }}
@@ -64,7 +64,7 @@ spec:
           - name: jmx-config
             mountPath: /etc/jmx-kafka-connect
         {{- end }}
-        - name: {{ template "cp-kafka-connect.name" . }}-server
+        - name: {{ template "cp-kafka-connect.fullname" . }}-server
           image: {{ $.Values.image.digest }}
           imagePullPolicy: "{{ .Values.imagePullPolicy }}"
           ports:

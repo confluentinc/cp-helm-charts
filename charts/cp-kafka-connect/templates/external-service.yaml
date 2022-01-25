@@ -6,7 +6,7 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0
     service.beta.kubernetes.io/aws-load-balancer-ssl-ports: http
   labels:
-    app: {{ template "cp-kafka-connect.name" . }}
+    app: {{ template "cp-kafka-connect.fullname" . }}
     chart: {{ template "cp-kafka-connect.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
@@ -17,5 +17,5 @@ spec:
       port: {{ .Values.servicePort }}
       targetPort: {{ .Values.servicePort }}
   selector:
-    app: {{ template "cp-kafka-connect.name" . }}
+    app: {{ template "cp-kafka-connect.fullname" . }}
     release: {{ .Release.Name }}
