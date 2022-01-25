@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "cp-kafka-connect.fullname" . }}-external
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: http
+  labels:
+    app: {{ template "cp-kafka-connect.name" . }}
+    chart: {{ template "cp-kafka-connect.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: LoadBalancer
+  ports:
+    - name: kafka-connect
+      port: {{ .Values.servicePort }}
+      targetPort: {{ .Values.servicePort }}
+  selector:
+    app: {{ template "cp-kafka-connect.name" . }}
+    release: {{ .Release.Name }}

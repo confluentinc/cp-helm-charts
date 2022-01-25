@@ -11,6 +11,9 @@ metadata:
     chart: {{ template "cp-kafka-connect.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
+  {{- range $key, $value := .Values.serviceInventoryLabels }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -22,6 +25,11 @@ spec:
       labels:
         app: {{ template "cp-kafka-connect.name" . }}
         release: {{ .Release.Name }}
+      {{- if .Values.serviceInventoryLabels }}
+      {{- range $key, $value := .Values.serviceInventoryLabels }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
+      {{- end }}
       {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
       annotations:
       {{- range $key, $value := .Values.podAnnotations }}
@@ -57,7 +65,7 @@ spec:
             mountPath: /etc/jmx-kafka-connect
         {{- end }}
         - name: {{ template "cp-kafka-connect.name" . }}-server
-          image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+          image: {{ $.Values.image.digest }}
           imagePullPolicy: "{{ .Values.imagePullPolicy }}"
           ports:
             - name: kafka-connect
