@@ -17,6 +17,10 @@ spec:
     matchLabels:
       app: {{ template "cp-kafka-connect.name" . }}
       release: {{ .Release.Name }}
+  {{- if .Values.strategy }}
+  strategy:
+{{ toYaml .Values.strategy | indent 4 }}
+  {{- end }}
   template:
     metadata:
       labels:

@@ -133,3 +133,10 @@ livenessProbe:
   # initialDelaySeconds: 30
   # periodSeconds: 5
   # failureThreshold: 10
+
+## Deployment update strategy.
+## ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+strategy:
+  # rollingUpdate:
+  #   maxSurge: 1
+  #   maxUnavailable: 1
