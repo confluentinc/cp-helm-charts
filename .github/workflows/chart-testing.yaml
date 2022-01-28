@@ -1,7 +1,5 @@
-name: Continuous Integration
+name: Helm Chart Testing
 on: [push, pull_request]
-env:
-  APPLICATION: CP-HELM-CHART
 
 jobs:
   chart-testing:
@@ -28,17 +26,17 @@ jobs:
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
-          changed=$(ct list-changed --config ci.yaml)
+          changed=$(ct list-changed --config config.yaml)
           if [[ -n "$changed" ]]; then
             echo "::set-output name=changed::true"
           fi
 
       - name: Run chart-testing (lint)
-        run: ct lint --config ci.yaml
+        run: ct lint --config config.yaml
       
       - name: Create kind cluster
         uses: helm/kind-action@v1.2.0
         if: steps.list-changed.outputs.changed == 'true'
 
       - name: Run chart-testing (install)
-        run: ct install --config ci.yaml
+        run: ct install --config config.yaml
