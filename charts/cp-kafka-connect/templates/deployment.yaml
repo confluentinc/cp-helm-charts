@@ -33,7 +33,7 @@ spec:
       {{- end }}
       {{- end }}
     {{- if .Values.serviceAccount }}
-    serviceAccount: {{ .Values.serviceAccount }}
+    serviceAccountName: {{ .Values.serviceAccount }}
     {{- end }}
     spec:
       containers:
