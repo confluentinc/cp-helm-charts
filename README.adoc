@@ -1,6 +1,6 @@
-= Asimmetric Notes
+= Aruba-UXI Notes
 
-The helm charts are published through Github Pages at https://asimmetric.github.io/cp-helm-charts
+The helm charts are published through Github Pages at https://aruba-uxi.github.io/cp-helm-charts
 
 = Confluent Platform Helm Charts
 :icons: font
@@ -36,8 +36,8 @@ helm repo update    #<2>
 helm install confluentinc/cp-helm-charts --name my-confluent --version 0.6.0    #<3>
 ----
 <1> Add `confluentinc` helm charts repo
-<2> Update repo information 
-<3> Install Confluent Platform with release name «my-confluent» and version `0.6.0` 
+<2> Update repo information
+<3> Install Confluent Platform with release name «my-confluent» and version `0.6.0`
 
 == Contributing
 
@@ -222,7 +222,7 @@ Press kbd:[Ctrl + C] to close the producer session.
 kubectl exec -c cp-kafka-broker -it my-confluent-oss-cp-kafka-0 -- /bin/bash  /usr/bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic test --from-beginning
 ----
 
-You should see the messages which were published from the console producer. 
+You should see the messages which were published from the console producer.
 Press kbd:[Ctrl + C] to stop consuming.
 
 ==== Manual Test
@@ -245,7 +245,7 @@ kubectl exec -it zookeeper-client -- /bin/bash zookeeper-shell <zookeeper servic
 ===== Kafka
 
 [source,bash]
-.Validate Kafka installation 
+.Validate Kafka installation
 ----
 kubectl apply -f cp-helm-charts/examples/kafka-client.yaml #<1>
 kubectl exec -it kafka-client -- /bin/bash      #<2>
@@ -303,7 +303,7 @@ helm upgrade <release name> cp-helm-charts
 
 ==== Scaling Kafka
 
-IMPORTANT: Scaling Kafka brokers without doing Partition Reassignment will cause data loss. 
+IMPORTANT: Scaling Kafka brokers without doing Partition Reassignment will cause data loss.
 You must reassign partitions correctly before https://kafka.apache.org/documentation/#basic_ops_cluster_expansion[scaling the Kafka cluster].
 
 ===== Install cp-helm-charts with default 3 brokers kafka cluster
