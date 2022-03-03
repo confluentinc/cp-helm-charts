@@ -69,3 +69,21 @@ Create a default value for SCHEMAREGISTRY_URL environment variable used by the U
 {{- define "cp-schema-registry.connectUrlValue" -}}
 {{- printf "%s:8081" (include "cp-schema-registry.fullname" .) -}}
 {{- end -}}
+
+{{/* Generate labels for DD integration */}}
+{{- define "datadog.labels" }}
+{{- if .Values.datadog.enabled }}
+tags.datadoghq.com/service: {{ .Release.Name | lower | quote }}
+tags.datadoghq.com/version: {{ .Values.imageTag | quote }}
+{{ with .Values.datadog.labels }}{{ toYaml . }}{{ end }}
+{{- end }}
+{{- end }}
+
+{{/* Generate annotations for DD integration */}}
+{{- define "datadog.annotations" }}
+{{- if .Values.datadog.enabled }}
+{{- range $k, $v := .Values.datadog.annotations }}
+{{ $k }}: {{ tpl $v $ | quote }}
+{{- end }}
+{{- end }}
+{{- end }}

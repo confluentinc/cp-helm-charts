@@ -12,7 +12,7 @@ replicaCount: 1
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-schema-registry/
 image: confluentinc/cp-schema-registry
-imageTag: 6.1.0
+imageTag: &version 6.1.0
 
 ## Specify a imagePullPolicy
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -80,9 +80,39 @@ resources: {}
   #  cpu: 100m
   #  memory: 128Mi
 
+datadog:
+  enabled: true
+  annotations:
+    ad.datadoghq.com/cp-schema-registry-server.check_names: '["openmetrics"]'
+    ad.datadoghq.com/cp-schema-registry-server.init_configs: '[{}]'
+    ad.datadoghq.com/cp-schema-registry-server.logs: '[{"source":"schema-registry","service":"{{ .Release.Name }}"}]'
+    ad.datadoghq.com/cp-schema-registry-server.instances: |
+      [{
+      "prometheus_url": "http://%%host%%:5556/metrics",
+      "namespace": "schema_registry",
+      "metrics": [
+        "cp_kafka_schema_registry_jetty_metrics_connections_active",
+        "cp_kafka_schema_registry_jetty_metrics_connections_opened_rate",
+        "cp_kafka_schema_registry_jetty_metrics_connections_closed_rate",
+        "cp_kafka_schema_registry_jersey_metrics_request_error_rate",
+        "cp_kafka_schema_registry_master_slave_role",
+        "cp_kafka_schema_registry_jersey_metrics_request_byte_rate",
+        "cp_kafka_schema_registry_jersey_metrics_request_latency_avg",
+        "cp_kafka_schema_registry_jersey_metrics_request_size_avg",
+        "jvm*"
+      ],
+      "type_overrides": {
+        "*": "gauge",
+        ".+_total": "counter"
+      }
+      }]
+  labels:
+    team: "team_dbre"
+
 ## Custom pod annotations
 podAnnotations:
   cluster-autoscaler.kubernetes.io/safe-to-evict: "true"  # Allow the autoscaler to downscale the cluster.
+  sidecar.istio.io/inject: "false" # The datadog agent fails to retrieve data from the container when enabling the istio proxy
 
 ## Node labels for pod assignment
 ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/

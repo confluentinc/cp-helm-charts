@@ -11,6 +11,9 @@ metadata:
     chart: {{ template "cp-schema-registry.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
+    {{- if .Values.datadog.enabled }}
+    {{- include "datadog.labels" $ | indent 4 }}
+    {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -20,10 +23,14 @@ spec:
   template:
     metadata:
       labels:
+      {{- if .Values.datadog.enabled }}
+        {{- include "datadog.labels" $ | indent 8 }}
+      {{- end }}
         app: {{ template "cp-schema-registry.name" . }}
         release: {{ .Release.Name }}
-      {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
+      {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled .Values.datadog.enabled }}
       annotations:
+      {{- include "datadog.annotations" $ | indent 8 }}
       {{- range $key, $value := .Values.podAnnotations }}
         {{ $key }}: {{ $value | quote }}
       {{- end }}
