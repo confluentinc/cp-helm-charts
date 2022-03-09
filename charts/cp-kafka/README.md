@@ -188,6 +188,12 @@ The configuration parameters in this section control the resources requested and
 | `nodeport.servicePort` | The Port broker will advertise to external producers and consumers.  | `19092` |
 | `nodeport.firstListenerPort` | The first NodePort that Kafka Broker will use for advertising to external producers and consumers. For each broker, advertise.listeners port for external will be set to `31090 + {index of broker pod}`. | `31090` |
 
+### Metrics Reporting
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `metrics.report` | Whether or not to allow metrics reporting to confluent. Sets KAFKA_METRIC_REPORTERS and CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS env variables.  | `true` |
+
 ### Deployment Topology
 
 | Parameter | Description | Default |
