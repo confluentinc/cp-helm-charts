@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   name: {{ template "cp-schema-registry.fullname" . }}-jmx-configmap
   labels:
-    app: {{ template "cp-schema-registry.name" . }}
+    app: {{ template "cp-schema-registry.fullname" . }}
     chart: {{ template "cp-schema-registry.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
