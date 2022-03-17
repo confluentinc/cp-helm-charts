@@ -1,7 +1,12 @@
+{{- $servicename := (include "cp-schema-registry.fullname" .) -}}
+{{ if or (eq $servicename "schema-registry") (eq $servicename "schema_registry")  }}
+    {{- fail "setting fullname to schema registry will require app to fail due to host environments: https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/#environment-variables" }}
+{{- end -}}
+
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "cp-schema-registry.fullname" . }}
+  name: {{ $servicename }}
   labels:
     app: {{ template "cp-schema-registry.name" . }}
     chart: {{ template "cp-schema-registry.chart" . }}
@@ -9,7 +14,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   ports:
-    - name: schema-registry
+    - name: http
       port: {{ .Values.servicePort }}
     {{- if .Values.prometheus.jmx.enabled }}
     - name: metrics
