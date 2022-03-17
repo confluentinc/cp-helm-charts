@@ -1,5 +1,5 @@
 def config = jobConfig {
-    slackChannel = 'tools-notifications'
+    slackChannel = 'devprod-notifications'
 }
 
 def job = {
