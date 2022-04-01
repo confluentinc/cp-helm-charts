@@ -108,6 +108,8 @@ spec:
         - name : KAFKA_JMX_PORT
           value: "{{ .Values.jmx.port }}"
         {{- end }}
+        - name : ZOOKEEPER_FORCE_SYNC
+          value: "{{ .Values.forceSync }}"
         - name : ZOOKEEPER_TICK_TIME
           value: "{{ .Values.tickTime }}"
         - name : ZOOKEEPER_SYNC_LIMIT
