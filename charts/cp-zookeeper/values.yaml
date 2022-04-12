@@ -130,11 +130,14 @@ prometheus:
     resources: {}
 
 ## ZooKeeper livenessProbe configuration
-livenessProbe:
-  exec:
-    command:
-    - /bin/bash
-    - -c
-    - nc -vz 127.0.0.1 $ZOOKEEPER_CLIENT_PORT
-  initialDelaySeconds: 60
-  periodSeconds: 5
+### Commented below, because I didn't find any benefits from having that,
+###  as constrains it produce a lot of WARNINGS in zookeeper logs which led difficulties in reading
+#livenessProbe:
+#  exec:
+#    command:
+#    - /bin/bash
+#    - -c
+#    - nc -vz 127.0.0.1 $ZOOKEEPER_CLIENT_PORT
+#  initialDelaySeconds: 60
+#  periodSeconds: 5
+
