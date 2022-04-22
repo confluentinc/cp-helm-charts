@@ -128,3 +128,6 @@ prometheus:
     ## Resources configuration for the JMX exporter container.
     ## See the `resources` documentation above for details.
     resources: {}
+
+serviceAccount:
+  name: ""
