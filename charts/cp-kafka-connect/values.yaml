@@ -133,3 +133,7 @@ livenessProbe:
   # initialDelaySeconds: 30
   # periodSeconds: 5
   # failureThreshold: 10
+
+serviceAccount:
+  # annotations:
+  #   eks.amazonaws.com/role-arn: ""
