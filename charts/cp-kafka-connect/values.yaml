@@ -122,6 +122,14 @@ secrets:
 ## and errors by the ENTRYPOINT are ignored by the container
 ## As an example such a similar script is added to "cp-helm-charts/examples/create-connectors.sh"
 ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+readinessProbe:
+  # httpGet:
+  #   path: /connectors
+  #   port: 8083
+  # initialDelaySeconds: 30
+  # periodSeconds: 5
+  # failureThreshold: 10
+
 livenessProbe:
   # httpGet:
   #   path: /connectors
