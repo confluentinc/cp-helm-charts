@@ -19,3 +19,4 @@ spec:
   - route:
     - destination:
         host: {{ template "cp-schema-registry.fullname" . }}
+  {{- end }}
