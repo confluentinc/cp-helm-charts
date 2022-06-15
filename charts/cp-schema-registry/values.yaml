@@ -96,3 +96,8 @@ prometheus:
     port: 5556
 
     resources: {}
+
+virtualservice:
+  enabled: no
+  gateways: ""
+  hostname: ""

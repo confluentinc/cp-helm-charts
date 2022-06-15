@@ -1,0 +1,21 @@
+{{- if .Values.virtualservice.enabled }}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ template "cp-schema-registry.fullname" . }}
+  labels:
+    app: {{ template "cp-schema-registry.name" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    team-name: {{ .Values.team_name }}
+    chart: {{ template "cp-schema-registry.chart" . }}
+    environment: {{ .Values.environment }}
+spec:
+  gateways:
+  {{- .Values.virtualservice.gateways }}
+  hosts:
+  {{- .Values.virtualservice.hostname }}
+  http:
+  - route:
+    - destination:
+        host: {{ template "cp-schema-registry.fullname" . }}
