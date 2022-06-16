@@ -97,6 +97,7 @@ prometheus:
 
     resources: {}
 
+ingress_host_suffix: ""
 virtualservice:
   enabled: no
   gateways: ""
