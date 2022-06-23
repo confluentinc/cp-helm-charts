@@ -99,7 +99,7 @@ kubectl delete --namespace kube-system svc tiller-deploy
 kubectl delete --namespace kube-system deploy tiller-deploy
 kubectl create serviceaccount --namespace kube-system tiller
 kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
-kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
+{% kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}' %}
 helm init --service-account tiller --upgrade
 ----
 
@@ -254,8 +254,8 @@ kubectl exec -it kafka-client -- /bin/bash      #<2>
 ----
 ## Setup
 export RELEASE_NAME=<release name>
-export ZOOKEEPERS=${RELEASE_NAME}-cp-zookeeper:2181
-export KAFKAS=${RELEASE_NAME}-cp-kafka-headless:9092
+{% export ZOOKEEPERS=${RELEASE_NAME}-cp-zookeeper:2181 %}
+{% export KAFKAS=${RELEASE_NAME}-cp-kafka-headless:9092 %}
 
 ## Create Topic
 kafka-topics --zookeeper $ZOOKEEPERS --create --topic test-rep-one --partitions 6 --replication-factor 1
