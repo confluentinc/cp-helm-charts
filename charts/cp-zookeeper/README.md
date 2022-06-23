@@ -43,7 +43,7 @@ You can use `helm status <release name>` to view all of the installed components
 
 For example:
 
-```console{%raw}
+```console
 $ helm status unsung-salamander
 
 RESOURCES:
