@@ -33,6 +33,9 @@ spec:
       {{- end }}
       {{- end }}
     spec:
+      { { - if .Values.serviceAccount.name } }
+      serviceAccountName: { { .Values.serviceAccount.name } }
+      { { - end } }
       containers:
         {{- if .Values.prometheus.jmx.enabled }}
         - name: prometheus-jmx-exporter
