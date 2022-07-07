@@ -36,6 +36,8 @@ cp-zookeeper:
   #  requests:
   #   cpu: 100m
   #   memory: 128Mi
+  labels: {}
+
 
 ## ------------------------------------------------------
 ## Kafka
