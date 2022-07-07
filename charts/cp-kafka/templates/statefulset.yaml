@@ -17,6 +17,9 @@ spec:
     matchLabels:
       app: {{ template "cp-kafka.name" . }}
       release: {{ .Release.Name }}
+      {{- range $key, $val := .Values.labels }}
+      {{ $key }} : {{ $val | quote }}
+      {{- end }}
   {{- end }}
   serviceName: {{ template "cp-kafka.fullname" . }}-headless
   podManagementPolicy: {{ .Values.podManagementPolicy }}
@@ -28,6 +31,9 @@ spec:
       labels:
         app: {{ template "cp-kafka.name" . }}
         release: {{ .Release.Name }}
+        {{- range $key, $val := .Values.labels }}
+        {{ $key }} : {{ $val | quote }}
+        {{- end }}
       {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
       annotations:
       {{- range $key, $value := .Values.podAnnotations }}
