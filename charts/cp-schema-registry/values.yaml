@@ -12,7 +12,7 @@ replicaCount: 1
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-schema-registry/
 image: confluentinc/cp-schema-registry
-imageTag: 6.1.0
+imageTag: 7.2.0
 
 ## Specify a imagePullPolicy
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -94,7 +94,6 @@ prometheus:
     imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
     imagePullPolicy: IfNotPresent
     port: 5556
-
     resources: {}
 
 ingress:
@@ -105,6 +104,8 @@ ingress:
   hosts:
     - host: chart-example.local
       paths: []
+
+  pathType: ImplementationSpecific
 
   tls: []
   #  - secretName: chart-example-tls
