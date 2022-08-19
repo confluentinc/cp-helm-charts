@@ -78,12 +78,18 @@ spec:
               value: {{ template "cp-kafka-connect.kafka.bootstrapServers" . }}
             - name: CONNECT_GROUP_ID
               value: {{ template "cp-kafka-connect.groupId" . }}
+            {{ if not (hasKey .Values.configurationOverrides "config.storage.topic") }}
             - name: CONNECT_CONFIG_STORAGE_TOPIC
               value: {{ template "cp-kafka-connect.fullname" . }}-config
+            {{ end }}
+            {{ if not (hasKey .Values.configurationOverrides "offset.storage.topic") }}
             - name: CONNECT_OFFSET_STORAGE_TOPIC
               value: {{ template "cp-kafka-connect.fullname" . }}-offset
+            {{ end }}
+            {{ if not (hasKey .Values.configurationOverrides "status.storage.topic") }}
             - name: CONNECT_STATUS_STORAGE_TOPIC
               value: {{ template "cp-kafka-connect.fullname" . }}-status
+            {{ end }}
             - name: CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL
               value: {{ template "cp-kafka-connect.cp-schema-registry.service-name" .}}
             - name: CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL
