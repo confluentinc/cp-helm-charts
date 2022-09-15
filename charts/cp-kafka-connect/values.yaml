@@ -130,6 +130,14 @@ livenessProbe:
   # periodSeconds: 5
   # failureThreshold: 10
 
+readinessProbe:
+  # httpGet:
+  #   path: /connectors
+  #   port: 8083
+  # initialDelaySeconds: 30
+  # periodSeconds: 5
+  # failureThreshold: 10
+
 serviceAccount:
   name: ""
   annotations: {}
