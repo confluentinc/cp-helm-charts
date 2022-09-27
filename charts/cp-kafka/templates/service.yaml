@@ -7,6 +7,10 @@ metadata:
     chart: {{ template "cp-kafka.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
+  {{- if .Values.service.common.annotations }}
+  annotations:
+  {{- toYaml .Values.service.common.annotations | nindent 4 }}
+  {{- end }}
 spec:
   ports:
     - port: 9092

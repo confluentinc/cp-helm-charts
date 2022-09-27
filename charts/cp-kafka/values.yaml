@@ -164,3 +164,9 @@ livenessProbe:
     - nc -vz 127.0.0.1 $HC_PORT
   initialDelaySeconds: 50
   periodSeconds: 5
+
+service:
+  headless:
+    annotations: {}
+  common:
+    annotations: {}
