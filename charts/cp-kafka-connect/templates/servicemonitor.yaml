@@ -1,0 +1,27 @@
+{{- if .Values.serviceMonitor.enabled }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app: {{ template "cp-kafka-connect.name" . }}
+    chart: {{ template "cp-kafka-connect.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  name: {{ template "cp-kafka-connect.fullname" . }}-servicemonitor
+  namespace: monitoring
+spec:
+  endpoints:
+  - interval: {{ .Values.serviceMonitor.interval }}
+    port: metrics
+    scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
+  namespaceSelector:
+    matchNames:
+    - {{ .Values.serviceMonitor.namespace }}
+  selector:
+    matchLabels:
+      app: {{ template "cp-kafka-connect.name" . }}
+      chart: {{ template "cp-kafka-connect.chart" . }}
+      release: {{ .Release.Name }}
+      heritage: {{ .Release.Service }}
+{{- end }}

@@ -91,6 +91,14 @@ prometheus:
     ## See the `resources` documentation above for details.
     resources: {}
 
+serviceMonitor:
+  # -- If `true`, a serviceMonitor is created to scrape metrics
+  enabled: false
+  # -- Interval at which Prometheus scrapes metrics
+  interval: 15s
+  # -- Timeout for scraping
+  scrapeTimeout: 10s
+
 ## You can list load balanced service endpoint, or list of all brokers (which is hard in K8s).  e.g.:
 ## bootstrapServers: "PLAINTEXT://dozing-prawn-kafka-headless:9092"
 kafka:
