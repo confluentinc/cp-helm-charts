@@ -33,6 +33,9 @@ spec:
       {{- end }}
       {{- end }}
     spec:
+      {{- if .Values.serviceAccountName }}
+      serviceAccountName: {{ .Values.serviceAccountName }}
+      {{- end }}
       securityContext:
       {{- if .Values.securityContext }}
 {{ toYaml .Values.securityContext | indent 8 }}
@@ -104,6 +107,13 @@ spec:
           - name: JMX_PORT
             value: "{{ .Values.jmx.port }}"
           {{- end }}
+          {{- if .Values.customEnv.CUSTOM_SCRIPT_PATH }}
+          command: ["/bin/bash", "-c", "$CUSTOM_SCRIPT_PATH", "&&", "sleep", "infinity"]
+          {{- end }}
+          {{- if .Values.volumeMounts }}
+          volumeMounts:
+{{ toYaml .Values.volumeMounts | indent 12 }}
+          {{- end}}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
@@ -113,6 +123,9 @@ spec:
       - name: jmx-config
         configMap:
           name: {{ template "cp-schema-registry.fullname" . }}-jmx-configmap
+      {{- end }}
+      {{- if .Values.extraVolumes }}
+{{ toYaml .Values.extraVolumes | indent 6 }}
       {{- end }}
       {{- if .Values.nodeSelector }}
       nodeSelector:
