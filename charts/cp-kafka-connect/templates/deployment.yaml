@@ -39,7 +39,7 @@ spec:
             {
               "host":"%%host%%",
               "port":{{ .Values.jmx.port | quote }},
-              "max_returned_metrics":"5000"
+              "max_returned_metrics":5000
             }
           ]
         ad.datadoghq.com/{{ template "cp-kafka-connect.fullname" . }}.logs: '[{"source":"confluent_platform","service":"confluent_platform"}]'
