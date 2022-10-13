@@ -31,19 +31,19 @@ spec:
         prometheus.io/scrape: "true"
         prometheus.io/port: {{ .Values.jmx.prometheus.port | quote }}
       {{- end }}
-      { { - if .Values.jmx.datadog.enabled } }
-      ad.datadoghq.com/{{ template "cp-kafka-rest.fullname" . }}.check_names: '["confluent_platform"]'
-      ad.datadoghq.com/{{ template "cp-kafka-rest.fullname" . }}.init_configs: '[{"is_jmx":true,"collect_default_metrics":true}]'
-      ad.datadoghq.com/{{ template "cp-kafka-rest.fullname" . }}.instances: |
-        [
-          {
-            "host":"%%host%%",
-            "port":{{ .Values.jmx.port | quote }},
-            "max_returned_metrics":999
-          }
-        ]
-      ad.datadoghq.com/{{ template "cp-kafka-rest.fullname" . }}.logs: '[{"source":"confluent_platform","service":"confluent_platform"}]'
-      { { - end } }
+      {{- if .Values.jmx.datadog.enabled }}
+        ad.datadoghq.com/{{ template "cp-kafka-rest.fullname" . }}.check_names: '["confluent_platform"]'
+        ad.datadoghq.com/{{ template "cp-kafka-rest.fullname" . }}.init_configs: '[{"is_jmx":true,"collect_default_metrics":true}]'
+        ad.datadoghq.com/{{ template "cp-kafka-rest.fullname" . }}.instances: |
+          [
+            {
+              "host":"%%host%%",
+              "port":{{ .Values.jmx.port | quote }},
+              "max_returned_metrics":999
+            }
+          ]
+        ad.datadoghq.com/{{ template "cp-kafka-rest.fullname" . }}.logs: '[{"source":"confluent_platform","service":"confluent_platform"}]'
+      {{- end }}
       {{- end }}
     spec:
       containers:
@@ -110,7 +110,7 @@ spec:
             value: "{{ .Values.jmx.port }}"
           - name: KAFKAREST_JMX_OPTS
             value: >-
-              -Djava.rmi.server.hostname=$(CONNECT_REST_ADVERTISED_HOST_NAME)
+              -Djava.rmi.server.hostname=$(KAFKA_REST_HOST_NAME)
               -Dcom.sun.management.jmxremote
               -Dcom.sun.management.jmxremote.authenticate=false
               -Dcom.sun.management.jmxremote.ssl=false
