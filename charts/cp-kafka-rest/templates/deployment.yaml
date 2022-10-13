@@ -22,22 +22,35 @@ spec:
       labels:
         app: {{ template "cp-kafka-rest.name" . }}
         release: {{ .Release.Name }}
-      {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
+      {{- if or .Values.podAnnotations .Values.jmx.prometheus.enabled .Values.jmx.datadog.enabled }}
       annotations:
       {{- range $key, $value := .Values.podAnnotations }}
         {{ $key }}: {{ $value | quote }}
       {{- end }}
-      {{- if .Values.prometheus.jmx.enabled }}
+      {{- if .Values.jmx.prometheus.enabled }}
         prometheus.io/scrape: "true"
-        prometheus.io/port: {{ .Values.prometheus.jmx.port | quote }}
+        prometheus.io/port: {{ .Values.jmx.prometheus.port | quote }}
       {{- end }}
+      { { - if .Values.jmx.datadog.enabled } }
+      ad.datadoghq.com/{{ template "cp-kafka-rest.fullname" . }}.check_names: '["confluent_platform"]'
+      ad.datadoghq.com/{{ template "cp-kafka-rest.fullname" . }}.init_configs: '[{"is_jmx":true,"collect_default_metrics":true}]'
+      ad.datadoghq.com/{{ template "cp-kafka-rest.fullname" . }}.instances: |
+        [
+          {
+            "host":"%%host%%",
+            "port":{{ .Values.jmx.port | quote }},
+            "max_returned_metrics":999
+          }
+        ]
+      ad.datadoghq.com/{{ template "cp-kafka-rest.fullname" . }}.logs: '[{"source":"confluent_platform","service":"confluent_platform"}]'
+      { { - end } }
       {{- end }}
     spec:
       containers:
-        {{- if .Values.prometheus.jmx.enabled }}
+        {{- if .Values.jmx.prometheus.enabled }}
         - name: prometheus-jmx-exporter
-          image: "{{ .Values.prometheus.jmx.image }}:{{ .Values.prometheus.jmx.imageTag }}"
-          imagePullPolicy: "{{ .Values.prometheus.jmx.imagePullPolicy }}"
+          image: "{{ .Values.jmx.prometheus.image }}:{{ .Values.jmx.prometheus.imageTag }}"
+          imagePullPolicy: "{{ .Values.jmx.prometheus.imagePullPolicy }}"
           command:
           - java
           - -XX:+UnlockExperimentalVMOptions
@@ -46,24 +59,24 @@ spec:
           - -XshowSettings:vm
           - -jar
           - jmx_prometheus_httpserver.jar
-          - {{ .Values.prometheus.jmx.port | quote }}
+          - {{ .Values.jmx.prometheus.port | quote }}
           - /etc/jmx-kafka-rest/jmx-kafka-rest-prometheus.yml
           ports:
-          - containerPort: {{ .Values.prometheus.jmx.port }}
+          - containerPort: {{ .Values.jmx.prometheus.port }}
           resources:
-{{ toYaml .Values.prometheus.jmx.resources | indent 12 }}
+{{ toYaml .Values.jmx.prometheus.resources | indent 12 }}
           volumeMounts:
           - name: jmx-config
             mountPath: /etc/jmx-kafka-rest
         {{- end }}
-        - name: {{ template "cp-kafka-rest.name" . }}-server
+        - name: {{ template "cp-kafka-rest.fullname" . }}
           image: "{{ .Values.image }}:{{ .Values.imageTag }}"
           imagePullPolicy: "{{ .Values.imagePullPolicy }}"
           ports:
             - name: rest-proxy
               containerPort: {{ .Values.servicePort}}
               protocol: TCP
-            {{- if .Values.prometheus.jmx.enabled }}
+            {{- if .Values.jmx.enabled }}
             - containerPort: {{ .Values.jmx.port }}
               name: jmx
             {{- end }}
@@ -88,19 +101,32 @@ spec:
           - name: {{ $key | quote }}
             value: {{ $value | quote }}
           {{- end }}
-          {{- if .Values.jmx.port }}
-          - name: JMX_PORT
+          {{- if .Values.jmx.enabled }}
+          - name: KAFKA_JMX_HOSTNAME
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+          - name: KAFKA_JMX_PORT
             value: "{{ .Values.jmx.port }}"
+          - name: KAFKAREST_JMX_OPTS
+            value: >-
+              -Djava.rmi.server.hostname=$(CONNECT_REST_ADVERTISED_HOST_NAME)
+              -Dcom.sun.management.jmxremote
+              -Dcom.sun.management.jmxremote.authenticate=false
+              -Dcom.sun.management.jmxremote.ssl=false
+              -Dcom.sun.management.jmxremote.local.only=false
+              -Dcom.sun.management.jmxremote.port={{ .Values.jmx.port }}
+              -Dcom.sun.management.jmxremote.rmi.port={{ .Values.jmx.port }}
           {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
       {{- end }}
       volumes:
-      {{- if .Values.prometheus.jmx.enabled }}
+      {{- if .Values.jmx.prometheus.enabled }}
       - name: jmx-config
         configMap:
-          name: {{ template "cp-kafka-rest.fullname" . }}-jmx-configmap
+          name: {{ template "cp-kafka-rest.fullname" . }}-jmx-prometheus-configmap
       {{- end }}
       {{- if .Values.nodeSelector }}
       nodeSelector:

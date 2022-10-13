@@ -79,8 +79,7 @@ spec:
             - containerPort: {{ .Values.jmx.port }}
               name: jmx
             {{- end }}
-          resources:
-{{ toYaml .Values.resources | indent 12 }}
+          resources: {{ toYaml .Values.resources | indent 12 }}
           env:
             - name: CONNECT_REST_ADVERTISED_HOST_NAME
               valueFrom:

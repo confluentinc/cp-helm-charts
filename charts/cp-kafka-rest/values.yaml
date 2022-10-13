@@ -8,6 +8,7 @@ replicaCount: 1
 ## ref: https://hub.docker.com/r/confluentinc/cp-kafka/
 image: confluentinc/cp-kafka-rest
 imageTag: 7.2.1
+fullnameOverride: kafka-rest-api
 
 ## Specify a imagePullPolicy
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -63,15 +64,14 @@ customEnv: {}
 ## Kafka REST JMX Settings
 ## ref: https://docs.confluent.io/current/kafka-rest/docs/monitoring.html
 jmx:
+  enabled: false
   port: 5555
-
-## Prometheus Exporter Configuration
-## ref: https://prometheus.io/docs/instrumenting/exporters/
-prometheus:
-  ## JMX Exporter Configuration
-  ## ref: https://github.com/prometheus/jmx_exporter
-  jmx:
-    enabled: true
+  ## Prometheus Exporter Configuration
+  ## ref: https://prometheus.io/docs/instrumenting/exporters/
+  prometheus:
+    ## JMX Exporter Configuration
+    ## ref: https://github.com/prometheus/jmx_exporter
+    enabled: false
     image: solsson/kafka-prometheus-jmx-exporter@sha256
     imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
     imagePullPolicy: IfNotPresent
@@ -79,7 +79,10 @@ prometheus:
 
     ## Resources configuration for the JMX exporter container.
     ## See the `resources` documentation above for details.
-    resources: {}
+    resources: { }
+  datadog:
+    enabled: false
+
 
 ## External Access
 ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer
