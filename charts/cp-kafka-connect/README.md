@@ -146,20 +146,27 @@ The configuration parameters in this section control the resources requested and
 
 ### JMX Configuration
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `jmx.port` | The jmx port which JMX style metrics are exposed. | `5555` |
+| Parameter     | Description                           | Default |
+|---------------|---------------------------------------|---------|
+| `jmx.enabled` | Whether or not to expose JMX metrics. | `false` |
+| `jmx.port`    | The jmx port which JMX style metrics are exposed. | `5555`  |
 
 ### Prometheus JMX Exporter Configuration
 
-| Parameter                        | Description | Default |
-|----------------------------------| ----------- | ------- |
-| `jmx.prometheus.enabled`         | Whether or not to install Prometheus JMX Exporter as a sidecar container and expose JMX metrics to Prometheus. | `true` |
-| `jmx.prometheus.image`           | Docker Image for Prometheus JMX Exporter container. | `solsson/kafka-prometheus-jmx-exporter@sha256` |
+| Parameter                        | Description | Default                                                            |
+|----------------------------------| ----------- |--------------------------------------------------------------------|
+| `jmx.prometheus.enabled`         | Whether or not to install Prometheus JMX Exporter as a sidecar container and expose JMX metrics to Prometheus. | `false`                                                            |
+| `jmx.prometheus.image`           | Docker Image for Prometheus JMX Exporter container. | `solsson/kafka-prometheus-jmx-exporter@sha256`                     |
 | `jmx.prometheus.imageTag`        | Docker Image Tag for Prometheus JMX Exporter container. | `6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143` |
-| `jmx.prometheus.imagePullPolicy` | Docker Image Pull Policy for Prometheus JMX Exporter container. | `IfNotPresent` |
-| `jmx.prometheus.port`            | JMX Exporter Port which exposes metrics in Prometheus format for scraping. | `5556` |
-| `jmx.prometheus.resources`       | JMX Exporter resources configuration. | see [values.yaml](values.yaml) for details |
+| `jmx.prometheus.imagePullPolicy` | Docker Image Pull Policy for Prometheus JMX Exporter container. | `IfNotPresent`                                                     |
+| `jmx.prometheus.port`            | JMX Exporter Port which exposes metrics in Prometheus format for scraping. | `5556`                                                             |
+| `jmx.prometheus.resources`       | JMX Exporter resources configuration. | see [values.yaml](values.yaml) for details                         |
+
+### Datadog JMX Exporter Configuration
+
+| Parameter                        | Description                                                                                              | Default |
+|----------------------------------|----------------------------------------------------------------------------------------------------------|---------|
+| `jmx.datadog.enabled`            | Whether or not to annotate the pod for autodiscovery by the Datadog agent expose JMX metrics to Datadog. | `false` |
 
 ### Running Custom Scripts
 

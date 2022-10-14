@@ -110,7 +110,7 @@ spec:
             value: "{{ .Values.jmx.port }}"
           - name: KAFKAREST_JMX_OPTS
             value: >-
-              -Djava.rmi.server.hostname=$(KAFKA_REST_HOST_NAME)
+              -Djava.rmi.server.hostname=$(KAFKA_JMX_HOSTNAME)
               -Dcom.sun.management.jmxremote
               -Dcom.sun.management.jmxremote.authenticate=false
               -Dcom.sun.management.jmxremote.ssl=false

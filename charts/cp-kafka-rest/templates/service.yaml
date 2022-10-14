@@ -12,7 +12,7 @@ spec:
     - name: rest-proxy
       port: {{ .Values.servicePort }}
     {{- if .Values.jmx.enabled }}
-    - name: metrics
+    - name: jmx
       port: {{ .Values.jmx.port }}
     {{- end }}
   selector:
