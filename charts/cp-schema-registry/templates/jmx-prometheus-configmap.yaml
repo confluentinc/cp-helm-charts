@@ -1,8 +1,8 @@
-{{- if and .Values.prometheus.jmx.enabled }}
+{{- if and .Values.jmx.prometheus.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "cp-schema-registry.fullname" . }}-jmx-configmap
+  name: {{ template "cp-schema-registry.fullname" . }}-jmx-prometheus-configmap
   labels:
     app: {{ template "cp-schema-registry.name" . }}
     chart: {{ template "cp-schema-registry.chart" . }}

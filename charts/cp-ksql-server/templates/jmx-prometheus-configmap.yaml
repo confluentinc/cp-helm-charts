@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ template "cp-ksql-server.fullname" . }}-jmx-configmap
+  name: {{ template "cp-ksql-server.fullname" . }}-jmx-prometheus-configmap
   labels:
     app: {{ template "cp-ksql-server.name" . }}
     chart: {{ template "cp-ksql-server.chart" . }}

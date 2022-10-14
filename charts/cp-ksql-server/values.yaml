@@ -55,7 +55,7 @@ affinity: {}
 ## JMX Settings
 ## ref: https://docs.confluent.io/current/ksql/docs/operations.html
 jmx:
-  enabled: true
+  enabled: false
   port: 5555
 
   ## Prometheus Exporter Configuration
@@ -73,7 +73,7 @@ jmx:
     ## See the `resources` documentation above for details.
     resources: { }
   datadog:
-    enabled: true
+    enabled: false
 
 
 ## External Access

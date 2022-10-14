@@ -13,6 +13,7 @@ replicaCount: 1
 ## ref: https://hub.docker.com/r/confluentinc/cp-schema-registry/
 image: confluentinc/cp-schema-registry
 imageTag: 7.2.1
+fullnameOverride: kafka-schema-registry
 
 ## Specify a imagePullPolicy
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -81,18 +82,21 @@ securityContext:
 ## Schema Registry JMX Settings
 ## ref: https://docs.confluent.io/current/schema-registry/docs/monitoring.html
 jmx:
+  enabled: true
   port: 5555
-
-## Prometheus Exporter Configuration
-## ref: https://prometheus.io/docs/instrumenting/exporters/
-prometheus:
-  ## JMX Exporter Configuration
-  ## ref: https://github.com/prometheus/jmx_exporter
-  jmx:
-    enabled: true
+  ## Prometheus Exporter Configuration
+  ## ref: https://prometheus.io/docs/instrumenting/exporters/
+  prometheus:
+    ## JMX Exporter Configuration
+    ## ref: https://github.com/prometheus/jmx_exporter
+    enabled: false
     image: solsson/kafka-prometheus-jmx-exporter@sha256
     imageTag: 6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143
     imagePullPolicy: IfNotPresent
     port: 5556
 
-    resources: {}
+    ## Resources configuration for the JMX exporter container.
+    ## See the `resources` documentation above for details.
+    resources: { }
+  datadog:
+    enabled: true
