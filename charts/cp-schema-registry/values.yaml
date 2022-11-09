@@ -133,9 +133,9 @@ podDisruptionBudget:
 ## Privilege and access control settings for a Pod or Container
 ## https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 securityContext:
-  runAsUser: 10001 # this value is set following the security team recommendations https://blablacar.atlassian.net/wiki/spaces/SEC/pages/955908228/Sysdig+alerts+runbook+for+service+owners#Create-Pod-Running-As-Root
-  runAsGroup: 10001
-  fsGroup: 10001
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
   runAsNonRoot: true
 
 ## Monitoring
