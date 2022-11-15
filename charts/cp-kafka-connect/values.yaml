@@ -92,6 +92,8 @@ jmx:
     resources: { }
   datadog:
     enabled: false
+    logs:
+      enabled: false
 
 
 ## You can list load balanced service endpoint, or list of all brokers (which is hard in K8s).  e.g.:
