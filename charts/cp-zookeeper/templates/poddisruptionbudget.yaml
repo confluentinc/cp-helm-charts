@@ -1,3 +1,4 @@
+apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: {{ template "cp-zookeeper.fullname" . }}-pdb
