@@ -48,7 +48,7 @@ NAMESPACE: default
 STATUS: DEPLOYED
 
 RESOURCES:
-==> v1beta2/Deployment
+==> v1/Deployment
 NAME                                   DESIRED  CURRENT  UP-TO-DATE  AVAILABLE  AGE
 lolling-chinchilla-cp-schema-registry  1        1        1           0          1s
 
