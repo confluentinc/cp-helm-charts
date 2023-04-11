@@ -12,7 +12,7 @@ brokers: 3
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-server/
 image: confluentinc/cp-server
-imageTag: 6.1.0
+imageTag: 7.2.1
 
 ## Specify a imagePullPolicy
 ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -161,12 +161,17 @@ livenessProbe:
     command:
     - /bin/bash
     - -c
-    - nc -vz 127.0.0.1 $HC_PORT
+    - nc -vz $POD_NAME $HC_PORT
+  failureThreshold: 3
   initialDelaySeconds: 50
   periodSeconds: 5
+  successThreshold: 1
+  timeoutSeconds: 1
 
 service:
   headless:
     annotations: {}
   common:
-    annotations: {}
+    annotations: {}  
+
+serverPort: 9095

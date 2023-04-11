@@ -13,8 +13,12 @@ metadata:
   {{- end }}
 spec:
   ports:
+{{- if not (get .Values "cp-zookeeper").enabled }}  
+    - port: 9095
+      name: controller
+{{- end }}      
     - port: 9092
-      name: broker
+      name: broker  
     {{- if .Values.prometheus.jmx.enabled }}
     - port: {{ .Values.prometheus.jmx.port }}
       name: metrics

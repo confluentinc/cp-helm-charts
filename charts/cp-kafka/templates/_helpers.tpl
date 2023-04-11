@@ -86,3 +86,17 @@ Create a variable containing all the datadirs created.
 {{- printf "/opt/kafka/data-%d/logs" $k -}}
 {{- end -}}
 {{- end -}}
+{{/*
+Create a server list string based on fullname, namespace, # of servers
+in a format like "1@kafkahost1:port;2@kafkahost2:port"
+*/}}
+{{- define "cp-kafka.serverlist" -}}
+{{- $namespace := .Release.Namespace }}
+{{- $name := include "cp-kafka.fullname" . -}}
+{{- $serverPort := .Values.serverPort -}}
+{{- $kafka := dict "servers" (list) -}}
+{{- range $idx, $v := until (int .Values.brokers) }}
+{{- $noop := printf "%d@%s-%d.%s-headless.%s:%d" $idx $name $idx $name $namespace (int $serverPort) | append $kafka.servers | set $kafka "servers" -}}
+{{- end }}
+{{- printf "%s" (join "," $kafka.servers) | quote -}}
+{{- end -}}

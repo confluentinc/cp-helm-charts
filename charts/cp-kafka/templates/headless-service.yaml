@@ -20,6 +20,12 @@ spec:
   ports:
     - port: 9092
       name: broker
+      protocol: TCP
+      targetPort: 9092
+{{- if not (get .Values "cp-zookeeper").enabled }}     
+    - port: 9095
+      name: controller
+{{- end }}      
   clusterIP: None
   selector:
     app: {{ template "cp-kafka.name" . }}
