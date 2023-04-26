@@ -22,7 +22,7 @@ spec:
       labels:
         app: {{ template "cp-schema-registry.name" . }}
         release: {{ .Release.Name }}
-      {{- if or .Values.podAnnotations .Values.jmx.prometheus.enabled .Values.jmx.datadog.enabled }}
+      {{- if or .Values.podAnnotations .Values.jmx.prometheus.enabled .Values.datadog.jmx.enabled .Values.datadog.logs.enabled}}
       annotations:
       {{- range $key, $value := .Values.podAnnotations }}
         {{ $key }}: {{ $value | quote }}
@@ -31,7 +31,7 @@ spec:
         prometheus.io/scrape: "true"
         prometheus.io/port: {{ .Values.jmx.prometheus.port | quote }}
       {{- end }}
-      {{- if .Values.jmx.datadog.enabled }}
+      {{- if .Values.datadog.jmx.enabled }}
         ad.datadoghq.com/{{ template "cp-schema-registry.fullname" . }}.check_names: '["confluent_platform"]'
         ad.datadoghq.com/{{ template "cp-schema-registry.fullname" . }}.init_configs: '[{"is_jmx":true,"collect_default_metrics":true}]'
         ad.datadoghq.com/{{ template "cp-schema-registry.fullname" . }}.instances: |
@@ -39,12 +39,12 @@ spec:
             {
               "host":"%%host%%",
               "port":{{ .Values.jmx.port | quote }},
-              "max_returned_metrics":999
+              "max_returned_metrics":{{ .Values.datadog.jmx.max_returned_metrics }}
             }
           ]
-        {{- if .Values.jmx.datadog.logs.enabled }}
+      {{- end }}
+      {{- if .Values.datadog.logs.enabled }}
         ad.datadoghq.com/{{ template "cp-schema-registry.fullname" . }}.logs: '[{"source":"confluent_platform","service":"confluent_platform"}]'
-        {{- end }}
       {{- end }}
       {{- end }}
     spec:

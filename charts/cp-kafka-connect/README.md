@@ -65,14 +65,19 @@ kissing-macaw-cp-kafka-connect-6c77b8f5fd-cqlzq  1/1    Running  0         34m
 ```
 
 There are
-1. A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) `kissing-macaw-cp-kafka-connect` which contains 1 Kafka Connect [Pod](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/): `kissing-macaw-cp-kafka-connect-6c77b8f5fd-cqlzq`.
-2. A [Service](https://kubernetes.io/docs/concepts/services-networking/service/) `kissing-macaw-cp-kafka-connect` for clients to connect to Kafka Connect REST endpoint.
+
+1. A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) 
+   `kissing-macaw-cp-kafka-connect` which contains 1 Kafka Connect [Pod](https://kubernetes.
+   io/docs/concepts/workloads/pods/pod-overview/): `kissing-macaw-cp-kafka-connect-6c77b8f5fd-cqlzq`.
+2. A [Service](https://kubernetes.io/docs/concepts/services-networking/service/) 
+   `kissing-macaw-cp-kafka-connect` for clients to connect to Kafka Connect REST endpoint.
 
 ## Configuration
 
 You can specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
 
-Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
+Alternatively, a YAML file that specifies the values for the parameters can be provided while
+installing the chart. For example,
 
 ```console
 helm install --name my-kafka-connect -f my-values.yaml ./cp-kafka-connect
@@ -82,110 +87,113 @@ helm install --name my-kafka-connect -f my-values.yaml ./cp-kafka-connect
 
 ### Kafka Connect Deployment
 
-The configuration parameters in this section control the resources requested and utilized by the `cp-kafka-connect` chart.
+The configuration parameters in this section control the resources requested and utilized by
+the `cp-kafka-connect` chart.
 
-| Parameter         | Description                           | Default   |
-| ----------------- | ------------------------------------- | --------- |
-| `replicaCount`    | The number of Kafka Connect Servers.  | `1`       |
+| Parameter      | Description                          | Default |
+|----------------|--------------------------------------|---------|
+| `replicaCount` | The number of Kafka Connect Servers. | `1`     |
 
 ### Image
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `image` | Docker Image of Confluent Kafka Connect. | `confluentinc/cp-kafka-connect` |
-| `imageTag` | Docker Image Tag of Confluent Kafka Connect. | `6.1.0` |
-| `imagePullPolicy` | Docker Image Tag of Confluent Kafka Connect. | `IfNotPresent` |
-| `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
+| Parameter          | Description                                  | Default                                    |
+|--------------------|----------------------------------------------|--------------------------------------------|
+| `image`            | Docker Image of Confluent Kafka Connect.     | `confluentinc/cp-kafka-connect`            |
+| `imageTag`         | Docker Image Tag of Confluent Kafka Connect. | `6.1.0`                                    |
+| `imagePullPolicy`  | Docker Image Tag of Confluent Kafka Connect. | `IfNotPresent`                             |
+| `imagePullSecrets` | Secrets to be used for private registries.   | see [values.yaml](values.yaml) for details |
 
 ### Port
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `servicePort` | The port on which the Kafka Connect will be available and serving requests. | `8083` |
+| Parameter     | Description                                                                 | Default |
+|---------------|-----------------------------------------------------------------------------|---------|
+| `servicePort` | The port on which the Kafka Connect will be available and serving requests. | `8083`  |
 
 ### Kafka Connect Worker Configurations
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `configurationOverrides` | Kafka Connect [configuration](https://docs.confluent.io/current/connect/references/allconfigs.html) overrides in the dictionary format. | `{}` |
-| `customEnv` | Custom environmental variables | `{}` |
+| Parameter                | Description                                                                                                                             | Default |
+|--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|---------|
+| `configurationOverrides` | Kafka Connect [configuration](https://docs.confluent.io/current/connect/references/allconfigs.html) overrides in the dictionary format. | `{}`    |
+| `customEnv`              | Custom environmental variables                                                                                                          | `{}`    |
 
 ### Volumes
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `volumes` | Volumes for connect-server container | see [values.yaml](values.yaml) for details |
+| Parameter      | Description                                | Default                                    |
+|----------------|--------------------------------------------|--------------------------------------------|
+| `volumes`      | Volumes for connect-server container       | see [values.yaml](values.yaml) for details |
 | `volumeMounts` | Volume mounts for connect-server container | see [values.yaml](values.yaml) for details |
 
 ### Secrets
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
+| Parameter | Description                               | Default                                    |
+|-----------|-------------------------------------------|--------------------------------------------|
 | `secrets` | Secret with one or more `key:value` pairs | see [values.yaml](values.yaml) for details |
 
 ### Kafka Connect JVM Heap Options
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
+| Parameter     | Description                            | Default               |
+|---------------|----------------------------------------|-----------------------|
 | `heapOptions` | The JVM Heap Options for Kafka Connect | `"-Xms512M -Xmx512M"` |
 
 ### Resources
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `resources.requests.cpu` | The amount of CPU to request. | see [values.yaml](values.yaml) for details |
-| `resources.requests.memory` | The amount of memory to request. | see [values.yaml](values.yaml) for details |
-| `resources.requests.limit` | The upper limit CPU usage for a Kafka Connect Pod. | see [values.yaml](values.yaml) for details |
-| `resources.requests.limit` | The upper limit memory usage for a Kafka Connect Pod. | see [values.yaml](values.yaml) for details |
+| Parameter                   | Description                                           | Default                                    |
+|-----------------------------|-------------------------------------------------------|--------------------------------------------|
+| `resources.requests.cpu`    | The amount of CPU to request.                         | see [values.yaml](values.yaml) for details |
+| `resources.requests.memory` | The amount of memory to request.                      | see [values.yaml](values.yaml) for details |
+| `resources.requests.limit`  | The upper limit CPU usage for a Kafka Connect Pod.    | see [values.yaml](values.yaml) for details |
+| `resources.requests.limit`  | The upper limit memory usage for a Kafka Connect Pod. | see [values.yaml](values.yaml) for details |
 
 ### Annotations
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `podAnnotations` | Map of custom annotations to attach to the pod spec. | `{}` |
+| Parameter        | Description                                          | Default |
+|------------------|------------------------------------------------------|---------|
+| `podAnnotations` | Map of custom annotations to attach to the pod spec. | `{}`    |
 
 ### JMX Configuration
 
-| Parameter     | Description                           | Default |
-|---------------|---------------------------------------|---------|
-| `jmx.enabled` | Whether or not to expose JMX metrics. | `false` |
+| Parameter     | Description                                       | Default |
+|---------------|---------------------------------------------------|---------|
+| `jmx.enabled` | Whether or not to expose JMX metrics.             | `false` |
 | `jmx.port`    | The jmx port which JMX style metrics are exposed. | `5555`  |
 
 ### Prometheus JMX Exporter Configuration
 
-| Parameter                        | Description | Default                                                            |
-|----------------------------------| ----------- |--------------------------------------------------------------------|
+| Parameter                        | Description                                                                                                    | Default                                                            |
+|----------------------------------|----------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|
 | `jmx.prometheus.enabled`         | Whether or not to install Prometheus JMX Exporter as a sidecar container and expose JMX metrics to Prometheus. | `false`                                                            |
-| `jmx.prometheus.image`           | Docker Image for Prometheus JMX Exporter container. | `solsson/kafka-prometheus-jmx-exporter@sha256`                     |
-| `jmx.prometheus.imageTag`        | Docker Image Tag for Prometheus JMX Exporter container. | `6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143` |
-| `jmx.prometheus.imagePullPolicy` | Docker Image Pull Policy for Prometheus JMX Exporter container. | `IfNotPresent`                                                     |
-| `jmx.prometheus.port`            | JMX Exporter Port which exposes metrics in Prometheus format for scraping. | `5556`                                                             |
-| `jmx.prometheus.resources`       | JMX Exporter resources configuration. | see [values.yaml](values.yaml) for details                         |
+| `jmx.prometheus.image`           | Docker Image for Prometheus JMX Exporter container.                                                            | `solsson/kafka-prometheus-jmx-exporter@sha256`                     |
+| `jmx.prometheus.imageTag`        | Docker Image Tag for Prometheus JMX Exporter container.                                                        | `6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143` |
+| `jmx.prometheus.imagePullPolicy` | Docker Image Pull Policy for Prometheus JMX Exporter container.                                                | `IfNotPresent`                                                     |
+| `jmx.prometheus.port`            | JMX Exporter Port which exposes metrics in Prometheus format for scraping.                                     | `5556`                                                             |
+| `jmx.prometheus.resources`       | JMX Exporter resources configuration.                                                                          | see [values.yaml](values.yaml) for details                         |
 
-### Datadog JMX Exporter Configuration
+### Datadog Configuration
 
-| Parameter                        | Description                                                                                              | Default |
-|----------------------------------|----------------------------------------------------------------------------------------------------------|---------|
-| `jmx.datadog.enabled`            | Whether or not to annotate the pod for autodiscovery by the Datadog agent expose JMX metrics to Datadog. | `false` |
+| Parameter                          | Description                                                                                                 | Default |
+|------------------------------------|-------------------------------------------------------------------------------------------------------------|---------|
+| `datadog.jmx.enabled`              | Whether or not to annotate the pod for autodiscovery by the Datadog agent to expose JMX metrics to Datadog. | `false` |
+| `datadog.jmx.max_returned_metrics` | The maximum number of JMX metrics to send to Datadog.                                                       | `false` |
+| `datadog.logs.enabled`             | Whether or not to annotate the pod for autodiscovery by the Datadog agent to send logs to Datadog.          | `false` |
 
 ### Running Custom Scripts
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `customEnv.CUSTOM_SCRIPT_PATH` | Path to external bash script to run inside the container | see [values.yaml](values.yaml) for details |
-| `livenessProbe` | Requirement of `livenessProbe` depends on the custom script to be run  | see [values.yaml](values.yaml) for details |
+| Parameter                      | Description                                                           | Default                                    |
+|--------------------------------|-----------------------------------------------------------------------|--------------------------------------------|
+| `customEnv.CUSTOM_SCRIPT_PATH` | Path to external bash script to run inside the container              | see [values.yaml](values.yaml) for details |
+| `livenessProbe`                | Requirement of `livenessProbe` depends on the custom script to be run | see [values.yaml](values.yaml) for details |
 
 ### Deployment Topology
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `nodeSelector` | Dictionary containing key-value-pairs to match labels on nodes. When defined pods will only be scheduled on nodes, that have each of the indicated key-value pairs as labels. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) | `{}`
-| `tolerations`| Array containing taint references. When defined, pods can run on nodes, which would otherwise deny scheduling. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) | `{}`
+| Parameter      | Description                                                                                                                                                                                                                                                                                                          | Default |
+|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| `nodeSelector` | Dictionary containing key-value-pairs to match labels on nodes. When defined pods will only be scheduled on nodes, that have each of the indicated key-value pairs as labels. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) | `{}`    |
+| `tolerations`  | Array containing taint references. When defined, pods can run on nodes, which would otherwise deny scheduling. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/)                                                           | `{}`    |
 
 ## Dependencies
 
 ### Kafka
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `kafka.bootstrapServers` | Bootstrap Servers for Kafka Connect | `""` |
+| Parameter                | Description                         | Default |
+|--------------------------|-------------------------------------|---------|
+| `kafka.bootstrapServers` | Bootstrap Servers for Kafka Connect | `""`    |

@@ -39,9 +39,11 @@ helm install --set kafka.bootstrapServers="PLAINTEXT://unhinged-robin-cp-kafka-h
 ```
 
 ### Installed Components
+
 You can use `helm status <release name>` to view all of the installed components.
 
 For example:
+
 ```console{%raw}
 $ helm status lolling-chinchilla
 NAMESPACE: default
@@ -66,15 +68,27 @@ lolling-chinchilla-cp-schema-registry-jmx-configmap  1     1s
 ```
 
 There are
-1. A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) `lolling-chinchilla-cp-schema-registry` which contains 1 Schema Registry [Pod](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/): `lolling-chinchilla-cp-schema-registry-58f854bd47-jxrcj`.
-1. A [Service](https://kubernetes.io/docs/concepts/services-networking/service/) `lolling-chinchilla-cp-schema-registry` for clients to connect to Schema Registry.
-1. A [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) which contains configuration for Prometheus JMX Exporter.
+
+1.
+
+A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) `lolling-chinchilla-cp-schema-registry`
+which contains 1 Schema
+Registry [Pod](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/): `lolling-chinchilla-cp-schema-registry-58f854bd47-jxrcj`.
+
+1.
+
+A [Service](https://kubernetes.io/docs/concepts/services-networking/service/) `lolling-chinchilla-cp-schema-registry`
+for clients to connect to Schema Registry.
+
+1. A [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/)
+   which contains configuration for Prometheus JMX Exporter.
 
 ## Configuration
 
 You can specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
 
-Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
+Alternatively, a YAML file that specifies the values for the parameters can be provided while
+installing the chart. For example,
 
 ```console
 helm install --name my-schema-registry -f my-values.yaml ./cp-schema-registry
@@ -84,97 +98,100 @@ helm install --name my-schema-registry -f my-values.yaml ./cp-schema-registry
 
 ### Schema Registry Deployment
 
-The configuration parameters in this section control the resources requested and utilized by the cp-schema-registry chart.
+The configuration parameters in this section control the resources requested and utilized by the
+cp-schema-registry chart.
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `replicaCount` | The number of Schema Registry Servers. | `1` |
+| Parameter      | Description                            | Default |
+|----------------|----------------------------------------|---------|
+| `replicaCount` | The number of Schema Registry Servers. | `1`     |
 
 ### Image
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `image` | Docker Image of Confluent Schema Registry. | `confluentinc/cp-schema-registry` |
-| `imageTag` | Docker Image Tag of Confluent Schema Registry. | `6.1.0` |
-| `imagePullPolicy` | Docker Image Tag of Confluent Schema Registry. | `IfNotPresent` |
-| `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
+| Parameter          | Description                                    | Default                                    |
+|--------------------|------------------------------------------------|--------------------------------------------|
+| `image`            | Docker Image of Confluent Schema Registry.     | `confluentinc/cp-schema-registry`          |
+| `imageTag`         | Docker Image Tag of Confluent Schema Registry. | `6.1.0`                                    |
+| `imagePullPolicy`  | Docker Image Tag of Confluent Schema Registry. | `IfNotPresent`                             |
+| `imagePullSecrets` | Secrets to be used for private registries.     | see [values.yaml](values.yaml) for details |
 
 ### Confluent Schema Registry Configuration
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `configurationOverrides` | Schema Registry [configuration](https://docs.confluent.io/current/schema-registry/docs/config.html) overrides in the dictionary format. | `{}` |
-| `customEnv` | Custom environmental variables | `{}` |
+| Parameter                | Description                                                                                                                             | Default |
+|--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|---------|
+| `configurationOverrides` | Schema Registry [configuration](https://docs.confluent.io/current/schema-registry/docs/config.html) overrides in the dictionary format. | `{}`    |
+| `customEnv`              | Custom environmental variables                                                                                                          | `{}`    |
 
 ### Port
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `servicePort` | The port on which the Schema Registry will be available and serving requests. | `8081` |
+| Parameter     | Description                                                                   | Default |
+|---------------|-------------------------------------------------------------------------------|---------|
+| `servicePort` | The port on which the Schema Registry will be available and serving requests. | `8081`  |
 
 ### Kafka
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `kafka.bootstrapServers` | Bootstrap Servers for Schema Registry | `""` |
+| Parameter                | Description                           | Default |
+|--------------------------|---------------------------------------|---------|
+| `kafka.bootstrapServers` | Bootstrap Servers for Schema Registry | `""`    |
 
 ### Confluent Schema Registry JVM Heap Options
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
+| Parameter     | Description                                        | Default               |
+|---------------|----------------------------------------------------|-----------------------|
 | `heapOptions` | The JVM Heap Options for Confluent Schema Registry | `"-Xms512M -Xmx512M"` |
 
 ### Resources
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `resources.requests.cpu` | The amount of CPU to request. | see [values.yaml](values.yaml) for details |
-| `resources.requests.memory` | The amount of memory to request. | see [values.yaml](values.yaml) for details |
-| `resources.limits.cpu` | The upper limit CPU usage for a Schema Registry Pod. | see [values.yaml](values.yaml) for details |
-| `resources.limits.memory` | The upper limit memory usage for a Schema Registry Pod. | see [values.yaml](values.yaml) for details |
+| Parameter                   | Description                                             | Default                                    |
+|-----------------------------|---------------------------------------------------------|--------------------------------------------|
+| `resources.requests.cpu`    | The amount of CPU to request.                           | see [values.yaml](values.yaml) for details |
+| `resources.requests.memory` | The amount of memory to request.                        | see [values.yaml](values.yaml) for details |
+| `resources.limits.cpu`      | The upper limit CPU usage for a Schema Registry Pod.    | see [values.yaml](values.yaml) for details |
+| `resources.limits.memory`   | The upper limit memory usage for a Schema Registry Pod. | see [values.yaml](values.yaml) for details |
 
 ### Annotations
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `podAnnotations` | Map of custom annotations to attach to the pod spec. | `{}` |
+| Parameter        | Description                                          | Default |
+|------------------|------------------------------------------------------|---------|
+| `podAnnotations` | Map of custom annotations to attach to the pod spec. | `{}`    |
 
 ### Security Context
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `securityContext.runAsUser` | All processes for the container will run with this user ID | 10001
-| `securityContext.runAsGroup` | All processes for the container will run with this primary group ID | 10001
-| `securityContext.fsGroup` | All processes for the container will run with this supplementary group ID | 10001
-| `securityContext.runAsNonRoot` | The kubelet will validate the image at runtime to make sure that it does not run as UID 0 (root) and won’t start the container if it does | true
+| Parameter                      | Description                                                                                                                               | Default |
+|--------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| `securityContext.runAsUser`    | All processes for the container will run with this user ID                                                                                | 10001   |
+| `securityContext.runAsGroup`   | All processes for the container will run with this primary group ID                                                                       | 10001   |
+| `securityContext.fsGroup`      | All processes for the container will run with this supplementary group ID                                                                 | 10001   |
+| `securityContext.runAsNonRoot` | The kubelet will validate the image at runtime to make sure that it does not run as UID 0 (root) and won’t start the container if it does | true    |
 
 ### JMX Configuration
 
-| Parameter     | Description                           | Default |
-|---------------|---------------------------------------|---------|
-| `jmx.enabled` | Whether or not to expose JMX metrics. | `false` |
+| Parameter     | Description                                       | Default |
+|---------------|---------------------------------------------------|---------|
+| `jmx.enabled` | Whether or not to expose JMX metrics.             | `false` |
 | `jmx.port`    | The jmx port which JMX style metrics are exposed. | `5555`  |
 
 ### Prometheus JMX Exporter Configuration
 
-| Parameter                        | Description | Default                                                            |
-|----------------------------------| ----------- |--------------------------------------------------------------------|
+| Parameter                        | Description                                                                                                    | Default                                                            |
+|----------------------------------|----------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|
 | `jmx.prometheus.enabled`         | Whether or not to install Prometheus JMX Exporter as a sidecar container and expose JMX metrics to Prometheus. | `false`                                                            |
-| `jmx.prometheus.image`           | Docker Image for Prometheus JMX Exporter container. | `solsson/kafka-prometheus-jmx-exporter@sha256`                     |
-| `jmx.prometheus.imageTag`        | Docker Image Tag for Prometheus JMX Exporter container. | `6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143` |
-| `jmx.prometheus.imagePullPolicy` | Docker Image Pull Policy for Prometheus JMX Exporter container. | `IfNotPresent`                                                     |
-| `jmx.prometheus.port`            | JMX Exporter Port which exposes metrics in Prometheus format for scraping. | `5556`                                                             |
-| `jmx.prometheus.resources`       | JMX Exporter resources configuration. | see [values.yaml](values.yaml) for details                         |
+| `jmx.prometheus.image`           | Docker Image for Prometheus JMX Exporter container.                                                            | `solsson/kafka-prometheus-jmx-exporter@sha256`                     |
+| `jmx.prometheus.imageTag`        | Docker Image Tag for Prometheus JMX Exporter container.                                                        | `6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143` |
+| `jmx.prometheus.imagePullPolicy` | Docker Image Pull Policy for Prometheus JMX Exporter container.                                                | `IfNotPresent`                                                     |
+| `jmx.prometheus.port`            | JMX Exporter Port which exposes metrics in Prometheus format for scraping.                                     | `5556`                                                             |
+| `jmx.prometheus.resources`       | JMX Exporter resources configuration.                                                                          | see [values.yaml](values.yaml) for details                         |
 
-### Datadog JMX Exporter Configuration
+### Datadog Configuration
 
-| Parameter                        | Description                                                                                              | Default |
-|----------------------------------|----------------------------------------------------------------------------------------------------------|---------|
-| `jmx.datadog.enabled`            | Whether or not to annotate the pod for autodiscovery by the Datadog agent expose JMX metrics to Datadog. | `false` |
+| Parameter                          | Description                                                                                                 | Default |
+|------------------------------------|-------------------------------------------------------------------------------------------------------------|---------|
+| `datadog.jmx.enabled`              | Whether or not to annotate the pod for autodiscovery by the Datadog agent to expose JMX metrics to Datadog. | `false` |
+| `datadog.jmx.max_returned_metrics` | The maximum number of JMX metrics to send to Datadog.                                                       | `false` |
+| `datadog.logs.enabled`             | Whether or not to annotate the pod for autodiscovery by the Datadog agent to send logs to Datadog.          | `false` |
 
 ### Deployment Topology
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `nodeSelector` | Dictionary containing key-value-pairs to match labels on nodes. When defined pods will only be scheduled on nodes, that have each of the indicated key-value pairs as labels. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) | `{}`
-| `tolerations`| Array containing taint references. When defined, pods can run on nodes, which would otherwise deny scheduling. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) | `{}`
+| Parameter      | Description                                                                                                                                                                                                                                                                                                          | Default |
+|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| `nodeSelector` | Dictionary containing key-value-pairs to match labels on nodes. When defined pods will only be scheduled on nodes, that have each of the indicated key-value pairs as labels. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) | `{}`    | 
+| `tolerations`  | Array containing taint references. When defined, pods can run on nodes, which would otherwise deny scheduling. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/)                                                           | `{}`    |

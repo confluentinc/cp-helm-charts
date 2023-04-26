@@ -80,8 +80,12 @@ jmx:
     ## Resources configuration for the JMX exporter container.
     ## See the `resources` documentation above for details.
     resources: { }
-  datadog:
-    enabled: false
+
+# Datadog Configuration
+datadog:
+    jmx:
+      enabled: false
+      max_returned_metrics: 999
     logs:
       enabled: false
 

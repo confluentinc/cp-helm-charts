@@ -68,16 +68,26 @@ hopping-salamander-cp-kafka-rest-jmx-configmap  1     1s
 ```
 
 There are
-1. A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) `hopping-salamander-cp-kafka-rest` which contains 1 REST Proxy [Pod](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/): `hopping-salamander-cp-kafka-rest-67b86cff98-qxrd8`.
-1. A [Service](https://kubernetes.io/docs/concepts/services-networking/service/) `hopping-salamander-cp-kafka-rest` for clients to connect to REST Proxy.
-1. A [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) which contains configuration for Prometheus JMX Exporter.
-1. (Optional) A [Service](https://kubernetes.io/docs/concepts/services-networking/service/) `hopping-salamander-cp-kafka-restproxy-external` for clients to connect to REST Proxy from outside.
+
+1.
+A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) `hopping-salamander-cp-kafka-rest`
+which contains 1 REST
+Proxy [Pod](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/): `hopping-salamander-cp-kafka-rest-67b86cff98-qxrd8`.
+1.
+A [Service](https://kubernetes.io/docs/concepts/services-networking/service/) `hopping-salamander-cp-kafka-rest`
+for clients to connect to REST Proxy.
+1. A [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/)
+   which contains configuration for Prometheus JMX Exporter.
+1. (Optional)
+   A [Service](https://kubernetes.io/docs/concepts/services-networking/service/) `hopping-salamander-cp-kafka-restproxy-external`
+   for clients to connect to REST Proxy from outside.
 
 ## Configuration
 
 You can specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
 
-Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
+Alternatively, a YAML file that specifies the values for the parameters can be provided while
+installing the chart. For example,
 
 ```console
 helm install --name my-rest-proxy -f my-values.yaml ./cp-kafka-rest
@@ -87,109 +97,113 @@ helm install --name my-rest-proxy -f my-values.yaml ./cp-kafka-rest
 
 ### REST Proxy Deployment
 
-The configuration parameters in this section control the resources requested and utilized by the `cp-kafka-rest` chart.
+The configuration parameters in this section control the resources requested and utilized by
+the `cp-kafka-rest` chart.
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `replicaCount` | The number of REST Proxy Servers. | `1` |
+| Parameter      | Description                       | Default |
+|----------------|-----------------------------------|---------|
+| `replicaCount` | The number of REST Proxy Servers. | `1`     |
 
 ### Image
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `image` | Docker Image of Confluent REST Proxy. | `confluentinc/cp-kafka-rest` |
-| `imageTag` | Docker Image Tag of Confluent REST Proxy. | `6.1.0` |
-| `imagePullPolicy` | Docker Image Tag of Confluent REST Proxy. | `IfNotPresent` |
+| Parameter          | Description                                | Default                                    |
+|--------------------|--------------------------------------------|--------------------------------------------|
+| `image`            | Docker Image of Confluent REST Proxy.      | `confluentinc/cp-kafka-rest`               |
+| `imageTag`         | Docker Image Tag of Confluent REST Proxy.  | `6.1.0`                                    |
+| `imagePullPolicy`  | Docker Image Tag of Confluent REST Proxy.  | `IfNotPresent`                             |
 | `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
 
 ### Port
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `servicePort` | The port on which the REST Proxy will be available and serving requests. | `8082` |
+| Parameter     | Description                                                              | Default |
+|---------------|--------------------------------------------------------------------------|---------|
+| `servicePort` | The port on which the REST Proxy will be available and serving requests. | `8082`  |
 
 ### Confluent Kafka REST Configuration
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `configurationOverrides` | Kafka REST [configuration](https://docs.confluent.io/current/kafka-rest/docs/config.html) overrides in the dictionary format | `{}` |
-| `customEnv` | Custom environmental variables | `{}` |
+| Parameter                | Description                                                                                                                  | Default |
+|--------------------------|------------------------------------------------------------------------------------------------------------------------------|---------|
+| `configurationOverrides` | Kafka REST [configuration](https://docs.confluent.io/current/kafka-rest/docs/config.html) overrides in the dictionary format | `{}`    |
+| `customEnv`              | Custom environmental variables                                                                                               | `{}`    |
 
 ### Confluent Kafka REST JVM Heap Options
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
+| Parameter     | Description                                   | Default               |
+|---------------|-----------------------------------------------|-----------------------|
 | `heapOptions` | The JVM Heap Options for Confluent Kafka REST | `"-Xms512M -Xmx512M"` |
 
 ### Resources
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `resources.requests.cpu` | The amount of CPU to request. | see [values.yaml](values.yaml) for details |
-| `resources.requests.memory` | The amount of memory to request. | see [values.yaml](values.yaml) for details |
-| `resources.requests.limit` | The upper limit CPU usage for a REST Proxy Pod. | see [values.yaml](values.yaml) for details |
-| `resources.requests.limit` | The upper limit memory usage for a REST Proxy Pod. | see [values.yaml](values.yaml) for details |
+| Parameter                   | Description                                        | Default                                    |
+|-----------------------------|----------------------------------------------------|--------------------------------------------|
+| `resources.requests.cpu`    | The amount of CPU to request.                      | see [values.yaml](values.yaml) for details |
+| `resources.requests.memory` | The amount of memory to request.                   | see [values.yaml](values.yaml) for details |
+| `resources.requests.limit`  | The upper limit CPU usage for a REST Proxy Pod.    | see [values.yaml](values.yaml) for details |
+| `resources.requests.limit`  | The upper limit memory usage for a REST Proxy Pod. | see [values.yaml](values.yaml) for details |
 
 ### Annotations
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `podAnnotations` | Map of custom annotations to attach to the pod spec. | `{}` |
+| Parameter        | Description                                          | Default |
+|------------------|------------------------------------------------------|---------|
+| `podAnnotations` | Map of custom annotations to attach to the pod spec. | `{}`    |
 
 ### JMX Configuration
 
-| Parameter     | Description                           | Default |
-|---------------|---------------------------------------|---------|
-| `jmx.enabled` | Whether or not to expose JMX metrics. | `false` |
+| Parameter     | Description                                       | Default |
+|---------------|---------------------------------------------------|---------|
+| `jmx.enabled` | Whether or not to expose JMX metrics.             | `false` |
 | `jmx.port`    | The jmx port which JMX style metrics are exposed. | `5555`  |
 
 ### Prometheus JMX Exporter Configuration
 
-| Parameter                        | Description | Default                                                            |
-|----------------------------------| ----------- |--------------------------------------------------------------------|
+| Parameter                        | Description                                                                                                    | Default                                                            |
+|----------------------------------|----------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|
 | `jmx.prometheus.enabled`         | Whether or not to install Prometheus JMX Exporter as a sidecar container and expose JMX metrics to Prometheus. | `false`                                                            |
-| `jmx.prometheus.image`           | Docker Image for Prometheus JMX Exporter container. | `solsson/kafka-prometheus-jmx-exporter@sha256`                     |
-| `jmx.prometheus.imageTag`        | Docker Image Tag for Prometheus JMX Exporter container. | `6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143` |
-| `jmx.prometheus.imagePullPolicy` | Docker Image Pull Policy for Prometheus JMX Exporter container. | `IfNotPresent`                                                     |
-| `jmx.prometheus.port`            | JMX Exporter Port which exposes metrics in Prometheus format for scraping. | `5556`                                                             |
-| `jmx.prometheus.resources`       | JMX Exporter resources configuration. | see [values.yaml](values.yaml) for details                         |
+| `jmx.prometheus.image`           | Docker Image for Prometheus JMX Exporter container.                                                            | `solsson/kafka-prometheus-jmx-exporter@sha256`                     |
+| `jmx.prometheus.imageTag`        | Docker Image Tag for Prometheus JMX Exporter container.                                                        | `6f82e2b0464f50da8104acd7363fb9b995001ddff77d248379f8788e78946143` |
+| `jmx.prometheus.imagePullPolicy` | Docker Image Pull Policy for Prometheus JMX Exporter container.                                                | `IfNotPresent`                                                     |
+| `jmx.prometheus.port`            | JMX Exporter Port which exposes metrics in Prometheus format for scraping.                                     | `5556`                                                             |
+| `jmx.prometheus.resources`       | JMX Exporter resources configuration.                                                                          | see [values.yaml](values.yaml) for details                         |
 
-### Datadog JMX Exporter Configuration
 
-| Parameter                        | Description                                                                                              | Default |
-|----------------------------------|----------------------------------------------------------------------------------------------------------|---------|
-| `jmx.datadog.enabled`            | Whether or not to annotate the pod for autodiscovery by the Datadog agent expose JMX metrics to Datadog. | `false` |
+### Datadog Configuration
+
+| Parameter                          | Description                                                                                                 | Default |
+|------------------------------------|-------------------------------------------------------------------------------------------------------------|---------|
+| `datadog.jmx.enabled`              | Whether or not to annotate the pod for autodiscovery by the Datadog agent to expose JMX metrics to Datadog. | `false` |
+| `datadog.jmx.max_returned_metrics` | The maximum number of JMX metrics to send to Datadog.                                                       | `false` |
+| `datadog.logs.enabled`             | Whether or not to annotate the pod for autodiscovery by the Datadog agent to send logs to Datadog.          | `false` |
 
 ### External Access
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `external.enabled` | whether or not to allow external access to Kafka REST Proxy | `false` |
-| `external.type` | `Kubernetes Service Type` to expose Kafka REST Proxy to external | `LoadBalancer` |
-| `external.port` | External service port to expose Kafka REST Proxy to external | `8082` |
-| `external.annotations` | Map of annotations to attach to external Kafka REST Proxy service | `nil` |
-| `external.externalTrafficPolicy` | Configures `.spec.externalTrafficPolicy` which controls if load balancing occurs across all nodes (value of `Cluster`) or only active nodes (value of `Local`)  | `Cluster` |
-| `external.loadBalancerSourceRanges` | Configures `.spec.loadBalancerSourceRanges` which controls a list of source IP ranges permitted access to the load balancer | `["0.0.0.0/0"]` |
+| Parameter                           | Description                                                                                                                                                    | Default         |
+|-------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
+| `external.enabled`                  | whether or not to allow external access to Kafka REST Proxy                                                                                                    | `false`         |
+| `external.type`                     | `Kubernetes Service Type` to expose Kafka REST Proxy to external                                                                                               | `LoadBalancer`  |
+| `external.port`                     | External service port to expose Kafka REST Proxy to external                                                                                                   | `8082`          |
+| `external.annotations`              | Map of annotations to attach to external Kafka REST Proxy service                                                                                              | `nil`           |
+| `external.externalTrafficPolicy`    | Configures `.spec.externalTrafficPolicy` which controls if load balancing occurs across all nodes (value of `Cluster`) or only active nodes (value of `Local`) | `Cluster`       |
+| `external.loadBalancerSourceRanges` | Configures `.spec.loadBalancerSourceRanges` which controls a list of source IP ranges permitted access to the load balancer                                    | `["0.0.0.0/0"]` |
 
 ### Deployment Topology
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `nodeSelector` | Dictionary containing key-value-pairs to match labels on nodes. When defined pods will only be scheduled on nodes, that have each of the indicated key-value pairs as labels. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) | `{}`
-| `tolerations`| Array containing taint references. When defined, pods can run on nodes, which would otherwise deny scheduling. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) | `{}`
+| Parameter      | Description                                                                                                                                                                                                                                                                                                          | Default |
+|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| `nodeSelector` | Dictionary containing key-value-pairs to match labels on nodes. When defined pods will only be scheduled on nodes, that have each of the indicated key-value pairs as labels. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) | `{}`    |
+| `tolerations`  | Array containing taint references. When defined, pods can run on nodes, which would otherwise deny scheduling. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/)                                                           | `{}`    |
 
 ## Dependencies
 
 ### Zookeeper
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `cp-zookeeper.url` | Service name of Zookeeper cluster (Not needed if this is installed along with cp-kafka chart). | `""` |
-| `cp-zookeeper.clientPort` | Port of Zookeeper Cluster | `2181` |
+| Parameter                 | Description                                                                                    | Default |
+|---------------------------|------------------------------------------------------------------------------------------------|---------|
+| `cp-zookeeper.url`        | Service name of Zookeeper cluster (Not needed if this is installed along with cp-kafka chart). | `""`    |
+| `cp-zookeeper.clientPort` | Port of Zookeeper Cluster                                                                      | `2181`  |
 
 ### Schema Registry (optional)
 
-| Parameter | Description | Default |
-| --------- | ----------- | ------- |
-| `cp-schema-registry.url` | Service name of Schema Registry (Not needed if this is installed along with cp-kafka chart). | `""` |
-| `cp-schema-registry.port` | Port of Schema Registry Service | `8081` |
+| Parameter                 | Description                                                                                  | Default |
+|---------------------------|----------------------------------------------------------------------------------------------|---------|
+| `cp-schema-registry.url`  | Service name of Schema Registry (Not needed if this is installed along with cp-kafka chart). | `""`    |
+| `cp-schema-registry.port` | Port of Schema Registry Service                                                              | `8081`  |
