@@ -12,6 +12,10 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+  {{- if .Values.deploymentStrategy }}
+  strategy:
+    {{- toYaml .Values.deploymentStrategy | nindent 4 }}
+  {{- end }}
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
