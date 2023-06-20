@@ -90,6 +90,10 @@ spec:
             mountPath: /etc/ksql/queries
           {{- end }}
           env:
+          - name: POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
           - name: KSQL_BOOTSTRAP_SERVERS
             value: {{ template "cp-ksql-server.kafka.bootstrapServers" . }}
           - name: KSQL_KSQL_SERVICE_ID
@@ -104,6 +108,8 @@ spec:
           {{- else }}
           - name: KSQL_LISTENERS
             value: http://0.0.0.0:8088
+          - name: KSQL_KSQL_ADVERTISED_LISTENER
+            value: "$(POD_IP):8088"
           {{- end }}
           {{- range $key, $value := .Values.configurationOverrides }}
           - name: {{ printf "KSQL_%s" $key | replace "." "_" | upper | quote }}
@@ -111,9 +117,7 @@ spec:
           {{- end }}
           {{- if .Values.jmx.enabled }}
           - name: KAFKA_JMX_HOSTNAME
-            valueFrom:
-              fieldRef:
-                fieldPath: status.podIP
+            value: "$(POD_IP)"
           - name: KAFKA_JMX_PORT
             value: "{{ .Values.jmx.port }}"
           - name: KSQL_JMX_OPTS
