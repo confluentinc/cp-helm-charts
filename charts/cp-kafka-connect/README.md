@@ -97,6 +97,13 @@ The configuration parameters in this section control the resources requested and
 | `imagePullPolicy` | Docker Image Tag of Confluent Kafka Connect. | `IfNotPresent` |
 | `imagePullSecrets` | Secrets to be used for private registries. | see [values.yaml](values.yaml) for details |
 
+### Security Context
+
+ Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `podSecurityContext` | securityContext for Pod [Kubernetes documentation](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod) | `{}`
+| `securityContext`| Security Context for container [Kubernetes documentation](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container) | `{}`
+
 ### Port
 
 | Parameter | Description | Default |

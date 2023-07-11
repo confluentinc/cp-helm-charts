@@ -133,3 +133,13 @@ livenessProbe:
   # initialDelaySeconds: 30
   # periodSeconds: 5
   # failureThreshold: 10
+
+podSecurityContext: {}
+  # runAsUser: 1000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # runAsNonRoot: true
+  # runAsUser: 1000
