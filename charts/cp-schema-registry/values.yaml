@@ -112,7 +112,6 @@ datadog:
 ## Custom pod annotations
 podAnnotations:
   cluster-autoscaler.kubernetes.io/safe-to-evict: "true"  # Allow the autoscaler to downscale the cluster.
-  sidecar.istio.io/inject: "false" # The datadog agent fails to retrieve data from the container when enabling the istio proxy
 
 ## Node labels for pod assignment
 ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
@@ -162,7 +161,8 @@ prometheus:
 
 ui:
   annotations: {}
-  labels: {}
+  labels:
+    sidecar.istio.io/inject: "false"
   replicaCount: 1
   resources:
     requests:

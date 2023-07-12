@@ -28,6 +28,7 @@ spec:
       {{- end }}
         app: {{ template "cp-schema-registry.name" . }}
         release: {{ .Release.Name }}
+        sidecar.istio.io/inject: "false" # The datadog agent fails to retrieve data from the container when enabling the istio proxy
       {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled .Values.datadog.enabled }}
       annotations:
       {{- include "datadog.annotations" $ | indent 8 }}
