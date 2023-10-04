@@ -43,7 +43,7 @@ jobs:
           chart: charts/cp-kafka-rest
           release-name: kafka-rest-sg
           namespace: kafka-client
-          values-to-override: appLabels.region=sg,cp-zookeeper.url="z-1.mskproductlisting.cya0qq.c3.kafka.ap-southeast-1.amazonaws.com:2181,z-2.mskproductlisting.cya0qq.c3.kafka.ap-southeast-1.amazonaws.com:2181,z-3.mskproductlisting.cya0qq.c3.kafka.ap-southeast-1.amazonaws.com:2181"
+          values-to-override: appLabels.region=sg
           values: charts/cp-kafka-rest/values.yaml
           timeout: 600s
           helm-version: v3.9.0
@@ -64,7 +64,7 @@ jobs:
           chart: charts/cp-kafka-rest
           release-name: kafka-rest-hk
           namespace: kafka-client
-          values-to-override: appLabels.region=hk,cp-zookeeper.url="z-1.mskproductlisting.cya0qq.c3.kafka.ap-southeast-1.amazonaws.com:2181,z-2.mskproductlisting.cya0qq.c3.kafka.ap-southeast-1.amazonaws.com:2181,z-3.mskproductlisting.cya0qq.c3.kafka.ap-southeast-1.amazonaws.com:2181"
+          values-to-override: appLabels.region=hk
           values: charts/cp-kafka-rest/values.yaml
           timeout: 600s
           helm-version: v3.9.0
