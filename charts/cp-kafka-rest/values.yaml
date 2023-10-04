@@ -11,7 +11,7 @@ envs:
 
 replicaCount: 1
 
-KAFKA_REST_BOOTSTRAP_SERVERS: kafka://b-1.sg-staging.365fra.c2.kafka.ap-southeast-1.amazonaws.com:9094,kafka://b-2.sg-staging.365fra.c2.kafka.ap-southeast-1.amazonaws.com:9094
+KAFKA_REST_BOOTSTRAP_SERVERS: PLAINTEXT://b-2.mskproductlisting.cya0qq.c3.kafka.ap-southeast-1.amazonaws.com:9096,PLAINTEXT://b-1.mskproductlisting.cya0qq.c3.kafka.ap-southeast-1.amazonaws.com:9096
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-kafka/
 image: confluentinc/cp-kafka-rest
