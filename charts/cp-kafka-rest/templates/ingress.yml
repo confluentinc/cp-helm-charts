@@ -1,4 +1,4 @@
-{{- $fullName := include ".cp-kafka-rest.fullname" . -}}
+{{- $fullName := include "cp-kafka-rest.fullname" . -}}
 {{- $ingressPath := .Values.envs.kafka_rest.paths -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
