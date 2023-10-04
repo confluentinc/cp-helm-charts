@@ -1,0 +1,167 @@
+version: 2.1
+orbs:
+  moneysmart-orb: moneysmartco/circleci-orb@1.0.5
+  aws-cli: circleci/aws-cli@3.1
+  helm: circleci/helm@1.0
+defaults: &defaults
+  working_directory: ~/app
+  docker:
+    # the Docker image with Cypress dependencies
+    - image: cypress/base:16.14.0
+      environment:
+        ## this enables colors in the output
+        TERM: xterm
+aliases:
+  - &prod_aws_creds
+    aws-cli/setup:
+      aws-access-key-id: AWS_ACCESS_KEY
+      aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      aws-region: AWS_REGION
+  - &stg_aws_creds
+    aws-cli/setup:
+      aws-access-key-id: STAGING_AWS_ACCESS_KEY
+      aws-secret-access-key: STAGING_AWS_SECRET_ACCESS_KEY
+      aws-region: AWS_REGION
+default-image: &default-image
+  machine:
+    image: ubuntu-2004:current
+    docker_layer_caching: true
+jobs:
+  deploy_to_sg_staging_eks:
+    docker:
+      - image: 'cimg/python:3.10'
+    steps:
+      - checkout
+      - *stg_aws_creds
+      - attach_workspace:
+          at: /tmp/workspace
+      - moneysmart-orb/pull_helm_charts:
+          cluster-name: product-listing-staging
+          chart-name: kafka-rest
+          branch-name: production
+      - run:
+          name: Copy ingress templaets
+          command: |
+            cp -R charts/identity-provider-fe/ingress/* ms-eks-objects/helm-charts/templates
+      - helm/upgrade-helm-chart:
+          chart: charts/cp-kafka-rest
+          release-name: kafka-rest-sg
+          namespace: kafka-rest
+          values-to-override: appLabels.region=sg,image.tag=staging-${CIRCLE_SHA1}
+          values: charts/cp-kakfa-rest/values.yaml
+          timeout: 600s
+          helm-version: v3.9.0
+
+  deploy_to_hk_staging_eks:
+    docker:
+      - image: 'cimg/python:3.10'
+    steps:
+      - checkout
+      - *stg_aws_creds
+      - attach_workspace:
+          at: /tmp/workspace
+      - moneysmart-orb/pull_helm_charts:
+          cluster-name: product-listing-staging
+          chart-name: kafka-rest
+          branch-name: production
+      - run:
+          name: Copy ingress templaets
+          command: |
+            cp -R charts/identity-provider-fe/ingress/* charts/cp-kafka-rest/templates
+      - helm/upgrade-helm-chart:
+          chart: charts/cp-kafka-rest
+          release-name: kafka-rest-hk
+          namespace: kafka-rest
+          values-to-override: appLabels.region=hk,image.tag=staging-${CIRCLE_SHA1}
+          values: charts/cp-kakfa-rest/values.yaml
+          timeout: 600s
+          helm-version: v3.9.0
+#---------------------------------------------
+# campaign_service SG and HK Production Jobs
+#--------------------------------------------
+  deploy_to_sg_prod_eks:
+    docker:
+      - image: 'cimg/python:3.10'
+    steps:
+      - checkout
+      - *prod_aws_creds
+      - attach_workspace:
+          at: /tmp/workspace
+      - moneysmart-orb/pull_helm_charts:
+          cluster-name: product-listing-prod
+          chart-name: kafka-rest
+          branch-name: production
+      - helm/upgrade-helm-chart:
+          chart: charts/cp-kafka-rest
+          release-name: kafka-rest-sg
+          namespace: kafka-rest
+          values-to-override: appLabels.region=sg
+          values: charts/cp-kakfa-rest/values.yaml
+          timeout: 600s
+          helm-version: v3.9.0
+
+  deploy_to_hk_prod_eks:
+    docker:
+      - image: 'cimg/python:3.10'
+    steps:
+      - checkout
+      - *prod_aws_creds
+      - attach_workspace:
+          at: /tmp/workspace
+      - moneysmart-orb/pull_helm_charts:
+          cluster-name: product-listing-prod
+          chart-name: kafka-rest
+          branch-name: production
+      - helm/upgrade-helm-chart:
+          chart: charts/cp-kafka-rest
+          release-name: kafka-rest-hk
+          namespace: kafka-rest
+          values-to-override: appLabels.region=hk
+          values: charts/cp-kakfa-rest/values.yaml
+          timeout: 600s
+          helm-version: v3.9.0
+workflows:
+  version: 2.1
+#---------------------------------------------
+# kafka-rest SG and HK Staging Pipeline
+#---------------------------------------------
+  staging-build-deploy:
+    jobs:
+      - deploy_to_sg_staging_eks:
+          context: common-eks-vars
+          requires:
+            - publish_image_to_ecr_staging
+          filters:
+            branches:
+              only:
+                - update-cicd
+
+      - deploy_to_hk_staging_eks:
+          context: common-eks-vars
+          requires:
+            - publish_image_to_ecr_staging
+          filters:
+            branches:
+              only:
+                - update-cicd
+
+#---------------------------------------------
+# campaign_service SG and HK Production Pipeline
+#---------------------------------------------
+  prod-build-deploy:
+    jobs:
+      - deploy_to_sg_prod_eks:
+          context: common-eks-vars
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
+      - deploy_to_hk_prod_eks:
+          context: common-eks-vars
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
