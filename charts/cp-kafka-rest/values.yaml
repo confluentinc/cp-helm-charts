@@ -100,7 +100,7 @@ external:
 ## If the Kafka Chart is disabled a URL of zookeeper are required to connect
 ## e.g. ungaged-sparrow-cp-zookeeper:2181
 cp-zookeeper:
-  url: ""
+  url: "z-1.mskproductlisting.cya0qq.c3.kafka.ap-southeast-1.amazonaws.com:2181"
 
 ## If the Kafka Chart is disabled a URL and port are required to connect
 ## e.g. gnoble-panther-cp-schema-registry:8081
@@ -108,4 +108,4 @@ cp-schema-registry:
   url: ""
 
 cp-kafka:
-  bootstrapServers: ""
+  bootstrapServers: "b-2.mskproductlisting.cya0qq.c3.kafka.ap-southeast-1.amazonaws.com:9096"
