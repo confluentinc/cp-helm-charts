@@ -42,7 +42,7 @@ jobs:
       - helm/upgrade-helm-chart:
           chart: charts/cp-kafka-rest
           release-name: kafka-rest-sg
-          namespace: kafka-rest
+          namespace: kafka-client
           values-to-override: appLabels.region=sg
           values: charts/cp-kafka-rest/values.yaml
           timeout: 600s
@@ -63,7 +63,7 @@ jobs:
       - helm/upgrade-helm-chart:
           chart: charts/cp-kafka-rest
           release-name: kafka-rest-hk
-          namespace: kafka-rest
+          namespace: kafka-client
           values-to-override: appLabels.region=hk
           values: charts/cp-kafka-rest/values.yaml
           timeout: 600s
@@ -86,7 +86,7 @@ jobs:
       - helm/upgrade-helm-chart:
           chart: charts/cp-kafka-rest
           release-name: kafka-rest-sg
-          namespace: kafka-rest
+          namespace: kafka-client
           values-to-override: appLabels.region=sg
           values: charts/cp-kafka-rest/values.yaml
           timeout: 600s
@@ -107,7 +107,7 @@ jobs:
       - helm/upgrade-helm-chart:
           chart: charts/cp-kafka-rest
           release-name: kafka-rest-hk
-          namespace: kafka-rest
+          namespace: kafka-client
           values-to-override: appLabels.region=hk
           values: charts/cp-kafka-rest/values.yaml
           timeout: 600s
