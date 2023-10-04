@@ -35,19 +35,11 @@ jobs:
       - *stg_aws_creds
       - attach_workspace:
           at: /tmp/workspace
-      - moneysmart-orb/pull_helm_charts:
-          cluster-name: product-listing-staging
-          chart-name: kafka-rest
-          branch-name: production
-      - run:
-          name: Copy ingress templaets
-          command: |
-            cp -R charts/identity-provider-fe/ingress/* ms-eks-objects/helm-charts/templates
       - helm/upgrade-helm-chart:
           chart: charts/cp-kafka-rest
           release-name: kafka-rest-sg
           namespace: kafka-rest
-          values-to-override: appLabels.region=sg,image.tag=staging-${CIRCLE_SHA1}
+          values-to-override: appLabels.region=sg
           values: charts/cp-kakfa-rest/values.yaml
           timeout: 600s
           helm-version: v3.9.0
@@ -60,19 +52,11 @@ jobs:
       - *stg_aws_creds
       - attach_workspace:
           at: /tmp/workspace
-      - moneysmart-orb/pull_helm_charts:
-          cluster-name: product-listing-staging
-          chart-name: kafka-rest
-          branch-name: production
-      - run:
-          name: Copy ingress templaets
-          command: |
-            cp -R charts/identity-provider-fe/ingress/* charts/cp-kafka-rest/templates
       - helm/upgrade-helm-chart:
           chart: charts/cp-kafka-rest
           release-name: kafka-rest-hk
           namespace: kafka-rest
-          values-to-override: appLabels.region=hk,image.tag=staging-${CIRCLE_SHA1}
+          values-to-override: appLabels.region=hk
           values: charts/cp-kakfa-rest/values.yaml
           timeout: 600s
           helm-version: v3.9.0
