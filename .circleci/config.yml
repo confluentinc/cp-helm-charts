@@ -35,6 +35,10 @@ jobs:
       - *stg_aws_creds
       - attach_workspace:
           at: /tmp/workspace
+      - moneysmart-orb/pull_helm_charts:
+          cluster-name: product-listing-staging
+          chart-name: identity-provider-fe
+          branch-name: production
       - helm/upgrade-helm-chart:
           chart: charts/cp-kafka-rest
           release-name: kafka-rest-sg
@@ -52,6 +56,10 @@ jobs:
       - *stg_aws_creds
       - attach_workspace:
           at: /tmp/workspace
+      - moneysmart-orb/pull_helm_charts:
+          cluster-name: product-listing-staging
+          chart-name: identity-provider-fe
+          branch-name: production
       - helm/upgrade-helm-chart:
           chart: charts/cp-kafka-rest
           release-name: kafka-rest-hk
