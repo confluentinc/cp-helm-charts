@@ -129,8 +129,6 @@ workflows:
     jobs:
       - deploy_to_sg_staging_eks:
           context: common-eks-vars
-          requires:
-            - publish_image_to_ecr_staging
           filters:
             branches:
               only:
@@ -138,8 +136,6 @@ workflows:
 
       - deploy_to_hk_staging_eks:
           context: common-eks-vars
-          requires:
-            - publish_image_to_ecr_staging
           filters:
             branches:
               only:
