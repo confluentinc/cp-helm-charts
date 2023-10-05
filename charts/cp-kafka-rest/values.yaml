@@ -27,6 +27,7 @@ imagePullPolicy: IfNotPresent
 imagePullSecrets:
 
 servicePort: 8082
+serviceType: NodePort
 
 ## Kafka rest JVM Heap Option
 heapOptions: "-Xms512M -Xmx512M"
