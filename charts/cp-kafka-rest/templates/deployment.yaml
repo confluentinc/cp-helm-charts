@@ -56,8 +56,6 @@ spec:
           - name: jmx-config
             mountPath: /etc/jmx-kafka-rest
         {{- end }}
-          - name: jaas-config
-            mountPath: /etc/kafka/secrets
         - name: {{ template "cp-kafka-rest.name" . }}-server
           image: "{{ .Values.image }}:{{ .Values.imageTag }}"
           command: ["/bin/bash", "-c"]
