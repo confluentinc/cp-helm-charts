@@ -60,6 +60,8 @@ spec:
             mountPath: /etc/kafka/secrets
         - name: {{ template "cp-kafka-rest.name" . }}-server
           image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+          command: ["/bin/bash", "-c"]
+          args: ["kafka-rest-start /etc/kafka-rest-cloud/kafka-rest.properties"]
           imagePullPolicy: "{{ .Values.imagePullPolicy }}"
           ports:
             - name: rest-proxy
@@ -69,6 +71,10 @@ spec:
             - containerPort: {{ .Values.jmx.port }}
               name: jmx
             {{- end }}
+          volumeMounts:
+          - name: kafka-rest-config
+            mountPath: /etc/kafka-rest-cloud/
+            readOnly: true
           resources:
 {{ toYaml .Values.resources | indent 12 }}
           env:
@@ -104,9 +110,9 @@ spec:
         configMap:
           name: {{ template "cp-kafka-rest.fullname" . }}-jmx-configmap
       {{- end }}
-      - name: jaas-config
+      - name: kafka-rest-config
         secret:
-          secretName: my-jaas-config
+          secretName: kafka-rest-config
       {{- if .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
