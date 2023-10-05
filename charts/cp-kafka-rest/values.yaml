@@ -108,4 +108,4 @@ cp-schema-registry:
   url: ""
 
 cp-kafka:
-  bootstrapServers: "b-2.mskproductlisting.cya0qq.c3.kafka.ap-southeast-1.amazonaws.com:9096"
+  bootstrapServers: "b-2.mskproductlisting.cya0qq.c3.kafka.ap-southeast-1.amazonaws.com:9096,b-1.mskproductlisting.cya0qq.c3.kafka.ap-southeast-1.amazonaws.com:9096"
