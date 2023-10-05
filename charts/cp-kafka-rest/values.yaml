@@ -64,8 +64,8 @@ configurationOverrides:
   # "consumer.request.timeout.ms": 5000
 
 ## Additional env variables
-customEnv: {}
-  # ZOOKEEPER_SASL_ENABLED: "false"
+customEnv:
+  KAFKA_OPTS: "-Djava.security.auth.login.config=/etc/kafka/secrets/kafka_jaas.conf"
 
 ## Monitoring
 ## Kafka REST JMX Settings
