@@ -47,29 +47,8 @@ jobs:
           values: charts/cp-kafka-rest/values.yaml
           timeout: 600s
           helm-version: v3.9.0
-
-  deploy_to_hk_staging_eks:
-    docker:
-      - image: 'cimg/python:3.10'
-    steps:
-      - checkout
-      - *stg_aws_creds
-      - attach_workspace:
-          at: /tmp/workspace
-      - moneysmart-orb/pull_helm_charts:
-          cluster-name: product-listing-staging
-          chart-name: identity-provider-fe
-          branch-name: production
-      - helm/upgrade-helm-chart:
-          chart: charts/cp-kafka-rest
-          release-name: kafka-rest-hk
-          namespace: kafka-client
-          values-to-override: appLabels.region=hk
-          values: charts/cp-kafka-rest/values.yaml
-          timeout: 600s
-          helm-version: v3.9.0
 #---------------------------------------------
-# campaign_service SG and HK Production Jobs
+# kakfa-rest SG and
 #--------------------------------------------
   deploy_to_sg_prod_eks:
     docker:
@@ -91,27 +70,6 @@ jobs:
           values: charts/cp-kafka-rest/values.yaml
           timeout: 600s
           helm-version: v3.9.0
-
-  deploy_to_hk_prod_eks:
-    docker:
-      - image: 'cimg/python:3.10'
-    steps:
-      - checkout
-      - *prod_aws_creds
-      - attach_workspace:
-          at: /tmp/workspace
-      - moneysmart-orb/pull_helm_charts:
-          cluster-name: product-listing-prod
-          chart-name: kafka-rest
-          branch-name: production
-      - helm/upgrade-helm-chart:
-          chart: charts/cp-kafka-rest
-          release-name: kafka-rest-hk
-          namespace: kafka-client
-          values-to-override: appLabels.region=hk
-          values: charts/cp-kafka-rest/values.yaml
-          timeout: 600s
-          helm-version: v3.9.0
 workflows:
   version: 2.1
 #---------------------------------------------
@@ -125,28 +83,12 @@ workflows:
             branches:
               only:
                 - update-cicd
-
-      - deploy_to_hk_staging_eks:
-          context: common-eks-vars
-          filters:
-            branches:
-              only:
-                - update-cicd
-
 #---------------------------------------------
 # campaign_service SG and HK Production Pipeline
 #---------------------------------------------
   prod-build-deploy:
     jobs:
       - deploy_to_sg_prod_eks:
-          context: common-eks-vars
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-
-      - deploy_to_hk_prod_eks:
           context: common-eks-vars
           filters:
             tags:
