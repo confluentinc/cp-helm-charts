@@ -16,8 +16,7 @@ metadata:
   name: {{ .Release.Name }}
 spec:
   rules:
-  - host: {{ .Values.envs.kafka_rest.ingress_host }}
-    http:
+  -  http:
       paths:
       {{- range $ingressPath }}
         - path: {{ . }}
