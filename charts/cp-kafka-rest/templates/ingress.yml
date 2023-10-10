@@ -7,6 +7,7 @@ metadata:
     alb.ingress.kubernetes.io/certificate-arn: {{ .Values.envs.kafka_rest.certificate_arn }}
     alb.ingress.kubernetes.io/group.name: eks-lb-{{ .Values.appLabels.region }}
     alb.ingress.kubernetes.io/healthcheck-path: /_ping
+    alb.ingress.kubernetes.io/group.order: '150'
     kubernetes.io/ingress.class: alb
     nginx.ingress.kubernetes.io/use-regex: "true"
   labels:
