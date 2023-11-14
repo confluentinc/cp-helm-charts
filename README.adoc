@@ -1,4 +1,4 @@
-= Confluent Platform Helm Charts [D]
+= Confluent Platform Helm Charts [Deprecated]
 :icons: font
 :toc: auto
 :toc-placement: macro
