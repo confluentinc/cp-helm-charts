@@ -1,3 +1,6 @@
+```diff
+- Deprecated!  Do not update!  Deprecated!
+```
 = Confluent Platform Helm Charts
 :icons: font
 :toc: auto
