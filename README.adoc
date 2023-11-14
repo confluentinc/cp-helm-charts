@@ -1,7 +1,7 @@
-```diff
-- Deprecated!  Do not update!  Deprecated!
-```
-= Confluent Platform Helm Charts
+
+
+
+= Confluent Platform Helm Charts [D]
 :icons: font
 :toc: auto
 :toc-placement: macro
@@ -14,6 +14,8 @@
 :icons: font
 :source-highlighter: rouge
 :experimental:
+
+*Deprecated*: The cp-helm-charts is deprecated in favor of [Confluent For Kubernetes](https://docs.confluent.io/operator/current/overview.html) .
 
 You can use the Helm charts to deploy services on Kubernetes for development, test, and proof of concept environments.
 
