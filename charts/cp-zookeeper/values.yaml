@@ -29,7 +29,9 @@ imagePullSecrets:
 ## StatefulSet Config
 ## Start and stop pods in Parallel or OrderedReady (one-by-one.)
 ## ref: https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#pod-management-policy
-podManagementPolicy: OrderedReady
+## Only parallel policy can be used, if health checks are enabled. Otherwise, the quorum is lost.
+## ref: https://kubernetes.io/docs/tutorials/stateful-application/zookeeper/
+podManagementPolicy: Parallel
 
 ## The StatefulSet Update Strategy which Zookeeper will use when changes are applied: OnDelete or RollingUpdate
 ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies
@@ -60,6 +62,13 @@ heapOptions: "-Xms512M -Xmx512M"
 serverPort: 2888
 leaderElectionPort: 3888
 clientPort: 2181
+
+## Health checks properties.
+## Only required, if podManagementPolicy is 'Parallel'
+clientReadiness:
+  initialDelaySeconds: 10
+clientLiveness:
+  initialDelaySeconds: 50
 
 ## Persistent Volumes
 ## ref: https://kubernetes.io/docs/concepts/storage/persistent-volumes/

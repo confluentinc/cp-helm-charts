@@ -143,6 +143,18 @@ spec:
           mountPath: /var/lib/zookeeper/data
         - name: datalogdir
           mountPath: /var/lib/zookeeper/log
+        {{- if eq .Values.podManagementPolicy "Parallel" }}
+        readinessProbe:
+          tcpSocket:
+            port: client
+            initialDelaySeconds: {{ .Values.clientReadiness.initialDelaySeconds }}
+            periodSeconds: 2
+        livenessProbe:
+          tcpSocket:
+            port: client
+          initialDelaySeconds: {{ .Values.clientLiveness.initialDelaySeconds }}
+          periodSeconds: 2
+        {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
