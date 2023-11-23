@@ -139,6 +139,11 @@ nodeport:
   servicePort: 19092
   firstListenerPort: 31090
 
+## Set to true for enabling metrics reporting to Confluent.
+## It sets KAFKA_METRIC_REPORTERS and CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS env variables.
+metrics:
+  report: true
+
 ## ------------------------------------------------------
 ## Zookeeper
 ## ------------------------------------------------------
