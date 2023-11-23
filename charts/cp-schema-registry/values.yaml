@@ -6,8 +6,11 @@
 ## Schema Registry
 ## ------------------------------------------------------
 
-## Number of Scheme Registry Pod
+## Number of Schema Registry Pod
 replicaCount: 1
+
+## Maximum number of pod unavailable to ensure the availability of Schema Registry service
+maxUnavailable: 1
 
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-schema-registry/

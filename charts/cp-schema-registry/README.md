@@ -52,6 +52,10 @@ RESOURCES:
 NAME                                   DESIRED  CURRENT  UP-TO-DATE  AVAILABLE  AGE
 lolling-chinchilla-cp-schema-registry  1        1        1           0          1s
 
+==> v1beta1/PodDisruptionBudget
+NAME                                       MIN AVAILABLE   MAX UNAVAILABLE   ALLOWED DISRUPTIONS     AGE
+lolling-chinchilla-cp-schema-registry-pdb  N/A             1                 1               1s
+
 ==> v1/Pod(related)
 NAME                                                    READY  STATUS             RESTARTS  AGE
 lolling-chinchilla-cp-schema-registry-58f854bd47-jxrcj  0/1    ContainerCreating  0         1s
@@ -67,6 +71,7 @@ lolling-chinchilla-cp-schema-registry-jmx-configmap  1     1s
 
 There are
 1. A [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) `lolling-chinchilla-cp-schema-registry` which contains 1 Schema Registry [Pod](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/): `lolling-chinchilla-cp-schema-registry-58f854bd47-jxrcj`.
+1. A [PodDisruptionBudget](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/) `lolling-chinchilla-cp-schema-registry-pdb` to ensure service availability during planned maintenance.
 1. A [Service](https://kubernetes.io/docs/concepts/services-networking/service/) `lolling-chinchilla-cp-schema-registry` for clients to connect to Schema Registry.
 1. A [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) which contains configuration for Prometheus JMX Exporter.
 
@@ -89,6 +94,12 @@ The configuration parameters in this section control the resources requested and
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
 | `replicaCount` | The number of Schema Registry Servers. | `1` |
+
+### PodDisruptionBudget
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `minAvailable` | The minimum number of servers that must be available during evictions. This should in the interval `[(servers/2) + 1,(servers - 1)]`. If not set, `maxUnavailable: 1` will be applied. | `servers-1` |
 
 ### Image
 
