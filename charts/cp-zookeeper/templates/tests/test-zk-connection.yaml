@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "cp-zookeeper.fullname" . }}-test-connection"
+  labels:
+  {{ include "cp-zookeeper.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+  - name: connect-zk-client-port
+    image: busybox
+    command:
+    - "/bin/sh"
+    - "-c"
+    args:
+    - "echo 'ruok' | nc {{ include "cp-zookeeper.fullname" . }} {{ .Values.clientPort }} | grep 'imok'"
+  restartPolicy: Never

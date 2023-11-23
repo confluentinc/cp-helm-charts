@@ -4,10 +4,7 @@ kind: ConfigMap
 metadata:
   name: {{ template "cp-zookeeper.fullname" . }}-jmx-configmap
   labels:
-    app: {{ template "cp-zookeeper.name" . }}
-    chart: {{ template "cp-zookeeper.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+  {{ include "cp-zookeeper.labels" . | nindent 4 }}
 data:
   jmx-zookeeper-prometheus.yml: |+
     jmxUrl: service:jmx:rmi:///jndi/rmi://localhost:{{ .Values.jmx.port }}/jmxrmi
