@@ -174,6 +174,7 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `nodeSelector` | Dictionary containing key-value-pairs to match labels on nodes. When defined pods will only be scheduled on nodes, that have each of the indicated key-value pairs as labels. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/) | `{}`
 | `tolerations`| Array containing taint references. When defined, pods can run on nodes, which would otherwise deny scheduling. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/) | `{}`
+| `topologySpreadConstraints`| Array containing spread strategies. When defined we can instruct the kube-scheduler how to place each incoming Pod in relation to the existing Pods across your cluster. Further information can be found in the [Kubernetes documentation](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/) | `[]`
 
 ## Dependencies
 
