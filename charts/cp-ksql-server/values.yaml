@@ -94,6 +94,10 @@ kafka:
 cp-schema-registry:
   url: ""
 
+cp-kafka-connect:
+  url: ""
+
+
 # KSQL configuration options
 ## ref: https://docs.confluent.io/current/ksql/docs/installation/server-config/config-reference.html
 configurationOverrides: {}
