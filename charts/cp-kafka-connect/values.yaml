@@ -18,7 +18,11 @@ imagePullPolicy: IfNotPresent
 ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
 imagePullSecrets:
 
-servicePort: 8083
+service:
+  type: ClusterIP
+  port: 8083
+  # if you want to force a specific nodePort. Must be use with service.type=NodePort
+  # nodePort:
 
 ## Kafka Connect properties
 ## ref: https://docs.confluent.io/current/connect/userguide.html#configuring-workers

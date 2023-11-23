@@ -18,7 +18,12 @@ imagePullPolicy: IfNotPresent
 ## ref: https://kubernetes.io/docs/concepts/containers/images/#specifying-imagepullsecrets-on-a-pod
 imagePullSecrets:
 
-serviceHttpPort: 9021
+service:
+  type: ClusterIP
+  port: 9021
+  # if you want to force a specific nodePort. Must be use with service.type=NodePort
+  # nodePort:
+
 
 ## Control Center properties
 ## ref: 

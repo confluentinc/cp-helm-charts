@@ -8,9 +8,13 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+  type: {{ .Values.service.type }}
   ports:
     - name: cc-http
-      port: {{ .Values.serviceHttpPort }}
+      port: {{ .Values.service.port }}
+      {{- if (and (eq .Values.service.type "NodePort") .Values.service.nodePort) }}
+      nodePort: {{ .Values.service.nodePort }}
+      {{- end }}
   selector:
     app: {{ template "cp-control-center.name" . }}
     release: {{ .Release.Name }}

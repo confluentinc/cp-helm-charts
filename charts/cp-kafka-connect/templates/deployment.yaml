@@ -61,7 +61,7 @@ spec:
           imagePullPolicy: "{{ .Values.imagePullPolicy }}"
           ports:
             - name: kafka-connect
-              containerPort: {{ .Values.servicePort}}
+              containerPort: {{ .Values.service.port }}
               protocol: TCP
             {{- if .Values.prometheus.jmx.enabled }}
             - containerPort: {{ .Values.jmx.port }}

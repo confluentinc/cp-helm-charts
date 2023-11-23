@@ -31,7 +31,11 @@ configurationOverrides: {}
 customEnv: {}
 
 ## The port on which the Schema Registry will be available and serving requests
-servicePort: 8081
+service:
+  type: ClusterIP
+  port: 8081
+  # if you want to force a specific nodePort. Must be use with service.type=NodePort
+  # nodePort:
 
 ## Schema registry JVM Heap Option
 heapOptions: "-Xms512M -Xmx512M"

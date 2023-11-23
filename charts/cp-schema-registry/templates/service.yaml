@@ -8,9 +8,13 @@ metadata:
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
+  type: {{ .Values.service.type }}
   ports:
     - name: schema-registry
-      port: {{ .Values.servicePort }}
+      port: {{ .Values.service.port }}
+      {{- if (and (eq .Values.service.type "NodePort") .Values.service.nodePort) }}
+      nodePort: {{ .Values.service.nodePort }}
+      {{- end }}
     {{- if .Values.prometheus.jmx.enabled }}
     - name: metrics
       port: {{ .Values.prometheus.jmx.port }}
