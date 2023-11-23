@@ -1,0 +1,15 @@
+{{- if .Values.serviceAccount }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ template "cp-kafka-connect.fullname" . }}
+  {{- if .Values.serviceAccount.annotations }}
+  annotations:
+    {{- toYaml .Values.serviceAccount.annotations | nindent 4 }}
+  {{- end }}
+  labels:
+    app: {{ template "cp-kafka-connect.name" . }}
+    chart: {{ template "cp-kafka-connect.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+{{- end }}
