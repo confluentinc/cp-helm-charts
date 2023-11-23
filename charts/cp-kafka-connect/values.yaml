@@ -133,3 +133,10 @@ livenessProbe:
   # initialDelaySeconds: 30
   # periodSeconds: 5
   # failureThreshold: 10
+
+# Example deployment strategy
+# deploymentStrategy:
+#   type: RollingUpdate
+#   rollingUpdate:
+#     maxUnavailable: 1
+#     maxSurge: 1
