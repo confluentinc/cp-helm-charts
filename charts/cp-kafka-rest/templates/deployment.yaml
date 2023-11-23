@@ -20,6 +20,9 @@ spec:
   template:
     metadata:
       labels:
+      {{- range $key, $value := .Values.podLabels }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
         app: {{ template "cp-kafka-rest.name" . }}
         release: {{ .Release.Name }}
       {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
