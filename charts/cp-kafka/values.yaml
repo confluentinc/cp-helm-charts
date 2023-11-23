@@ -39,6 +39,26 @@ securityContext: {}
   #  runAsUser: 1000
   #  runAsGroup: 1000
 
+securityContext: {}
+  #  runAsUser: 1000
+  #  runAsGroup: 1000
+
+## securityContextConstraints. useful for OpenShift/OKD with default restricted securityContextConstraints
+securityContextConstraints: {}
+  # name: kafka
+  # create: true
+
+## serviceAccount. useful for OpenShift/OKD with default restricted securityContextConstraints
+## if serviceAccount.create == true and securityContextConstraints == true it will add serviceAccount to SCC
+serviceAccount: {}
+  ## if create is true and name undefined will be created default SA == kafka
+  # name: kafka
+  # create: true
+
+## podSecurityContext. useful for OpenShift/OKD with default restricted securityContextConstraints
+podSecurityContext: {}
+  # fsGroup: 1000
+
 ## Kafka Server properties
 ## ref: https://kafka.apache.org/documentation/#configuration
 configurationOverrides:
