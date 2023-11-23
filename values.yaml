@@ -36,6 +36,8 @@ cp-zookeeper:
   #  requests:
   #   cpu: 100m
   #   memory: 128Mi
+  labels: {}
+
 
 ## ------------------------------------------------------
 ## Kafka
@@ -66,6 +68,7 @@ cp-kafka:
   #   memory: 128Mi
   securityContext: 
     runAsUser: 0
+  labels: {}
 
 ## ------------------------------------------------------
 ## Schema Registry
@@ -88,6 +91,7 @@ cp-schema-registry:
   #  requests:
   #   cpu: 100m
   #   memory: 128Mi
+  labels: {}
 
 ## ------------------------------------------------------
 ## REST Proxy
@@ -110,6 +114,7 @@ cp-kafka-rest:
   #  requests:
   #   cpu: 100m
   #   memory: 128Mi
+  labels: {}
 
 ## ------------------------------------------------------
 ## Kafka Connect
@@ -132,6 +137,7 @@ cp-kafka-connect:
   #  requests:
   #   cpu: 100m
   #   memory: 128Mi
+  labels: {}
 
 ## ------------------------------------------------------
 ## KSQL Server
@@ -147,6 +153,7 @@ cp-ksql-server:
   heapOptions: "-Xms512M -Xmx512M"
   ksql:
     headless: false
+  labels: {}
 
 ## ------------------------------------------------------
 ## Control Center
@@ -169,3 +176,5 @@ cp-control-center:
   #  requests:
   #   cpu: 100m
   #   memory: 128Mi
+  labels: {}
+

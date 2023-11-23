@@ -17,11 +17,17 @@ spec:
     matchLabels:
       app: {{ template "cp-kafka-rest.name" . }}
       release: {{ .Release.Name }}
+      {{- range $key, $val := .Values.labels }}
+      {{ $key }} : {{ $val | quote }}
+      {{- end }}
   template:
     metadata:
       labels:
         app: {{ template "cp-kafka-rest.name" . }}
         release: {{ .Release.Name }}
+        {{- range $key, $val := .Values.labels }}
+        {{ $key }} : {{ $val | quote }}
+        {{- end }}
       {{- if or .Values.podAnnotations .Values.prometheus.jmx.enabled }}
       annotations:
       {{- range $key, $value := .Values.podAnnotations }}
