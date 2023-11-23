@@ -102,7 +102,7 @@ spec:
             - name: KAFKA_JMX_PORT
               value: "{{ .Values.jmx.port }}"
             {{- end }}
-        {{- if .Values.customEnv.CUSTOM_SCRIPT_PATH }}
+          {{- if .Values.customEnv.CUSTOM_SCRIPT_PATH }}
           command:
             - /bin/bash
             - -c
@@ -110,11 +110,15 @@ spec:
               /etc/confluent/docker/run &
               $CUSTOM_SCRIPT_PATH
               sleep infinity
+          {{- end }}
           {{- if .Values.livenessProbe }}
+          livenessProbe:
+{{ toYaml .Values.readinessProbe | trim | indent 12 }}
+          {{- end }}
+          {{- if .Values.readinessProbe }}
           livenessProbe:
 {{ toYaml .Values.livenessProbe | trim | indent 12 }}
           {{- end }}
-        {{- end }}
           {{- if .Values.volumeMounts }}
           volumeMounts:
 {{ toYaml .Values.volumeMounts | indent 10 }}
