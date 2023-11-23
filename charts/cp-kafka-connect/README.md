@@ -144,6 +144,12 @@ The configuration parameters in this section control the resources requested and
 | --------- | ----------- | ------- |
 | `podAnnotations` | Map of custom annotations to attach to the pod spec. | `{}` |
 
+### Security Context
+
+| Parameter | Description | Default |
+| --------- | ----------- | ------- |
+| `securityContext` | Security context settings to set to the pod spec. | see [values.yaml](values.yaml) for details |
+
 ### JMX Configuration
 
 | Parameter | Description | Default |
