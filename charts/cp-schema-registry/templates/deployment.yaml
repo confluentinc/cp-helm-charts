@@ -64,7 +64,7 @@ spec:
           image: "{{ .Values.image }}:{{ .Values.imageTag }}"
           imagePullPolicy: "{{ .Values.imagePullPolicy }}"
           ports:
-            - name: schema-registry
+            - name: http
               containerPort: {{ .Values.servicePort }}
               protocol: TCP
             {{- if .Values.prometheus.jmx.enabled }}
