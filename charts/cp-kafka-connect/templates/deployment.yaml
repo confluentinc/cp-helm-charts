@@ -119,6 +119,11 @@ spec:
           volumeMounts:
 {{ toYaml .Values.volumeMounts | indent 10 }}
           {{- end}}
+          {{- if .Values.secrets }}
+          envFrom:
+          - secretRef:
+              name: {{ template "cp-kafka-connect.fullname" . }}
+          {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
