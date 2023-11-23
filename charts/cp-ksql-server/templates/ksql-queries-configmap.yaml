@@ -1,3 +1,4 @@
+{{- if .Values.ksql.headless }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -13,3 +14,4 @@ data:
   {{ . }}: |-
 {{ $files.Get . | indent 4 }}
   {{- end }}
+{{- end }}
