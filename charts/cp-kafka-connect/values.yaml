@@ -133,3 +133,11 @@ livenessProbe:
   # initialDelaySeconds: 30
   # periodSeconds: 5
   # failureThreshold: 10
+
+## External Access
+## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer
+external:
+  enabled: false
+  type: LoadBalancer
+  externalTrafficPolicy: Cluster
+  port: 8083
