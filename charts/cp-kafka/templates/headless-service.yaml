@@ -11,7 +11,9 @@ spec:
   ports:
     - port: 9092
       name: broker
+  {{- if not .Values.headlessServiceClusterIP.enabled }}
   clusterIP: None
+  {{- end }}
   selector:
     app: {{ template "cp-kafka.name" . }}
     release: {{ .Release.Name }}
