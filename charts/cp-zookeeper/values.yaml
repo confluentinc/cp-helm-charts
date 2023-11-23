@@ -77,6 +77,10 @@ persistence:
   dataLogDirSize: 5Gi
   # dataLogDirStorageClass: ""
 
+## Use an alternate scheduler.
+## ref: https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
+##
+## schedulerName: ""
 
 ## Pod Compute Resources
 ## ref: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/

@@ -139,6 +139,11 @@ nodeport:
   servicePort: 19092
   firstListenerPort: 31090
 
+## Use an alternate scheduler.
+## ref: https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
+##
+## schedulerName: ""
+
 ## ------------------------------------------------------
 ## Zookeeper
 ## ------------------------------------------------------
@@ -154,3 +159,8 @@ cp-zookeeper:
 
   ## If the Zookeeper Chart is disabled a URL and port are required to connect
   url: ""
+
+  ## Use an alternate scheduler.
+  ## ref: https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
+  ##
+  ## schedulerName: ""
