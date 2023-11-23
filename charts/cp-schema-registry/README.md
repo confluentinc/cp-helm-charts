@@ -42,13 +42,13 @@ helm install --set kafka.bootstrapServers="PLAINTEXT://unhinged-robin-cp-kafka-h
 You can use `helm status <release name>` to view all of the installed components.
 
 For example:
-```console{%raw}
+```
 $ helm status lolling-chinchilla
 NAMESPACE: default
 STATUS: DEPLOYED
 
 RESOURCES:
-==> v1beta2/Deployment
+==> v1/Deployment
 NAME                                   DESIRED  CURRENT  UP-TO-DATE  AVAILABLE  AGE
 lolling-chinchilla-cp-schema-registry  1        1        1           0          1s
 
