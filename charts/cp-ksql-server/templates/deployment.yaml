@@ -33,6 +33,13 @@ spec:
       {{- end }}
       {{- end }}
     spec:
+      {{- if hasKey .Values "initContainers" }}
+      initContainers:
+{{- range $key, $value := .Values.initContainers }}
+      - name: {{ $key }}
+{{ toYaml $value | trim | indent 8 }}
+{{- end }}
+      {{- end }}
       containers:
         {{- if .Values.prometheus.jmx.enabled }}
         - name: prometheus-jmx-exporter
@@ -74,6 +81,9 @@ spec:
           - name: ksql-queries
             mountPath: /etc/ksql/queries
           {{- end }}
+{{- if hasKey .Values "extraVolumeMounts" }}
+{{ toYaml .Values.extraVolumeMounts | trim | indent 10 }}
+{{ end }}
           env:
           - name: KSQL_BOOTSTRAP_SERVERS
             value: {{ template "cp-ksql-server.kafka.bootstrapServers" . }}
@@ -103,6 +113,9 @@ spec:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
       {{- end }}
       volumes:
+{{- if hasKey .Values "extraVolumes" }}
+{{ toYaml .Values.extraVolumes | trim | indent 6 }}
+{{- end }}
       {{- if .Values.prometheus.jmx.enabled }}
       - name: jmx-config
         configMap:

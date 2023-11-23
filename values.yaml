@@ -148,6 +148,30 @@ cp-ksql-server:
   ksql:
     headless: false
 
+  ## Optionally add init containers that initialises ksqldb, like adding ksqldb-udfs in a mounted volume
+  # initContainers:
+  #   init:
+  #     image: busybox:latest
+  #     imagePullPolicy: IfNotPresent
+  #     command:
+  #     - sh
+  #     - -c
+  #     - |
+  #       touch /opt/ksqldb-udfs/additional-file
+  #     volumeMounts:
+  #     - mountPath: /opt/ksqldb-udfs
+  #       name: extensions-volume
+
+  ## Optionally mounts volumes to the cp-ksql-server container
+  # extraVolumeMounts:
+  # - mountPath: /opt/ksqldb-udfs
+  #   name: extensions-volume
+
+  ## Optionally adds additional volumes to this pod
+  # extraVolumes:
+  # - name: extensions-volume
+  #   emptyDir: {}
+
 ## ------------------------------------------------------
 ## Control Center
 ## ------------------------------------------------------
