@@ -79,7 +79,7 @@ securityContext:
 
 ## Monitoring
 ## Schema Registry JMX Settings
-## ref: https://docs.confluent.io/current/schema-registry/docs/monitoring.html
+## ref: https://docs.confluent.io/platform/current/schema-registry/monitoring.html
 jmx:
   port: 5555
 
