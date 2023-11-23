@@ -11,7 +11,7 @@ brokers: 3
 
 ## Image Info
 ## ref: https://hub.docker.com/r/confluentinc/cp-server/
-image: confluentinc/cp-server
+# image: confluentinc/cp-server
 imageTag: 6.1.0
 
 ## Specify a imagePullPolicy
@@ -138,6 +138,8 @@ nodeport:
   enabled: false
   servicePort: 19092
   firstListenerPort: 31090
+
+enableEnterpriseFeatures: true
 
 ## ------------------------------------------------------
 ## Zookeeper
