@@ -6,6 +6,10 @@ apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
   name: {{ template "cp-kafka-connect.fullname" . }}
+  {{- if .Values.annotations }}
+  annotations:
+    {{- toYaml .Values.annotations | nindent 4 }}
+  {{- end }}
   labels:
     app: {{ template "cp-kafka-connect.name" . }}
     chart: {{ template "cp-kafka-connect.chart" . }}
@@ -33,6 +37,9 @@ spec:
       {{- end }}
       {{- end }}
     spec:
+      {{- if .Values.serviceAccountName }}
+      serviceAccountName: {{ .Values.serviceAccountName }}
+      {{- end }}
       containers:
         {{- if .Values.prometheus.jmx.enabled }}
         - name: prometheus-jmx-exporter
@@ -107,7 +114,6 @@ spec:
             - /bin/bash
             - -c
             - |
-              /etc/confluent/docker/run &
               $CUSTOM_SCRIPT_PATH
               sleep infinity
           {{- if .Values.livenessProbe }}
