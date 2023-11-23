@@ -6,6 +6,11 @@
 ## Kafka
 ## ------------------------------------------------------
 
+serviceAccount:
+  create: true
+  name:
+  annotations: {}  
+
 ## Number of Kafka brokers
 brokers: 3
 

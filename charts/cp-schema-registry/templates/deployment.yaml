@@ -33,6 +33,9 @@ spec:
       {{- end }}
       {{- end }}
     spec:
+      {{- if .Values.serviceAccount.name }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      {{- end }}
       securityContext:
       {{- if .Values.securityContext }}
 {{ toYaml .Values.securityContext | indent 8 }}

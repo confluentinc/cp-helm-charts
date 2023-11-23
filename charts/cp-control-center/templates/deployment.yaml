@@ -33,6 +33,9 @@ spec:
       {{- end }}
       {{- end }}
     spec:
+      {{- if .Values.serviceAccount.name }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image }}:{{ .Values.imageTag }}"
@@ -65,7 +68,7 @@ spec:
             {{- range $key, $value := .Values.customEnv }}
             - name: {{ $key | quote }}
               value: {{ $value | quote }}
-            {{- end }}            
+            {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
 {{ toYaml .Values.imagePullSecrets | indent 8 }}
