@@ -77,7 +77,7 @@ workflows:
 #---------------------------------------------
   staging-build-deploy:
     jobs:
-      - deploy_to_sg_staging_eks:
+      - deploy_to_sg_prod_eks:
           context: common-eks-vars
           filters:
             branches:
