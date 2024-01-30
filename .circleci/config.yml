@@ -44,7 +44,7 @@ jobs:
           release-name: kafka-rest-sg
           namespace: kafka-client
           values-to-override: appLabels.region=sg
-          values: charts/cp-kafka-rest/values.yaml
+          values: charts/cp-kafka-rest/values-dev.yaml
           timeout: 600s
           helm-version: v3.9.0
 #---------------------------------------------
@@ -82,7 +82,7 @@ workflows:
           filters:
             branches:
               only:
-                - update-cicd2
+                - update-cicd
 #---------------------------------------------
 # campaign_service SG and HK Production Pipeline
 #---------------------------------------------
