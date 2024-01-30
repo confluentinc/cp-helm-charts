@@ -37,7 +37,7 @@ jobs:
           at: /tmp/workspace
       - moneysmart-orb/pull_helm_charts:
           cluster-name: product-listing-staging
-          chart-name: identity-provider-fe
+          chart-name: kafka-rest
           branch-name: production
       - helm/upgrade-helm-chart:
           chart: charts/cp-kafka-rest
