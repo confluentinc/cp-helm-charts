@@ -17,7 +17,8 @@ metadata:
   name: {{ .Release.Name }}
 spec:
   rules:
-  -  http:
+  - host: event-proxy.{{ .Values.domain }}
+    http:
       paths:
       {{- range $ingressPath }}
         - path: {{ . }}
