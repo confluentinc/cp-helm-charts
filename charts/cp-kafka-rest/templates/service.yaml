@@ -18,3 +18,4 @@ spec:
   selector:
     app: {{ template "cp-kafka-rest.name" . }}
     release: {{ .Release.Name }}
+  type: {{ .Values.serviceType }}
